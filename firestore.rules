@@ -1,23 +1,54 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{db}/documents {
-    // Tiến trình game: mỗi người chỉ đọc/ghi được bản lưu của chính mình
+    function signedIn() { return request.auth != null; }
+    function me() { return request.auth.uid; }
+    function userDoc() { return /databases/$(db)/documents/users/$(me()); }
+
+    // Tiến trình game: mỗi người chỉ đọc/ghi bản lưu của chính mình
     match /saves/{uid} {
-      allow read, write: if request.auth != null && request.auth.uid == uid
-                         && (request.resource == null || request.resource.data.data.size() < 900000);
+      allow read: if signedIn() && me() == uid;
+      allow write: if signedIn() && me() == uid && request.resource.data.data.size() < 900000;
     }
-    // Ví xu: người chơi chỉ được TẠO với 0 xu và chỉ được GIẢM xu (khi tiêu). Chỉ máy chủ (webhook) mới cộng xu.
+
+    // Hồ sơ + ví xu. Người chơi: tạo với 0 xu; chỉ được GIẢM xu; đặt biệt danh/server (server chỉ đặt 1 lần).
     match /users/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
-      allow create: if request.auth != null && request.auth.uid == uid && request.resource.data.xu == 0;
-      allow update: if request.auth != null && request.auth.uid == uid
-                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['xu'])
-                    && request.resource.data.xu >= 0
-                    && request.resource.data.xu < resource.data.xu;
+      allow read: if signedIn() && me() == uid;
+      allow create: if signedIn() && me() == uid && request.resource.data.xu == 0;
+      allow update: if signedIn() && me() == uid && (
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['xu'])
+          && request.resource.data.xu >= 0 && request.resource.data.xu < resource.data.xu)
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','nameKey','server'])
+          && (!('server' in resource.data) || request.resource.data.server == resource.data.server)
+          && getAfter(/databases/$(db)/documents/names/$(request.resource.data.nameKey)).data.uid == me())
+      );
     }
+
+    // Biệt danh không trùng: mỗi tên là 1 tài liệu, chỉ tạo được khi chưa có ai dùng
+    match /names/{key} {
+      allow read: if true;
+      allow create: if signedIn() && request.resource.data.uid == me();
+      allow delete: if signedIn() && resource.data.uid == me();
+    }
+
+    // Server: tối đa 1000 người; chỉ tăng 1 khi người chơi lần đầu gia nhập
+    match /servers/{sid} {
+      allow read: if true;
+      allow create: if signedIn() && sid in ['s1','s2','s3','s4','s5']
+        && request.resource.data.count == 1 && request.resource.data.max == 1000
+        && getAfter(userDoc()).data.server == sid
+        && !('server' in get(userDoc()).data);
+      allow update: if signedIn()
+        && request.resource.data.max == resource.data.max
+        && request.resource.data.count == resource.data.count + 1
+        && resource.data.count < resource.data.max
+        && getAfter(userDoc()).data.server == sid
+        && !('server' in get(userDoc()).data);
+    }
+
     // Đơn nạp: chỉ máy chủ ghi; người chơi xem được đơn của mình
     match /orders/{id} {
-      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow read: if signedIn() && resource.data.uid == me();
     }
   }
 }

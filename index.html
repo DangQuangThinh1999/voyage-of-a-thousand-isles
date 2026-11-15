@@ -67,7 +67,13 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 .foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
 .good{color:var(--good)}.bad{color:var(--bad)}
 #bigmap{width:min(640px,80vw);height:min(640px,80vw);border-radius:12px;display:block;margin:10px auto}
-#loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--mut)}
+#loading{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#0b1a2e;color:#e8f0ff;z-index:50;transition:opacity .6s}
+#loading .art{width:min(720px,92vw);height:min(312px,40vw);border-radius:18px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#loading h1{margin:4px 0 0;font-size:30px;letter-spacing:.5px}#loading .bar{width:min(520px,80vw);height:10px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden}
+#loading .bar i{display:block;height:100%;width:3%;background:linear-gradient(90deg,#ffb347,#ffd27a);transition:width .3s}#loading .tip{font-size:13px;color:#9fb3d1;min-height:18px;text-align:center;max-width:80vw}
+@keyframes vdbob{0%,100%{transform:translate(0,0) rotate(-1deg)}50%{transform:translate(0,4px) rotate(1.5deg)}}@keyframes vdsail{0%{transform:translateX(-30px)}100%{transform:translateX(30px)}}@keyframes vdwav{to{transform:translateX(-60px)}}
+.vdship{animation:vdbob 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}.vdwave{animation:vdwav 4s linear infinite}
+.introart{height:150px;margin:-6px -6px 10px;border-radius:12px;overflow:hidden}
 #fade{position:fixed;inset:0;background:#06101e;opacity:0;pointer-events:none;transition:opacity .45s;z-index:30}
 .creator{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
 #pv{width:240px;height:300px;border-radius:14px;background:radial-gradient(circle at 50% 40%,#2c4f74,#0d1b30)}
@@ -91,7 +97,18 @@ input[type=text]{font:inherit;color:var(--txt);background:rgba(255,255,255,.08);
 </head>
 <body>
 <div id="fps" style="position:fixed;right:14px;top:252px;font:11px sans-serif;color:#cfe3ff;opacity:.75;text-shadow:0 1px 2px #000;pointer-events:none"></div>
-<div id="loading">Đang tải thế giới…</div>
+<div id="loading"><div class="art"><svg id="vdart" viewBox="0 0 600 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+<defs><linearGradient id="vs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b3a6b"/><stop offset=".55" stop-color="#f4a76a"/><stop offset="1" stop-color="#ffd8a0"/></linearGradient>
+<linearGradient id="vw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a7ab0"/><stop offset="1" stop-color="#0b2c4e"/></linearGradient></defs>
+<rect width="600" height="260" fill="url(#vs)"/><circle cx="430" cy="150" r="34" fill="#ffe7a6" opacity=".95"/>
+<g fill="#fff" opacity=".7"><ellipse cx="120" cy="60" rx="46" ry="11"/><ellipse cx="150" cy="54" rx="30" ry="10"/><ellipse cx="470" cy="44" rx="40" ry="9"/></g>
+<path d="M0 170 Q 300 160 600 170 V260 H0Z" fill="url(#vw)"/>
+<g fill="#1d4a3a"><path d="M40 172 q40 -34 90 0z"/><path d="M200 170 q22 -16 48 0z"/><path d="M500 172 q38 -40 86 0z"/></g>
+<g stroke="#5a3a24" stroke-width="3" fill="none"><path d="M84 160 q2 -22 -4 -36"/><path d="M548 158 q-3 -24 4 -40"/></g>
+<g fill="#2e7d4f"><path d="M80 124 q-18 -2 -26 8 q14 -4 26 -8z"/><path d="M80 124 q18 -4 28 6 q-14 -4 -28 -6z"/><path d="M80 124 q-4 -14 -16 -18 q8 8 16 18z"/><path d="M552 118 q-18 -2 -26 8 q14 -4 26 -8z"/><path d="M552 118 q18 -4 28 6 q-14 -4 -28 -6z"/></g>
+<g class="vdship"><path d="M262 196 h86 l-12 16 h-62z" fill="#6a3a1e"/><path d="M302 196 V130" stroke="#3a2414" stroke-width="3"/><path d="M304 134 q30 28 0 58z" fill="#f4ecd8"/><path d="M300 140 q-24 22 0 50z" fill="#e8d8b0"/><path d="M302 130 l16 6 -16 5z" fill="#c0392b"/></g>
+<g stroke="#bfe3ff" stroke-width="2" fill="none" opacity=".55" class="vdwave"><path d="M0 214 q30 -6 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/><path d="M-30 236 q30 -6 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/></g>
+</svg></div><h1>Hải Trình Vạn Đảo</h1><div class="bar"><i id="ldbar"></i></div><div id="ldtxt" style="font-size:14px">Đang tải thế giới…</div><div class="tip" id="ldtip">💡 Mỗi hòn đảo có đặc sản riêng — mua rẻ chỗ này, bán đắt chỗ khác.</div></div>
 <div id="stats" class="glass" style="display:none">
   <div class="row"><span id="gold">💰 0</span><span id="day" class="sm"></span></div>
   <div class="row sm"><span id="tiername"></span><span id="wind"></span></div>
@@ -135,6 +152,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
@@ -827,25 +845,31 @@ const LEAFY=/Leaves|Leaf|Flowers|Grass|Clover|Vine/;
 function dedupeTextures(){ const seen=new Map(); let n=0; const fixM=m=>{ for(const k of ['map','normalMap','roughnessMap','metalnessMap','emissiveMap','aoMap','alphaMap']){ const t=m[k]; if(!t||!t.image||!t.name) continue; const key=t.name+'|'+(t.image.width||0)+'x'+(t.image.height||0); const f=seen.get(key); if(!f) seen.set(key,t); else if(f!==t){ m[k]=f; n++; } } };
   const fix=root=>root.traverse(o=>{ if(o.material) for(const m of [].concat(o.material)) fixM(m); });
   for(const k in MODELS){ fix(MODELS[k].scene); for(const pt of MODELS[k].parts||[]) if(pt.mat) fixM(pt.mat); } for(const k in CHARS) if(CHARS[k].scene) fix(CHARS[k].scene); console.log('Gộp texture trùng:',n,'· còn',seen.size); }
+const LD_TIPS=['💡 Mỗi hòn đảo có đặc sản riêng — mua rẻ chỗ này, bán đắt chỗ khác.','💡 Bắn trúng TÂM thuyền địch gây sát thương lớn nhất.','💡 Nhấn U để lặn tàu ngầm, khám phá Vương quốc Tiên Cá dưới vực sâu.','💡 Ngồi thiền (K) ở Thanh Vân Sơn để tu luyện, đạt Trúc Cơ là ngự kiếm bay được.','💡 Thắp hương ở chùa Linh Sơn để được bình an 3 ngày trên biển.','💡 Lái vào chân thác nước ngược để lên Đảo Thiên Không.','💡 Thiết kế lại thuyền trong Menu (P) → ⛵ Thiết kế lại thuyền.','💡 Máy yếu? Nhấn G để giảm đồ họa cho mượt hơn.'];
+let ldTipI=0, ldTipT=setInterval(()=>{ const t=document.getElementById('ldtip'); if(!t||document.getElementById('loading').style.display==='none'){ clearInterval(ldTipT); return; } ldTipI=(ldTipI+1)%LD_TIPS.length; t.textContent=LD_TIPS[ldTipI]; },3500);
+function ldProg(f,txt){ const b=document.getElementById('ldbar'), t=document.getElementById('ldtxt'); if(b) b.style.width=Math.round(Math.max(0.03,f)*100)+'%'; if(t&&txt) t.textContent=txt; }
 async function loadAssets(){
   if(location.protocol==='file:'){ console.warn('Mở game qua file:// nên không nạp được mô hình 3D — hãy chạy chay_game.bat'); return; }
-  const ld=new GLTFLoader(), jobs=[]; for(const kit in ASSET_LIST) for(const n of ASSET_LIST[kit]) jobs.push([kit,n]);
+  const ld=new GLTFLoader(), jobs=[]; ld.setMeshoptDecoder(MeshoptDecoder); for(const kit in ASSET_LIST) for(const n of ASSET_LIST[kit]) jobs.push([kit,n]);
   let done=0; const el=$('loading');
-  await Promise.all(jobs.map(async([kit,n])=>{ try{ const gl=await ld.loadAsync(`assets/${kit}/${n}.gltf`); if(kit==='chars'||n.startsWith('Characters_')) CHARS[n]=prepChar(gl); else MODELS[n]=prepModel(gl.scene); }catch(e){ console.warn('asset lỗi',n,e); }
-    done++; if(el) el.textContent=`Đang tải mô hình 3D… ${Math.round(done/jobs.length*100)}%`; }));
+  await Promise.all(jobs.map(async([kit,n])=>{ try{ let gl; try{ gl=await ld.loadAsync(`assets/${kit}/${n}.glb`); }catch(e1){ gl=await ld.loadAsync(`assets/${kit}/${n}.gltf`); } if(kit==='chars'||n.startsWith('Characters_')) CHARS[n]=prepChar(gl); else MODELS[n]=prepModel(gl.scene); }catch(e){ console.warn('asset lỗi',n,e); }
+    done++; ldProg(done/jobs.length*0.9,`Đang tải mô hình 3D… ${Math.round(done/jobs.length*100)}%`); }));
   HAS_ASSETS=Object.keys(MODELS).length>=60; HAS_CHARS=Object.keys(CHARS).length>=20; dedupeTextures(); splitShipModel();
-  if(el) el.textContent='Đang tải khủng long…'; await loadDinos();
+  ldProg(0.93,'Đang tải khủng long…'); await loadDinos(); ldProg(1,'Sẵn sàng ra khơi! ⛵');
 }
 // lá cây 2 mặt: không lật pháp tuyến ở mặt sau để lá không bị đen
 function leafMat(m){ if(m.userData.leaf) return; m.userData.leaf=true; m.onBeforeCompile=sh=>{ sh.fragmentShader=sh.fragmentShader.replace('#include <normal_fragment_begin>',THREE.ShaderChunk.normal_fragment_begin.replace('float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;','float faceDirection = 1.0;')); }; m.customProgramCacheKey=()=>'leaf'; }
 function upNormals(g){ const n=g.attributes.normal; if(!n||g.userData.up) return; g.userData.up=true; const v=new THREE.Vector3(), U=new THREE.Vector3(0,0.65,0);
   for(let i=0;i<n.count;i++){ v.fromBufferAttribute(n,i); v.y=Math.abs(v.y); v.multiplyScalar(0.35).add(U).normalize(); n.setXYZ(i,v.x,v.y,v.z); } n.needsUpdate=true; }
+// mô hình nén (meshopt) lưu toạ độ dạng số nguyên → đổi về số thực trước khi biến đổi/gộp hình
+function dequant(geo){ for(const k in geo.attributes){ const at=geo.attributes[k]; if(at.isInterleavedBufferAttribute||!(at.array instanceof Float32Array)){ const n=at.count, s2=at.itemSize, arr=new Float32Array(n*s2), gf=['getX','getY','getZ','getW'];
+    for(let i=0;i<n;i++) for(let c=0;c<s2;c++) arr[i*s2+c]=at[gf[c]](i); geo.setAttribute(k,new THREE.BufferAttribute(arr,s2)); } } return geo; }
 function prepModel(scene){
   scene.updateMatrixWorld(true); const parts=[];
   scene.traverse(o=>{ if(!o.isMesh) return; const m=o.material;
     const leafy=m&&(m.alphaTest>0||LEAFY.test(m.name));
     if(m){ m.vertexColors=false; if(leafy){ m.alphaTest=Math.max(m.alphaTest,0.45); m.transparent=false; leafMat(m); } m.side=THREE.DoubleSide; m.metalness=0; if(m.map) m.map.anisotropy=4; }
-    o.castShadow=true; o.receiveShadow=true; const geo=o.geometry.clone(); geo.applyMatrix4(o.matrixWorld);
+    o.castShadow=true; o.receiveShadow=true; dequant(o.geometry); const geo=o.geometry.clone(); geo.applyMatrix4(o.matrixWorld);
     if(leafy){ upNormals(geo); upNormals(o.geometry); }
     parts.push({geo,mat:m}); });
   return {scene,parts};
@@ -1848,7 +1872,8 @@ function spawnSky(type){ const c=skyCenter(), a=Math.random()*TAU, dr=type==='dr
     h:(c.y||0)+(dr?60+Math.random()*40:22+Math.random()*30),ang:Math.random()*TAU,sp:(dr?0.18*(DT.spd||1):type==='ptero'?0.35:0.45+Math.random()*0.3)*(Math.random()<0.5?1:-1),dead:false,vy:0,fire:type==='ptero'?999:4+Math.random()*4};
   g.position.set(o.cx,o.h,o.cz); world.add(g); SKY.push(o); return o; }
 function skyUpdate(dt){ if(!world) return; const c=skyCenter(); shotCd=Math.max(0,shotCd-dt); petUpdate(dt);
-  const nb=SKY.filter(o=>o.type!=='dragon'&&!o.dead).length; if(nb<5&&!S.cabin&&Math.random()<dt*0.6) spawnSky(nearIsl(c,'dino',700)&&Math.random()<0.6?'ptero':'bird');
+  const nb=SKY.filter(o=>o.type!=='dragon'&&!o.dead).length, nearDino=nearIsl(c,'dino',700), birdZone=S.mode==='sea'&&((Math.floor(c.x/700)*7+Math.floor(c.z/700)*13)%5+5)%5<2, cap=nearDino?2:birdZone?3:0;
+  if(nb<cap&&!S.cabin&&Math.random()<dt*0.4) spawnSky(nearDino?'ptero':'bird');
   dragonT-=dt; const hasD=SKY.some(o=>o.type==='dragon'&&!o.dead);
   if(dragonT<=0&&!hasD&&!S.cabin&&!evScene){ dragonT=90+Math.random()*90; const vol=S.islands.find(i=>i.k==='volcano'), nearVol=vol&&Math.hypot(vol.x-c.x,vol.z-c.z)<700;
     if(Math.random()<(nearVol||nearIsl(c,'sky',600)?0.9:nightNow>0.5?0.55:0.3)){ spawnSky('dragon'); banner('🐉 Một con rồng xuất hiện trên bầu trời!'); toast(S.weap&&(S.weap.bow||S.weap.gun)?'🎯 Nhấn <b>Q</b> cầm vũ khí rồi nhấp chuột để bắn rồng!':'⚠️ Rồng! Mua cung hoặc súng ở Xưởng quân giới (đảo Thiết Bảo) để săn.',6000); } }
@@ -1932,19 +1957,23 @@ function airUpdate(dt){ const P=plane; if(!P) return; sprayUpdate(dt,P);
   const er=discoverR()*1.2, gx=Math.floor((P.x+WORLD+200)/CELL), gz=Math.floor((P.z+WORLD+200)/CELL), rc=Math.ceil(er/CELL);
   for(let z=gz-rc;z<=gz+rc;z++) for(let x=gx-rc;x<=gx+rc;x++){ if(x<0||z<0||x>=GRID||z>=GRID) continue; const cx=(x+.5)*CELL-WORLD-200, cz=(z+.5)*CELL-WORLD-200; if(Math.hypot(cx-P.x,cz-P.z)<er) S.explored[z*GRID+x]=1; } }
 // --- bảng nút điều khiển cố định (bấm chuột / chạm được) khi bay hoặc lặn
-function ctlPad(){ let el=document.getElementById('ctlpad'); const mode=S&&!paused?(S.mode==='air'&&plane?'air':S.mode==='sub'?'sub':null):null;
+function ctlPad(){ let el=document.getElementById('ctlpad'); const busy=!S||paused||S.cabin||modal.classList.contains('show')||(fishing&&fishing.st!=='idle'); const mode=busy?null:S.mode==='air'&&plane?'air':S.mode==='sub'?'sub':S.mode==='sea'?'sea':S.mode==='land'?'land':null;
   if(!mode){ if(el) el.style.display='none'; return; }
-  if(!el){ el=document.createElement('div'); el.id='ctlpad'; el.style.cssText='position:fixed;left:14px;bottom:70px;z-index:6;display:grid;grid-template-columns:repeat(3,70px);gap:6px;user-select:none;font:11px sans-serif;touch-action:none';
+  if(!el){ el=document.createElement('div'); el.id='ctlpad'; el.style.cssText='position:fixed;left:14px;bottom:100px;z-index:6;display:grid;grid-template-columns:repeat(3,70px);gap:6px;user-select:none;font:11px sans-serif;touch-action:none';
     document.body.appendChild(el);
     el.addEventListener('pointerdown',e=>{ const k=e.target.closest('[data-k]'); if(!k) return; e.preventDefault(); e.stopPropagation(); const key=k.dataset.k;
       if(key==='tap'){ const t=k.dataset.t; window.dispatchEvent(new KeyboardEvent('keydown',{key:t})); window.dispatchEvent(new KeyboardEvent('keyup',{key:t})); return; }
       keys[key]=true; k.style.background='rgba(255,210,122,.6)'; try{ k.setPointerCapture(e.pointerId); }catch(_){} });
     const up=e=>{ const k=e.target.closest('[data-k]'); if(!k||k.dataset.k==='tap') return; keys[k.dataset.k]=false; k.style.background=''; };
     el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up); el.addEventListener('lostpointercapture',up); }
-  const back=mode==='air'?(plane.kind==='dragon'?'r':plane.kind==='sword'?'n':plane.kind==='cloud'?'l':'y'):'u', sig=mode+back;
+  const back=mode==='air'?(plane.kind==='dragon'?'r':plane.kind==='sword'?'n':plane.kind==='cloud'?'l':'y'):mode==='sub'?'u':'', sig=mode+back;
   if(el.dataset.sig!==sig){ el.dataset.sig=sig;
     const B=(k,ic,lb,extra='')=>`<div data-k="${k}" ${extra} style="background:rgba(10,30,50,.75);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:10px;height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;text-align:center;line-height:1.15"><b style="font-size:18px;pointer-events:none">${ic}</b><span style="pointer-events:none">${lb}</span></div>`, E='<div></div>';
-    el.innerHTML=mode==='air'
+    el.innerHTML=mode==='sea'
+      ?[B('tap','⏹','Space · Dừng','data-t=" "'),B('tap','⬆','W · Tăng ga','data-t="w"'),B('tap','⚓','E · Cập bến','data-t="e"'),B('a','⬅','A · Rẽ trái'),B('tap','⬇','S · Giảm ga','data-t="s"'),B('d','➡','D · Rẽ phải')].join('')
+      :mode==='land'
+      ?[B('tap','✋','E · Nói chuyện','data-t="e"'),B('w','⬆','W · Đi tới'),B('shift','🏃','Shift · Chạy'),B('a','⬅','A · Trái'),B('s','⬇','S · Lùi'),B('d','➡','D · Phải')].join('')
+      :mode==='air'
       ?[B('tap','🪶','Space · Đáp','data-t=" "'),B('w','⬆','W · Bay lên'),B('shift','⚡','Shift · Lao nhanh'),B('a','⬅','A · Rẽ trái'),B('s','⬇','S · Hạ thấp'),B('d','➡','D · Rẽ phải'),E,B('tap','⛵',back.toUpperCase()+' · Về tàu',`data-t="${back}"`),E].join('')
       :[B(' ','⏫','Space · Nổi'),B('w','⬆','W · Tiến'),B('shift','⏬','Shift · Lặn'),B('a','⬅','A · Rẽ trái'),B('s','⬇','S · Lùi'),B('d','➡','D · Rẽ phải'),B('tap','🔍','F · Quét','data-t="f"'),B('tap','✋','E · Nhặt/vào','data-t="e"'),B('tap','🚢','U · Nổi lên','data-t="u"')].join(''); }
   el.style.display='grid'; }
@@ -3020,7 +3049,7 @@ function buildIsland(isl,idx){
   makeResidents(vis,L,rng,isl);
   makeCreatures(vis,L,rng);
   addRays(vis,g,rng,L.R,ISL[isl.k].ray);
-  for(let i=0;i<6;i++){ const b=makeBird(); b.userData.rad=50+rng()*60; b.userData.hgt=55+rng()*40; b.userData.sp=0.25+rng()*0.25; b.userData.off=rng()*TAU; g.add(b); vis.birds.push(b); }
+  for(let i=0;i<2;i++){ const b=makeBird(); b.userData.rad=50+rng()*60; b.userData.hgt=55+rng()*40; b.userData.sp=0.25+rng()*0.25; b.userData.off=rng()*TAU; g.add(b); vis.birds.push(b); }
   vis.interact.push({kind:'boat',x:L.pierEnd.x,z:L.pierEnd.z,r:6});
   { const BI={market:'🛒',restaurant:'🍲',tavern:'🍺',depot:'⛽',shipyard:'🔨',guild:'📜',decor:'🛋️',fishshop:'🎣',snack:'🍢',souvenir:'🎁',house:'🏠'}; for(const b of vis.buildings) vis.pois.push({x:b.x,z:b.z,icon:BI[b.type]||'🏠',name:b.type==='house'?'Nhà dân':(SIGN_TXT[b.type]||'').replace(/^\S+\s/,'')});
     vis.pois.push({x:L.pierEnd.x,z:L.pierEnd.z,icon:'⚓',name:'Bến cảng'},{x:L.plaza.x,z:L.plaza.z,icon:'⛲',name:'Quảng trường'}); const gd=dv(L.pa); vis.pois.push({x:gd.x*L.R*0.76,z:gd.z*L.R*0.76,icon:'🚪',name:'Cổng đảo'}); }
@@ -4688,7 +4717,7 @@ function startGame(state,isNew){
   if(S.mode==='land'){ const v=visOf(S.land.k), pd=dv(v.L.pa); S.land.x=v.isl.x+pd.x*(v.L.R+30); S.land.z=v.isl.z+pd.z*(v.L.R+30); }
   if(S.mode==='land') camera.position.set(S.land.x,20,S.land.z+20); else camera.position.set(S.ship.x,40,S.ship.z+80);
   if(isNew){ const fl=islandOf('flora'), L=visOf('flora').L, side=dv(L.pa+Math.PI/2), off=5+2.6;
-    S.ship.x=fl.x+L.pierEnd.x+side.x*off; S.ship.z=fl.z+L.pierEnd.z+side.z*off; S.ship.h=L.pa+0.6; refreshShip(); save();
+    S.ship.x=fl.x+L.pierEnd.x+side.x*off; S.ship.z=fl.z+L.pierEnd.z+side.z*off; S.ship.h=L.pa+Math.PI-0.45; refreshShip(); save();
     setTimeout(()=>toast(`⛵ Chào thuyền trưởng <b>${S.player.name}</b>! Bạn đang neo cạnh cầu tàu đảo <b>Vạn Diệp</b>. Nhấn <kbd>E</kbd> để lên đảo.`,8000),600);
     setTimeout(()=>toast('🧭 Mẹo: hàng của mỗi đảo bán ở đảo khác có giá khác. Ghé quán rượu nghe tin đồn!',7000),5000); }
 }
@@ -4736,10 +4765,10 @@ function confirmNewGame(sv,onYes,onNo){ const ship=TIERS[sv.tier]?TIERS[sv.tier]
       closeModal(); if(a==='yes') onYes(); else if(onNo) onNo(); },'confirm',true); }
 function stopPreview(){ if(pv){ pv.stop(); pv=null; } }
 function intro(){
-  $('loading').style.display='none'; if(!CLOUD.pagehide){ CLOUD.pagehide=1; addEventListener('pagehide',()=>{ if(CLOUD.user&&S) cloudPush(true); }); }
+  { const L=$('loading'); if(L.style.display!=='none'){ L.style.opacity=0; setTimeout(()=>L.style.display='none',600); } } if(!CLOUD.pagehide){ CLOUD.pagehide=1; addEventListener('pagehide',()=>{ if(CLOUD.user&&S) cloudPush(true); }); }
   if(!CLOUD.init){ CLOUD.init=1; initCloud().then(()=>{ if(CLOUD.ok&&!S&&modalKind==='intro') intro(); }); }
   try{ if(sessionStorage.getItem('htvd_new')){ sessionStorage.removeItem('htvd_new'); creator(); return; } }catch(e){} const sv=loadSave();
-  openModal(`<div style="text-align:center"><div style="font-size:56px">🌊⛵🏝️</div><h2 style="font-size:32px">Hải Trình Vạn Đảo</h2>
+  openModal(`<div style="text-align:center"><div class="introart">${document.getElementById('vdart').outerHTML.replace('id="vdart"','').replace('id="vs"','id="vs2"').replace('url(#vs)','url(#vs2)').replace('id="vw"','id="vw2"').replace('url(#vw)','url(#vw2)')}</div><h2 style="font-size:32px;margin-top:4px">Hải Trình Vạn Đảo</h2>
     <h3>Trên chiếc thuyền nan đơn sơ, bạn ra khơi tìm những hòn đảo kỳ lạ giữa đại dương mù sương.</h3>
     <p class="sm" style="max-width:580px;margin:0 auto">Không có bến nhà — mỗi hòn đảo đều có thị trấn riêng với chợ, nhà hàng, quán rượu, kho dầu và xưởng thuyền.
     Lên đảo, đi bộ gặp cư dân, mua bán đặc sản, thuê thủy thủ, nâng cấp thuyền và sống sót qua bão tố, hải tặc giữa biển khơi.</p>

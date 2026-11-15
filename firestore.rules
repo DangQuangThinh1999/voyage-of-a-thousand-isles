@@ -46,6 +46,32 @@ service cloud.firestore {
         && !('server' in get(userDoc()).data);
     }
 
+    // Hồ sơ công khai (tên, ID, thuyền, thành tựu): ai đăng nhập cũng xem được, chỉ chủ sửa
+    match /profiles/{uid} {
+      allow read: if signedIn();
+      allow write: if signedIn() && me() == uid;
+    }
+
+    // Tin nhắn riêng & nhóm: chỉ thành viên đọc/ghi; tối đa 50 người/nhóm
+    match /chats/{cid} {
+      allow read: if signedIn() && (resource == null || me() in resource.data.members);
+      allow create: if signedIn() && me() in request.resource.data.members && request.resource.data.members.size() <= 50;
+      allow update: if signedIn() && me() in resource.data.members && request.resource.data.members.size() <= 50;
+      match /msgs/{mid} {
+        allow read: if signedIn() && me() in get(/databases/$(db)/documents/chats/$(cid)).data.members;
+        allow create: if signedIn() && request.resource.data.from == me()
+          && request.resource.data.text is string && request.resource.data.text.size() <= 300
+          && me() in get(/databases/$(db)/documents/chats/$(cid)).data.members;
+      }
+    }
+
+    // Kênh thế giới: ai đăng nhập cũng đọc & gửi được (không sửa/xóa tin người khác)
+    match /world/{room}/msgs/{mid} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.from == me()
+        && request.resource.data.text is string && request.resource.data.text.size() <= 300;
+    }
+
     // Đơn nạp: chỉ máy chủ ghi; người chơi xem được đơn của mình
     match /orders/{id} {
       allow read: if signedIn() && resource.data.uid == me();

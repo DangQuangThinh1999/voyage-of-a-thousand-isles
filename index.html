@@ -3759,6 +3759,19 @@ async function addMember(cid,uid,name){ const {fs,db}=CLOUD.fb, me=CLOUD.user.ui
 function openNotes(){ if(needLogin()) return; SOC.seen=SOC.notes.length; socBar();
   openModal(`<h2>🔔 Thông báo</h2><div style="max-height:56vh;overflow:auto">${SOC.notes.length?SOC.notes.map((n,i)=>`<div data-a="note" data-i="${i}" style="padding:9px 10px;border-radius:10px;margin:4px 0;background:rgba(255,255,255,.06);cursor:pointer">${n.ic} ${n.text}<div class="sm" style="opacity:.6">${new Date(n.at).toLocaleTimeString('vi-VN')}</div></div>`).join(''):'<p class="sm">Chưa có thông báo nào.</p>'}</div><div class="foot"><button data-a="close">Đóng</button></div>`,(a,ds)=>{
     if(a==='close'){ closeModal(); return; } if(a==='note'){ const n=SOC.notes[+ds.i]; closeModal(); n&&n.act&&n.act(); } },'notes'); }
+// --- đổi biệt danh: 5 xu (= 500đ)
+const RENAME_XU=5;
+async function renameNick(){ if(needLogin()) return; const {fs,db}=CLOUD.fb, uid=CLOUD.user.uid;
+  if(CLOUD.xu<RENAME_XU){ eventModal('Đổi biệt danh','✏️',`Đổi biệt danh cần <b>${RENAME_XU} xu</b> (= ${RENAME_XU*100}đ). Bạn đang có ${CLOUD.xu} xu.`,[['buy','🪙 Nạp xu'],['no','Để sau']],a=>{ closeModal(); if(a==='buy') openXuShop(); }); return; }
+  const nn=(prompt(`Biệt danh mới (2–20 ký tự, không trùng). Phí ${RENAME_XU} xu = ${RENAME_XU*100}đ:`,myName())||'').trim(); if(!nn||nn===myName()) return;
+  if(nn.length<2||nn.length>20){ toast('Biệt danh phải dài 2–20 ký tự'); return; } if(cleanText(nn).bad){ toast('⚠️ Biệt danh có từ không phù hợp — hãy chọn tên khác'); return; }
+  const nk=nameKey(nn); try{ await fs.runTransaction(db,async t=>{ const uRef=fs.doc(db,'users',uid), nRef=fs.doc(db,'names',nk); const [ud,nd]=[await t.get(uRef),await t.get(nRef)]; const u=ud.exists()?ud.data():{};
+      if(nd.exists()&&nd.data().uid!==uid) throw new Error(`Biệt danh "${nn}" đã có người dùng`); if((u.xu||0)<RENAME_XU) throw new Error('Không đủ xu');
+      const oRef=u.nameKey&&u.nameKey!==nk?fs.doc(db,'names',u.nameKey):null; const od=oRef?await t.get(oRef):null;
+      if(!nd.exists()) t.set(nRef,{uid,name:nn,server:u.server||S&&S.server||''}); if(od&&od.exists()&&od.data().uid===uid) t.delete(oRef);
+      t.update(uRef,{name:nn,nameKey:nk,xu:(u.xu||0)-RENAME_XU}); });
+    CLOUD.myName=nn; if(S){ S.player.name=nn; refreshShip(); save(); } SOC.lastProf=0; writeProfile(); banner(`✏️ Đã đổi biệt danh thành "${nn}" (−${RENAME_XU} xu)`); }
+  catch(e){ toast('❌ '+(e.message||e.code),6000); } }
 // --- hồ sơ & thành tựu
 async function openProfile(uid){ if(needLogin()) return; const {fs,db}=CLOUD.fb, mine=uid===CLOUD.user.uid; if(mine){ SOC.lastProf=0; await writeProfile(); }
   let p=null; try{ const d=await fs.getDoc(fs.doc(db,'profiles',uid)); p=d.exists()?d.data():null; }catch(e){ toast('❌ '+(e.code||e.message)); return; }
@@ -3768,7 +3781,7 @@ async function openProfile(uid){ if(needLogin()) return; const {fs,db}=CLOUD.fb,
     ☯️ Cảnh giới <b>${REALMS[p.realm||0]}</b> · 🙏 Công đức ${p.merit||0} · 🏝️ ${p.islands} đảo · 🐉 ${p.pets} thú cưỡi · 🚤 ${p.subs} tàu ngầm</p>
     <h3>🏆 Thành tựu ${got.size}/${ACH.length}</h3><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;max-height:36vh;overflow:auto">
     ${ACH.map(a=>`<div title="${esc(a[3])}" style="padding:7px;border-radius:10px;background:${got.has(a[0])?'rgba(255,210,122,.18)':'rgba(255,255,255,.04)'};opacity:${got.has(a[0])?1:0.4}"><b>${a[1]} ${a[2]}</b><div class="sm">${a[3]}</div></div>`).join('')}</div>
-    <div class="foot">${mine?'':`<button class="pri" data-a="dm">💬 Nhắn tin</button>`}<button data-a="close">Đóng</button></div>`,a=>{ if(a==='close') closeModal(); if(a==='dm') startDM(uid,p.name); if(a==='copyid'){ try{ navigator.clipboard.writeText(p.pid||pidOf(uid)); }catch(e){} toast('📋 Đã sao chép ID '+(p.pid||pidOf(uid))+' — gửi cho bạn bè để họ tìm bạn'); } },'profile'); }
+    <div class="foot">${mine?`<button data-a="rename">✏️ Đổi biệt danh (${RENAME_XU} xu = ${RENAME_XU*100}đ)</button>`:`<button class="pri" data-a="dm">💬 Nhắn tin</button>`}<button data-a="close">Đóng</button></div>`,a=>{ if(a==='close') closeModal(); if(a==='rename'){ closeModal(); renameNick(); } if(a==='dm') startDM(uid,p.name); if(a==='copyid'){ try{ navigator.clipboard.writeText(p.pid||pidOf(uid)); }catch(e){} toast('📋 Đã sao chép ID '+(p.pid||pidOf(uid))+' — gửi cho bạn bè để họ tìm bạn'); } },'profile'); }
 function openMenu(){
   openModal(`<h2>⚙️ Menu</h2><h3>Tiến trình tự lưu vào trình duyệt mỗi 20 giây, khi lên/xuống đảo và khi đóng trang.</h3>
   <p class="sm">🖥️ Card đồ họa trình duyệt đang dùng: <b>${GPU_NAME||'không rõ'}</b>${GPU_WEAK?' — <span style="color:#ffb060">card onboard, dễ lag!</span>':''}</p>

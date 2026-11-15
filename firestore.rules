@@ -18,9 +18,14 @@ service cloud.firestore {
       allow update: if signedIn() && me() == uid && (
         (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['xu'])
           && request.resource.data.xu >= 0 && request.resource.data.xu < resource.data.xu)
-        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','nameKey','server'])
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','nameKey','server','xu'])
           && (!('server' in resource.data) || request.resource.data.server == resource.data.server)
-          && getAfter(/databases/$(db)/documents/names/$(request.resource.data.nameKey)).data.uid == me())
+          && getAfter(/databases/$(db)/documents/names/$(request.resource.data.nameKey)).data.uid == me()
+          && request.resource.data.get('xu', 0) >= 0
+          && request.resource.data.get('xu', 0) <= resource.data.get('xu', 0)
+          // đổi biệt danh khi đã có tên: phải trừ ít nhất 5 xu (= 500đ)
+          && (!('nameKey' in resource.data) || resource.data.nameKey == request.resource.data.nameKey
+              || request.resource.data.get('xu', 0) <= resource.data.get('xu', 0) - 5))
       );
     }
 

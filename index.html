@@ -218,6 +218,15 @@ const ITEMS={
   ruou_kl:{name:'Rượu mật khổng lồ',icon:'🍯',base:60,origin:'titan'},
   r_titan:{name:'Trái tim Titan',icon:'❤️‍🔥',base:720,origin:'titan',rare:true},
   f_khonglo:{name:'Cá mú khổng lồ',icon:'🐟',base:95,origin:'sea',perish:true,fish:true},
+  ngoc_trai_xanh:{name:'Ngọc trai xanh',icon:'🔵',base:130,origin:'abyss'},
+  tao_sang:{name:'Tảo phát sáng',icon:'🌿',base:40,origin:'abyss'},
+  vo_oc_co:{name:'Vỏ ốc cổ',icon:'🐚',base:75,origin:'abyss'},
+  r_abyss:{name:'Ngọc Thủy Thần',icon:'🔱',base:750,origin:'abyss',rare:true},
+  rang_mega:{name:'Răng Megalodon',icon:'🦷',base:800,origin:'sea'},
+  vay_ca_co:{name:'Vảy cá tiền sử',icon:'🛡️',base:160,origin:'sea'},
+  mai_ammo:{name:'Vỏ ốc cúc Ammonite',icon:'🐚',base:180,origin:'sea'},
+  la_ban_co:{name:'Mảnh la bàn cổ',icon:'🧭',base:260,origin:'sea'},
+  vang_nguyen:{name:'Vàng bị nguyền',icon:'💰',base:300,origin:'sea'},
   thao:{name:'Thảo dược',icon:'🍃',base:22,origin:'ship'},
   thuoc_bo:{name:'Thuốc bổ tinh thần',icon:'🧪',base:90,origin:'ship'},
   cao_rong:{name:'Cao rong biển',icon:'🫙',base:115,origin:'ship'},
@@ -238,10 +247,10 @@ const ITEMS={
   f_bang:{name:'Cá băng trong suốt',icon:'🧊',base:52,origin:'sea',perish:true,fish:true},
   f_lua:{name:'Cá lửa than',icon:'🔥',base:58,origin:'sea',perish:true,fish:true},
   f_kiem:{name:'Cá kiếm thép',icon:'🗡️',base:70,origin:'sea',perish:true,fish:true},
-  f_sua:{name:'Sứa phát quang',icon:'🪼',base:64,origin:'sea',perish:true,fish:true},
+  f_sua:{name:'Sứa phát quang',icon:'🦑',base:64,origin:'sea',perish:true,fish:true},
 };
-const SCARCE_AT={flora:'desert',desert:'coral',coral:'flora',ice:'volcano',volcano:'ice',fort:'lab',lab:'fort',dino:'ice',sky:'desert',titan:'lab'};
-const SCARCE2={flora:'ice',desert:'volcano',coral:'volcano',ice:'desert',volcano:'coral',fort:'coral',lab:'flora',dino:'lab',sky:'volcano',titan:'sky'};
+const SCARCE_AT={flora:'desert',desert:'coral',coral:'flora',ice:'volcano',volcano:'ice',fort:'lab',lab:'fort',dino:'ice',sky:'desert',titan:'lab',abyss:'volcano'};
+const SCARCE2={flora:'ice',desert:'volcano',coral:'volcano',ice:'desert',volcano:'coral',fort:'coral',lab:'flora',dino:'lab',sky:'volcano',titan:'sky',abyss:'desert'};
 const ISLAND_TYPES=[
   ['resident','🏘️','Đảo dân cư','Có thị trấn, cửa hàng, cư dân và nhiệm vụ.'],
   ['agri','🌾','Đảo nông nghiệp','Trồng trọt, chăn nuôi, nguồn thực phẩm dồi dào.'],
@@ -256,10 +265,11 @@ const ISLAND_TYPES=[
   ['research','🔬','Đảo nghiên cứu','Viện nghiên cứu, đài thiên văn, nhà kính, bể mẫu vật. Nhiệm vụ khảo sát và thu mẫu vật.'],
   ['sky','☁️','Đảo trên trời','Lơ lửng giữa mây, chỉ lên được bằng thác nước ngược hoặc bay lên. Nơi rồng làm tổ — đặc biệt nhất đại dương.'],
   ['giant','🗿','Đảo người khổng lồ','Người khổng lồ Titan đi tuần, tàn tích cổ, lò rèn huyền thoại rèn vũ khí mạnh nhất.'],
+  ['abyss','🌀','Đảo dưới đáy biển','Thành phố trong mái vòm kính dưới đáy đại dương. Chỉ đến được bằng tàu ngầm.'],
 ];
-const ISL_TYPE={flora:'agri',desert:'trade',coral:'resident',ice:'resort',volcano:'mining',fort:'military',lab:'research',dino:'monster',sky:'sky',titan:'giant'};
-const LOCAL_FISH={flora:'f_ro',desert:'f_mu',coral:'f_he',ice:'f_bang',volcano:'f_lua',fort:'f_kiem',lab:'f_sua',dino:'f_co',sky:'f_may',titan:'f_khonglo'};
-const MINERAL_IDS=['tt','muoi','luu','than','hoatinh','bang','thep','thuocsung','tinhthe','ngoc','oc','hoa_thach','xuong_kl','pha_le_troi','da_titan','sat_cu'];
+const ISL_TYPE={flora:'agri',desert:'trade',coral:'resident',ice:'resort',volcano:'mining',fort:'military',lab:'research',dino:'monster',sky:'sky',titan:'giant',abyss:'abyss'};
+const LOCAL_FISH={flora:'f_ro',desert:'f_mu',coral:'f_he',ice:'f_bang',volcano:'f_lua',fort:'f_kiem',lab:'f_sua',dino:'f_co',sky:'f_may',titan:'f_khonglo',abyss:'f_den'};
+const MINERAL_IDS=['tt','muoi','luu','than','hoatinh','bang','thep','thuocsung','tinhthe','ngoc','oc','hoa_thach','xuong_kl','pha_le_troi','da_titan','sat_cu','ngoc_trai_xanh','vo_oc_co'];
 const ECO={
   flora:{climate:'Nhiệt đới ẩm, mưa nhiều',terrain:'Đồi thoải phủ rừng lá khổng lồ',plants:['Dương xỉ khổng lồ','Nấm dạ quang','Cây đại thụ','Hoa mật'],animals:['Kiến','Bọ hung','Ong','Bọ rùa','Bướm khổng lồ'],sea:['Cá rô lá xanh','Rùa nước lợ'],minerals:['Nhựa cây','Đất mùn'],nodes:['nhua','nam','soi','mat']},
   desert:{climate:'Khô nóng, đêm lạnh',terrain:'Đồi cát, núi đá đỏ phân tầng, ốc đảo',plants:['Xương rồng','Chà là','Cỏ bụi khô'],animals:['Cáo sa mạc','Tắc kè','Bọ hung lăn đất','Thằn lằn'],sea:['Cá mù hang cát','Cua cát'],minerals:['Muối khoáng','Thủy tinh cát','Đồng cổ'],nodes:['muoi','tt','ot']},
@@ -267,6 +277,7 @@ const ECO={
   ice:{climate:'Băng giá quanh năm, có cực quang',terrain:'Sông băng, hồ đóng băng, rừng thông tuyết',plants:['Thông tuyết','Rêu băng'],animals:['Cánh cụt','Hải cẩu','Cú tuyết','Thỏ tuyết'],sea:['Cá băng trong suốt','Cá hồi băng'],minerals:['Băng tinh thể'],nodes:['bang','long','tra']},
   volcano:{climate:'Nóng, khói bụi núi lửa',terrain:'Núi lửa đang hoạt động, dòng dung nham, cột bazan',plants:['Cỏ cháy','Hoa than'],animals:['Kỳ nhông','Chuột chũi','Dơi','Dê núi'],sea:['Cá lửa than','Tôm suối nóng'],minerals:['Đá hỏa tinh','Lưu huỳnh','Than hồng','Bazan'],nodes:['luu','than','hoatinh']},
   fort:{climate:'Ôn đới, gió mạnh',terrain:'Cao nguyên đá, vách biển dựng đứng',plants:['Cỏ ô-liu','Cây bụi gai'],animals:['Chó quân khuyển','Đại bàng','Bồ câu đưa thư'],sea:['Cá kiếm thép','Cá thu đại dương'],minerals:['Quặng sắt','Diêm tiêu'],nodes:['thep','thuocsung','vaibat']},
+  abyss:{climate:'Dưới đáy biển 75m, tối và lạnh',terrain:'Mái vòm kính, đồng tảo, rạn san hô sâu',plants:['Tảo phát sáng','San hô sâu','Rong biển khổng lồ'],animals:['Rái cá','Cá ngựa','Tôm hùm','Kỳ lân biển'],sea:['Ốc cúc Ammonite','Cá đèn','Mực khổng lồ'],minerals:['Ngọc trai xanh','Vỏ ốc cổ'],nodes:['ngoc_trai_xanh','tao_sang','vo_oc_co']},
   titan:{climate:'Ôn đới, gió núi mạnh',terrain:'Cao nguyên đá, núi cao, tàn tích khổng lồ',plants:['Thông cổ thụ','Rêu đá','Cỏ cao nguyên'],animals:['Người khổng lồ Titan','Bò tót','Dê núi','Đại bàng'],sea:['Cá mú khổng lồ','Cua đá'],minerals:['Đá titan','Quặng sắt cự nhân'],nodes:['da_titan','sat_cu','long_cu']},
   sky:{climate:'Mát lạnh, nhiều gió, mây bao quanh',terrain:'Đồng cỏ hoa trên mây, đồi pha lê, hồ mây',plants:['Hoa mây','Cỏ ba lá ánh bạc','Cây sương'],animals:['Hạc trắng','Kỳ lân','Cừu mây','Rồng thần','Chim lửa'],sea:['Cá mây trong suốt'],minerals:['Pha lê trời','Mây ngọc'],nodes:['pha_le_troi','may_ngoc','tra_may']},
   dino:{climate:'Nhiệt đới nóng ẩm, núi lửa ngủ yên',terrain:'Rừng dương xỉ khổng lồ, thung lũng, đầm lầy',plants:['Dương xỉ khổng lồ','Tuế cổ','Cây bách cổ','Nấm rừng'],animals:['T-Rex','Ba Sừng','Velociraptor','Stegosaurus','Khủng long cổ dài','Mỏ Vịt'],sea:['Cá vây tay cổ đại','Bò sát biển'],minerals:['Hóa thạch','Hổ phách','Xương cổ'],nodes:['hoa_thach','trung_kl','duong_xi','xuong_kl']},
@@ -365,8 +376,13 @@ const SPECIES={
   rhino:{n:'Tê Giác',ic:'🦏',kit:'boar',h:[0.55,0.6],s:[0.05,0.1],l:[0.45,0.55],c2:'dark',job:'war'},
   goat:{n:'Dê Núi',ic:'🐐',kit:'fox',h:[0.08,0.1],s:[0.1,0.2],l:[0.75,0.88],c2:'dark',job:'nav'},
   gorilla:{n:'Khỉ Đột',ic:'🦍',kit:'bear',h:[0.0,0.05],s:[0.0,0.08],l:[0.15,0.22],c2:0x6a6a6a,job:'cook'},
+  otter:{n:'Rái Cá',ic:'🦦',kit:'fox',h:[0.07,0.1],s:[0.3,0.45],l:[0.3,0.42],c2:'light',job:'cook'},
+  seahorse:{n:'Cá Ngựa',ic:'🐴',kit:'eagle',h:[0.08,0.14],s:[0.6,0.8],l:[0.55,0.65],c2:'light',job:'nav'},
+  mantaf:{n:'Cá Đuối',ic:'🐟',kit:'seal',h:[0.58,0.62],s:[0.2,0.35],l:[0.3,0.42],c2:0xf0f0f0,job:'carp'},
+  lobster:{n:'Tôm Hùm',ic:'🦞',kit:'crab',h:[0.0,0.03],s:[0.7,0.85],l:[0.4,0.5],c2:'light',job:'war'},
+  narwhal:{n:'Kỳ Lân Biển',ic:'🐋',kit:'seal',h:[0.55,0.6],s:[0.1,0.2],l:[0.6,0.72],c2:0xffffff,job:'doc'},
 };
-const HATS={flora:['leaf','flower','beanie','straw','none','bandana'],desert:['turban','fez','straw','bandana','none','cap'],coral:['shell','cap','bandana','flower','none','straw'],ice:['beanie','cap','none','bandana','straw'],volcano:['bandana','cap','turban','none','fez'],fort:['helmet','beret','cap'],lab:['goggles','none','beanie','goggles'],dino:['straw','bandana','none','leaf'],sky:['flower','none','leaf','straw'],titan:['helmet','bandana','none','beanie']};
+const HATS={flora:['leaf','flower','beanie','straw','none','bandana'],desert:['turban','fez','straw','bandana','none','cap'],coral:['shell','cap','bandana','flower','none','straw'],ice:['beanie','cap','none','bandana','straw'],volcano:['bandana','cap','turban','none','fez'],fort:['helmet','beret','cap'],lab:['goggles','none','beanie','goggles'],dino:['straw','bandana','none','leaf'],sky:['flower','none','leaf','straw'],titan:['helmet','bandana','none','beanie'],abyss:['goggles','flower','none','shell']};
 const OUTFITS=['apron','vest','scarf','sash','cape','robe','none','none'];
 const PROPS=['basket','staff','rod','scroll','broom','lantern','flower','none','none','none'];
 const OUT_COLS=[0xc0392b,0x2e86de,0x27ae60,0x8e44ad,0xf39c12,0x16a085,0xd35400,0xe84393,0x34495e,0xf1c40f,0x6c5ce7,0x00b894,0xfab1a0,0x81ecec,0xffffff,0x2d3436];
@@ -468,7 +484,17 @@ const ISL={
       depot:{sp:'yak',name:'Bò Yak Thồ Hàng',title:'Trạm tiếp tế',hat:'none',outfit:'apron',prop:'none',work:'carry',line:'Ta cõng được cả thùng dầu to bằng cái nhà.'},
       tavern:{sp:'goat',name:'Dê Núi Kể Chuyện',title:'Quán rượu mật',hat:'bandana',outfit:'scarf',prop:'mug',work:'wipe',line:'Người khổng lồ hiền lắm, chỉ cần đừng giẫm vào chân họ.'},
       shipyard:{sp:'ox',name:'Bò Tót Thợ Đóng Tàu',title:'Xưởng tàu đá',hat:'helmet',outfit:'apron',prop:'hammer',work:'hammer',line:'Gỗ ở đây là thân cây cổ thụ của Titan trồng đấy!'}},
-    lines:['Kìa, người khổng lồ đang đi tuần quanh làng!','Lò rèn Titan rèn ra Rìu Titan huyền thoại.','Trái tim Titan chỉ tìm thấy ở điểm khai thác phát sáng.','Bước chân người khổng lồ làm rung cả mặt đất.','Ngày xưa Titan dựng vòng đá ở phía bắc đảo.']}
+    lines:['Kìa, người khổng lồ đang đi tuần quanh làng!','Lò rèn Titan rèn ra Rìu Titan huyền thoại.','Trái tim Titan chỉ tìm thấy ở điểm khai thác phát sáng.','Bước chân người khổng lồ làm rung cả mặt đất.','Ngày xưa Titan dựng vòng đá ở phía bắc đảo.']},
+  abyss:{name:'Thủy Cung',sub:'Thành phố dưới đáy biển — chỉ đến bằng tàu ngầm',color:'#3ab0c8',R:110,top:10,na:1.0,material:'ngoc_trai_xanh',ray:0x7fe0ff,alt:-75,
+    price:{fuel:1.4,food:1.8,water:0.6,repair:1.2},species:['otter','seahorse','mantaf','lobster','narwhal'],
+    dish:'Lẩu rong biển & sò điệp nướng',
+    titles:{guild:'Hội đồng Thủy Cung',decor:'Xưởng đồ san hô',fishshop:'Trạm sinh vật biển sâu',snack:'Quầy bánh rong',souvenir:'Quầy ngọc trai'},
+    svc:{market:{sp:'narwhal',name:'Kỳ Lân Biển Giữ Ngọc',title:'Chủ chợ đáy biển',hat:'none',outfit:'robe',prop:'scroll',work:'arrange',line:'Ngọc trai xanh, tảo phát sáng — trên cạn không đâu có!'},
+      restaurant:{sp:'otter',name:'Rái Cá Đầu Bếp',title:'Bếp Thủy Cung',hat:'chef',outfit:'apron',prop:'ladle',work:'stir',line:'Lẩu rong biển nóng hổi dưới đáy đại dương, lạ chưa!'},
+      depot:{sp:'lobster',name:'Tôm Hùm Thợ Máy',title:'Trạm sạc tàu ngầm',hat:'goggles',outfit:'apron',prop:'none',work:'carry',line:'Pin tàu ngầm sạc đầy trong một nốt nhạc!'},
+      tavern:{sp:'seahorse',name:'Cá Ngựa Hát Rong',title:'Quán trà bong bóng',hat:'flower',outfit:'scarf',prop:'mug',work:'wipe',line:'Nghe nói Megalodon vẫn còn sống ở vùng Tam giác quỷ…'},
+      shipyard:{sp:'mantaf',name:'Cá Đuối Kỹ Sư',title:'Xưởng tàu ngầm',hat:'goggles',outfit:'apron',prop:'hammer',work:'hammer',line:'Vỏ tàu ngầm bị cá mập cắn à? Để ta vá cho.'}},
+    lines:['Mái vòm kính này đã đứng vững cả nghìn năm.','Đừng ra ngoài vòm mà không có tàu ngầm nhé!','Ốc cúc Ammonite là hóa thạch sống đấy.','Xác tàu đắm dưới đáy biển còn nhiều rương lắm.','Tam giác quỷ nuốt cả tàu lẫn la bàn.']}
 };
 const EXTRA_SVC={
   guild:{title:'Hội trưởng Hội Thương Nhân',hat:'cap',outfit:'sash',prop:'scroll',work:'arrange',line:'Đảo nào cũng cần người giúp — làm nhiệm vụ thì có vàng và danh tiếng!'},
@@ -477,8 +503,8 @@ const EXTRA_SVC={
   snack:{title:'Chủ quầy ăn vặt',hat:'chef',outfit:'apron',prop:'ladle',work:'stir',line:'Ăn một miếng, vui cả ngày!'},
   souvenir:{title:'Chủ quầy lưu niệm',hat:null,outfit:'scarf',prop:'flower',work:'arrange',line:'Mua chút kỷ niệm của đảo mang lên thuyền đi!'},
 };
-const SNACKS={flora:[['🍯','Bánh mật ong',8,4],['🍢','Nấm xiên nướng',12,6]],desert:[['🌴','Chà là sấy',9,4],['🍵','Trà bạc hà',12,6]],coral:[['🦑','Mực nướng',12,6],['🥥','Nước dừa tươi',8,4]],ice:[['🍦','Kem tuyết',9,4],['🥛','Sữa nóng mật ong',12,6]],volcano:[['🍠','Khoai nướng than',8,4],['🥚','Trứng luộc suối nóng',12,6]],fort:[['🥫','Lương khô sĩ quan',8,4],['☕','Cà phê doanh trại',10,5]],lab:[['🧃','Nước tảo xoắn',9,4],['🍪','Bánh năng lượng',12,6]],dino:[['🍖','Xiên thịt khủng long',14,7],['🥥','Nước dừa rừng',8,4]],sky:[['🍡','Kẹo bông mây',9,4],['🍵','Trà sương',12,6]],titan:[['🍖','Xiên thịt bò tót',14,7],['🍯','Rượu mật',10,5]]};
-const COLLECT={flora:{title:'Hái nấm vàng quý',desc:'Tìm và hái 5 cây nấm vàng phát sáng mọc rải rác quanh đảo.',col:0xffd36b},desert:{title:'Nhặt mảnh gốm cổ',desc:'Nhặt 5 mảnh gốm cổ lấp lánh nằm vùi trong cát quanh đảo.',col:0x3ad0c0},coral:{title:'Vỏ ốc phát sáng',desc:'Tìm 5 vỏ ốc phát sáng bị sóng đánh dạt quanh đảo.',col:0xff9fc0},ice:{title:'Bông tuyết pha lê',desc:'Tìm 5 bông tuyết pha lê không bao giờ tan quanh đảo.',col:0x9fe8ff},volcano:{title:'Đá núi lửa nóng',desc:'Nhặt 5 viên đá núi lửa còn hồng rực quanh đảo.',col:0xff7a30},fort:{title:'Thu hồi đạn pháo lạc',desc:'Nhặt 5 quả đạn pháo diễn tập rơi vãi quanh đảo.',col:0xe0e0e0},lab:{title:'Thu thập mẫu đất',desc:'Lấy 5 mẫu đất phát sáng ở các điểm đánh dấu quanh đảo.',col:0x7fe0d0},dino:{title:'Nhặt trứng khủng long',desc:'Nhặt 5 quả trứng khủng long bị bỏ rơi quanh đảo (cẩn thận khủng long mẹ!).',col:0xf0e0c0},sky:{title:'Nhặt sao rơi',desc:'Nhặt 5 mảnh sao rơi phát sáng trên đồng cỏ mây.',col:0xfff0a0},titan:{title:'Nhặt mảnh giáp Titan',desc:'Nhặt 5 mảnh giáp cổ của người khổng lồ rơi rải rác quanh đảo.',col:0xc8b48a}};
+const SNACKS={flora:[['🍯','Bánh mật ong',8,4],['🍢','Nấm xiên nướng',12,6]],desert:[['🌴','Chà là sấy',9,4],['🍵','Trà bạc hà',12,6]],coral:[['🦑','Mực nướng',12,6],['🥥','Nước dừa tươi',8,4]],ice:[['🍦','Kem tuyết',9,4],['🥛','Sữa nóng mật ong',12,6]],volcano:[['🍠','Khoai nướng than',8,4],['🥚','Trứng luộc suối nóng',12,6]],fort:[['🥫','Lương khô sĩ quan',8,4],['☕','Cà phê doanh trại',10,5]],lab:[['🧃','Nước tảo xoắn',9,4],['🍪','Bánh năng lượng',12,6]],dino:[['🍖','Xiên thịt khủng long',14,7],['🥥','Nước dừa rừng',8,4]],sky:[['🍡','Kẹo bông mây',9,4],['🍵','Trà sương',12,6]],titan:[['🍖','Xiên thịt bò tót',14,7],['🍯','Rượu mật',10,5]],abyss:[['🍙','Bánh rong biển',8,4],['🧋','Trà bong bóng',11,5]]};
+const COLLECT={flora:{title:'Hái nấm vàng quý',desc:'Tìm và hái 5 cây nấm vàng phát sáng mọc rải rác quanh đảo.',col:0xffd36b},desert:{title:'Nhặt mảnh gốm cổ',desc:'Nhặt 5 mảnh gốm cổ lấp lánh nằm vùi trong cát quanh đảo.',col:0x3ad0c0},coral:{title:'Vỏ ốc phát sáng',desc:'Tìm 5 vỏ ốc phát sáng bị sóng đánh dạt quanh đảo.',col:0xff9fc0},ice:{title:'Bông tuyết pha lê',desc:'Tìm 5 bông tuyết pha lê không bao giờ tan quanh đảo.',col:0x9fe8ff},volcano:{title:'Đá núi lửa nóng',desc:'Nhặt 5 viên đá núi lửa còn hồng rực quanh đảo.',col:0xff7a30},fort:{title:'Thu hồi đạn pháo lạc',desc:'Nhặt 5 quả đạn pháo diễn tập rơi vãi quanh đảo.',col:0xe0e0e0},lab:{title:'Thu thập mẫu đất',desc:'Lấy 5 mẫu đất phát sáng ở các điểm đánh dấu quanh đảo.',col:0x7fe0d0},dino:{title:'Nhặt trứng khủng long',desc:'Nhặt 5 quả trứng khủng long bị bỏ rơi quanh đảo (cẩn thận khủng long mẹ!).',col:0xf0e0c0},sky:{title:'Nhặt sao rơi',desc:'Nhặt 5 mảnh sao rơi phát sáng trên đồng cỏ mây.',col:0xfff0a0},titan:{title:'Nhặt mảnh giáp Titan',desc:'Nhặt 5 mảnh giáp cổ của người khổng lồ rơi rải rác quanh đảo.',col:0xc8b48a},abyss:{title:'Nhặt ngọc trai',desc:'Nhặt 5 viên ngọc trai trong vỏ sò khổng lồ quanh Thủy Cung.',col:0x9fe8ff}};
 const DECOR={
   rug:{name:'Thảm hoa văn',icon:'🟥',room:'living',price:120,comfort:1},
   plant:{name:'Chậu cây xanh',icon:'🪴',room:'living',price:60,comfort:1},
@@ -501,6 +527,7 @@ const DECOR={
   sv_dino:{name:'Mô hình xương khủng long',icon:'🦕',room:'living',price:180,comfort:2,from:'dino'},
   sv_sky:{name:'Chuông gió mây',icon:'🎐',room:'bedroom',price:200,comfort:3,from:'sky'},
   sv_titan:{name:'Tượng Titan mini',icon:'🗿',room:'living',price:220,comfort:3,from:'titan'},
+  sv_abyss:{name:'Quả cầu thủy tinh biển',icon:'🔮',room:'bedroom',price:230,comfort:3,from:'abyss'},
 };
 const ROOM_UP={
   bed2:{name:'Giường nệm êm cho cả thuyền',icon:'🛏️',price:350,desc:'Ngủ ngon hơn: tinh thần +2 mỗi ngày.'},
@@ -522,8 +549,9 @@ const SKINS={
   jungle:{name:'Thuyền Rừng Già',hull:0x4a3a22,deck:0x8a7a52,sail:0xc8d8a0,trim:0x6a9a3a},
   cloud:{name:'Thuyền Mây Trời',hull:0xf4f8ff,deck:0xd8e8f4,sail:0xffffff,trim:0x9fd0ff},
   titan:{name:'Thuyền Đá Titan',hull:0x5a5248,deck:0x8a7a62,sail:0xc8b48a,trim:0xd4af37},
+  abyss:{name:'Thuyền Thủy Cung',hull:0x1a5a7a,deck:0x7ab8c8,sail:0xbff4ff,trim:0x2ab0c8},
 };
-const ISL_SKIN={flora:{id:'lotus',gold:150,items:{soi:8}},desert:{id:'stone',gold:200,items:{tt:5,tuong:2}},coral:{id:'coral',gold:250,items:{oc:6,ngoc:2}},ice:{id:'ice',gold:280,items:{bang:5,long:3}},volcano:{id:'lava',gold:300,items:{hoatinh:3,than:5}},fort:{id:'navy',gold:320,items:{thep:4,vaibat:3}},lab:{id:'science',gold:320,items:{tinhthe:2,banve:2}},dino:{id:'jungle',gold:350,items:{hoa_thach:3,xuong_kl:3}},sky:{id:'cloud',gold:500,items:{may_ngoc:3,pha_le_troi:2}},titan:{id:'titan',gold:550,items:{da_titan:3,sat_cu:3}}};
+const ISL_SKIN={flora:{id:'lotus',gold:150,items:{soi:8}},desert:{id:'stone',gold:200,items:{tt:5,tuong:2}},coral:{id:'coral',gold:250,items:{oc:6,ngoc:2}},ice:{id:'ice',gold:280,items:{bang:5,long:3}},volcano:{id:'lava',gold:300,items:{hoatinh:3,than:5}},fort:{id:'navy',gold:320,items:{thep:4,vaibat:3}},lab:{id:'science',gold:320,items:{tinhthe:2,banve:2}},dino:{id:'jungle',gold:350,items:{hoa_thach:3,xuong_kl:3}},sky:{id:'cloud',gold:500,items:{may_ngoc:3,pha_le_troi:2}},titan:{id:'titan',gold:550,items:{da_titan:3,sat_cu:3}},abyss:{id:'abyss',gold:600,items:{ngoc_trai_xanh:3,vo_oc_co:3}}};
 const GENERIC_LINES=['Hôm nay trời đẹp ghê!','Bạn là thuyền trưởng mới hả? Trông lạ quá.','Đi biển nhớ mang đủ nước nha.','Chợ hôm nay đông lắm đó.','Tôi đang đi mua đồ ăn tối.','Bạn có thấy con mèo của tôi không? À, tôi không nuôi mèo.','Thuyền của bạn đẹp đó!'];
 const RUMORS=[
   'Dân Sa Cốt giữa sa mạc thèm đồ của rừng lắm — mật với nấm mang tới đó bán được giá gấp đôi.',
@@ -609,19 +637,19 @@ sky.renderOrder=-1; scene.add(sky);
 const OCEAN_SIZE=1500, OCEAN_SEG=200, OCEAN_STEP=OCEAN_SIZE/OCEAN_SEG;
 const oceanGeo=new THREE.PlaneGeometry(OCEAN_SIZE,OCEAN_SIZE,OCEAN_SEG,OCEAN_SEG); oceanGeo.rotateX(-Math.PI/2);
 const oceanBase=Float32Array.from(oceanGeo.attributes.position.array);
-const oceanU={uTime:{value:0},uIsl:{value:[0,1,2,3,4,5,6,7,8,9].map(()=>new THREE.Vector3(1e5,1e5,1))},uDeep:{value:new THREE.Color(0x0d6496)},uShallow:{value:new THREE.Color(0x46e0d2)},uAmp:{value:1.3}};
+const oceanU={uTime:{value:0},uIsl:{value:[0,1,2,3,4,5,6,7,8,9,10].map(()=>new THREE.Vector3(1e5,1e5,1))},uDeep:{value:new THREE.Color(0x0d6496)},uShallow:{value:new THREE.Color(0x46e0d2)},uAmp:{value:1.3}};
 const oceanMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.22,metalness:0.05,transparent:true,opacity:1});
 oceanMat.onBeforeCompile=sh=>{ Object.assign(sh.uniforms,oceanU);
-  sh.vertexShader=`varying vec3 vWP; varying float vH; uniform float uTime; uniform float uAmp; uniform vec3 uIsl[10];
-    float wDamp(vec2 p){ float d=1e5; for(int i=0;i<10;i++) d=min(d,length(p-uIsl[i].xy)-uIsl[i].z); return mix(0.3,1.0,smoothstep(0.0,140.0,d)); }
+  sh.vertexShader=`varying vec3 vWP; varying float vH; uniform float uTime; uniform float uAmp; uniform vec3 uIsl[11];
+    float wDamp(vec2 p){ float d=1e5; for(int i=0;i<11;i++) d=min(d,length(p-uIsl[i].xy)-uIsl[i].z); return mix(0.3,1.0,smoothstep(0.0,140.0,d)); }
     float wH(vec2 p){ float t=uTime; return uAmp*wDamp(p)*(sin(p.x*0.045+t*0.9)*0.9+sin(p.y*0.06+t*1.2)*0.6+sin((p.x+p.y)*0.11+t*1.7)*0.25+sin(p.x*0.21-p.y*0.17+t*2.3)*0.12); }
     `+sh.vertexShader
     .replace('#include <beginnormal_vertex>',`vec2 wp2=(modelMatrix*vec4(position,1.0)).xz; float ee=0.7; float hx=wH(wp2+vec2(ee,0.0))-wH(wp2-vec2(ee,0.0)); float hz=wH(wp2+vec2(0.0,ee))-wH(wp2-vec2(0.0,ee)); vec3 objectNormal=normalize(vec3(-hx/(2.0*ee),1.0,-hz/(2.0*ee)));`)
     .replace('#include <begin_vertex>','vec3 transformed=vec3(position); vH=wH(wp2); transformed.y+=vH;')
     .replace('#include <project_vertex>','#include <project_vertex>\n vWP=(modelMatrix*vec4(transformed,1.0)).xyz;');
-  sh.fragmentShader='varying vec3 vWP; varying float vH; uniform float uAmp; uniform float uTime; uniform vec3 uIsl[10]; uniform vec3 uDeep; uniform vec3 uShallow;\n'+sh.fragmentShader
+  sh.fragmentShader='varying vec3 vWP; varying float vH; uniform float uAmp; uniform float uTime; uniform vec3 uIsl[11]; uniform vec3 uDeep; uniform vec3 uShallow;\n'+sh.fragmentShader
    .replace('vec4 diffuseColor = vec4( diffuse, opacity );',`
-    float dmin=1e5; for(int i=0;i<10;i++){ float d=length(vWP.xz-uIsl[i].xy)-uIsl[i].z; dmin=min(dmin,d); }
+    float dmin=1e5; for(int i=0;i<11;i++){ float d=length(vWP.xz-uIsl[i].xy)-uIsl[i].z; dmin=min(dmin,d); }
     dmin+=sin(vWP.x*0.07+vWP.z*0.05)*4.0+sin(vWP.z*0.11-vWP.x*0.03)*2.5;
     float shl=1.0-smoothstep(-6.0,90.0,dmin);
     vec3 wcol=mix(uDeep,uShallow,shl*shl);
@@ -753,7 +781,7 @@ function prepModel(scene){
 // màu riêng cho nhà ở từng đảo (nhân với texture gốc)
 const VTINT={flora:{MI_Plaster:0xf2ffe6,MI_RoundTiles:0x8fd8a0},desert:{MI_Plaster:0xf6d6a8,MI_RoundTiles:0xe8a070,MI_UnevenBrick:0xf0c890},coral:{MI_Plaster:0xfff2f4,MI_RoundTiles:0xffa8b8},
   ice:{MI_Plaster:0xf0f8ff,MI_RoundTiles:0xe8f4ff},volcano:{MI_Plaster:0x9a8a88,MI_RoundTiles:0x7a3a34,MI_UnevenBrick:0x8a7a78},fort:{MI_Plaster:0xd8dcd8,MI_RoundTiles:0x7a8a9a,MI_UnevenBrick:0xc8ccc8},
-  lab:{MI_Plaster:0xffffff,MI_RoundTiles:0x8fe8d8},dino:{MI_Plaster:0xe8d8b0,MI_RoundTiles:0x7aa04a},sky:{MI_Plaster:0xffffff,MI_RoundTiles:0x9fd0ff},titan:{MI_Plaster:0xd8c8a8,MI_RoundTiles:0x8a6a4a,MI_UnevenBrick:0xb8a888}};
+  lab:{MI_Plaster:0xffffff,MI_RoundTiles:0x8fe8d8},dino:{MI_Plaster:0xe8d8b0,MI_RoundTiles:0x7aa04a},sky:{MI_Plaster:0xffffff,MI_RoundTiles:0x9fd0ff},titan:{MI_Plaster:0xd8c8a8,MI_RoundTiles:0x8a6a4a,MI_UnevenBrick:0xb8a888},abyss:{MI_Plaster:0xe8fbff,MI_RoundTiles:0x4ac0d0}};
 const _tintC=new Map();
 function tintMat(m,k){ const key=m.uuid+'|'+k; let t=_tintC.get(key); if(t) return t;
   if(m.name==='MI_WindowGlass'){ t=m.clone(); t.emissive=new THREE.Color(0xffb860); t.emissiveIntensity=1.3; nightMat(t); }
@@ -819,6 +847,7 @@ const VEG_CFG={
     {names:ROCKS,sr:[0.8,1.5],n:30,circ:1.1}],
   lab:[{names:T5('CommonTree'),sr:[1.0,1.4],n:30,circ:0.7},{names:['Flower_3_Group','Flower_4_Group'],sr:[0.5,0.75],n:200,noCast:true},{names:['Plant_1_Big'],sr:[0.7,1.0],n:40},
     {names:['Clover_1','Clover_2'],sr:[0.6,0.9],n:200,noCast:true},{names:['Grass_Common_Short'],sr:[0.55,0.85],n:600,noCast:true},{names:['Bush_Common_Flowers'],sr:[0.7,1.1],n:60}],
+  abyss:[{names:['Plant_7_Big','Plant_1_Big'],sr:[1.2,2.0],n:60,col:[0x7fe0c0,0xbff0a0,0x9fd8ff]},{names:['Fern_1'],sr:[0.5,0.9],n:40,col:[0x8ae0c8]},{names:['Flower_3_Group','Flower_4_Group'],sr:[0.6,0.9],n:160,noCast:true},{names:['Clover_1','Clover_2'],sr:[0.6,0.9],n:200,noCast:true},{names:ROCKS,sr:[0.8,1.6],n:30,circ:1.1,col:[0xc8e8f0]}],
   titan:[{names:T5('Pine'),sr:[1.6,2.4],n:45,circ:0.8},{names:T5('CommonTree'),sr:[1.4,2.0],n:20,circ:0.8},{names:ROCKS,sr:[1.2,2.8],n:60,circ:1.6},{names:['Grass_Wispy_Tall','Grass_Common_Short'],sr:[0.55,0.85],n:520,noCast:true},{names:['Bush_Common'],sr:[0.8,1.2],n:40}],
   sky:[{names:T5('CommonTree'),sr:[1.0,1.5],n:28,circ:0.7},{names:['Flower_3_Group','Flower_4_Group'],sr:[0.55,0.8],n:260,noCast:true},{names:['Clover_1','Clover_2'],sr:[0.6,0.9],n:240,noCast:true},
     {names:['Grass_Common_Short'],sr:[0.5,0.8],n:480,noCast:true},{names:['Bush_Common_Flowers'],sr:[0.7,1.0],n:50},{names:ROCKS,sr:[0.6,1.2],n:14,circ:1,col:[0xffffff]}],
@@ -858,7 +887,7 @@ function decoVeg(vis,L,g,rng){
     add(scatter(vis,L,g,rng,VEG.flower,[1.4,2.4],{n:200,col:[0xff7f9e,0xc58cff,0xffd36b,0x7fe0d0],maxR:0.98,noCast:true}));
     for(let i=0;i<9;i++){ const p=spot(rng,L,vis,2,0.97,0.75); if(p) palm(g,vis,p.x,p.y-0.3,p.z,9+rng()*5,rng); }
   }
-  const rc={flora:[0x7a8a80,0x8a9a8a,0x6a7a70],desert:[0xc8673e,0xb85a36,0xd9814f],coral:[0x6a8a9a,0x5a7a8a,0x8aa8b8],ice:[0xdfe8f0,0xc8d8e8,0xb0c4d4],volcano:[0x2a2628,0x3a3436,0x1e1a1c],fort:[0x8a8e8a,0x7a7e7a,0x9a9e9a],lab:[0xc8d0d4,0xb8c4c8,0xd8e0e4],dino:[0x6a6a5a,0x7a7a68,0x5a5a4a],sky:[0xe8eef4,0xdde6ee,0xf4f8ff],titan:[0x8a8478,0x7a7468,0x9a9488]}[k];
+  const rc={flora:[0x7a8a80,0x8a9a8a,0x6a7a70],desert:[0xc8673e,0xb85a36,0xd9814f],coral:[0x6a8a9a,0x5a7a8a,0x8aa8b8],ice:[0xdfe8f0,0xc8d8e8,0xb0c4d4],volcano:[0x2a2628,0x3a3436,0x1e1a1c],fort:[0x8a8e8a,0x7a7e7a,0x9a9e9a],lab:[0xc8d0d4,0xb8c4c8,0xd8e0e4],dino:[0x6a6a5a,0x7a7a68,0x5a5a4a],sky:[0xe8eef4,0xdde6ee,0xf4f8ff],titan:[0x8a8478,0x7a7468,0x9a9488],abyss:[0x8ab8c0,0x7aa8b0,0x9ac8d0]}[k];
   const im=new THREE.InstancedMesh(VEG.rock,matC(0xffffff),28); let n=0;
   for(let t=0;t<90&&n<28;t++){ const a=rng()*TAU, rr=L.R*(0.93+rng()*0.14), x=Math.cos(a)*rr, z=Math.sin(a)*rr, u=x*Math.sin(L.pa)-z*Math.cos(L.pa), v=x*Math.cos(L.pa)+z*Math.sin(L.pa);
     if((u>0&&Math.abs(v)<14)||Math.hypot(x-L.yard.x,z-L.yard.z)<18) continue;
@@ -927,6 +956,7 @@ const CHAR_POOL={
   volcano:['Goblin_Male','Goblin_Female','Worker_Male','Worker_Female','Viking_Male','Ninja_Male'],
   fort:['Soldier_Male','Soldier_Female','BlueSoldier_Male','BlueSoldier_Female','Knight_Male','Knight_Golden_Male','Knight_Golden_Female'],
   lab:['Doctor_Male_Young','Doctor_Female_Young','Doctor_Male_Old','Doctor_Female_Old','Wizard','Suit_Male'],
+  abyss:['Pirate_Female','Casual2_Female','Kimono_Female','Elf','Wizard','Ninja_Female'],
   titan:['Viking_Male','Viking_Female','Worker_Male','Cowboy_Male','Knight_Male','Worker_Female'],
   sky:['Elf','Wizard','Witch','Kimono_Female','Kimono_Male','Knight_Golden_Female'],
   dino:['Cowboy_Male','Cowboy_Female','Worker_Male','Ninja_Sand','Casual_Bald','Viking_Female'],
@@ -1222,6 +1252,7 @@ const TPAL={
   desert:{sand:0xe9c890,wet:0xc9a46a,a:0xe6b46a,b:0xd99a4f,c:0xf0c27e,high:0xc99a68,plaza:0xdcc59c},
   ice:{sand:0xe8f0f6,wet:0xb8c8d8,a:0xf4f8fc,b:0xe2eef8,c:0xd0e4f4,high:0xffffff,plaza:0xc8d8e8},
   fort:{sand:0xd8ccb0,wet:0xa89c80,a:0x6a8a4a,b:0x7a9a5a,c:0x5a7a42,high:0x8a8a82,plaza:0x9a9a98},
+  abyss:{sand:0xd8c8a0,wet:0xa8b8a0,a:0x5ab89a,b:0x7ad0b0,c:0x3a9a8a,high:0xc8e8e0,plaza:0xe0f0f0},
   titan:{sand:0xd8c8a0,wet:0xa89878,a:0x6a8a4a,b:0x7a9a52,c:0x5a7a42,high:0x9a9488,plaza:0xb8a888},
   sky:{sand:0xf4f0e0,wet:0xd8e8f0,a:0x8fe0a0,b:0xa8f0b8,c:0x7fd090,high:0xffffff,plaza:0xf0f4ff},
   dino:{sand:0xd8c890,wet:0xa89a70,a:0x4a8a3a,b:0x5a9a42,c:0x3a7a32,high:0x7a6a5a,plaza:0xb8a888},
@@ -1261,6 +1292,7 @@ const STYLE={
   coral:{floor:0xe8d8c8,wall:0xf3d9cf,trim:0xd9a8b0,sign:'#2a6a8a',caps:[0xffb3c6,0xffffff,0xbfe9ff,0xffe1b8,0xd6c3ff]},
   ice:{floor:0xc8dcec,wall:0xe8f4ff,trim:0x8ab8d8,sign:'#2a5a8a',caps:[0xbfe8ff,0xffffff,0xd6e8ff]},
   fort:{floor:0x7a7a78,wall:0x9a9e9a,trim:0x5a5e5a,sign:'#3a4a2a',caps:[0x5a6a4a,0x7a3a2a,0x4a4a52]},
+  abyss:{floor:0xd8f0f4,wall:0xe8fbff,trim:0x2ab0c8,sign:'#1a6a8a',caps:[0x7fe0ff,0x9ff0d8,0xffd0f0]},
   titan:{floor:0x8a7a62,wall:0xb8a888,trim:0x5a4a32,sign:'#5a4a2a',caps:[0x7a6a52,0x9a8a6a,0x6a5a42]},
   sky:{floor:0xf4f8ff,wall:0xffffff,trim:0xd4af37,sign:'#4a6ab0',caps:[0x9fd8ff,0xffe0f0,0xd8c8ff]},
   dino:{floor:0x8a7a5a,wall:0xb89a70,trim:0x5a4a2a,sign:'#3a5a2a',caps:[0x6a8a3a,0x8a6a3a,0x5a7a3a]},
@@ -1344,6 +1376,7 @@ function buildDecor(id){ const g=new THREE.Group();
     case 'sv_coral': { mk(GEO.cyl,M(0x7a5a3a),0.3,0.04,0.3,0,1.2,0,g); for(let i=0;i<5;i++){ const a=i/5*TAU; mk(GEO.cyl,M(0xcccccc),0.005,0.4,0.005,Math.cos(a)*0.25,1.0,Math.sin(a)*0.25,g); mk(GEO.cone,M(0xffd9e0),0.06,0.18,0.06,Math.cos(a)*0.25,0.75,Math.sin(a)*0.25,g); } } break;
     case 'sv_ice': { mk(GEO.cyl,M(0x6a4a3a),0.25,0.15,0.25,0,0.08,0,g); mk(GEO.sph,M(0xdff4ff,{transparent:true,opacity:0.35,roughness:0.05}),0.28,0.28,0.28,0,0.42,0,g); mk(GEO.cone,M(0x2f7a5a),0.1,0.25,0.1,0,0.38,0,g); } break;
     case 'sv_fort': { mk(GEO.box,M(0x3a4a5a),1.2,0.3,0.35,0,0.15,0,g); mk(GEO.cyl,M(0x5a3a24),0.02,0.9,0.02,0,0.75,0,g); mk(GEO.box,M(0xe8e8e0),0.6,0.45,0.02,0,0.8,0.04,g); mk(GEO.box,M(0x6a4a2a),1.4,0.08,0.5,0,0.02,0,g); } break;
+    case 'sv_abyss': { mk(GEO.cyl,M(0x5a4a3a),0.25,0.1,0.25,0,0.05,0,g); mk(GEO.sph,M(0x9fe8ff,{transparent:true,opacity:0.45,roughness:0.05}),0.3,0.3,0.3,0,0.4,0,g); mk(GEO.ico,M(0xff8fb8,{emissive:0xff4080,emissiveIntensity:.6}),0.08,0.12,0.08,0,0.35,0,g); } break;
     case 'sv_titan': { const st=M(0x9a9080); mk(GEO.box,M(0x5a4a3a),0.6,0.1,0.6,0,0.05,0,g); mk(GEO.box,st,0.3,0.45,0.2,0,0.35,0,g); mk(GEO.sph,st,0.13,0.13,0.13,0,0.68,0,g); for(const sx of [-1,1]) mk(GEO.box,st,0.08,0.35,0.08,sx*0.2,0.38,0,g); mk(GEO.cone,M(0xd4af37,{metalness:.6}),0.05,0.4,0.05,0.25,0.55,0.05,g); } break;
     case 'sv_sky': { mk(GEO.cyl,M(0xd4af37,{metalness:.6}),0.02,0.5,0.02,0,-0.25,0,g); mk(GEO.hemi,M(0xbfe8ff,{transparent:true,opacity:0.7}),0.25,0.25,0.25,0,-0.5,0,g); for(let i=0;i<5;i++) mk(GEO.cyl,M(0xffffff,{emissive:0x9fd0ff,emissiveIntensity:.6}),0.02,0.35,0.02,Math.cos(i*1.26)*0.15,-0.75,Math.sin(i*1.26)*0.15,g); } break;
     case 'sv_dino': { const bm=M(0xf3ead8); mk(GEO.box,M(0x5a3a22),1.6,0.08,0.5,0,0.04,0,g); for(let i=0;i<6;i++) mk(GEO.sphL,bm,0.09,0.09,0.09,-0.5+i*0.18,0.55+Math.sin(i*0.6)*0.08,0,g); for(let i=0;i<3;i++){ const rb=mk(GEO.tor,bm,0.18,0.18,0.18,-0.25+i*0.18,0.45,0,g); rb.rotation.y=Math.PI/2; } mk(GEO.sph,bm,0.16,0.12,0.12,0.62,0.62,0,g); for(const x of [-0.3,0.3]) mk(GEO.cyl,bm,0.02,0.45,0.02,x,0.25,0,g); } break;
@@ -1500,7 +1533,7 @@ function makeGate(vis,L,g){
   for(const sx of [-1,1]){ const q=toI(sx*5.6,0); vis.circ.push({x:q.x,z:q.z,r:1.4}); }
   vis.gateLights=[{...toI(0,0),y:gy+9}];
   // đèn soi đường từ cổng vào quảng trường
-  const from=L.R*0.74, to=L.R*0.36+10, side=dv(L.pa+Math.PI/2), lampC={flora:0x9fffe0,desert:0xffd27a,coral:0xbff0ff,ice:0xbfe8ff,volcano:0xff9a40,fort:0xfff0c0,lab:0x7fe0ff,dino:0xffd27a,sky:0xbfe8ff,titan:0xffc070}[L.k];
+  const from=L.R*0.74, to=L.R*0.36+10, side=dv(L.pa+Math.PI/2), lampC={flora:0x9fffe0,desert:0xffd27a,coral:0xbff0ff,ice:0xbfe8ff,volcano:0xff9a40,fort:0xfff0c0,lab:0x7fe0ff,dino:0xffd27a,sky:0xbfe8ff,titan:0xffc070,abyss:0x7fe0ff}[L.k];
   let n=0; for(let dd=from;dd>to;dd-=9){ for(const sx of [-1,1]){ const x=pd.x*dd+side.x*sx*3.4, z=pd.z*dd+side.z*sx*3.4, y=terrainH(L,x,z);
       mk(GEO.cyl,M(0x2a2a2e,{metalness:.5}),0.09,2.6,0.09,x,y+1.3,z,g); mk(GEO.sphL,nightMat(glow(lampC,2.2)),0.28,0.34,0.28,x,y+2.75,z,g); mk(GEO.cyl,M(0x2a2a2e),0.22,0.08,0.22,x,y+3.05,z,g);
       mk(GEO.cyl,nightMat(glow(lampC,1.1)),0.25,0.06,0.25,x-side.x*sx*1.6,y+0.08,z-side.z*sx*1.6,g); }
@@ -1676,12 +1709,14 @@ function openArmory(){ S.weap=S.weap||{}; S.ammo=S.ammo||{};
   let h=`<h2>🛠️ Xưởng quân giới Thiết Bảo</h2><h3>Kỹ sư: "Cung, súng, đạn dược và cả máy bay — lắp ráp ngay tại xưởng này!" · Bạn có ${S.gold}💰</h3><table><tr><th>Món</th><th>Công dụng</th><th>Giá</th><th></th></tr>`;
   for(const id in WEAPONS){ const w=WEAPONS[id]; h+=row(w.icon,w.name,w.desc+` Sát thương ${w.dmg}, tầm ${w.range}m.`,w.price,S.weap[id]?(S.equip===id?'<span class="sm">✓ đang cầm</span>':`<button data-a="eq_${id}">Cầm lên</button>`):`<button class="pri" data-a="bw_${id}" ${S.gold<w.price?'disabled':''}>Mua</button>`); }
   for(const id in AMMO){ const a=AMMO[id]; h+=row(a.icon,a.name,`Đang có: <b>${S.ammo[id]||0}</b>`,a.price,`<button data-a="ba_${id}" ${S.gold<a.price?'disabled':''}>Mua</button>`); }
+  h+=row('🚤','Tàu ngầm thám hiểm','Lặn xuống đáy biển (phím <kbd>U</kbd>): rạn san hô, xác tàu đắm, sinh vật tuyệt chủng, thành phố Thủy Cung. Có ngư lôi.',3500,S.sub?'<span class="sm">✓ đã sở hữu</span>':`<button class="pri" data-a="bsub" ${S.gold<3500?'disabled':''}>Mua</button>`);
   h+=row('✈️','Thủy phi cơ cánh kép','Cất cánh từ tàu hoặc từ đảo (phím <kbd>Y</kbd>), bay khám phá, phát hiện đảo từ xa, săn rồng trên không. Tốn dầu.',PLANE_PRICE,S.plane?'<span class="sm">✓ đã sở hữu</span>':`<button class="pri" data-a="bp" ${S.gold<PLANE_PRICE?'disabled':''}>Mua</button>`);
   h+=`</table><div class="choices"><button class="pri" data-a="forge">⚒️ Lò rèn & quân đội — rèn kiếm, giáp, nâng cấp chiến binh, thuê biệt đội (sức chiến đấu: ${armyPower()})</button></div><p class="sm">🎯 Cách săn: nhấn <kbd>Q</kbd> để cầm vũ khí, rồi <b>nhấp chuột</b> vào chim hoặc rồng đang bay. Lông chim, vảy rồng, nanh rồng bán được nhiều tiền.</p><div class="foot"><span class="sm">Esc để đóng</span><button data-a="close">Đóng</button></div>`;
   openModal(h,a=>{ if(a==='close'){ closeModal(); save(); return; } if(a==='forge'){ openForge(false); return; }
     if(a.startsWith('bw_')){ const id=a.slice(3), w=WEAPONS[id]; if(S.gold<w.price) return; S.gold-=w.price; S.weap[id]=1; S.ammo[w.ammo]=(S.ammo[w.ammo]||0)+AMMO[w.ammo].n; setEquip(id); banner(`${w.icon} Đã mua ${w.name}! (kèm ${AMMO[w.ammo].n} ${w.ammo==='arrow'?'mũi tên':'viên đạn'})`); }
     if(a.startsWith('eq_')) setEquip(a.slice(3));
     if(a.startsWith('ba_')){ const id=a.slice(3), am=AMMO[id]; if(S.gold<am.price) return; S.gold-=am.price; S.ammo[id]=(S.ammo[id]||0)+am.n; toast(`${am.icon} +${am.n}`); }
+    if(a==='bsub'){ if(S.gold<3500) return; S.gold-=3500; S.sub=true; S.subHull=100; banner('🚤 Đã mua tàu ngầm! Ra biển và nhấn U để lặn'); }
     if(a==='bp'){ if(S.gold<PLANE_PRICE) return; S.gold-=PLANE_PRICE; S.plane=true; refreshShip(); banner('✈️ Thủy phi cơ đã được cẩu lên tàu của bạn! Nhấn Y để cất cánh'); }
     save(); openArmory(); },'armory'); }
 // --- trang bị vũ khí (phím Q)
@@ -1721,22 +1756,24 @@ function skyUpdate(dt){ if(!world) return; const c=skyCenter(); shotCd=Math.max(
       if(o.decided) o.fire=999; o.fire-=dt; if(o.fire<=0){ o.fire=5+Math.random()*5; const hd=u.head.getWorldPosition(_v3b), dir=_v3.set(Math.sin(g.rotation.y),-0.3,Math.cos(g.rotation.y)).normalize();
         breathFX(o.dtype,hd.clone(),dir.clone(),26);
         if(S.mode==='sea'&&Math.hypot(S.ship.x-x,S.ship.z-z)<90){ S.hull=Math.max(1,S.hull-3); toast('🔥 Rồng phun lửa xuống tàu! −3 thân thuyền'); } } } } }
-function groundYAt(x,z,y){ for(const v of islandVis){ const dx=x-v.isl.x, dz=z-v.isl.z, dd=Math.hypot(dx,dz), yo=v.L.yOff||0; if(yo){ if(dd<skyRim(v)&&(y===undefined||y>yo-35)) return yo+Math.max(0,terrainH(v.L,dx,dz)); continue; } if(dd<v.L.R+40) return Math.max(0,terrainH(v.L,dx,dz)); } return 0; }
+function groundYAt(x,z,y){ for(const v of islandVis){ const dx=x-v.isl.x, dz=z-v.isl.z, dd=Math.hypot(dx,dz), yo=v.L.yOff||0; if(yo<0) continue; if(yo){ if(dd<skyRim(v)&&(y===undefined||y>yo-35)) return yo+Math.max(0,terrainH(v.L,dx,dz)); continue; } if(dd<v.L.R+40) return Math.max(0,terrainH(v.L,dx,dz)); } return 0; }
 // --- bắn
 const _ray=new THREE.Raycaster();
-function shooterPos(){ if(!playerCh) return new THREE.Vector3(); const p=playerCh.root.getWorldPosition(new THREE.Vector3()); p.y+=S.mode==='land'?2.4:1.2; return p; }
-const BREATH={dmg:2,range:150,speed:200,cd:0.5,ammo:null};
-function shoot(cx,cy){ const riding=S.mode==='air'&&plane&&plane.kind==='dragon', w=riding&&!S.equip?BREATH:WEAPONS[S.equip]; if(!w||shotCd>0) return; S.ammo=S.ammo||{}; if(w.ammo&&(S.ammo[w.ammo]||0)<=0){ toast(`Hết ${w.ammo==='arrow'?'mũi tên':'đạn'}! Mua thêm ở Xưởng quân giới đảo Thiết Bảo`); return; }
+function shooterPos(){ if(S.mode==='sub'&&SUB) return new THREE.Vector3(SUB.x-Math.sin(SUB.yaw)*5,SUB.y-1,SUB.z-Math.cos(SUB.yaw)*5); if(!playerCh) return new THREE.Vector3(); const p=playerCh.root.getWorldPosition(new THREE.Vector3()); p.y+=S.mode==='land'?2.4:1.2; return p; }
+const BREATH={dmg:2,range:150,speed:200,cd:0.5,ammo:null}, TORPEDO={dmg:4,range:150,speed:55,cd:1.2,ammo:null};
+function shoot(cx,cy){ const riding=S.mode==='air'&&plane&&plane.kind==='dragon', w=S.mode==='sub'?TORPEDO:riding&&!S.equip?BREATH:WEAPONS[S.equip]; if(!w||shotCd>0) return; S.ammo=S.ammo||{}; if(w.ammo&&(S.ammo[w.ammo]||0)<=0){ toast(`Hết ${w.ammo==='arrow'?'mũi tên':'đạn'}! Mua thêm ở Xưởng quân giới đảo Thiết Bảo`); return; }
   if(w.ammo) S.ammo[w.ammo]--; shotCd=w.cd; const breath=w===BREATH; _ray.setFromCamera(new THREE.Vector2(cx/innerWidth*2-1,-(cy/innerHeight)*2+1),camera);
   const o=_ray.ray.origin, d=_ray.ray.direction; let best=null, bt=1e9; const tmp=new THREE.Vector3();
-  for(const s2 of [...SKY,...activeDinos()]){ if(s2.dead) continue; const c=s2.dino?dinoCenter(s2):s2.g.position, t=tmp.copy(c).sub(o).dot(d); if(t<0||t>w.range+60) continue; if(tmp.copy(o).addScaledVector(d,t).distanceTo(c)<s2.r&&t<bt){ bt=t; best=s2; } }
+  for(const s2 of (S.mode==='sub'?SEA_CR:[...SKY,...activeDinos()])){ if(s2.dead) continue; const c=s2.dino?dinoCenter(s2):s2.g.position, t=tmp.copy(c).sub(o).dot(d); if(t<0||t>w.range+60) continue; if(tmp.copy(o).addScaledVector(d,t).distanceTo(c)<s2.r&&t<bt){ bt=t; best=s2; } }
+  if(!best&&S.mode==='sub'&&SUB){ const sp=new THREE.Vector3(SUB.x,SUB.y,SUB.z), f=new THREE.Vector3(-Math.sin(SUB.yaw),0,-Math.cos(SUB.yaw)); let bd=1e9; for(const s2 of SEA_CR){ if(s2.dead) continue; const v=s2.g.position.clone().sub(sp), dd=v.length(); if(dd<w.range&&v.normalize().dot(f)>0.75&&dd<bd){ bd=dd; best=s2; } } }
   const from=shooterPos(), to=best?(best.dino?dinoCenter(best):best.g.position.clone()):o.clone().addScaledVector(d,w.range); const dir=to.clone().sub(from), dist=dir.length(); dir.normalize();
-  let pj; if(breath){ pj=new THREE.Group(); mk(GEO.sph,M(0xffa020,{emissive:0xff5a00,emissiveIntensity:3}),1.1,1.1,1.1,0,0,0,pj); mk(GEO.cyl,M(0xff8a20),0.01,0.01,0.01,0,0,0,pj); { const bt=(ridingPet||{}).kind==='ptero'?'forest':((ridingPet||{}).type||'fire'), bc=(DRAGON_TYPES[bt]||DRAGON_TYPES.fire).breath; pj.children[0].material=M(bc[1],{emissive:bc[1],emissiveIntensity:3}); pj.visible=bt!=='storm'&&bt!=='celestial'; breathFX(bt,from.clone(),dir.clone(),bt==='storm'||bt==='celestial'?Math.min(dist,150):Math.min(dist,60)); } }
+  let pj; if(w===TORPEDO){ pj=new THREE.Group(); mk(GEO.cyl,M(0x5a5a62,{metalness:.6}),0.35,3,0.35,0,0,0,pj); mk(GEO.cone,M(0xc0392b),0.35,0.8,0.35,0,1.9,0,pj); pj.add(new THREE.Mesh(new THREE.BufferGeometry(),new THREE.MeshBasicMaterial())); }
+  else if(breath){ pj=new THREE.Group(); mk(GEO.sph,M(0xffa020,{emissive:0xff5a00,emissiveIntensity:3}),1.1,1.1,1.1,0,0,0,pj); mk(GEO.cyl,M(0xff8a20),0.01,0.01,0.01,0,0,0,pj); { const bt=(ridingPet||{}).kind==='ptero'?'forest':((ridingPet||{}).type||'fire'), bc=(DRAGON_TYPES[bt]||DRAGON_TYPES.fire).breath; pj.children[0].material=M(bc[1],{emissive:bc[1],emissiveIntensity:3}); pj.visible=bt!=='storm'&&bt!=='celestial'; breathFX(bt,from.clone(),dir.clone(),bt==='storm'||bt==='celestial'?Math.min(dist,150):Math.min(dist,60)); } }
   else if(S.equip==='bow'){ pj=new THREE.Group(); mk(GEO.cyl,M(0x8a6a3a),0.05,2.4,0.05,0,0,0,pj); mk(GEO.cone,M(0x9aa0a6,{metalness:.6}),0.12,0.4,0.12,0,1.3,0,pj); mk(GEO.cone4,M(0xffffff),0.15,0.5,0.03,0,-1.1,0,pj); }
   else { pj=new THREE.Group(); mk(GEO.sphL,M(0xffe080,{emissive:0xffb040,emissiveIntensity:3}),0.18,0.18,0.18,0,0,0,pj); mk(GEO.cyl,new THREE.MeshBasicMaterial({color:0xfff0c0,transparent:true,opacity:0.6}),0.04,4,0.04,0,-2,0,pj); puff(from.x+dir.x*1.5,from.y+dir.y*1.5,from.z+dir.z*1.5,0xdddddd,0.6,0.6,1); shake=Math.max(shake,0.15); }
   pj.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir); pj.position.copy(from); const dur=Math.max(0.05,dist/w.speed); let hit=false;
-  fxAdd(pj,best?dur+0.05:dur*1.2,(e)=>{ const k=Math.min(1,e.t/dur); pj.position.copy(from).addScaledVector(dir,dist*k*(best?1:1.2)); if(!breath&&S.equip!=='bow') pj.children[1].visible=k<1;
-    if(best&&!hit&&k>=1){ hit=true; e.obj.visible=false; if(best.dino) hitDino(best,w.dmg); else hitSky(best,w.dmg); } }); }
+  fxAdd(pj,best?dur+0.05:dur*1.2,(e)=>{ const k=Math.min(1,e.t/dur); pj.position.copy(from).addScaledVector(dir,dist*k*(best?1:1.2)); if(!breath&&w!==TORPEDO&&S.equip!=='bow') pj.children[1].visible=k<1; if(w===TORPEDO&&Math.random()<0.4) puff(pj.position.x,pj.position.y,pj.position.z,0xdff6ff,0.4,0.6,1);
+    if(best&&!hit&&k>=1){ hit=true; e.obj.visible=false; if(best.dino) hitDino(best,w.dmg); else if(best.sea) hitSea(best,w.dmg); else hitSky(best,w.dmg); } }); }
 function hitSky(o,dmg){ if(o.dead) return; o.hp-=dmg; const p=o.g.position; puff(p.x,p.y,p.z,o.type==='dragon'?0xff4a2a:0xffffff,o.type==='dragon'?1.8:0.8,0.6,1);
   if(o.hp>0){ toast(`🎯 Trúng! Rồng còn ${o.hp} máu`); o.sp*=1.15; return; }
   if((o.type==='dragon'||o.type==='ptero')&&!o.decided){ o.decided=true; o.hp=0; o.sp*=0.25; o.fire=999; askTame(o); return; }
@@ -1807,7 +1844,7 @@ function openTestPanel(){ const h=`<h2>🧪 Chế độ thử nghiệm</h2><h3>D
     if(all||a==='ship'){ S.tier=TIERS.length-1; const t=tier(); S.hull=t.hull; S.fuel=t.fuel; S.food=t.supply; S.water=t.supply; S.modules=Object.keys(MODULES).slice(0,SLOTS[S.tier]); S.upg={bed2:1,kitchen2:1,storage2:1};
       S.decor=Object.keys(DECOR); S.rod=RODS.length-1; S.bait=Math.max(S.bait||0,99); S.skins=Object.keys(SKINS); }
     if(all||a==='crew'){ for(const j of Object.keys(JOBS)){ if(S.crew.length>=tier().crew) break; if(S.crew.some(c=>c.job===j)) continue; const c=genCandidate(pick(S.islands).k); c.job=j; c.lv=3; delete c.fee; S.crew.push(c); } }
-    if(all||a==='gear'){ S.weap={bow:1,gun:1}; S.ammo={arrow:99,bullet:99}; S.plane=true; setEquip('gun'); }
+    if(all||a==='gear'){ S.weap={bow:1,gun:1}; S.ammo={arrow:99,bullet:99}; S.plane=true; S.sub=true; S.subHull=100; setEquip('gun'); }
     if(all||a==='pet') addPetDragon();
     refreshShip(); save(); toast('🧪 Đã áp dụng!'); openTestPanel(); },'test'); }
 // --- rồng thú cưỡi
@@ -1904,7 +1941,7 @@ function breathFX(type,from,dir,len){ const t=type||'fire';
 const _pr=new THREE.Raycaster();
 function isDesc(o,root){ if(!root) return false; while(o){ if(o===root) return true; o=o.parent; } return false; }
 function skyRim(v){ return v.L.R+120; }
-function seaSurfaceY(x,z){ for(const v of islandVis){ const yo=v.L.yOff||0; if(yo&&Math.hypot(x-v.isl.x,z-v.isl.z)<skyRim(v)) return yo; } return 0; }
+function seaSurfaceY(x,z){ for(const v of islandVis){ const yo=v.L.yOff||0; if(yo>0&&Math.hypot(x-v.isl.x,z-v.isl.z)<skyRim(v)) return yo; } return 0; }
 function perchOff(P){ const pt=ridingPet&&ridingPet.kind==='ptero'; return P.kind==='dragon'?(pt?1.0:2.4):3.0; }
 function togglePerch(){ const P=plane; if(!P) return; if(P.landing){ P.landing=null; toast('Đã hủy hạ cánh'); return; }
   if(P.perch){ P.perch=null; P.takeoff=2.4; P.spd=0; P.pitch=0.35; toast('🪽 Cất cánh!'); return; }
@@ -1930,7 +1967,7 @@ function sprayUpdate(dt,P){ if(!SPRAY||SPRAY.parent!==world){ SPRAY=new THREE.In
   SPRAY.instanceMatrix.needsUpdate=true; }
 // --- thuyền lên trời theo thác nước ngược
 let skyHint='';
-function skyVis(){ return islandVis.find(v=>v.L.yOff); }
+function skyVis(){ return islandVis.find(v=>v.L.yOff>0); }
 function skyShip(dt){ const sh=S.ship, v=skyVis(); skyHint=''; if(!v||!v.skyCol) return; const c=v.skyCol; sh.alt=sh.alt||0; S.liftCd=Math.max(0,(S.liftCd||0)-dt);
   if(S.lift){ const Lf=S.lift; Lf.t+=dt; const k=Math.min(1,Lf.t/Lf.dur), e=k*k*(3-2*k), ang=Lf.a0+k*TAU*2*Lf.dir, rad=Math.sin(Math.PI*k)*16;
     sh.x=lerp(Lf.fx,Lf.tx,e)+Math.cos(ang)*rad; sh.z=lerp(Lf.fz,Lf.tz,e)+Math.sin(ang)*rad; sh.alt=lerp(Lf.fa,Lf.ta,e); sh.h+=dt*1.1*Lf.dir; sh.speed=0; sh.thr=0;
@@ -1943,6 +1980,180 @@ function skyShip(dt){ const sh=S.ship, v=skyVis(); skyHint=''; if(!v||!v.skyCol)
     if(d<26&&Math.abs(sh.speed)>1.5&&S.liftCd<=0){ S.lift={dir:-1,t:0,dur:8,fx:sh.x,fz:sh.z,fa:sh.alt,tx:c.ox,tz:c.oz,ta:0,a0:Math.random()*TAU,sp:0}; banner('🌊⬇️ Theo thác nước xuống biển!'); }
     const dc=Math.hypot(sh.x-v.isl.x,sh.z-v.isl.z), RM=skyRim(v)-12; if(dc>RM){ const k=RM/dc; sh.x=v.isl.x+(sh.x-v.isl.x)*k; sh.z=v.isl.z+(sh.z-v.isl.z)*k; sh.speed*=0.3; } } }
 // --- dựng đảo trên trời
+// =====================================================================
+// TÀU NGẦM · ĐÁY BIỂN · SAN HÔ · SINH VẬT TUYỆT CHỦNG
+// =====================================================================
+let SUB=null, subMesh=null, subHint='', UWG=null, subBed=null, sbC={x:1e9,z:1e9}; const SEA_CR=[]; let seaSpawnT=0; const UWC=new THREE.Color(0x0a3a58);
+const SEA_DEX={turtle:{name:'Rùa biển',ic:'🐢',rw:40,hp:3},manta:{name:'Cá đuối manta',ic:'🐟',rw:50,hp:3},jelly:{name:'Sứa phát quang',ic:'🦑',rw:30,hp:1},shark:{name:'Cá mập trắng',ic:'🦈',rw:80,hp:8,danger:true},
+  ammonite:{name:'Ốc cúc Ammonite (tuyệt chủng)',ic:'🐚',rw:150,hp:2,loot:[['mai_ammo',1]],gold:60},dunkle:{name:'Cá giáp Dunkleosteus (tuyệt chủng)',ic:'🐟',rw:250,hp:10,danger:true,loot:[['vay_ca_co',1]],gold:150},
+  plesio:{name:'Plesiosaur cổ dài (tuyệt chủng)',ic:'🦕',rw:300,hp:16,loot:[['vay_ca_co',2]],gold:200},mosa:{name:'Mosasaur (tuyệt chủng)',ic:'🐊',rw:350,hp:18,danger:true,loot:[['vay_ca_co',2]],gold:220},
+  megalodon:{name:'Megalodon cá mập khổng lồ (tuyệt chủng)',ic:'🦈',rw:500,hp:26,danger:true,loot:[['rang_mega',1]],gold:350}};
+function seabedH(x,z){ let h=-58+Math.sin(x*0.011)*6+Math.cos(z*0.013)*6+Math.sin((x+z)*0.031)*2.5;
+  for(const v of islandVis){ const d=Math.hypot(x-v.isl.x,z-v.isl.z), R=v.L.R, yo=v.L.yOff||0; if(yo>0) continue; if(yo<0){ if(d<R+220) h=Math.min(h,yo-6); continue; } if(d<R+70){ const t=clamp(1-(d-R*0.85)/80,0,1); h=lerp(h,-5,t); } } return h; }
+function subFloor(x,z){ let f=seabedH(x,z); for(const v of islandVis){ if(v.L.yOff) continue; const dx=x-v.isl.x, dz=z-v.isl.z; if(Math.hypot(dx,dz)<v.L.R+22) f=Math.max(f,terrainH(v.L,dx,dz)); } return f; }
+function coralGeos(){ const br=[]; for(let i=0;i<6;i++){ const c=new THREE.ConeGeometry(0.18,1.6,5); c.translate(0,0.8,0); c.rotateZ((Math.random()-.5)*1.2); c.rotateY(i*1.1); br.push(c); }
+  const fan=new THREE.CircleGeometry(1,10,0,Math.PI); fan.translate(0,0,0); return {branch:mergeGeometries(br),brain:warp(new THREE.IcosahedronGeometry(1,1),0.25,5),fan,tube:mergeGeometries([0,1,2,3,4].map(i=>new THREE.CylinderGeometry(0.15,0.2,1+i*0.25,6,1,true).translate(Math.cos(i*1.3)*0.3,0.5+i*0.12,Math.sin(i*1.3)*0.3))),weed:new THREE.ConeGeometry(0.25,4,4).translate(0,2,0)}; }
+function buildUnderwater(){ if(UWG&&UWG.parent===world) return; UWG=new THREE.Group(); world.add(UWG); UWG.visible=false;
+  const sg=new THREE.PlaneGeometry(900,900,90,90); sg.rotateX(-Math.PI/2); subBed=new THREE.Mesh(sg,new THREE.MeshStandardMaterial({vertexColors:true,roughness:0.95,flatShading:true})); subBed.geometry.setAttribute('color',new THREE.BufferAttribute(new Float32Array(sg.attributes.position.count*3),3)); UWG.add(subBed); sbC={x:1e9,z:1e9};
+  const G=coralGeos(), rng=mulberry32(S.seed+77), pos={branch:[],brain:[],fan:[],tube:[],weed:[]}, cols=[0xff6a8a,0xffa040,0xb070ff,0x40d0c0,0xffe060,0xff4060,0x60a0ff];
+  const add=(x,z)=>{ const y=seabedH(x,z); if(y>-3) return; const t=pick(['branch','branch','brain','fan','tube','weed','weed'],rng), s2=t==='weed'?0.8+rng()*1.2:1+rng()*2.2, m=new THREE.Matrix4().compose(new THREE.Vector3(x,y,z),new THREE.Quaternion().setFromEuler(new THREE.Euler(0,rng()*TAU,0)),new THREE.Vector3(s2,s2,s2));
+    pos[t].push({m,c:new THREE.Color(t==='weed'?pick([0x2a8a4a,0x4aa04a,0x6ab060],rng):pick(cols,rng))}); };
+  for(const v of islandVis){ if(v.L.yOff>0) continue; const n=v.L.yOff<0?260:90; for(let i=0;i<n;i++){ const a=rng()*TAU, rr=v.L.R+(v.L.yOff<0?50:8)+rng()*(v.L.yOff<0?140:60); add(v.isl.x+Math.cos(a)*rr,v.isl.z+Math.sin(a)*rr); } }
+  for(let k=0;k<10;k++){ const cx=(rng()*2-1)*(WORLD-200), cz=(rng()*2-1)*(WORLD-200); for(let i=0;i<45;i++) add(cx+(rng()-.5)*120,cz+(rng()-.5)*120); }
+  for(const t in pos){ if(!pos[t].length) continue; const mat=t==='fan'?new THREE.MeshStandardMaterial({color:0xffffff,side:THREE.DoubleSide,roughness:0.7}):new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.6,emissive:0x111111});
+    const im=new THREE.InstancedMesh(G[t],mat,pos[t].length); pos[t].forEach((q,i)=>{ im.setMatrixAt(i,q.m); im.setColorAt(i,q.c); }); im.instanceMatrix.needsUpdate=true; im.instanceColor.needsUpdate=true; im.computeBoundingSphere(); UWG.add(im); }
+  // xác tàu đắm
+  S.wrecks=S.wrecks||[]; if(!S.wrecks.length) for(let k=0;k<7;k++){ for(let t=0;t<40;t++){ const x=(rng()*2-1)*(WORLD-150), z=(rng()*2-1)*(WORLD-150); if(S.islands.every(i=>Math.hypot(i.x-x,i.z-z)>ISL[i.k].R+150)){ S.wrecks.push({x:Math.round(x),z:Math.round(z),got:false}); break; } } }
+  for(const w of S.wrecks){ const y=seabedH(w.x,w.z); const sh=placeModel('Ship_Large',UWG,w.x,y-1.5,w.z,rng()*TAU,1.1); if(sh){ sh.rotation.z=0.5; sh.traverse(o=>{ if(o.isMesh){ o.material=o.material.clone(); o.material.color.multiplyScalar(0.55); } }); }
+    w.mesh=placeModel('Chest_Wood',UWG,w.x+8,y,w.z+4,0.3,2.2); if(w.mesh) w.mesh.visible=!w.got; }
+  // bóng bong bóng
+  const N=400, bp=new Float32Array(N*3); for(let i=0;i<N;i++) bp.set([(Math.random()-.5)*160,-Math.random()*60,(Math.random()-.5)*160],i*3); const bg=new THREE.BufferGeometry(); bg.setAttribute('position',new THREE.BufferAttribute(bp,3));
+  UWG.userData.bub=new THREE.Points(bg,new THREE.PointsMaterial({color:0xdff6ff,size:0.35,map:DOT_TEX,transparent:true,opacity:0.7,depthWrite:false})); UWG.userData.bub.frustumCulled=false; UWG.add(UWG.userData.bub); }
+function updateSeabed(cx,cz){ if(!subBed) return; const gx=Math.round(cx/60)*60, gz=Math.round(cz/60)*60; if(gx===sbC.x&&gz===sbC.z) return; sbC={x:gx,z:gz};
+  const p=subBed.geometry.attributes.position, c=subBed.geometry.attributes.color, base=new THREE.Color(), col=new THREE.Color(); subBed.position.set(gx,0,gz);
+  for(let i=0;i<p.count;i++){ const x=p.getX(i)+gx, z=p.getZ(i)+gz, h=seabedH(x,z); p.setY(i,h); const n=Math.sin(x*0.07)*Math.cos(z*0.05); base.set(n>0.4?0x8a8a78:0xc8b890); col.copy(base).multiplyScalar(0.8+0.2*Math.sin(x*0.3+z*0.2)); c.setXYZ(i,col.r,col.g,col.b); }
+  p.needsUpdate=true; c.needsUpdate=true; subBed.geometry.computeVertexNormals(); subBed.geometry.computeBoundingSphere(); }
+function underwaterFX(dt){ const uw=camera.position.y<-0.4, inAbyss=S.mode==='land'&&S.land&&(ISL[S.land.k].alt||0)<0;
+  if(UWG) UWG.visible=S.mode==='sub'||inAbyss; seabed.visible=!(S.mode==='sub'||inAbyss);
+  if(uw){ const d=-camera.position.y; UWC.setRGB(0.02,0.16+0.08*Math.exp(-d/40),0.26+0.1*Math.exp(-d/40)); scene.fog.color.copy(UWC); scene.fog.density=(inAbyss?0.008:0.014)+d*0.00012; sky.visible=false; scene.background=UWC;
+    if(UWG&&UWG.userData.bub){ const b=UWG.userData.bub, a=b.geometry.attributes.position.array; b.position.set(camera.position.x,camera.position.y,camera.position.z); for(let i=1;i<a.length;i+=3){ a[i]+=dt*(2+(i%7)); if(a[i]>4) a[i]=-60; } b.geometry.attributes.position.needsUpdate=true; } }
+  else { sky.visible=true; if(scene.background===UWC) scene.background=null; } }
+function makeSub(){ const g=new THREE.Group(), y=M(0xf2c230,{roughness:0.4,metalness:0.3}), dk=M(0x2a2a30,{metalness:0.5,roughness:0.4}), gl=M(0x9fe8ff,{emissive:0x4ab8e0,emissiveIntensity:1.2});
+  const h=mk(GEO.cap,y,2.2,8,2.2,0,0,0,g); h.rotation.x=Math.PI/2; mk(GEO.cylT,y,1.0,2.2,1.6,0,2.2,0.6,g); mk(GEO.cyl,dk,0.08,1.6,0.08,0.3,3.9,0.6,g);
+  for(const sx of [-1,1]){ for(let i=0;i<3;i++){ const w=mk(GEO.cyl,gl,0.38,0.12,0.38,sx*2.1,0.3,-1.6+i*1.5,g); w.rotation.z=Math.PI/2; } const fin=mk(GEO.box,y,2.4,0.15,1.2,sx*1.6,0,3.6,g); }
+  mk(GEO.box,y,0.15,2.2,1.2,0,1.0,3.9,g); const front=mk(GEO.sph,gl,1.5,1.5,1.0,0,0,-4.4,g);
+  const prop=new THREE.Group(); prop.position.set(0,0,5.4); g.add(prop); for(let i=0;i<3;i++){ const b=mk(GEO.box,dk,0.3,1.6,0.08,0,0.6,0,prop); const q=new THREE.Group(); q.rotation.z=i/3*TAU; q.add(b); prop.add(q); }
+  for(const sx of [-1,1]) mk(GEO.sphL,M(0xffffe0,{emissive:0xffffc0,emissiveIntensity:3}),0.35,0.35,0.35,sx*1.1,-0.9,-3.8,g);
+  const sl=new THREE.SpotLight(0xe8f8ff,60,90,0.55,0.5,1.2); sl.position.set(0,-0.5,-4.5); const tg=new THREE.Object3D(); tg.position.set(0,-6,-30); g.add(tg); sl.target=tg; g.add(sl);
+  g.userData.prop=prop; shadowize(g); return g; }
+function startSubAt(x,y,z,yaw){ if(!subMesh) subMesh=makeSub(); world.add(subMesh); buildUnderwater(); SUB={x,y,z,yaw,spd:0,vy:0,biteCd:0}; S.mode='sub'; helmCam=false; S.subHull=S.subHull??100;
+  if(playerCh&&playerCh.root.parent) playerCh.root.parent.remove(playerCh.root); updateSeabed(x,z); }
+function diveSub(){ if(!S.sub){ toast('🚤 Bạn chưa có tàu ngầm — mua ở <b>Xưởng quân giới</b> đảo Thiết Bảo'); return; } if(S.mode!=='sea'||(S.ship.alt||0)>1||S.cabin||evScene||fishing.st!=='idle'){ toast('Chỉ lặn được khi đang ở trên mặt biển'); return; }
+  if(S.subHull<=0){ S.subHull=40; } fadeTo(()=>{ startSubAt(S.ship.x+Math.cos(S.ship.h)*10,-6,S.ship.z+Math.sin(S.ship.h)*10,-S.ship.h); banner('🚤 Lặn xuống! W/S tiến lùi · A/D rẽ · Space nổi · Shift lặn'); toast('F quét sinh vật vào Sách sinh vật · nhấp chuột bắn ngư lôi · E nhặt rương / vào Thủy Cung · U nổi lên',8000); }); }
+function surfaceSub(){ if(!SUB) return; if(SUB.y<-10){ toast('Ngoi lên gần mặt nước (giữ Space) rồi bấm U để nổi lên'); return; }
+  fadeTo(()=>{ world.remove(subMesh); S.ship.x=SUB.x; S.ship.z=SUB.z; S.ship.alt=0; S.ship.speed=0; S.ship.thr=0; S.mode='sea'; SUB=null; attachPlayer(); toast('🚢 Tàu ngầm nổi lên — tàu mẹ tới đón!'); save(); }); }
+function makeSeaCreature(t){ const g=new THREE.Group(); let anim;
+  if(t==='shark'||t==='megalodon'){ const col=t==='megalodon'?0x4a5258:0x7a8a98, sk=M(col,{roughness:0.5}), bl=M(0xe8e8e8), L2=t==='megalodon'?7:2.4;
+    mk(GEO.sph,sk,0.55*L2,0.6*L2,2*L2,0,0,0,g); mk(GEO.sph,bl,0.45*L2,0.35*L2,1.6*L2,0,-0.25*L2,0.1*L2,g); const df=mk(GEO.cone4,sk,0.15*L2,0.9*L2,0.6*L2,0,0.75*L2,-0.1*L2,g); df.rotation.x=-0.3;
+    for(const sx of [-1,1]){ const pf=mk(GEO.cone4,sk,0.1*L2,0.9*L2,0.4*L2,sx*0.6*L2,-0.25*L2,0.4*L2,g); pf.rotation.z=sx*1.9; mk(GEO.sphL,M(0x0a0a0a),0.07*L2,0.07*L2,0.07*L2,sx*0.32*L2,0.12*L2,1.5*L2,g); }
+    mk(GEO.box,M(0x3a0a0a),0.5*L2,0.06*L2,0.3*L2,0,-0.25*L2,1.75*L2,g); const tail=new THREE.Group(); tail.position.set(0,0,-1.9*L2); g.add(tail); const t1=mk(GEO.cone4,sk,0.12*L2,1.1*L2,0.5*L2,0,0.45*L2,-0.2*L2,tail); t1.rotation.x=-0.6; const t2=mk(GEO.cone4,sk,0.1*L2,0.8*L2,0.4*L2,0,-0.35*L2,-0.15*L2,tail); t2.rotation.x=-2.4;
+    anim=(T0)=>{ tail.rotation.y=Math.sin(T0*3)*0.35; }; }
+  else if(t==='plesio'){ const sk=M(0x4a6a5a), bl=M(0xb8c8a8); mk(GEO.sph,sk,2.2,1.5,3.5,0,0,0,g); mk(GEO.sph,bl,1.8,1.0,3,0,-0.6,0,g); const neck=[]; for(let i=0;i<8;i++){ neck.push(mk(GEO.sph,sk,0.7-i*0.05,0.7-i*0.05,0.9,0,0.4+i*0.55,3.2+i*0.9,g)); }
+    const hd=mk(GEO.sph,sk,0.6,0.5,1.0,0,4.9,10.6,g); mk(GEO.cone,sk,0.4,1.0,0.3,0,4.8,11.6,g).rotation.x=Math.PI/2; const fl=[]; for(const [x,z] of [[-2,1.5],[2,1.5],[-1.8,-1.8],[1.8,-1.8]]){ const f=mk(GEO.sph,sk,1.6,0.15,0.6,x,-0.3,z,g); fl.push(f); }
+    mk(GEO.cone,sk,0.6,3,0.6,0,0,-4.5,g).rotation.x=-Math.PI/2; anim=(T0)=>{ fl.forEach((f,i)=>f.rotation.z=Math.sin(T0*1.6+i*1.5)*0.4); neck.forEach((n,i)=>n.position.x=Math.sin(T0*0.8+i*0.4)*0.25*i); hd.position.x=Math.sin(T0*0.8+3.2)*2; }; }
+  else if(t==='mosa'){ const sk=M(0x3a4a42), bl=M(0xa8b098); const seg=[]; for(let i=0;i<9;i++){ const r2=1.3-Math.abs(i-2)*0.11; seg.push(mk(GEO.sph,sk,r2,r2*0.8,1.4,0,0,4-i*1.6,g)); }
+    const jaw1=mk(GEO.cone,sk,0.7,3.2,0.5,0,0.2,6.4,g); jaw1.rotation.x=Math.PI/2; const jaw2=mk(GEO.cone,bl,0.6,2.8,0.4,0,-0.4,6.1,g); jaw2.rotation.x=Math.PI/2+0.2; for(const sx of [-1,1]){ mk(GEO.sph,sk,1.4,0.12,0.5,sx*1.4,-0.4,2.4,g); mk(GEO.sphL,M(0xffd040,{emissive:0xaa6a00,emissiveIntensity:.8}),0.15,0.15,0.15,sx*0.5,0.5,4.8,g); }
+    mk(GEO.cone4,sk,0.2,2.2,1.4,0,0.6,-10.2,g); anim=(T0)=>{ seg.forEach((s2,i)=>s2.position.x=Math.sin(T0*2.2-i*0.6)*0.25*i); jaw2.rotation.x=Math.PI/2+0.2+Math.max(0,Math.sin(T0*1.3))*0.25; }; }
+  else if(t==='dunkle'){ const ar=M(0x6a7078,{metalness:0.4,roughness:0.4}), sk=M(0x5a6a5a); mk(GEO.box,ar,2.2,2,2.4,0,0,1.6,g); const jw=mk(GEO.box,ar,2,0.5,2,0,-1.1,2.0,g); mk(GEO.sph,sk,1.4,1.3,3.2,0,0,-1.8,g); mk(GEO.cone4,sk,0.2,2,1.2,0,0,-5.2,g).rotation.x=-Math.PI/2;
+    for(const sx of [-1,1]) mk(GEO.sphL,M(0xff3020,{emissive:0xaa1000,emissiveIntensity:1}),0.18,0.18,0.18,sx*0.9,0.4,2.8,g); anim=(T0)=>{ jw.rotation.x=Math.max(0,Math.sin(T0*1.1))*0.35; }; }
+  else if(t==='ammonite'){ const sh=M(0xd8a868,{roughness:0.5}); for(let i=0;i<5;i++){ const tr=mk(GEO.tor,sh,0.9-i*0.16,0.9-i*0.16,0.9-i*0.16,i*0.12,i*0.1,0,g); } const tn=[]; for(let i=0;i<6;i++){ const c=mk(GEO.cone,M(0xc08a5a),0.08,1.2,0.08,-0.2+(i%3)*0.2,-0.6,0.9+(i>2?0.2:0),g); c.rotation.x=Math.PI/2+0.4; tn.push(c); } anim=(T0)=>{ tn.forEach((c,i)=>c.rotation.y=Math.sin(T0*3+i)*0.3); }; g.scale.setScalar(1.6); }
+  else if(t==='turtle'){ const sh=M(0x5a7a3a), sk=M(0x9ab070); const sh1=mk(GEO.hemi,sh,1.6,1.0,2,0,0,0,g); mk(GEO.sph,sk,1.5,0.3,1.9,0,0,0,g); mk(GEO.sph,sk,0.5,0.45,0.7,0,0.1,2.3,g); const fl=[]; for(const [x,z] of [[-1.6,1],[1.6,1],[-1.1,-1.3],[1.1,-1.3]]){ fl.push(mk(GEO.sph,sk,0.9,0.12,0.4,x,0,z,g)); } anim=(T0)=>{ fl.forEach((f,i)=>f.rotation.z=Math.sin(T0*1.8+(i%2)*Math.PI)*0.5); }; }
+  else if(t==='manta'){ const sk=M(0x2a3a4a), bl=M(0xe8e8e8), shp=new THREE.Shape(); shp.moveTo(0,2.5); shp.lineTo(4.5,-0.5); shp.lineTo(0,-1.2); const wg=new THREE.ShapeGeometry(shp); wg.rotateX(-Math.PI/2); const wl=new THREE.Mesh(wg,new THREE.MeshStandardMaterial({color:0x2a3a4a,side:THREE.DoubleSide})); const wr=wl.clone(); wr.scale.x=-1; g.add(wl,wr);
+    mk(GEO.cyl,sk,0.06,4,0.06,0,0,-2.6,g).rotation.x=Math.PI/2; anim=(T0)=>{ wl.rotation.z=Math.sin(T0*1.5)*0.35; wr.rotation.z=-Math.sin(T0*1.5)*0.35; }; }
+  else { const j=makeFishMesh('f_sua'); j.scale.setScalar(2.2); g.add(j); anim=(T0)=>{ j.position.y=Math.sin(T0*1.2)*0.5; }; }
+  g.userData.anim=anim; shadowize(g); return g; }
+function spawnSea(){ const inB=S.bermuda&&inBermuda(SUB.x,SUB.z), deep=seabedH(SUB.x,SUB.z)<-55, nearIsl=S.islands.some(i=>Math.hypot(i.x-SUB.x,i.z-SUB.z)<ISL[i.k].R+150);
+  const w={turtle:nearIsl?4:1,manta:2,jelly:3,shark:2,ammonite:2,dunkle:deep?1.5:0.6,plesio:deep?1.5:0.5,mosa:deep?1.2:0.4,megalodon:inB?3:deep?0.6:0.15}; const t=wpick(w), a=Math.random()*TAU, rr=90+Math.random()*60;
+  const x=SUB.x+Math.cos(a)*rr, z=SUB.z+Math.sin(a)*rr, fl=subFloor(x,z); if(fl>-6) return; const g=makeSeaCreature(t); const D=SEA_DEX[t];
+  const o={type:t,sea:true,g,x,z,y:lerp(fl+4,-6,Math.random()),ax:x,az:z,ang:Math.random()*TAU,rad:15+Math.random()*25,sp:(0.15+Math.random()*0.2)*(Math.random()<.5?1:-1),hp:D.hp,r:t==='megalodon'?10:t==='plesio'||t==='mosa'?6:t==='dunkle'?4:2.5,dead:false,cd:0};
+  g.position.set(x,o.y,z); world.add(g); SEA_CR.push(o); }
+function hitSea(o,dmg){ if(o.dead) return; o.hp-=dmg; const D=SEA_DEX[o.type]; puff(o.g.position.x,o.g.position.y,o.g.position.z,0xa02020,1.4,0.7,0.5);
+  if(o.hp>0){ if(D.danger) o.angry=10; toast(`🎯 Trúng ${D.name}! (còn ${o.hp})`); return; }
+  o.dead=true; let room=cargoCap()-cargoUsed(), got=[]; for(const [id,q] of (D.loot||[])){ const n=Math.min(room,q); if(n>0){ addCargo(id,n); room-=n; got.push(`${n} ${ITEMS[id].icon} ${ITEMS[id].name}`); } }
+  if(D.gold) S.gold+=D.gold; if(!D.loot) S.morale=Math.max(0,S.morale-3); banner(`${D.ic} Hạ gục ${D.name}!`+(D.gold?` +${D.gold}💰`:'')); if(got.length) toast('Chiến lợi phẩm: '+got.join(', '),5000); save(); }
+function scanSea(){ const f=new THREE.Vector3(-Math.sin(SUB.yaw),0,-Math.cos(SUB.yaw)); let best=null, bd=1e9; for(const o of SEA_CR){ if(o.dead) continue; const v=o.g.position.clone().sub(new THREE.Vector3(SUB.x,SUB.y,SUB.z)), d=v.length(); if(d<45&&v.normalize().dot(f)>0.5&&d<bd){ bd=d; best=o; } }
+  if(!best){ toast('🔍 Không có sinh vật nào phía trước — lại gần hơn rồi bấm F'); return; } S.codex=S.codex||{}; const D=SEA_DEX[best.type];
+  if(S.codex[best.type]){ toast(`📖 ${D.ic} ${D.name} đã có trong Sách sinh vật`); return; } S.codex[best.type]=1; S.gold+=D.rw; banner(`📖 Phát hiện mới: ${D.ic} ${D.name}! +${D.rw}💰`); toast(`Sách sinh vật: ${Object.keys(S.codex).length}/${Object.keys(SEA_DEX).length}`,4000); save(); }
+function subUpdate(dt){ const P=SUB; if(!P) return; const thr=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0), tr=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0);
+  P.spd=lerp(P.spd,thr*15,1-Math.exp(-dt*0.9)); P.yaw-=tr*dt*0.8; P.vy=lerp(P.vy,(keys[' ']?7:0)-(keys.shift?7:0),1-Math.exp(-dt*2));
+  const fx=-Math.sin(P.yaw), fz=-Math.cos(P.yaw), nx=P.x+fx*P.spd*dt, nz=P.z+fz*P.spd*dt, fl=subFloor(nx,nz);
+  if(fl<-4.5){ P.x=nx; P.z=nz; } else P.spd*=-0.3; P.y+=P.vy*dt; P.y=clamp(P.y,subFloor(P.x,P.z)+2.5,-2.2);
+  for(const v of islandVis){ if(!(v.L.yOff<0)) continue; const dx=P.x-v.isl.x, dz=P.z-v.isl.z, d=Math.hypot(dx,dz), DR=v.L.R+45; if(d<DR&&P.y>v.L.yOff-8){ P.x=v.isl.x+dx/d*DR; P.z=v.isl.z+dz/d*DR; P.spd*=0.3; } }
+  const lim=WORLD+150; P.x=clamp(P.x,-lim,lim); P.z=clamp(P.z,-lim,lim);
+  subMesh.position.set(P.x,P.y,P.z); subMesh.rotation.set(-P.vy*0.04,P.yaw,-tr*0.15*Math.min(1,Math.abs(P.spd)/8),'YXZ'); subMesh.userData.prop.rotation.z+=dt*P.spd*1.2;
+  if(Math.abs(P.spd)>1) S.fuel=Math.max(0,S.fuel-dt*0.04*Math.abs(P.spd)/15); updateSeabed(P.x,P.z);
+  // sinh vật
+  seaSpawnT-=dt; if(seaSpawnT<=0){ seaSpawnT=1.5; if(SEA_CR.filter(o=>!o.dead).length<12) spawnSea(); }
+  P.biteCd=Math.max(0,P.biteCd-dt);
+  for(let i=SEA_CR.length-1;i>=0;i--){ const o=SEA_CR[i], g=o.g; if(o.dead){ g.position.y+=dt*3; g.rotation.z+=dt; if(g.position.y>-1){ world.remove(g); SEA_CR.splice(i,1); } continue; }
+    const D=SEA_DEX[o.type], dx=P.x-g.position.x, dy=P.y-g.position.y, dz=P.z-g.position.z, d=Math.hypot(dx,dy,dz); if(Math.hypot(dx,dz)>320){ world.remove(g); SEA_CR.splice(i,1); continue; }
+    o.angry=Math.max(0,(o.angry||0)-dt); let tx,ty,tz,sp;
+    if(D.danger&&(d<(o.type==='megalodon'?70:45)||o.angry>0)){ tx=P.x; ty=P.y; tz=P.z; sp=o.type==='megalodon'?13:10; if(d<o.r+5&&P.biteCd<=0){ P.biteCd=2.2; const dm=o.type==='megalodon'?12:o.type==='mosa'?9:6; S.subHull=Math.max(0,S.subHull-dm); shake=0.9; toast(`${D.ic} ${D.name} tấn công tàu ngầm! −${dm} vỏ tàu`); if(S.subHull<=0){ toast('💥 Vỏ tàu ngầm thủng! Khẩn cấp nổi lên…',5000); P.y=-3; surfaceSub(); } } }
+    else { o.ang+=o.sp*dt; tx=o.ax+Math.cos(o.ang)*o.rad; tz=o.az+Math.sin(o.ang)*o.rad; ty=o.y; sp=Math.abs(o.sp)*o.rad; }
+    const vx=tx-g.position.x, vy=ty-g.position.y, vz=tz-g.position.z, vl=Math.hypot(vx,vy,vz)||1; g.position.x+=vx/vl*sp*dt; g.position.y+=vy/vl*sp*dt*0.6; g.position.z+=vz/vl*sp*dt;
+    g.position.y=clamp(g.position.y,subFloor(g.position.x,g.position.z)+1.5,-3); g.rotation.y=Math.atan2(vx,vz); g.userData.anim&&g.userData.anim(T); }
+  // gợi ý & tương tác
+  subHint=`🚤 Độ sâu <b>${Math.round(-P.y)}m</b> · vỏ tàu ${Math.round(S.subHull)}% · 📖 ${Object.keys(S.codex||{}).length}/${Object.keys(SEA_DEX).length} · <kbd>F</kbd> quét · nhấp chuột bắn ngư lôi · <kbd>U</kbd> nổi lên`;
+  P.near=null; for(const w of S.wrecks||[]) if(!w.got&&Math.hypot(w.x+8-P.x,w.z+4-P.z)<16&&Math.abs(seabedH(w.x,w.z)-P.y)<32){ P.near={kind:'wreck',w}; subHint='💰 Xác tàu đắm có rương! Nhấn <kbd>E</kbd> để mở'; }
+  for(const v of islandVis) if(v.L.yOff<0&&v.abyssDock&&Math.hypot(v.abyssDock.x-P.x,v.abyssDock.z-P.z)<40){ P.near={kind:'abyss',v}; subHint='🌀 Cửa khóa khí <b>Thủy Cung</b> — nhấn <kbd>E</kbd> để vào thành phố'; v.isl.disc=true; }
+  if(S.bermuda&&inBermuda(P.x,P.z)) subHint+=' · ⚠️ <b>Tam giác quỷ</b> — Megalodon ẩn nấp!'; }
+function subAct(){ const n=SUB&&SUB.near; if(!n) return; if(n.kind==='wreck'){ const w=n.w, g2=200+Math.floor(Math.random()*300), id=pick(['ngoc','tuong','vang_nguyen','la_ban_co']), q=Math.min(cargoCap()-cargoUsed(),1+Math.floor(Math.random()*2));
+    w.got=true; if(w.mesh) w.mesh.visible=false; S.gold+=g2; if(q>0) addCargo(id,q); banner(`💰 Rương xác tàu: +${g2}💰`+(q>0?` · ${q} ${ITEMS[id].icon} ${ITEMS[id].name}`:'')); save(); }
+  if(n.kind==='abyss'){ world.remove(subMesh); SUB=null; S.mode='sea'; enterIsland(n.v.k); } }
+function subCamera(dt){ const P=SUB; if(!P) return; const fx=-Math.sin(P.yaw), fz=-Math.cos(P.yaw), k=1-Math.exp(-dt*3); camera.position.lerp(_v3.set(P.x-fx*17,P.y+5,P.z-fz*17),k); camera.lookAt(P.x+fx*12,P.y,P.z+fz*12); }
+// --- Thủy Cung
+function decoAbyss(vis,L,g,rng){ const R2=L.R+45, gm=new THREE.MeshStandardMaterial({color:0xbff4ff,transparent:true,opacity:0.16,roughness:0.05,metalness:0.3,side:THREE.DoubleSide,depthWrite:false});
+  const dg=new THREE.Group(); dg.position.y=-4; dg.scale.y=55/R2; g.add(dg); const dome=new THREE.Mesh(new THREE.SphereGeometry(R2,48,20,0,TAU,0,Math.PI/2),gm); dg.add(dome);
+  for(let i=0;i<10;i++){ const rib=new THREE.Mesh(new THREE.TorusGeometry(R2,0.6,6,48,Math.PI),M(0xd4af37,{metalness:0.7,roughness:0.3})); rib.rotation.y=i/10*Math.PI; dg.add(rib); }
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(R2,1.4,8,64),M(0x8a9aa0,{metalness:0.5})); ring.rotation.x=Math.PI/2; ring.position.y=-3.5; g.add(ring);
+  const pd=dv(L.pa), gate=new THREE.Mesh(new THREE.TorusGeometry(12,1.6,10,32),M(0xd4af37,{metalness:0.7,emissive:0x4a3a00,emissiveIntensity:0.5})); gate.position.set(pd.x*R2,6,pd.z*R2); gate.rotation.y=-L.pa; g.add(gate);
+  vis.abyssDock={x:vis.isl.x+pd.x*(R2+25),y:L.yOff+6,z:vis.isl.z+pd.z*(R2+25)}; vis.pois.push({x:pd.x*R2,z:pd.z*R2,icon:'🌀',name:'Cửa khóa khí'});
+  // tượng thần biển
+  const sp=spot(rng,L,vis,6,0.5,0.2); if(sp){ const Tt=new THREE.Group(); Tt.position.set(sp.x,sp.y,sp.z); g.add(Tt); const mm=M(0xe8f4f8,{roughness:0.4}); mk(GEO.cyl,mm,2.5,1.5,2.5,0,0.75,0,Tt); mk(GEO.cylT,mm,1.4,7,1.4,0,5,0,Tt); mk(GEO.sph,mm,1.2,1.3,1.2,0,9.4,0,Tt);
+    mk(GEO.cyl,M(0xd4af37,{metalness:.7}),0.15,11,0.15,1.8,6,0,Tt); for(const ox of [-0.5,0,0.5]) mk(GEO.cone,M(0xd4af37,{metalness:.7}),0.2,1.4,0.2,1.8+ox,12.2,0,Tt); vis.circ.push({x:sp.x,z:sp.z,r:3}); vis.pois.push({x:sp.x,z:sp.z,icon:'🔱',name:'Tượng Thủy Thần'}); }
+  // sò khổng lồ & san hô phát sáng
+  for(let i=0;i<7;i++){ const p=spot(rng,L,vis,3,0.85,0.3); if(!p) continue; const cl=new THREE.Group(); cl.position.set(p.x,p.y,p.z); cl.rotation.y=rng()*TAU; g.add(cl); const sm=M(pick([0xf0d8e8,0xd8e8f0],rng),{roughness:0.5});
+    mk(GEO.hemi,sm,2.2,0.8,1.8,0,0,0,cl).rotation.x=Math.PI; const top=mk(GEO.hemi,sm,2.2,0.8,1.8,0,0.1,0,cl); top.rotation.x=-0.6; mk(GEO.sph,M(0xffffff,{emissive:0x9fe8ff,emissiveIntensity:1.2}),0.5,0.5,0.5,0,0.3,0.2,cl); vis.circ.push({x:p.x,z:p.z,r:2.2}); if(i===0) vis.pois.push({x:p.x,z:p.z,icon:'🦪',name:'Vườn sò khổng lồ'}); }
+  for(let i=0;i<24;i++){ const p=spot(rng,L,vis,1.5,0.9,0.2); if(!p) continue; const h=2+rng()*4, c=pick([0xff6a9a,0x7fe0ff,0xb08aff,0xffd060],rng); mk(GEO.cone,M(c,{emissive:c,emissiveIntensity:0.9}),0.4,h,0.4,p.x,p.y+h/2,p.z,g); }
+  vis.pois.push({x:0,z:0,icon:'🏛️',name:'Mái vòm Thủy Cung'}); }
+// =====================================================================
+// TAM GIÁC QUỶ
+// =====================================================================
+function inBermuda(x,z){ const b=S.bermuda; if(!b) return false; const [a,c,d]=b.pts, s1=(c.x-a.x)*(z-a.z)-(c.z-a.z)*(x-a.x), s2=(d.x-c.x)*(z-c.z)-(d.z-c.z)*(x-c.x), s3=(a.x-d.x)*(z-d.z)-(a.z-d.z)*(x-d.x); return (s1>0&&s2>0&&s3>0)||(s1<0&&s2<0&&s3<0); }
+function genBermuda(){ for(let t=0;t<200;t++){ const x=(Math.random()*2-1)*(WORLD-400), z=(Math.random()*2-1)*(WORLD-400); if(S.islands.every(i=>Math.hypot(i.x-x,i.z-z)>ISL[i.k].R+420)){ const r0=300, a0=Math.random()*TAU; return {x:Math.round(x),z:Math.round(z),pts:[0,1,2].map(k=>({x:Math.round(x+Math.cos(a0+k*TAU/3)*r0),z:Math.round(z+Math.sin(a0+k*TAU/3)*r0)}))}; } } return null; }
+let bermT=30;
+function bermudaUpdate(dt){ const sh=S.ship, inB=inBermuda(sh.x,sh.z); if(inB&&!S.inBerm){ banner('⚠️ Tiến vào TAM GIÁC QUỶ!'); toast('🧭 La bàn quay loạn xạ, sương mù dày đặc… hãy cẩn thận!',6000); }
+  S.inBerm=inB; if(!inB) return; WX.fog=Math.max(WX.fog,0.85); sh.h+=Math.sin(T*0.6)*dt*0.35; if(Math.random()<dt*0.12) bolt(sh.x+(Math.random()-.5)*200,sh.z+(Math.random()-.5)*200);
+  bermT-=dt; if(bermT<=0&&!evScene){ bermT=25+Math.random()*30; const r2=Math.random(); if(r2<0.45) evGhost(); else if(r2<0.7){ fadeTo(()=>{ sh.x=(Math.random()*2-1)*(WORLD-300); sh.z=(Math.random()*2-1)*(WORLD-300); toast('🌫️ Khi sương tan… thuyền bạn đã ở một nơi hoàn toàn khác!',6000); }); }
+    else { const n=Math.min(1,cargoCap()-cargoUsed()); if(n>0){ addCargo('la_ban_co',1); banner('🧭 Vớt được Mảnh la bàn cổ trôi giữa sương!'); } } } }
+function evGhost(){ const p=buildShip(3,'pirate',pirateCrew(),[]); p.traverse(o=>{ if(o.isMesh){ o.material=o.material.clone(); o.material.transparent=true; o.material.opacity=0.45; o.material.emissive=new THREE.Color(0x30ff90); o.material.emissiveIntensity=0.6; o.material.depthWrite=false; } }); world.add(p);
+  const p0=shipSide(60,140,Math.random()<.5?-1:1), st={x:p0.x,z:p0.z,h:S.ship.h+Math.PI};
+  beginEvent({type:'ghost',title:'👻 Một con tàu ma hiện ra trong sương…',intro:4,objs:[p],focus:()=>new THREE.Vector3(st.x,4,st.z),
+    upd(dt){ st.h+=dt*0.15; st.x+=Math.sin(st.h)*8*dt; st.z-=Math.cos(st.h)*8*dt; p.position.set(st.x,waveH(st.x,st.z,T)+0.4+Math.sin(T*1.3)*0.6,st.z); p.rotation.y=-st.h; if(Math.random()<dt*3) puff(st.x+(Math.random()-.5)*10,3,st.z+(Math.random()-.5)*10,0x60ffa0,1.4,1.4,2); p.userData.crewChars.forEach(c=>animChar(c,dt,T)); },
+    panel(){ const pw=armyPower(), win=Math.min(0.9,0.2+pw*0.01); eventModal('Tàu ma','👻',`Một con tàu ma xanh lục trôi lặng lẽ, thủy thủ là những bóng ma. Trong khoang có thể còn vàng bị nguyền… (sức chiến đấu ${pw}, cơ hội thắng ~${Math.round(win*100)}%)`,
+      [['fight','⚔️ Đột kích tàu ma'],['leave','⛵ Lặng lẽ tránh xa']],a=>{ closeModal(); if(a==='leave'){ endEvent(3); return; }
+        if(Math.random()<win){ const g2=600+Math.floor(Math.random()*600), n=Math.min(cargoCap()-cargoUsed(),2); S.gold+=g2; if(n>0) addCargo('vang_nguyen',n); resultModal('Đánh tan tàu ma!','🏆',`Tàu ma tan thành sương. Bạn thu được ${g2}💰`+(n>0?` và ${n} 💰 Vàng bị nguyền`:'')+'.',3); }
+        else { S.hull=Math.max(1,S.hull-25); hurtMorale(10); resultModal('Bị nguyền rủa…','💀','Các bóng ma tràn lên boong! Thuyền hư hại nặng (−25) và thủy thủ hoảng sợ.',3); } }); } }); }
+// =====================================================================
+// CHIẾN TRANH: hải tặc vây đảo · hải chiến giữa hải quân và hải tặc
+// =====================================================================
+let warShips=[], warFx=0, warAtk=0;
+function startWar(){ const type=Math.random()<0.6?'siege':'naval'; let k=null,x,z;
+  if(type==='siege'){ const cand=S.islands.filter(i=>i.disc&&!(ISL[i.k].alt)); if(!cand.length) return; const i=pick(cand); k=i.k; x=i.x; z=i.z; }
+  else { for(let t=0;t<80;t++){ x=(Math.random()*2-1)*(WORLD-300); z=(Math.random()*2-1)*(WORLD-300); if(S.islands.every(i=>Math.hypot(i.x-x,i.z-z)>ISL[i.k].R+250)) break; } }
+  const n=type==='siege'?3+Math.floor(Math.random()*2):3; S.war={type,k,x:Math.round(x),z:Math.round(z),day0:S.time.day,en:Array(n).fill(100),al:type==='naval'?[100,100]:[]};
+  banner(type==='siege'?`⚔️ CHIẾN TRANH! Hải tặc vây đánh đảo ${ISL[k].name}!`:'⚔️ HẢI CHIẾN! Hải quân đang giao chiến với hạm đội hải tặc!');
+  toast((type==='siege'?`Tới giải vây đảo <b>${ISL[k].name}</b> trong 3 ngày`:'Tới vùng hải chiến')+' — dấu ⚔️ đỏ trên hải đồ. Thắng được thưởng lớn!',8000); warShips=[]; save(); }
+function warEnsure(){ const W=S.war; if(!W||warShips.length) return; const R0=W.type==='siege'?ISL[W.k].R+90:90;
+  W.en.forEach((hp,i)=>{ if(hp<=0) return; const g=buildShip(2,'pirate',pirateCrew(),[]); shadowize(g); world.add(g); warShips.push({g,side:'e',i,ang:i/W.en.length*TAU,rad:R0+Math.random()*30,sink:0}); });
+  W.al.forEach((hp,i)=>{ if(hp<=0) return; const g=buildShip(3,'navy',[],[]); shadowize(g); world.add(g); warShips.push({g,side:'a',i,ang:i*Math.PI+0.5,rad:R0*0.5,sink:0}); }); }
+function warClear(){ for(const w of warShips) world.remove(w.g); warShips=[]; }
+function warUpdate(dt){ const W=S.war; if(!W) return; const sh=S.ship, dc=Math.hypot(sh.x-W.x,sh.z-W.z); if(dc>1100){ if(warShips.length) warClear(); return; } warEnsure();
+  warFx-=dt; warAtk-=dt; const en=warShips.filter(w=>w.side==='e'&&!w.dead), al=warShips.filter(w=>w.side==='a'&&!w.dead);
+  for(const w of warShips){ const g=w.g; if(w.dead){ w.sink+=dt; g.position.y-=dt*1.2; g.rotation.z+=dt*0.15; if(w.sink>8){ world.remove(g); w.gone=true; } continue; }
+    w.ang+=dt*(w.side==='e'?0.05:0.07); const x=W.x+Math.cos(w.ang)*w.rad, z=W.z+Math.sin(w.ang)*w.rad; g.position.set(x,waveH(x,z,T)+0.4,z); g.rotation.y=-w.ang; g.userData.crewChars.forEach(c=>{ c.a.mode='hammer'; animChar(c,dt,T); }); }
+  warShips=warShips.filter(w=>!w.gone);
+  if(warFx<=0&&dc<900){ warFx=0.8+Math.random()*1.2; const a=pick(en); if(a){ if(W.type==='siege'){ const isl=islandOf(W.k), ang=Math.random()*TAU, tx=isl.x+Math.cos(ang)*ISL[W.k].R*0.7, tz=isl.z+Math.sin(ang)*ISL[W.k].R*0.7; cannon(a.g.position,{x:tx,z:tz}); setTimeout(()=>puff(tx,terrainH(visOf(W.k).L,tx-isl.x,tz-isl.z)+2,tz,0xff8a30,3,1.5,3),700); }
+      else if(al.length){ const b=pick(al); if(Math.random()<0.5) cannon(a.g.position,b.g.position); else cannon(b.g.position,a.g.position); if(Math.random()<0.3){ W.en[a.i]=Math.max(0,W.en[a.i]-6); } } } }
+  // người chơi tham chiến
+  if(S.mode==='sea'&&!evScene&&en.length){ const tgt=en.reduce((b,w)=>{ const d=Math.hypot(w.g.position.x-sh.x,w.g.position.z-sh.z); return d<b.d?{w,d}:b; },{w:null,d:1e9});
+    if(tgt.w&&tgt.d<95&&warAtk<=0){ warAtk=1.6; const pw=armyPower(); cannon(sh,tgt.w.g.position); W.en[tgt.w.i]=Math.max(0,W.en[tgt.w.i]-(10+pw*0.35)); if(Math.random()<0.6){ cannon(tgt.w.g.position,sh); S.hull=Math.max(1,S.hull-Math.max(1,7-pw*0.05)); }
+      if(W.en[tgt.w.i]<=0){ tgt.w.dead=true; banner('💥 Đánh chìm một tàu hải tặc!'); } } }
+  for(const w of warShips) if(w.side==='e'&&!w.dead&&W.en[w.i]<=0) w.dead=true;
+  if(W.en.every(h=>h<=0)) winWar(); }
+function winWar(){ const W=S.war, g2=500+150*W.en.length; S.gold+=g2; if(W.k) S.rep[W.k]=Math.min(100,(S.rep[W.k]||0)+15); S.morale=Math.min(100,S.morale+12);
+  banner(`🏆 CHIẾN THẮNG! +${g2}💰`); toast(W.type==='siege'?`Đảo <b>${ISL[W.k].name}</b> được giải vây! Danh tiếng +15⭐`:'Hải quân cảm ơn sự giúp đỡ của bạn!',6000); S.war=null; setTimeout(warClear,9000); save(); }
+function loseWar(){ const W=S.war; if(W.type==='siege'){ S.occupied={k:W.k,until:S.time.day+4}; toast(`🏴‍☠️ Đảo <b>${ISL[W.k].name}</b> đã bị hải tặc chiếm đóng! Giá cả tăng vọt trong 4 ngày.`,8000); } else toast('⚓ Trận hải chiến đã kết thúc mà không có bạn.',5000); S.war=null; warClear(); }
 // --- ĐẢO TITAN: người khổng lồ đi tuần, tàn tích, lò rèn huyền thoại
 function decoTitan(vis,L,g,rng){ const st=M(0x9a9488,{flatShading:true}), dk=M(0x6a6458,{flatShading:true}); vis.giants=[];
   // vòng đá Titan
@@ -2105,7 +2316,7 @@ function decoDino(vis,L,g,rng){ vis.dinos=[]; const wood=M(0x6a4a2a), bone=M(0xf
     for(let k=0;k<4;k++){ const a=k*1.6; mk(GEO.sph,M(pick([0xf0e6c8,0xd8e8c0,0xe8d0b0],rng)),0.55,0.75,0.55,p.x+Math.cos(a)*0.7,p.y+0.75,p.z+Math.sin(a)*0.7,g); }
     vis.circ.push({x:p.x,z:p.z,r:2.4}); vis.pois.push({x:p.x,z:p.z,icon:'🥚',name:'Tổ trứng khủng long'}); }
   // đầm lầy hắc ín
-  const tp=spot(rng,L,vis,9,0.8,0.4); if(tp){ const t=new THREE.Mesh(new THREE.CircleGeometry(8,24).rotateX(-Math.PI/2),new THREE.MeshStandardMaterial({color:0x1a1612,roughness:0.08,metalness:0.3})); t.position.set(tp.x,tp.y+0.15,tp.z); g.add(t); vis.circ.push({x:tp.x,z:tp.z,r:8}); vis.pois.push({x:tp.x,z:tp.z,icon:'🫧',name:'Đầm lầy hắc ín'}); }
+  const tp=spot(rng,L,vis,9,0.8,0.4); if(tp){ const t=new THREE.Mesh(new THREE.CircleGeometry(8,24).rotateX(-Math.PI/2),new THREE.MeshStandardMaterial({color:0x1a1612,roughness:0.08,metalness:0.3})); t.position.set(tp.x,tp.y+0.15,tp.z); g.add(t); vis.circ.push({x:tp.x,z:tp.z,r:8}); vis.pois.push({x:tp.x,z:tp.z,icon:'🌀',name:'Đầm lầy hắc ín'}); }
   // khủng long
   for(const [n,c,mr] of [['Trex',1,0.7],['Velociraptor',3,0.8],['Triceratops',2,0.85],['Stegosaurus',2,0.85],['Apatosaurus',2,0.8],['Parasaurolophus',3,0.88]]){
     const home=spot(rng,L,vis,8,mr,0.5); if(!home) continue; for(let k=0;k<c;k++){ for(let t=0;t<10;t++){ const x=home.x+(rng()-.5)*14, z=home.z+(rng()-.5)*14; if(dinoOk(L,x,z)){ spawnDino(vis,L,n,x,z,rng); break; } } } }
@@ -2222,7 +2433,7 @@ function buildIsland(isl,idx){
   for(const s of L.slots) vis.buildings.push(makeBuilding(vis,L,s,rng));
   for(const s of L.stalls) vis.buildings.push(makeStall(vis,L,s,rng));
   vis.buildings.push(makeBuilding(vis,L,{type:'shipyard',x:L.yard.x,z:L.yard.z,rot:L.yard.rot},rng));
-  ({flora:decoFlora,desert:decoDesert,coral:decoCoral,ice:decoIce,volcano:decoVolcano,fort:decoFort,lab:decoLab,dino:decoDino,sky:decoSky,titan:decoTitan})[isl.k](vis,L,g,rng);
+  ({flora:decoFlora,desert:decoDesert,coral:decoCoral,ice:decoIce,volcano:decoVolcano,fort:decoFort,lab:decoLab,dino:decoDino,sky:decoSky,titan:decoTitan,abyss:decoAbyss})[isl.k](vis,L,g,rng);
   { const pk=dv(L.pa+Math.PI), SP={desert:['⛰️','Núi thiêng',0.45],volcano:['🌋','Miệng núi lửa',0.45],ice:['🏔️','Sông băng',0.5],flora:['🌳','Rừng đại thụ',0.5],coral:['🪸','Rạn san hô',0.6]}[L.k]; if(SP) vis.pois.push({x:pk.x*L.R*SP[2],z:pk.z*L.R*SP[2],icon:SP[0],name:SP[1]}); if(L.oasis) vis.pois.push({x:L.oasis.x,z:L.oasis.z,icon:'🏝️',name:'Ốc đảo'}); }
   decoVeg(vis,L,g,rng);
   makeResidents(vis,L,rng,isl);
@@ -2438,7 +2649,7 @@ function hud(){
 }
 let helpOpen=true; setTimeout(()=>{ helpOpen=false; if(S) setHelp(); },40000);
 function setHelp(){ if(!helpOpen){ $('help').innerHTML='<kbd>H</kbd> xem phím tắt'; return; } $('help').innerHTML=S.cabin?`<kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> đi lại trong khoang · <kbd>Shift</kbd> chạy · <kbd>E</kbd> tương tác<br>kéo chuột xoay góc nhìn · <kbd>C</kbd> lên boong · <kbd>B</kbd> thuyền · <kbd>P</kbd> menu`:S.mode==='sea'
-  ?`<kbd>V</kbd> góc tay lái · <kbd>C</kbd> vào khoang · <kbd>W</kbd>/<kbd>S</kbd> tăng/giảm ga · <kbd>A</kbd>/<kbd>D</kbd> bẻ lái · <kbd>Space</kbd> dừng · <kbd>F</kbd> câu cá<br><kbd>E</kbd> cập bến · <kbd>B</kbd> thuyền · <kbd>J</kbd> nhiệm vụ · <kbd>M</kbd> bản đồ · <kbd>P</kbd> menu & lưu · <kbd>Q</kbd> vũ khí · <kbd>Y</kbd> máy bay · <kbd>R</kbd> cưỡi rồng · <kbd>H</kbd> ẩn`
+  ?`<kbd>V</kbd> góc tay lái · <kbd>C</kbd> vào khoang · <kbd>W</kbd>/<kbd>S</kbd> tăng/giảm ga · <kbd>A</kbd>/<kbd>D</kbd> bẻ lái · <kbd>Space</kbd> dừng · <kbd>F</kbd> câu cá<br><kbd>E</kbd> cập bến · <kbd>B</kbd> thuyền · <kbd>J</kbd> nhiệm vụ · <kbd>M</kbd> bản đồ · <kbd>P</kbd> menu & lưu · <kbd>Q</kbd> vũ khí · <kbd>Y</kbd> máy bay · <kbd>R</kbd> thú cưỡi · <kbd>U</kbd> tàu ngầm · <kbd>H</kbd> ẩn`
   :`<kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> đi bộ · <kbd>Shift</kbd> chạy · <kbd>E</kbd> nói chuyện / tương tác<br>kéo chuột xoay góc nhìn · <kbd>B</kbd> thuyền · <kbd>T</kbd> về thuyền · <kbd>J</kbd> nhiệm vụ · <kbd>M</kbd> bản đồ đảo · <kbd>P</kbd> menu · <kbd>Q</kbd> vũ khí · <kbd>Y</kbd> máy bay · <kbd>R</kbd> cưỡi rồng · <kbd>H</kbd> ẩn`; }
 let QL=1; try{ const q=localStorage.getItem('htvd_q'); if(q!=null) QL=+q; }catch(e){}
 let HQ=QL>0, VEG_DIST=700;
@@ -2460,6 +2671,8 @@ function drawMap(cv,big){
   for(const isl of S.islands){ if(!isl.disc) continue; const d=ISL[isl.k]; ctx.fillStyle=d.color; ctx.beginPath(); ctx.arc(tx(isl.x),tx(isl.z),Math.max(3,d.R*sc),0,TAU); ctx.fill();
     if(big){ ctx.fillStyle='#fff'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center'; ctx.fillText(d.name,tx(isl.x),tx(isl.z)-d.R*sc-10); } }
   if(S.zones&&S.zoneSeen) for(const o of S.zones){ if(!S.zoneSeen[o.x+','+o.z]) continue; ctx.strokeStyle={current:'#9fe8ff',glow:'#5affe0',whirl:'#ff6a6a',warm:'#ffc070'}[o.type]; ctx.lineWidth=big?2:1; ctx.beginPath(); ctx.arc(tx(o.x),tx(o.z),Math.max(3,o.r*sc),0,TAU); ctx.stroke(); if(big){ ctx.font='14px sans-serif'; ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(ZONE_INFO[o.type].icon,tx(o.x),tx(o.z)); } }
+  if(S.bermuda){ ctx.strokeStyle='#c050ff'; ctx.lineWidth=big?2.5:1.5; ctx.setLineDash([6,4]); ctx.beginPath(); S.bermuda.pts.forEach((q,i)=>i?ctx.lineTo(tx(q.x),tx(q.z)):ctx.moveTo(tx(q.x),tx(q.z))); ctx.closePath(); ctx.stroke(); ctx.setLineDash([]); if(big){ ctx.fillStyle='#e0a0ff'; ctx.font='13px sans-serif'; ctx.textAlign='center'; ctx.fillText('⚠️ Tam giác quỷ',tx(S.bermuda.x),tx(S.bermuda.z)); } }
+  if(S.war){ ctx.fillStyle='#ff4040'; ctx.font=`${big?24:14}px sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('⚔️',tx(S.war.x),tx(S.war.z)); }
   for(const q of S.quests){ if((q.type==='patrol'||q.type==='ambush')&&!q.reached){ ctx.fillStyle='#ff6a6a'; ctx.font=`${big?20:12}px sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('⚑',tx(q.tx),tx(q.tz)); } if(q.type==='survey'&&!q.reached){ ctx.strokeStyle='#ffd27a'; ctx.lineWidth=2; ctx.setLineDash([4,3]); ctx.beginPath(); ctx.arc(tx(q.zx),tx(q.zz),Math.max(5,q.zr*sc),0,TAU); ctx.stroke(); ctx.setLineDash([]); } }
   const px=tx(S.ship.x), pz=tx(S.ship.z), h=S.ship.h, s=big?9:6; ctx.fillStyle='#ffd27a'; ctx.beginPath();
   ctx.moveTo(px+Math.sin(h)*s,pz-Math.cos(h)*s); ctx.lineTo(px+Math.sin(h+2.5)*s*0.7,pz-Math.cos(h+2.5)*s*0.7); ctx.lineTo(px+Math.sin(h-2.5)*s*0.7,pz-Math.cos(h-2.5)*s*0.7); ctx.fill();
@@ -2909,7 +3122,7 @@ const CAB_L=[]; for(let i=0;i<4;i++){ const l=new THREE.PointLight(0xffdcb0,10,1
 const ROOMX={storage:-15,bedroom:-5,dining:5,living:15}, cabCam={yaw:-Math.PI/2,pitch:0.62,dist:5.4}; let cabRoom=-1, cabSnap=false;
 const CAB_SPOTS=[[13.5,-0.6,Math.PI*0.6],[16.5,1.6,-Math.PI*0.7],[6.5,1.4,Math.PI],[3.2,1.8,Math.PI/2],[-4.5,1.6,0],[-2,-1,Math.PI]];
 const DECOR_POS={rug:['living',0.8,0.01,-1.4,0],plant:['living',3.9,0,3.7,0],painting:['living',1,2.15,-4.52,0],guitar:['living',-1.4,0.02,-4.2,0],clock:['living',-4.4,0,3.9,Math.PI],globe:['living',1,0.45,-2.2,0],
-  sv_desert:['living',-3.6,0.02,-4.0,0],sv_volcano:['living',3.6,0.02,-3.9,0],sv_fort:['living',-2.4,3.02,4.2,Math.PI],sv_lab:['bedroom',1.8,0.02,-3.9,0],sv_dino:['living',-1.2,0.02,-3.9,0],sv_sky:['bedroom',-1.0,3.0,0,0],sv_titan:['living',1.2,0.02,3.9,Math.PI],lamp:['bedroom',0,3.3,0,0],curtain:['bedroom',2.5,2.05,4.5,Math.PI],teddy:['bedroom',2.8,0.72,-3.5,0],sv_flora:['bedroom',0.9,0.82,-3.85,0],sv_ice:['bedroom',-4.3,2.42,-3.85,0],
+  sv_desert:['living',-3.6,0.02,-4.0,0],sv_volcano:['living',3.6,0.02,-3.9,0],sv_fort:['living',-2.4,3.02,4.2,Math.PI],sv_lab:['bedroom',1.8,0.02,-3.9,0],sv_dino:['living',-1.2,0.02,-3.9,0],sv_sky:['bedroom',-1.0,3.0,0,0],sv_titan:['living',1.2,0.02,3.9,Math.PI],sv_abyss:['bedroom',3.0,0.02,3.9,Math.PI],lamp:['bedroom',0,3.3,0,0],curtain:['bedroom',2.5,2.05,4.5,Math.PI],teddy:['bedroom',2.8,0.72,-3.5,0],sv_flora:['bedroom',0.9,0.82,-3.85,0],sv_ice:['bedroom',-4.3,2.42,-3.85,0],
   candle:['dining',-0.9,1.08,-2.2,0],vase:['dining',1,1.08,-2.2,0],sv_coral:['dining',-3.2,2.15,-3,0]};
 let cabinG=null, cabinCrew=[], cabinInteract=[], cabinBoxes=[], cabinDecor=[], cabinBerths=[], cabinSeats=[], cabinFire=[], cabinPortMat=null;
 const PORT_TEX=(()=>{ const c=document.createElement('canvas'); c.width=c.height=128; const g=c.getContext('2d'); const gr=g.createLinearGradient(0,0,0,128); gr.addColorStop(0,'#8fd0ff'); gr.addColorStop(0.55,'#d6f0ff'); gr.addColorStop(0.56,'#3a9ac8'); gr.addColorStop(1,'#14557a'); g.fillStyle=gr; g.fillRect(0,0,128,128); const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t; })();
@@ -3048,7 +3261,7 @@ function enterIsland(ik){
     S.nodes=S.nodes||{}; if(!S.nodes[ik]||S.nodes[ik].day!==S.time.day) genNodes(ik); refreshCollectibles(vis);
     const tv=S.tavern[ik]; if(!tv||tv.day!==S.time.day){ const sps=[...ISL[ik].species].sort(()=>Math.random()-.5); S.tavern[ik]={day:S.time.day,list:sps.slice(0,3).map(sp=>genCandidate(ik,sp))}; refreshTavern(vis); }
     const pd=dv(L.pa), side=dv(L.pa+Math.PI/2), off=5+(4.2+S.tier*1.3)/2+0.5;
-    S.ship.x=isl.x+L.pierEnd.x+side.x*off; S.ship.z=isl.z+L.pierEnd.z+side.z*off; S.ship.h=L.pa; S.ship.speed=0; S.ship.thr=0; S.ship.alt=ISL[ik].alt||0; S.lift=null;
+    if(!((ISL[ik].alt||0)<0)){ S.ship.x=isl.x+L.pierEnd.x+side.x*off; S.ship.z=isl.z+L.pierEnd.z+side.z*off; S.ship.h=L.pa; S.ship.speed=0; S.ship.thr=0; S.ship.alt=ISL[ik].alt||0; S.lift=null; }
     helmCam=false; S.mode='land'; S.land={k:ik,x:isl.x+pd.x*(L.R+30),z:isl.z+pd.z*(L.R+30),yaw:L.pa+Math.PI}; if(S._landAt){ S.land.x=S._landAt.x; S.land.z=S._landAt.z; S._landAt=null; }
     landCam.yaw=L.pa+Math.PI; refreshShip(); setHelp(); save();
     toast(`🏝️ Chào mừng tới <b>${ISL[ik].name}</b>! Đi vào thị trấn, nói chuyện với cư dân và ghé các cửa hàng.`,6000);
@@ -3057,7 +3270,7 @@ function enterIsland(ik){
 function backToPier(){ if(transit||S.mode!=='land') return; transit=true; fadeTo(()=>{ transit=false; const v=visOf(S.land.k), pd=dv(v.L.pa); S.land.x=v.isl.x+pd.x*(v.L.R+30); S.land.z=v.isl.z+pd.z*(v.L.R+30); S.land.yaw=v.L.pa; landCam.yaw=v.L.pa; toast('⚓ Đã về đầu cầu tàu — nhấn <kbd>E</kbd> để lên thuyền.'); }); }
 function leaveIsland(){ if(mountMesh) dismountDino();
   if(transit) return; transit=true;
-  fadeTo(()=>{ transit=false; S.dockCd=3; S.ship.speed=4; talkTimer=0; $('talk').style.display='none'; const vis=visOf(S.land.k); S.ship.h=vis.L.pa; S.mode='sea'; S.land=null; refreshShip(); setHelp(); save(); toast('⛵ Ra khơi! Chúc thuận buồm xuôi gió.'); });
+  fadeTo(()=>{ transit=false; S.dockCd=3; S.ship.speed=4; talkTimer=0; $('talk').style.display='none'; const vis=visOf(S.land.k); if(vis.L.yOff<0){ S.land=null; const dk=vis.abyssDock; startSubAt(dk.x,dk.y,dk.z,-vis.L.pa); setHelp(); save(); toast('🌀 Rời Thủy Cung — tàu ngầm sẵn sàng'); return; } S.ship.h=vis.L.pa; S.mode='sea'; S.land=null; refreshShip(); setHelp(); save(); toast('⛵ Ra khơi! Chúc thuận buồm xuôi gió.'); });
 }
 
 // =====================================================================
@@ -3285,7 +3498,8 @@ function merchantPanel(onBye){
 // TIME / DAYS
 // =====================================================================
 function advanceTime(days){ S.time.t+=days; while(S.time.t>=1){ S.time.t-=1; newDay(); } }
-function newDay(){ if(S.squad>0){ const w=S.squad*8; if(S.gold>=w) S.gold-=w; else { S.squad--; toast('🪖 Không đủ tiền trả lương — 1 lính đánh thuê bỏ đi'); } } if(S.cargo&&S.cargo.r_sky&&S.cargo.r_sky.q>0){ S.cargo.r_sky.q--; if(S.cargo.r_sky.q<=0) delete S.cargo.r_sky; setTimeout(()=>{ addPetDragon('celestial'); banner('🥚✨ Trứng rồng thần đã nở! Bạn có một Thần Long'); },600); }
+function newDay(){ if(S.occupied&&S.time.day>=S.occupied.until){ toast(`🎉 Đảo <b>${ISL[S.occupied.k].name}</b> đã được giải phóng khỏi hải tặc.`); S.occupied=null; }
+  if(S.war&&S.time.day-S.war.day0>=3) loseWar(); else if(!S.war&&S.time.day>2&&Math.random()<0.22) setTimeout(startWar,1500); if(S.squad>0){ const w=S.squad*8; if(S.gold>=w) S.gold-=w; else { S.squad--; toast('🪖 Không đủ tiền trả lương — 1 lính đánh thuê bỏ đi'); } } if(S.cargo&&S.cargo.r_sky&&S.cargo.r_sky.q>0){ S.cargo.r_sky.q--; if(S.cargo.r_sky.q<=0) delete S.cargo.r_sky; setTimeout(()=>{ addPetDragon('celestial'); banner('🥚✨ Trứng rồng thần đã nở! Bạn có một Thần Long'); },600); }
   S.time.day++; const n=S.crew.length+1, cook=jobLv('cook'), carp=jobLv('carp'), foodNeed=n*(1-Math.min(0.6,cook*0.15+(S.upg.kitchen2?0.15:0))), waterNeed=n;
   let dm=-2+cook*1.5; const msgs=[];
   if(S.food>=foodNeed) S.food-=foodNeed; else { S.food=0; dm-=15; msgs.push('🍞 Hết đồ ăn!'); }
@@ -3333,6 +3547,8 @@ addEventListener('keydown',e=>{
   if(paused||!S) return;
   if(S.cabin){ if(k==='e'&&nearInteract) cabinAct(nearInteract); if(k==='c') exitCabin(); return; }
   if(k==='q'&&!modal.classList.contains('show')){ cycleWeapon(); return; }
+  if(k==='u'&&!e.repeat&&!modal.classList.contains('show')){ if(S.mode==='sub') surfaceSub(); else diveSub(); return; }
+  if(S.mode==='sub'){ if(k==='f'&&!e.repeat) scanSea(); if(k==='e'&&!e.repeat) subAct(); if(k===' ') e.preventDefault(); return; }
   if(S.mode==='air'&&k===' '&&!modal.classList.contains('show')){ togglePerch(); e.preventDefault(); return; }
   if(S.mode==='air'&&k==='e'&&plane&&plane.perch){ dismountHere(); return; }
   if(k==='y'&&!e.repeat&&!modal.classList.contains('show')){ if(S.mode==='air') landPlane(); else takeOff('plane'); return; }
@@ -3350,7 +3566,7 @@ addEventListener('keydown',e=>{
 });
 addEventListener('keyup',e=>{ keys[e.key.toLowerCase()]=false; });
 renderer.domElement.addEventListener('pointerdown',e=>{ dragging=true; lx=e.clientX; ly=e.clientY; shotDown={x:e.clientX,y:e.clientY,t:performance.now()}; });
-let shotDown=null; renderer.domElement.addEventListener('pointerup',e=>{ if(shotDown&&S&&(S.equip||(S.mode==='air'&&plane&&plane.kind==='dragon'))&&!paused&&!S.cabin&&!modal.classList.contains('show')&&Math.hypot(e.clientX-shotDown.x,e.clientY-shotDown.y)<6&&performance.now()-shotDown.t<400) shoot(e.clientX,e.clientY); shotDown=null; });
+let shotDown=null; renderer.domElement.addEventListener('pointerup',e=>{ if(shotDown&&S&&(S.equip||S.mode==='sub'||(S.mode==='air'&&plane&&plane.kind==='dragon'))&&!paused&&!S.cabin&&!modal.classList.contains('show')&&Math.hypot(e.clientX-shotDown.x,e.clientY-shotDown.y)<6&&performance.now()-shotDown.t<400) shoot(e.clientX,e.clientY); shotDown=null; });
 addEventListener('pointerup',()=>{ dragging=false; lastDrag=performance.now(); });
 addEventListener('pointermove',e=>{ if(!dragging||!S) return; const dx=e.clientX-lx, dy=e.clientY-ly; lx=e.clientX; ly=e.clientY;
   if(S.cabin){ cabCam.yaw+=dx*0.006; cabCam.pitch=clamp(cabCam.pitch+dy*0.004,0.1,1.1); } else if(S.mode==='sea'){ camYaw-=dx*0.006; camPitch=clamp(camPitch+dy*0.004,0.06,1.2); } else { landCam.yaw+=dx*0.006; landCam.pitch=clamp(landCam.pitch+dy*0.004,0.05,1.25); } });
@@ -3398,11 +3614,11 @@ function seaUpdate(dt){
   const lim=WORLD+190; if(Math.abs(sh.x)>lim||Math.abs(sh.z)>lim){ sh.x=clamp(sh.x,-lim,lim); sh.z=clamp(sh.z,-lim,lim); sh.speed*=0.5; if(performance.now()-edgeWarn>5000){ edgeWarn=performance.now(); toast('🌫️ Sương mù dày đặc… không thể đi xa hơn về phía này.'); } }
   dockTarget=null; let nearD=1e9;
   for(const isl of S.islands){ const R=ISL[isl.k].R, dx=sh.x-isl.x, dz=sh.z-isl.z, d=Math.hypot(dx,dz); nearD=Math.min(nearD,d-R);
-    const here=!!ISL[isl.k].alt===((sh.alt||0)>40);
+    const ia=ISL[isl.k].alt||0, here=ia<0?false:(ia>0)===((sh.alt||0)>40);
     if(here&&d<R*0.95){ const k=R*0.95/d; sh.x=isl.x+dx*k; sh.z=isl.z+dz*k; if(Math.abs(sh.speed)>6){ const dmg=Math.round(Math.abs(sh.speed)*0.8); S.hull-=dmg; toast(`💥 Thuyền mắc cạn! -${dmg} thân thuyền`); } sh.speed*=-0.3; }
     if(here&&d<R+55) dockTarget=isl.k;
     if(!isl.disc&&d<discoverR()){ isl.disc=true; S.markers=S.markers.filter(m=>!(m.type==='island'&&m.k===isl.k)); toast(`🏝️ Phát hiện đảo mới: <b>${ISL[isl.k].name}</b> — ${ISL[isl.k].sub}!`,6000); save(); } }
-  skyShip(dt);
+  skyShip(dt); if(S.bermuda) bermudaUpdate(dt);
   const er=discoverR()*0.75, gx=Math.floor((sh.x+WORLD+200)/CELL), gz=Math.floor((sh.z+WORLD+200)/CELL), rc=Math.ceil(er/CELL);
   for(let z=gz-rc;z<=gz+rc;z++) for(let x=gx-rc;x<=gx+rc;x++){ if(x<0||z<0||x>=GRID||z>=GRID) continue; const cx=(x+.5)*CELL-WORLD-200, cz=(z+.5)*CELL-WORLD-200; if(Math.hypot(cx-sh.x,cz-sh.z)<er) S.explored[z*GRID+x]=1; }
   for(const tr of [...S.treasures]){ if(Math.hypot(tr.x-sh.x,tr.z-sh.z)<24){ const g=ri(150,350), id=pick(['ngoc','tuong','mat','tt']), n=Math.min(cargoCap()-cargoUsed(),ri(2,4));
@@ -3588,11 +3804,12 @@ function visuals(dt){
   if(clouds){ clouds.children.forEach((c,ci)=>c.visible=ci<5+(WX.cloud+stormMix)*17); clouds.userData.mat.color.copy(cA.set(0xffffff)).lerp(cB.set(0x6a7078),Math.min(1,WX.cloud*0.65+stormMix*0.3)); }
   if(prevStorm>0&&S.storm<=0&&S.mode==='sea') rainbowT=60; prevStorm=S.storm; if(rainbowT>0) rainbowT-=dt;
   if(rainbow){ rainbow.visible=rainbowT>0&&day>0.2; if(rainbow.visible){ const away=_v3.copy(skyU.sunDir.value).setY(0).normalize().negate(); rainbow.position.set(sh.x+away.x*520,-20,sh.z+away.z*520); rainbow.lookAt(camera.position.x,-20,camera.position.z); const op=Math.min(1,rainbowT/10)*0.2*day; rainbow.children.forEach(m=>m.material.opacity=op); } }
-  updateCamera(dt);
+  updateCamera(dt); underwaterFX(dt); if(S.mode!=='land'||true) warUpdate(dt);
 }
 function updateCamera(dt){
   if(window.__camOverride){ const o=window.__camOverride; camera.position.set(o.p[0],o.p[1],o.p[2]); camera.lookAt(o.t[0],o.t[1],o.t[2]); return; }
   if(S.mode==='air'){ airCamera(dt); return; }
+  if(S.mode==='sub'){ subCamera(dt); return; }
   const k=1-Math.exp(-dt*4);
   if(S.mode==='sea'){
     const sh=S.ship;
@@ -3626,13 +3843,14 @@ function loop(){
   const dt=Math.min(0.05,clock.getDelta()); fpsN++; fpsT+=dt; if(fpsT>=1){ const el=$('fps'); if(el&&S) el.textContent=fpsN+' FPS · '+QNAME[QL].split(' ')[0]; fpsN=0; fpsT=0; }
   if(S&&world){
     if(!paused){ S.time.t+=dt/DAY_SECONDS*(S.mode==='land'?0.5:1); if(S.time.t>=1){ S.time.t-=1; newDay(); }
-      weatherUpdate(dt); skyUpdate(dt); if(S.cabin) cabinUpdate(dt); else if(S.mode==='air') airUpdate(dt); else if(S.mode==='sea') seaUpdate(dt); else landUpdate(dt);
+      weatherUpdate(dt); skyUpdate(dt); if(S.cabin) cabinUpdate(dt); else if(S.mode==='air') airUpdate(dt); else if(S.mode==='sub') subUpdate(dt); else if(S.mode==='sea') seaUpdate(dt); else landUpdate(dt);
       autosave+=dt; if(autosave>20){ autosave=0; save(); } }
     visuals(dt); { const air=S.mode==='air'; renderer.shadowMap.autoUpdate=!air; if(air&&fpsN%3===0) renderer.shadowMap.needsUpdate=true; }
     if(talkTimer>0){ talkTimer-=dt; if(talkTimer<=0) $('talk').style.display='none'; }
     hudTimer-=dt; if(hudTimer<=0){ hudTimer=0.1; hud(); const p=$('prompt');
       let msg='';
       if(!paused&&S.cabin){ if(nearInteract) msg=`Nhấn <kbd>E</kbd> — ${nearInteract.label}`; }
+      else if(!paused&&S.mode==='sub') msg=subHint;
       else if(!paused&&S.mode==='sea'&&dockTarget&&!(S.dockCd>0)) msg=`Nhấn <kbd>E</kbd> để cập bến 🏝️ <b>${ISL[dockTarget].name}</b>`;
       else if(!paused&&S.mode==='sea'&&!S.cabin&&skyHint) msg=skyHint;
       else if(!paused&&S.mode==='sea'&&!S.cabin){ if(fishing.st==='wait') msg='🎣 Đang chờ cá cắn… <span class="sm">(F để thu cần)</span>'; else if(fishing.st==='idle'&&Math.abs(S.ship.speed)<1.5&&S.rod) msg='Nhấn <kbd>F</kbd> để thả câu 🎣'; }
@@ -3660,7 +3878,7 @@ function startGame(state,isNew){
   for(const k of Object.keys(ISL)) if(!S.islands.some(i=>i.k===k)){ let p; for(let t=0;t<3000;t++){ p={x:(Math.random()*2-1)*(WORLD-220),z:(Math.random()*2-1)*(WORLD-220)}; if(S.islands.every(q=>Math.hypot(q.x-p.x,q.z-p.z)>660)) break; } S.islands.push({k,x:Math.round(p.x),z:Math.round(p.z),disc:false,visited:false}); }
   for(const k in ISL){ S.market[k]??={}; for(const id in ITEMS) if(!S.market[k][id]){ S.market[k][id]={sat:1,noise:0.85+Math.random()*0.3}; if(ITEMS[id].origin===k&&!ITEMS[id].rare) S.market[k][id].stock=ri(18,30); } }
   if(S.wv!==3){ S.explored=new Array(GRID*GRID).fill(0); S.wv=3; }
-  if(S.mode==='air') S.mode='sea'; S.weap??={}; S.ammo??={}; S.huntLog??={bird:0,dragon:0}; S.plane??=false; S.pets??=[]; S.squad??=0; S.pgear??={}; S.cannon??=0;
+  if(S.mode==='air') S.mode='sea'; S.weap??={}; S.ammo??={}; S.huntLog??={bird:0,dragon:0}; S.plane??=false; S.pets??=[]; S.squad??=0; S.pgear??={}; S.cannon??=0; S.sub??=false; S.subHull??=100; S.codex??={}; if(!S.bermuda) S.bermuda=genBermuda(); if(S.mode==='sub') S.mode='sea';
   S.wx??={type:'clear',left:200}; S.zones??=genZones(); S.zoneSeen??={}; S.nodes??={}; S.isExp??={}; S.poiSeen??={}; S.fishBoost??=0; for(const k2 in WEATHER) if(k2===S.wx.type) Object.assign(WX,WEATHER[k2]);
   buildWorld(); showHUD(); closeModal(); for(const v of islandVis) refreshCollectibles(v);
   if(S.mode==='land'){ const v=visOf(S.land.k), pd=dv(v.L.pa); S.land.x=v.isl.x+pd.x*(v.L.R+30); S.land.z=v.isl.z+pd.z*(v.L.R+30); }
@@ -3714,7 +3932,7 @@ function intro(){
     <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">${sv?`<button class="pri" data-a="cont">Tiếp tục (Ngày ${sv.time.day})</button>`:''}<button ${sv?'':'class="pri"'} data-a="new">Hành trình mới</button></div></div>`,
     a=>{ if(a==='cont') startGame(sv,false); if(a==='new'){ try{localStorage.removeItem(SAVE_KEY);}catch(e){} creator(); } },'intro',true);
 }
-window.__game={openForge,armyPower,breathFX,get T(){return T},togglePerch,skyShip,openMountPicker,mountDino,addPetPtero,get mountMesh(){return mountMesh},DRAGON_TYPES,DINO_MODELS,hitDino,activeDinos,openTestPanel,addPetDragon,mountDragon,get QL(){return QL},GPU_NAME,get landCam(){return landCam},get camera(){return camera},openArmory,takeOff,landPlane,spawnSky,hitSky,shoot,cycleWeapon,setEquip,get SKY(){return SKY},get plane(){return plane},get HAS_ASSETS(){return HAS_ASSETS},get HAS_CHARS(){return HAS_CHARS},CHARS,MODELS,WX,openIslandMap,genZones,evChest,evDistress,evFishSchool,evMystery,showCatchCard,get UW(){return UW},refreshShip,get cabin(){return {inter:cabinInteract}},enterCabin,exitCabin,cabinAct,genQuests,renderer,get ev(){return evScene},evPirate,evWhale,evStorm,evWreck,evBottle,evMerchant,evCalm,get fishing(){return fishing},fishKey,openShipPanel,catchFish,get S(){return S},islandVis:()=>islandVis,enterIsland,evPirate,interact,get near(){return nearInteract}}; // hook debug (gỡ khi phát hành)
+window.__game={leaveIsland,diveSub,surfaceSub,startWar,winWar,get SUB(){return SUB},get SEA_CR(){return SEA_CR},spawnSea,hitSea,scanSea,subAct,evGhost,get warShips(){return warShips},openForge,armyPower,breathFX,get T(){return T},togglePerch,skyShip,openMountPicker,mountDino,addPetPtero,get mountMesh(){return mountMesh},DRAGON_TYPES,DINO_MODELS,hitDino,activeDinos,openTestPanel,addPetDragon,mountDragon,get QL(){return QL},GPU_NAME,get landCam(){return landCam},get camera(){return camera},openArmory,takeOff,landPlane,spawnSky,hitSky,shoot,cycleWeapon,setEquip,get SKY(){return SKY},get plane(){return plane},get HAS_ASSETS(){return HAS_ASSETS},get HAS_CHARS(){return HAS_CHARS},CHARS,MODELS,WX,openIslandMap,genZones,evChest,evDistress,evFishSchool,evMystery,showCatchCard,get UW(){return UW},refreshShip,get cabin(){return {inter:cabinInteract}},enterCabin,exitCabin,cabinAct,genQuests,renderer,get ev(){return evScene},evPirate,evWhale,evStorm,evWreck,evBottle,evMerchant,evCalm,get fishing(){return fishing},fishKey,openShipPanel,catchFish,get S(){return S},islandVis:()=>islandVis,enterIsland,evPirate,interact,get near(){return nearInteract}}; // hook debug (gỡ khi phát hành)
 loadAssets().then(intro);
 loop();
 </script>

@@ -36,6 +36,8 @@ canvas{display:block}
 kbd{background:rgba(255,255,255,.14);border-radius:4px;padding:0 5px;color:var(--txt);font-family:inherit;font-size:11px}
 #modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(5,10,20,.45);z-index:10}
 #modal.show{display:flex}
+#modal.intro{background:rgba(5,10,20,.12)}
+#modal.intro .panel{background:rgba(10,20,38,.78);backdrop-filter:blur(3px);width:min(900px,94vw)}
 #modal .panel{width:min(880px,94vw);max-height:88vh;overflow:auto;padding:20px 24px;background:rgba(12,22,40,.92)}
 #modal.side{justify-content:flex-end;align-items:flex-start;background:transparent;pointer-events:none}
 #modal.side .panel{pointer-events:auto;width:min(520px,94vw);max-height:calc(100vh - 28px);margin:14px;background:rgba(12,22,40,.86)}
@@ -3356,7 +3358,7 @@ function toast(msg,ms=3800){ const now=performance.now(); if(toastSeen[msg]&&now
   const d=document.createElement('div'); d.className='toast glass'; d.innerHTML=msg; toastsEl.appendChild(d); setTimeout(()=>d.remove(),ms); while(toastsEl.children.length>4) toastsEl.firstChild.remove(); }
 const modal=$('modal'), panel=modal.querySelector('.panel');
 let paused=true, modalHandler=null, modalLocked=false, modalKind=null;
-function openModal(html,handler,kind='gen',locked=false,side=false){ const keep=side&&modal.classList.contains('show')&&modalKind===kind?panel.scrollTop:0; panel.innerHTML=html; modal.classList.add('show'); modal.classList.toggle('side',side); paused=true; modalHandler=handler; modalLocked=locked; modalKind=kind; panel.scrollTop=keep; }
+function openModal(html,handler,kind='gen',locked=false,side=false){ const keep=side&&modal.classList.contains('show')&&modalKind===kind?panel.scrollTop:0; panel.innerHTML=html; modal.classList.add('show'); modal.classList.toggle('side',side); modal.classList.toggle('intro',kind==='intro'); paused=true; modalHandler=handler; modalLocked=locked; modalKind=kind; panel.scrollTop=keep; }
 function closeModal(){ modal.classList.remove('show','side'); paused=false; modalHandler=null; modalLocked=false; modalKind=null; svcFocus=null; }
 panel.addEventListener('click',e=>{ const b=e.target.closest('[data-a]'); if(!b||b.disabled) return; modalHandler&&modalHandler(b.dataset.a,b.dataset); });
 function fadeTo(cb){ const f=$('fade'); f.style.opacity=1; setTimeout(()=>{ cb(); setTimeout(()=>f.style.opacity=0,80); },460); }
@@ -4902,7 +4904,7 @@ function loop(){
 // START / CHARACTER CREATOR
 // =====================================================================
 function showHUD(){ if(GPU_WEAK) setTimeout(()=>toast('⚠️ Trình duyệt đang chạy bằng <b>card onboard ('+GPU_NAME.replace(/ANGLE \(|\)/g,'').slice(0,40)+')</b> nên dễ lag. Xem cách chuyển sang card NVIDIA trong <b>Menu (P)</b>.',12000),2500); for(const id of ['stats','mapbox','help']) $(id).style.display=''; $('loading').style.display='none'; setHelp(); }
-function startGame(state,isNew){
+function startGame(state,isNew){ introBg(false);
   S=state; S.cabin=false; S.rod??=0; S.bait??=0; S.baitP??=0; S.modules??=[]; S.fishLog??={}; S.rep??={}; S.quests??=[]; S.qboard??={}; S.decor??=[]; S.upg??={}; S.snack??={}; S.stats.pirateWins??=0;
   for(const k of Object.keys(ISL)) if(!S.islands.some(i=>i.k===k)){ let p; for(let t=0;t<3000;t++){ p={x:(Math.random()*2-1)*(WORLD-220),z:(Math.random()*2-1)*(WORLD-220)}; if(S.islands.every(q=>Math.hypot(q.x-p.x,q.z-p.z)>660)) break; } S.islands.push({k,x:Math.round(p.x),z:Math.round(p.z),disc:false,visited:false}); }
   for(const k in ISL){ S.market[k]??={}; for(const id in ITEMS) if(!S.market[k][id]){ S.market[k][id]={sat:1,noise:0.85+Math.random()*0.3}; if(ITEMS[id].origin===k&&!ITEMS[id].rare) S.market[k][id].stock=ri(18,30); } }
@@ -4983,18 +4985,21 @@ let NEWS=NEWS_DEF, NEWS_TAB='events', newsLoaded=false;
 function loadNews(){ if(newsLoaded||!CLOUD.ok) return; newsLoaded=true; const {fs,db}=CLOUD.fb; fs.getDoc(fs.doc(db,'config','news')).then(d=>{ if(!d.exists()) return; const v=d.data(), conv=a=>Array.isArray(a)?a.map(x=>Array.isArray(x)?x:[x.ic||'•',x.title||'',x.desc||'']):null;
   NEWS={events:conv(v.events)||NEWS_DEF.events,rules:conv(v.rules)||NEWS_DEF.rules,updates:conv(v.updates)||NEWS_DEF.updates}; if(!S&&modalKind==='intro') intro(); }).catch(()=>{}); }
 function newsBoard(){ const tab=(k,l)=>`<button data-a="ntab" data-v="${k}" class="${NEWS_TAB===k?'on':''}">${l}</button>`;
-  return `<div style="margin:14px auto 0;max-width:640px;text-align:left"><div class="tabs" style="justify-content:center">${tab('events','📢 Sự kiện')}${tab('rules','📜 Luật chơi')}${tab('updates','🆕 Cập nhật')}</div>
-    <div style="max-height:150px;overflow:auto;background:rgba(255,255,255,.05);border-radius:10px;padding:6px 10px;margin-top:6px">${(NEWS[NEWS_TAB]||[]).map(([ic,t,d])=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-size:17px">${ic}</span><div><b>${t}</b><div class="sm">${d}</div></div></div>`).join('')}</div></div>`; }
+  return `<div style="margin:12px auto 0;max-width:820px;text-align:left"><div class="tabs" style="justify-content:center">${tab('events','📢 Sự kiện')}${tab('rules','📜 Luật chơi')}${tab('updates','🆕 Cập nhật')}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px;margin-top:8px">${(NEWS[NEWS_TAB]||[]).map(([ic,t,d])=>`<div style="display:flex;gap:8px;padding:7px 9px;background:rgba(255,255,255,.06);border-radius:10px"><span style="font-size:17px">${ic}</span><div><b style="font-size:13px">${t}</b><div class="sm" style="font-size:11.5px;line-height:1.35">${d}</div></div></div>`).join('')}</div></div>`; }
 // --- số người đang chơi / ngoại tuyến (đang chơi = báo online trong 5 phút gần nhất)
 let ONLINE=null, onlineAt=0;
 async function fetchOnline(){ if(!CLOUD.user||Date.now()-onlineAt<60000) return; onlineAt=Date.now(); const {fs,db}=CLOUD.fb, col=fs.collection(db,'profiles');
   try{ const [a,b]=await Promise.all([fs.getCountFromServer(fs.query(col,fs.where('lastSeen','>',Date.now()-5*60000))),fs.getCountFromServer(col)]); ONLINE={on:a.data().count,total:b.data().count}; if(!S&&modalKind==='intro') intro(); }catch(e){ console.warn('online',e); } }
 const onlineLine=()=>ONLINE?`<p class="sm" style="margin-top:6px">🟢 Đang chơi: <b>${ONLINE.on}</b> · ⚫ Ngoại tuyến: <b>${Math.max(0,ONLINE.total-ONLINE.on)}</b> · 👥 Tổng thuyền trưởng: <b>${ONLINE.total}</b></p>`:'';
+function introBg(on){ let bg=document.getElementById('introbg'); if(!on){ if(bg){ bg.style.opacity=0; setTimeout(()=>bg.remove(),500); } return; }
+  if(!bg){ bg=document.createElement('div'); bg.id='introbg'; bg.style.cssText='position:fixed;inset:0;z-index:9;transition:opacity .5s'; bg.innerHTML=document.getElementById('vdart').outerHTML.replace('id="vdart"','').replace('id="vs"','id="vs2"').replace('url(#vs)','url(#vs2)').replace('id="vw"','id="vw2"').replace('url(#vw)','url(#vw2)'); document.body.appendChild(bg); } }
 function intro(){
+  introBg(true);
   { const L=$('loading'); if(L.style.display!=='none'&&!L.dataset.fading){ L.dataset.fading=1; L.style.pointerEvents='none'; L.style.zIndex='0'; L.style.opacity=0; setTimeout(()=>L.style.display='none',600); } } if(!CLOUD.pagehide){ CLOUD.pagehide=1; addEventListener('pagehide',()=>{ if(CLOUD.user&&S){ cloudPush(true); try{ CLOUD.fb.fs.updateDoc(CLOUD.fb.fs.doc(CLOUD.fb.db,'profiles',CLOUD.user.uid),{lastSeen:0}); }catch(e){} } }); }
   if(!CLOUD.init){ CLOUD.init=1; initCloud().then(()=>{ loadNews(); if(CLOUD.ok&&!S&&modalKind==='intro') intro(); }); } if(CLOUD.user) fetchOnline();
   try{ if(sessionStorage.getItem('htvd_new')){ sessionStorage.removeItem('htvd_new'); creator(); return; } }catch(e){} const sv=loadSave();
-  openModal(`<div style="text-align:center"><div class="introart">${document.getElementById('vdart').outerHTML.replace('id="vdart"','').replace('id="vs"','id="vs2"').replace('url(#vs)','url(#vs2)').replace('id="vw"','id="vw2"').replace('url(#vw)','url(#vw2)')}</div><h2 style="font-size:32px;margin-top:4px">Hải Trình Vạn Đảo</h2>
+  openModal(`<div style="text-align:center"><h2 style="font-size:36px;margin:0 0 2px;letter-spacing:.5px;text-shadow:0 3px 12px rgba(0,0,0,.6)">🌊 Hải Trình Vạn Đảo ⛵</h2>
     <h3>Trên chiếc thuyền nan đơn sơ, bạn ra khơi tìm những hòn đảo kỳ lạ giữa đại dương mù sương.</h3>
     <p class="sm" style="max-width:580px;margin:0 auto">Không có bến nhà — mỗi hòn đảo đều có thị trấn riêng với chợ, nhà hàng, quán rượu, kho dầu và xưởng thuyền.
     Lên đảo, đi bộ gặp cư dân, mua bán đặc sản, thuê thủy thủ, nâng cấp thuyền và sống sót qua bão tố, hải tặc giữa biển khơi.</p>

@@ -46,6 +46,11 @@ service cloud.firestore {
         && !('server' in get(userDoc()).data);
     }
 
+    // Bảng tin (sự kiện, luật, cập nhật): ai cũng đọc; chỉ sửa trong trang quản trị Firebase
+    match /config/{doc} {
+      allow read: if true;
+    }
+
     // Hồ sơ công khai (tên, ID, thuyền, thành tựu): ai đăng nhập cũng xem được, chỉ chủ sửa
     match /profiles/{uid} {
       allow read: if signedIn();

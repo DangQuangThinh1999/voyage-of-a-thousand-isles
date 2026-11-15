@@ -3646,7 +3646,7 @@ function socBar(){ let b=document.getElementById('socbar'); const on=!!(CLOUD.us
   b.style.display=on?'flex':'none'; if(!on) return;
   const setB=(id,n)=>{ const sp=b.querySelector('#'+id+' span'); sp.style.display=n>0?'block':'none'; sp.textContent=n>99?'99+':n; };
   setB('sb_msg',[...SOC.chats.values()].filter(chatUnread).length); setB('sb_note',SOC.notes.length-SOC.seen); }
-setInterval(()=>{ if(CLOUD.ok) socBar(); },1500);
+setInterval(()=>{ if(CLOUD.ok) socBar(); if(CLOUD.user&&S&&Date.now()-SOC.lastProf>120000) writeProfile(); },1500);
 function socialStart(){ if(SOC.unsub||!CLOUD.user) return; const {fs,db}=CLOUD.fb, me=CLOUD.user.uid; SOC.ready=false;
   myProfile().then(p=>{ if(p.name) CLOUD.myName=p.name; }).catch(()=>{});
   SOC.unsub=fs.onSnapshot(fs.query(fs.collection(db,'chats'),fs.where('members','array-contains',me),fs.limit(80)),qs=>{
@@ -3662,7 +3662,7 @@ function needLogin(){ if(CLOUD.user) return false; toast('👤 Hãy đăng nhậ
 async function writeProfile(){ if(!CLOUD.user||!S||Date.now()-SOC.lastProf<60000) return; SOC.lastProf=Date.now(); const {fs,db}=CLOUD.fb, lk=S.shipLook||{}, ach=achOf(S);
   if(SOC.myAch){ for(const a of ach) if(!SOC.myAch.includes(a)){ const A=ACH.find(x=>x[0]===a); banner(`🏆 Thành tựu mới: ${A[1]} ${A[2]}!`); addNote('🏆',`Đạt thành tựu <b>${A[1]} ${A[2]}</b>`,()=>openProfile(CLOUD.user.uid)); } } SOC.myAch=ach;
   try{ await fs.setDoc(fs.doc(db,'profiles',CLOUD.user.uid),{name:myName(),server:S.server||'',day:S.time.day,gold:Math.floor(S.gold),tier:S.tier,ship:{hull:lk.hull||'galleon',sail:lk.sail||'square',bow:lk.bow||'none',sailCol:lk.sailCol||'#f4ecd8'},
-    pid:pidOf(CLOUD.user.uid),realm:((S.cult||{}).r)||0,merit:S.merit||0,islands:S.islands.filter(i=>i.disc).length,pets:(S.pets||[]).length,subs:Object.keys(S.subs||{}).length,ach,updated:Date.now()}); }catch(e){ console.warn('profile',e); } }
+    lastSeen:Date.now(),pid:pidOf(CLOUD.user.uid),realm:((S.cult||{}).r)||0,merit:S.merit||0,islands:S.islands.filter(i=>i.disc).length,pets:(S.pets||[]).length,subs:Object.keys(S.subs||{}).length,ach,updated:Date.now()}); }catch(e){ console.warn('profile',e); } }
 // --- lọc từ thô tục (che bằng ****) + cảnh cáo / cấm chat
 const BAD_W=new Set(['lồn','lìn','cặc','buồi','đụ','địt','đéo','đĩ','đù','đcm','đkm','đmm','đm','dm','dcm','dkm','dmm','đéch','vl','vcl','vkl','vcc','cl','clm','cmm','cc','đb','ngu','cứt','fuck','fucking','fck','shit','bitch','dick','pussy','asshole','wtf','dit','dmm','dume','đume','đỵt','loz','cak','cax','dcmm','đĩ','điếm','khốn']);
 const BAD_P=[/óc\s*chó/giu,/con\s*chó/giu,/đồ\s*chó/giu,/mẹ\s*mày/giu,/thằng\s*ngu/giu,/vãi\s*l/giu,/đ[iị]t\s*m/giu];
@@ -3727,6 +3727,7 @@ function openChat(cid){ if(needLogin()) return; if(modalKind==='msgs'||modalKind
   w.querySelector('#cw_av').innerHTML=inf.group?`<div style="width:30px;height:30px;border-radius:50%;background:#2e6da4;display:flex;align-items:center;justify-content:center;font-size:16px">${inf.world?'🌍':'👥'}</div>`:avatar(inf.other,inf.title,30);
   w.querySelector('#cw_title').textContent=inf.title; const x1=w.querySelector('#cw_x1'); x1.style.display=inf.world?'none':'inline-block'; x1.textContent=inf.group?'➕ Mời':'Hồ sơ';
   x1.onclick=()=>{ if(inf.group){ const b=w.querySelector('#cw_add'); b.style.display=b.style.display==='none'?'block':'none'; w.querySelector('#cw_addq').focus(); } else openProfile(inf.other); };
+  if(inf.world){ onlineAt=0; fetchOnline().then(()=>{ const sb=document.getElementById('cw_sub'); if(sb&&SOC.open==='world'&&ONLINE) sb.textContent=`🟢 ${ONLINE.on} người đang chơi · ${ONLINE.total} thuyền trưởng`; }); }
   w.querySelector('#cw_sub').textContent=inf.world?'Mọi thuyền trưởng đều thấy tin nhắn ở đây':inf.group?'Thành viên: '+Object.values(inf.c.names||{}).join(', '):''; w.querySelector('#cw_add').style.display='none';
   const box=w.querySelector('#msgbox'); box.innerHTML='<p class="sm">Đang tải…</p>'; setTimeout(()=>w.querySelector('#msgin').focus(),50);
   const col=cid==='world'?fs.collection(db,'world','global','msgs'):fs.collection(db,'chats',cid,'msgs');
@@ -4900,16 +4901,44 @@ function confirmNewGame(sv,onYes,onNo){ const ship=TIERS[sv.tier]?TIERS[sv.tier]
       if(a==='backup'){ const u=URL.createObjectURL(new Blob([JSON.stringify(sv)],{type:'application/json'})), el=document.createElement('a'); el.href=u; el.download=`hai-trinh-van-dao-ngay${sv.time.day}.json`; document.body.appendChild(el); el.click(); el.remove(); setTimeout(()=>URL.revokeObjectURL(u),3000); toast('📤 Đã tải file lưu — có thể nhập lại ở Menu → Nhập file lưu'); return; }
       closeModal(); if(a==='yes') onYes(); else if(onNo) onNo(); },'confirm',true); }
 function stopPreview(){ if(pv){ pv.stop(); pv=null; } }
+// --- bảng tin ở màn hình đầu (sửa được trong Firebase: Firestore → config → news)
+const NEWS_DEF={
+  events:[['⚔️','Chiến tranh đảo & biển','Mỗi ngày có thể nổ ra vây đảo, hải chiến, không chiến hoặc thủy chiến — tham gia để nhận thưởng lớn, bỏ qua cũng không bị phạt.'],
+    ['📿','Tây Du hộ tống','Gặp thầy trò Đường Tăng trên biển, chở tới chùa Linh Sơn nhận 2.000 vàng, kinh thư và Xá lợi.'],
+    ['👑','Vương quốc Tiên Cá','Lặn tàu ngầm xuống vực sâu nhất đại dương (~245m) để yết kiến Nữ hoàng Tiên Cá.'],
+    ['🌠','Mưa sao băng','Thiên thạch rơi vào ban đêm — vớt Sắt sao băng hoặc cả đoàn cùng ước nguyện.'],
+    ['🎁','Quà tân thủ','Thuyền trưởng mới nhận 1.000 vàng và được tự thiết kế con thuyền đầu tiên.']],
+  rules:[['🤬','Không nói tục, chửi bới','Từ ngữ thô tục tự động bị che ****. Lần 1–2 nhắc nhở, lần 3 bị cấm chat 10 phút.'],
+    ['📢','Không spam, quảng cáo, lừa đảo','Không gửi liên kết lạ, không mua bán tài khoản hay vật phẩm bằng tiền ngoài game.'],
+    ['🏷️','Biệt danh lịch sự','Biệt danh không trùng, không phản cảm. Tên vi phạm có thể bị đổi hoặc xóa.'],
+    ['🛡️','Không gian lận','Dùng hack, sửa dữ liệu, lợi dụng lỗi để trục lợi sẽ bị khóa tài khoản.'],
+    ['🌐','Server','Mỗi server tối đa 1.000 thuyền trưởng, mỗi tài khoản Gmail thuộc 1 server.'],
+    ['🪙','Xu','1 xu = 100đ. Xu đã nạp và đã dùng không được hoàn lại.']],
+  updates:[['💬','Tin nhắn & nhóm','Nhắn tin riêng, lập nhóm, kênh thế giới, tìm bạn bằng biệt danh hoặc ID.'],
+    ['⛵','Xưởng thiết kế thuyền','7 kiểu thân, 6 kiểu buồm, hoa văn, 5 vũ khí mũi tàu.'],
+    ['🚤','5 loại tàu ngầm','Từ Bong Bóng Kính tới Nautilus Đồng.'],
+    ['⚡','Nhẹ & mượt hơn','Mô hình nén còn 1/4 dung lượng, đảo ở xa không còn tốn tài nguyên.']]};
+let NEWS=NEWS_DEF, NEWS_TAB='events', newsLoaded=false;
+function loadNews(){ if(newsLoaded||!CLOUD.ok) return; newsLoaded=true; const {fs,db}=CLOUD.fb; fs.getDoc(fs.doc(db,'config','news')).then(d=>{ if(!d.exists()) return; const v=d.data(), conv=a=>Array.isArray(a)?a.map(x=>Array.isArray(x)?x:[x.ic||'•',x.title||'',x.desc||'']):null;
+  NEWS={events:conv(v.events)||NEWS_DEF.events,rules:conv(v.rules)||NEWS_DEF.rules,updates:conv(v.updates)||NEWS_DEF.updates}; if(!S&&modalKind==='intro') intro(); }).catch(()=>{}); }
+function newsBoard(){ const tab=(k,l)=>`<button data-a="ntab" data-v="${k}" class="${NEWS_TAB===k?'on':''}">${l}</button>`;
+  return `<div style="margin:14px auto 0;max-width:640px;text-align:left"><div class="tabs" style="justify-content:center">${tab('events','📢 Sự kiện')}${tab('rules','📜 Luật chơi')}${tab('updates','🆕 Cập nhật')}</div>
+    <div style="max-height:150px;overflow:auto;background:rgba(255,255,255,.05);border-radius:10px;padding:6px 10px;margin-top:6px">${(NEWS[NEWS_TAB]||[]).map(([ic,t,d])=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06)"><span style="font-size:17px">${ic}</span><div><b>${t}</b><div class="sm">${d}</div></div></div>`).join('')}</div></div>`; }
+// --- số người đang chơi / ngoại tuyến (đang chơi = báo online trong 5 phút gần nhất)
+let ONLINE=null, onlineAt=0;
+async function fetchOnline(){ if(!CLOUD.user||Date.now()-onlineAt<60000) return; onlineAt=Date.now(); const {fs,db}=CLOUD.fb, col=fs.collection(db,'profiles');
+  try{ const [a,b]=await Promise.all([fs.getCountFromServer(fs.query(col,fs.where('lastSeen','>',Date.now()-5*60000))),fs.getCountFromServer(col)]); ONLINE={on:a.data().count,total:b.data().count}; if(!S&&modalKind==='intro') intro(); }catch(e){ console.warn('online',e); } }
+const onlineLine=()=>ONLINE?`<p class="sm" style="margin-top:6px">🟢 Đang chơi: <b>${ONLINE.on}</b> · ⚫ Ngoại tuyến: <b>${Math.max(0,ONLINE.total-ONLINE.on)}</b> · 👥 Tổng thuyền trưởng: <b>${ONLINE.total}</b></p>`:'';
 function intro(){
-  { const L=$('loading'); if(L.style.display!=='none'){ L.style.opacity=0; setTimeout(()=>L.style.display='none',600); } } if(!CLOUD.pagehide){ CLOUD.pagehide=1; addEventListener('pagehide',()=>{ if(CLOUD.user&&S) cloudPush(true); }); }
-  if(!CLOUD.init){ CLOUD.init=1; initCloud().then(()=>{ if(CLOUD.ok&&!S&&modalKind==='intro') intro(); }); }
+  { const L=$('loading'); if(L.style.display!=='none'&&!L.dataset.fading){ L.dataset.fading=1; L.style.pointerEvents='none'; L.style.zIndex='0'; L.style.opacity=0; setTimeout(()=>L.style.display='none',600); } } if(!CLOUD.pagehide){ CLOUD.pagehide=1; addEventListener('pagehide',()=>{ if(CLOUD.user&&S){ cloudPush(true); try{ CLOUD.fb.fs.updateDoc(CLOUD.fb.fs.doc(CLOUD.fb.db,'profiles',CLOUD.user.uid),{lastSeen:0}); }catch(e){} } }); }
+  if(!CLOUD.init){ CLOUD.init=1; initCloud().then(()=>{ loadNews(); if(CLOUD.ok&&!S&&modalKind==='intro') intro(); }); } if(CLOUD.user) fetchOnline();
   try{ if(sessionStorage.getItem('htvd_new')){ sessionStorage.removeItem('htvd_new'); creator(); return; } }catch(e){} const sv=loadSave();
   openModal(`<div style="text-align:center"><div class="introart">${document.getElementById('vdart').outerHTML.replace('id="vdart"','').replace('id="vs"','id="vs2"').replace('url(#vs)','url(#vs2)').replace('id="vw"','id="vw2"').replace('url(#vw)','url(#vw2)')}</div><h2 style="font-size:32px;margin-top:4px">Hải Trình Vạn Đảo</h2>
     <h3>Trên chiếc thuyền nan đơn sơ, bạn ra khơi tìm những hòn đảo kỳ lạ giữa đại dương mù sương.</h3>
     <p class="sm" style="max-width:580px;margin:0 auto">Không có bến nhà — mỗi hòn đảo đều có thị trấn riêng với chợ, nhà hàng, quán rượu, kho dầu và xưởng thuyền.
     Lên đảo, đi bộ gặp cư dân, mua bán đặc sản, thuê thủy thủ, nâng cấp thuyền và sống sót qua bão tố, hải tặc giữa biển khơi.</p>
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">${sv?`<button class="pri" data-a="cont">Tiếp tục (Ngày ${sv.time.day})</button>`:''}<button ${sv?'':'class="pri"'} data-a="new">Hành trình mới</button>${CLOUD.ok?(CLOUD.user?'<button data-a="logout">🚪 Đăng xuất</button>':'<button data-a="login">👤 Đăng nhập Google</button>'):''}</div>${CLOUD.user?`<p class="sm" style="margin-top:12px;color:#9fe8a0">✅ Đã đăng nhập: <b>${CLOUD.user.email}</b> · 🪙 ${CLOUD.xu} xu — tiến trình sẽ tự lưu lên mây. Chọn <b>Hành trình mới</b> để vào server và đặt biệt danh.</p>`:CLOUD.ok?'<p class="sm" style="margin-top:12px">Đăng nhập Gmail để lưu tiến trình lên mây, chơi trên máy khác và nạp xu.</p>':''}</div>`,
-    a=>{ if(a==='login'){ cloudLogin(); return; } if(a==='logout'){ cloudLogout().then(()=>setTimeout(intro,300)); return; } if(a==='cont') startGame(sv,false); if(a==='new'){ if(sv) confirmNewGame(sv,()=>creator(),intro); else creator(); } },'intro',true);
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">${sv?`<button class="pri" data-a="cont">Tiếp tục (Ngày ${sv.time.day})</button>`:''}<button ${sv?'':'class="pri"'} data-a="new">Hành trình mới</button>${CLOUD.ok?(CLOUD.user?'<button data-a="logout">🚪 Đăng xuất</button>':'<button data-a="login">👤 Đăng nhập Google</button>'):''}</div>${CLOUD.user?`<p class="sm" style="margin-top:12px;color:#9fe8a0">✅ Đã đăng nhập: <b>${CLOUD.user.email}</b> · 🪙 ${CLOUD.xu} xu — tiến trình sẽ tự lưu lên mây. Chọn <b>Hành trình mới</b> để vào server và đặt biệt danh.</p>`:CLOUD.ok?'<p class="sm" style="margin-top:12px">Đăng nhập Gmail để lưu tiến trình lên mây, chơi trên máy khác và nạp xu.</p>':''}${onlineLine()}${newsBoard()}</div>`,
+    (a,ds)=>{ if(a==='ntab'){ NEWS_TAB=(ds&&ds.v)||'events'; intro(); return; } if(a==='login'){ cloudLogin(); return; } if(a==='logout'){ cloudLogout().then(()=>setTimeout(intro,300)); return; } if(a==='cont') startGame(sv,false); if(a==='new'){ if(sv) confirmNewGame(sv,()=>creator(),intro); else creator(); } },'intro',true);
 }
 window.__game={openMessages,openProfile,openNotes,openChat,cleanText,achOf,SOC,shipCreator,bowFire,get SHIP_SPLIT(){return SHIP_SPLIT},get shipMesh(){return shipMesh},HULLS,BOWS,openKingdom,get RAINC(){return RAINC},get rainLocal(){return rainLocal},seabedH,findMerK,get raider(){return raider},enemyShot,sink,respawnAtYard,raiderUpdate,CLOUD,openXuShop,SUBS,openSubPicker,get subMesh(){return subMesh},openTemple,openWukong,openMaze,evPilgrim,doSight,warKill,get warAlt(){return warAltUpdate},toggleMedit,breakthrough,openCult,openHeaven,openHell,get trib(){return trib},evKaiju,evUFO,evPortal,evKraken,evMeteor,evAngel,evDemon,evSiren,evDragonKing,leaveIsland,diveSub,surfaceSub,startWar,winWar,get SUB(){return SUB},get SEA_CR(){return SEA_CR},spawnSea,hitSea,scanSea,subAct,evGhost,get warShips(){return warShips},openForge,armyPower,breathFX,get T(){return T},togglePerch,skyShip,openMountPicker,mountDino,addPetPtero,get mountMesh(){return mountMesh},DRAGON_TYPES,DINO_MODELS,hitDino,activeDinos,openTestPanel,addPetDragon,mountDragon,get QL(){return QL},GPU_NAME,get landCam(){return landCam},get camera(){return camera},openArmory,takeOff,landPlane,spawnSky,hitSky,shoot,cycleWeapon,setEquip,get SKY(){return SKY},get plane(){return plane},get HAS_ASSETS(){return HAS_ASSETS},get HAS_CHARS(){return HAS_CHARS},CHARS,MODELS,WX,openIslandMap,genZones,evChest,evDistress,evFishSchool,evMystery,showCatchCard,get UW(){return UW},refreshShip,get cabin(){return {inter:cabinInteract}},enterCabin,exitCabin,cabinAct,genQuests,renderer,get ev(){return evScene},evPirate,evWhale,evStorm,evWreck,evBottle,evMerchant,evCalm,get fishing(){return fishing},fishKey,openShipPanel,catchFish,get S(){return S},islandVis:()=>islandVis,enterIsland,evPirate,interact,get near(){return nearInteract}}; // hook debug (gỡ khi phát hành)
 loadAssets().then(intro);

@@ -76,12 +76,15 @@ Mặc định đang là:
 
 | Gói | Số tiền | Xu nhận được |
 |---|---|---|
-| p10 | 10.000đ | 10 xu |
-| p50 | 50.000đ | 55 xu |
-| p100 | 100.000đ | 120 xu |
-| p200 | 200.000đ | 260 xu |
+| p10 | 10.000đ | 100 xu |
+| p20 | 20.000đ | 200 xu |
+| p50 | 50.000đ | 520 xu (tặng 20) |
+| p100 | 100.000đ | 1.100 xu (tặng 100) |
+| p200 | 200.000đ | 2.300 xu (tặng 300) |
 
-Muốn **1.000đ = 1 xu** hay tỉ lệ khác thì sửa cả 2 nơi, rồi chạy lại `firebase deploy --only functions`.
+Tỉ lệ gốc: **1 xu = 100đ**.
+
+Muốn đổi tỉ lệ thì sửa cả 2 nơi, rồi chạy lại `firebase deploy --only functions`.
 
 Danh sách vật phẩm đổi bằng xu nằm trong `index.html`, tìm `XU_SHOP`.
 

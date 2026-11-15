@@ -20,11 +20,12 @@ window.CLOUD_CONFIG = {
   //   appId: "...."
   // },
   region: 'asia-southeast1',
-  // Gói nạp xu — phải KHỚP với PACKS trong functions/index.js (máy chủ mới là nơi quyết định giá)
+  // 1 xu = 100đ. Gói nạp xu — phải KHỚP với PACKS trong functions/index.js (máy chủ mới là nơi quyết định giá)
   packs: [
-    { id: 'p10',  vnd: 10000,  xu: 10 },
-    { id: 'p50',  vnd: 50000,  xu: 55 },
-    { id: 'p100', vnd: 100000, xu: 120 },
-    { id: 'p200', vnd: 200000, xu: 260 }
+    { id: 'p10',  vnd: 10000,  xu: 100 },
+    { id: 'p20',  vnd: 20000,  xu: 200 },
+    { id: 'p50',  vnd: 50000,  xu: 520 },
+    { id: 'p100', vnd: 100000, xu: 1100 },
+    { id: 'p200', vnd: 200000, xu: 2300 }
   ]
 };

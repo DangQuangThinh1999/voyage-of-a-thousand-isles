@@ -14,11 +14,12 @@ const PAYOS_CHECKSUM_KEY = defineSecret('PAYOS_CHECKSUM_KEY');
 const SECRETS = [PAYOS_CLIENT_ID, PAYOS_API_KEY, PAYOS_CHECKSUM_KEY];
 
 // Bảng giá do MÁY CHỦ quyết định — trình duyệt chỉ gửi mã gói.
-const PACKS = {
-  p10:  { vnd: 10000,  xu: 10 },
-  p50:  { vnd: 50000,  xu: 55 },
-  p100: { vnd: 100000, xu: 120 },
-  p200: { vnd: 200000, xu: 260 },
+const PACKS = {   // 1 xu = 100đ (gói lớn được tặng thêm)
+  p10:  { vnd: 10000,  xu: 100 },
+  p20:  { vnd: 20000,  xu: 200 },
+  p50:  { vnd: 50000,  xu: 520 },
+  p100: { vnd: 100000, xu: 1100 },
+  p200: { vnd: 200000, xu: 2300 },
 };
 
 const payos = () => new PayOS(PAYOS_CLIENT_ID.value(), PAYOS_API_KEY.value(), PAYOS_CHECKSUM_KEY.value());

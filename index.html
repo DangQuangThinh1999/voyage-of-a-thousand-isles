@@ -135,6 +135,7 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
+import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
 // =====================================================================
 // UTILS
@@ -196,6 +197,15 @@ const ITEMS={
   r_volcano:{name:'Tim dung nham',icon:'🔴',base:360,origin:'volcano',rare:true},
   r_fort:{name:'Huy chương cổ',icon:'🎖️',base:300,origin:'fort',rare:true},
   r_lab:{name:'Hóa thạch sống',icon:'🦴',base:380,origin:'lab',rare:true},
+  hoa_thach:{name:'Hóa thạch',icon:'🐚',base:70,origin:'dino'},
+  trung_kl:{name:'Trứng khủng long',icon:'🥚',base:110,origin:'dino',perish:true},
+  duong_xi:{name:'Lá dương xỉ cổ',icon:'🌿',base:18,origin:'dino'},
+  xuong_kl:{name:'Xương khủng long',icon:'🦕',base:55,origin:'dino'},
+  r_dino:{name:'Hổ phách muỗi cổ đại',icon:'🟠',base:420,origin:'dino',rare:true},
+  thit_kl:{name:'Thịt khủng long',icon:'🍖',base:30,origin:'sea',perish:true},
+  sung_tc:{name:'Sừng Ba Sừng',icon:'📯',base:180,origin:'sea'},
+  nanh_trex:{name:'Nanh T-Rex',icon:'🦷',base:480,origin:'sea'},
+  f_co:{name:'Cá vây tay cổ đại',icon:'🐟',base:75,origin:'sea',perish:true,fish:true},
   thao:{name:'Thảo dược',icon:'🍃',base:22,origin:'ship'},
   thuoc_bo:{name:'Thuốc bổ tinh thần',icon:'🧪',base:90,origin:'ship'},
   cao_rong:{name:'Cao rong biển',icon:'🫙',base:115,origin:'ship'},
@@ -218,8 +228,8 @@ const ITEMS={
   f_kiem:{name:'Cá kiếm thép',icon:'🗡️',base:70,origin:'sea',perish:true,fish:true},
   f_sua:{name:'Sứa phát quang',icon:'🪼',base:64,origin:'sea',perish:true,fish:true},
 };
-const SCARCE_AT={flora:'desert',desert:'coral',coral:'flora',ice:'volcano',volcano:'ice',fort:'lab',lab:'fort'};
-const SCARCE2={flora:'ice',desert:'volcano',coral:'volcano',ice:'desert',volcano:'coral',fort:'coral',lab:'flora'};
+const SCARCE_AT={flora:'desert',desert:'coral',coral:'flora',ice:'volcano',volcano:'ice',fort:'lab',lab:'fort',dino:'ice'};
+const SCARCE2={flora:'ice',desert:'volcano',coral:'volcano',ice:'desert',volcano:'coral',fort:'coral',lab:'flora',dino:'lab'};
 const ISLAND_TYPES=[
   ['resident','🏘️','Đảo dân cư','Có thị trấn, cửa hàng, cư dân và nhiệm vụ.'],
   ['agri','🌾','Đảo nông nghiệp','Trồng trọt, chăn nuôi, nguồn thực phẩm dồi dào.'],
@@ -233,9 +243,9 @@ const ISLAND_TYPES=[
   ['military','🛡️','Đảo quân sự','Căn cứ, doanh trại, tháp canh, cảng tàu chiến. Nhiệm vụ tuần tra, phòng thủ, vật tư quân sự.'],
   ['research','🔬','Đảo nghiên cứu','Viện nghiên cứu, đài thiên văn, nhà kính, bể mẫu vật. Nhiệm vụ khảo sát và thu mẫu vật.'],
 ];
-const ISL_TYPE={flora:'agri',desert:'trade',coral:'resident',ice:'resort',volcano:'mining',fort:'military',lab:'research'};
-const LOCAL_FISH={flora:'f_ro',desert:'f_mu',coral:'f_he',ice:'f_bang',volcano:'f_lua',fort:'f_kiem',lab:'f_sua'};
-const MINERAL_IDS=['tt','muoi','luu','than','hoatinh','bang','thep','thuocsung','tinhthe','ngoc','oc'];
+const ISL_TYPE={flora:'agri',desert:'trade',coral:'resident',ice:'resort',volcano:'mining',fort:'military',lab:'research',dino:'monster'};
+const LOCAL_FISH={flora:'f_ro',desert:'f_mu',coral:'f_he',ice:'f_bang',volcano:'f_lua',fort:'f_kiem',lab:'f_sua',dino:'f_co'};
+const MINERAL_IDS=['tt','muoi','luu','than','hoatinh','bang','thep','thuocsung','tinhthe','ngoc','oc','hoa_thach','xuong_kl'];
 const ECO={
   flora:{climate:'Nhiệt đới ẩm, mưa nhiều',terrain:'Đồi thoải phủ rừng lá khổng lồ',plants:['Dương xỉ khổng lồ','Nấm dạ quang','Cây đại thụ','Hoa mật'],animals:['Kiến','Bọ hung','Ong','Bọ rùa','Bướm khổng lồ'],sea:['Cá rô lá xanh','Rùa nước lợ'],minerals:['Nhựa cây','Đất mùn'],nodes:['nhua','nam','soi','mat']},
   desert:{climate:'Khô nóng, đêm lạnh',terrain:'Đồi cát, núi đá đỏ phân tầng, ốc đảo',plants:['Xương rồng','Chà là','Cỏ bụi khô'],animals:['Cáo sa mạc','Tắc kè','Bọ hung lăn đất','Thằn lằn'],sea:['Cá mù hang cát','Cua cát'],minerals:['Muối khoáng','Thủy tinh cát','Đồng cổ'],nodes:['muoi','tt','ot']},
@@ -243,6 +253,7 @@ const ECO={
   ice:{climate:'Băng giá quanh năm, có cực quang',terrain:'Sông băng, hồ đóng băng, rừng thông tuyết',plants:['Thông tuyết','Rêu băng'],animals:['Cánh cụt','Hải cẩu','Cú tuyết','Thỏ tuyết'],sea:['Cá băng trong suốt','Cá hồi băng'],minerals:['Băng tinh thể'],nodes:['bang','long','tra']},
   volcano:{climate:'Nóng, khói bụi núi lửa',terrain:'Núi lửa đang hoạt động, dòng dung nham, cột bazan',plants:['Cỏ cháy','Hoa than'],animals:['Kỳ nhông','Chuột chũi','Dơi','Dê núi'],sea:['Cá lửa than','Tôm suối nóng'],minerals:['Đá hỏa tinh','Lưu huỳnh','Than hồng','Bazan'],nodes:['luu','than','hoatinh']},
   fort:{climate:'Ôn đới, gió mạnh',terrain:'Cao nguyên đá, vách biển dựng đứng',plants:['Cỏ ô-liu','Cây bụi gai'],animals:['Chó quân khuyển','Đại bàng','Bồ câu đưa thư'],sea:['Cá kiếm thép','Cá thu đại dương'],minerals:['Quặng sắt','Diêm tiêu'],nodes:['thep','thuocsung','vaibat']},
+  dino:{climate:'Nhiệt đới nóng ẩm, núi lửa ngủ yên',terrain:'Rừng dương xỉ khổng lồ, thung lũng, đầm lầy',plants:['Dương xỉ khổng lồ','Tuế cổ','Cây bách cổ','Nấm rừng'],animals:['T-Rex','Ba Sừng','Velociraptor','Stegosaurus','Khủng long cổ dài','Mỏ Vịt'],sea:['Cá vây tay cổ đại','Bò sát biển'],minerals:['Hóa thạch','Hổ phách','Xương cổ'],nodes:['hoa_thach','trung_kl','duong_xi','xuong_kl']},
   lab:{climate:'Ôn hòa, trong lành',terrain:'Đồng cỏ bằng phẳng, đồi thiên văn',plants:['Cây thí nghiệm','Tảo xoắn','Hoa lai tạo'],animals:['Thỏ','Ếch','Nhím','Chuột','Gấu mèo','Drone khảo sát'],sea:['Sứa phát quang','Cá đèn lồng'],minerals:['Tinh thể năng lượng'],nodes:['tinhthe','mauvat','thuocthu']},
 };
 const WEATHER={
@@ -256,8 +267,8 @@ const WEATHER={
 const WX={cloud:0.15,rain:0,fog:0,wind:0.6,wave:0.1,storm:0,thunder:0};
 const ZONE_INFO={current:{icon:'🌊',name:'Dòng hải lưu'},glow:{icon:'✨',name:'Vùng nước phát sáng'},whirl:{icon:'🌀',name:'Xoáy nước'},warm:{icon:'♨️',name:'Vùng nước ấm'}};
 const RODS=[null,{name:'Cần tre',gold:60,items:{}},{name:'Cần gỗ chắc',gold:260,items:{soi:2}},{name:'Cần thủy tinh',gold:750,items:{tt:2,oc:1}}];
-const FISH_W={f_thu:50,f_hong:24,f_muc:16,f_ngu:7,f_tom:6,f_den:4,f_vang:0.6,f_ro:0,f_mu:0,f_he:0,f_bang:0,f_lua:0,f_kiem:0,f_sua:0};
-const FISH_RANK={f_thu:['Thường',1],f_hong:['Thường',1],f_muc:['Khá hiếm',0.9],f_ngu:['Hiếm',0.75],f_tom:['Hiếm',0.75],f_den:['Rất hiếm',0.62],f_vang:['Huyền thoại',0.48],f_ro:['Khá hiếm',0.85],f_mu:['Khá hiếm',0.85],f_he:['Hiếm',0.8],f_bang:['Hiếm',0.75],f_lua:['Hiếm',0.72],f_kiem:['Rất hiếm',0.65],f_sua:['Hiếm',0.75]};
+const FISH_W={f_thu:50,f_hong:24,f_muc:16,f_ngu:7,f_tom:6,f_den:4,f_vang:0.6,f_ro:0,f_mu:0,f_he:0,f_bang:0,f_lua:0,f_kiem:0,f_sua:0,f_co:0};
+const FISH_RANK={f_thu:['Thường',1],f_hong:['Thường',1],f_muc:['Khá hiếm',0.9],f_ngu:['Hiếm',0.75],f_tom:['Hiếm',0.75],f_den:['Rất hiếm',0.62],f_vang:['Huyền thoại',0.48],f_ro:['Khá hiếm',0.85],f_mu:['Khá hiếm',0.85],f_he:['Hiếm',0.8],f_bang:['Hiếm',0.75],f_lua:['Hiếm',0.72],f_kiem:['Rất hiếm',0.65],f_sua:['Hiếm',0.75],f_co:['Rất hiếm',0.65]};
 const SLOTS=[0,1,2,3,4];
 const MODULES={
   aquarium:{name:'Bể cá',icon:'🐠',minTier:1,cost:{gold:300,items:{tt:2}},desc:'Cá trong khoang không bị ươn. Có cá trên thuyền thì cả thuyền vui hơn (+1 tinh thần/ngày).'},
@@ -323,8 +334,13 @@ const SPECIES={
   hedgehog:{n:'Nhím',ic:'🦔',h:[0.06,0.09],s:[0.25,0.4],l:[0.5,0.62],c2:'dark',job:'carp'},
   mouse:{n:'Chuột',ic:'🐭',h:[0.0,0.1],s:[0.0,0.1],l:[0.6,0.78],c2:0xffb0c0,job:'nav'},
   raccoon:{n:'Gấu Mèo',ic:'🦝',h:[0.0,0.1],s:[0.05,0.12],l:[0.45,0.58],c2:0x2a2a2a,job:'doc'},
+  iguana:{n:'Kỳ Đà',ic:'🦎',kit:'frog',h:[0.25,0.35],s:[0.35,0.55],l:[0.3,0.45],c2:'light',job:'carp'},
+  dodo:{n:'Chim Dodo',ic:'🐦',kit:'eagle',h:[0.55,0.65],s:[0.1,0.25],l:[0.45,0.6],c2:0xf0e0c0,job:'nav'},
+  mammoth:{n:'Voi Ma Mút',ic:'🦣',kit:'bear',h:[0.05,0.08],s:[0.35,0.5],l:[0.25,0.35],c2:0xf3ead8,job:'cook'},
+  sloth:{n:'Lười Khổng Lồ',ic:'🦥',kit:'bear',h:[0.08,0.11],s:[0.2,0.35],l:[0.35,0.48],c2:'light',job:'doc'},
+  beaver:{n:'Hải Ly',ic:'🦫',kit:'fox',h:[0.06,0.09],s:[0.4,0.55],l:[0.25,0.35],c2:'dark',job:'war'},
 };
-const HATS={flora:['leaf','flower','beanie','straw','none','bandana'],desert:['turban','fez','straw','bandana','none','cap'],coral:['shell','cap','bandana','flower','none','straw'],ice:['beanie','cap','none','bandana','straw'],volcano:['bandana','cap','turban','none','fez'],fort:['helmet','beret','cap'],lab:['goggles','none','beanie','goggles']};
+const HATS={flora:['leaf','flower','beanie','straw','none','bandana'],desert:['turban','fez','straw','bandana','none','cap'],coral:['shell','cap','bandana','flower','none','straw'],ice:['beanie','cap','none','bandana','straw'],volcano:['bandana','cap','turban','none','fez'],fort:['helmet','beret','cap'],lab:['goggles','none','beanie','goggles'],dino:['straw','bandana','none','leaf']};
 const OUTFITS=['apron','vest','scarf','sash','cape','robe','none','none'];
 const PROPS=['basket','staff','rod','scroll','broom','lantern','flower','none','none','none'];
 const OUT_COLS=[0xc0392b,0x2e86de,0x27ae60,0x8e44ad,0xf39c12,0x16a085,0xd35400,0xe84393,0x34495e,0xf1c40f,0x6c5ce7,0x00b894,0xfab1a0,0x81ecec,0xffffff,0x2d3436];
@@ -397,6 +413,16 @@ const ISL={
       tavern:{sp:'frog',name:'Ếch Học Giả',title:'Chủ phòng trà học giả',hat:'none',outfit:'labcoat',prop:'mug',work:'wipe',line:'Ộp… à xin lỗi. Uống trà và bàn chuyện đại dương nhé?'},
       shipyard:{sp:'hedgehog',name:'Nhím Kỹ Sư',title:'Xưởng chế tạo',hat:'goggles',outfit:'apron',prop:'hammer',work:'hammer',line:'Tôi có thể lắp cảm biến cho thuyền… à mà sửa vỏ trước đã.'}},
     lines:['Đêm nay kính thiên văn sẽ quan sát sao chổi!','Chúng tôi đang nghiên cứu vùng nước phát sáng ngoài khơi.','Mẫu sứa phát quang rất quý đó.','Đừng chạm vào bể mẫu vật nhé!','Hội đồng khoa học luôn cần mẫu vật từ các đảo khác.']},
+  dino:{name:'Hoang Cổ',sub:'Đảo khủng long tiền sử',color:'#8fae5a',R:160,top:16,na:2.0,material:'hoa_thach',ray:0xfff0c0,
+    price:{fuel:1.8,food:1.4,water:1.2,repair:1.3},species:['iguana','dodo','mammoth','sloth','beaver'],
+    dish:'Thịt nướng tiền sử & súp lá dương xỉ',
+    titles:{guild:'Trạm kiểm lâm khủng long',decor:'Xưởng đồ gỗ rừng già',fishshop:'Lều câu cá cổ đại',snack:'Quầy nướng ngoài trời',souvenir:'Quầy hóa thạch lưu niệm'},
+    svc:{market:{sp:'beaver',name:'Hải Ly Thợ Đào',title:'Chủ chợ hóa thạch',hat:'straw',outfit:'apron',prop:'scroll',work:'arrange',line:'Hóa thạch, trứng khủng long, xương cổ — hàng hiếm có một không hai!'},
+      restaurant:{sp:'mammoth',name:'Ma Mút Bếp Lửa',title:'Đầu bếp lò đá',hat:'chef',outfit:'apron',prop:'ladle',work:'stir',line:'Thịt nướng trên đá núi lửa — ngon nhất vùng biển!'},
+      depot:{sp:'sloth',name:'Lười Chậm Rãi',title:'Trạm tiếp tế',hat:'straw',outfit:'apron',prop:'none',work:'carry',line:'Từ… từ… thôi… dầu… có… đủ…'},
+      tavern:{sp:'dodo',name:'Dodo Kể Chuyện',title:'Chủ lều lửa trại',hat:'bandana',outfit:'scarf',prop:'mug',work:'wipe',line:'Tối qua T-Rex lại gầm ngoài hàng rào đấy, sợ chưa?'},
+      shipyard:{sp:'iguana',name:'Kỳ Đà Thợ Mộc',title:'Xưởng thuyền gỗ rừng',hat:'bandana',outfit:'apron',prop:'hammer',work:'hammer',line:'Gỗ rừng già chắc lắm, vá thuyền bền gấp đôi!'}},
+    lines:['Đừng ra khỏi hàng rào khi trời tối!','Velociraptor đi săn theo bầy, cẩn thận.','Khủng long ăn cỏ hiền lắm, trừ khi bị bắn.','T-Rex chạy nhanh hơn bạn tưởng đó!','Ai mang được nanh T-Rex về, hội săn trả giá cao lắm.']}
 };
 const EXTRA_SVC={
   guild:{title:'Hội trưởng Hội Thương Nhân',hat:'cap',outfit:'sash',prop:'scroll',work:'arrange',line:'Đảo nào cũng cần người giúp — làm nhiệm vụ thì có vàng và danh tiếng!'},
@@ -405,8 +431,8 @@ const EXTRA_SVC={
   snack:{title:'Chủ quầy ăn vặt',hat:'chef',outfit:'apron',prop:'ladle',work:'stir',line:'Ăn một miếng, vui cả ngày!'},
   souvenir:{title:'Chủ quầy lưu niệm',hat:null,outfit:'scarf',prop:'flower',work:'arrange',line:'Mua chút kỷ niệm của đảo mang lên thuyền đi!'},
 };
-const SNACKS={flora:[['🍯','Bánh mật ong',8,4],['🍢','Nấm xiên nướng',12,6]],desert:[['🌴','Chà là sấy',9,4],['🍵','Trà bạc hà',12,6]],coral:[['🦑','Mực nướng',12,6],['🥥','Nước dừa tươi',8,4]],ice:[['🍦','Kem tuyết',9,4],['🥛','Sữa nóng mật ong',12,6]],volcano:[['🍠','Khoai nướng than',8,4],['🥚','Trứng luộc suối nóng',12,6]],fort:[['🥫','Lương khô sĩ quan',8,4],['☕','Cà phê doanh trại',10,5]],lab:[['🧃','Nước tảo xoắn',9,4],['🍪','Bánh năng lượng',12,6]]};
-const COLLECT={flora:{title:'Hái nấm vàng quý',desc:'Tìm và hái 5 cây nấm vàng phát sáng mọc rải rác quanh đảo.',col:0xffd36b},desert:{title:'Nhặt mảnh gốm cổ',desc:'Nhặt 5 mảnh gốm cổ lấp lánh nằm vùi trong cát quanh đảo.',col:0x3ad0c0},coral:{title:'Vỏ ốc phát sáng',desc:'Tìm 5 vỏ ốc phát sáng bị sóng đánh dạt quanh đảo.',col:0xff9fc0},ice:{title:'Bông tuyết pha lê',desc:'Tìm 5 bông tuyết pha lê không bao giờ tan quanh đảo.',col:0x9fe8ff},volcano:{title:'Đá núi lửa nóng',desc:'Nhặt 5 viên đá núi lửa còn hồng rực quanh đảo.',col:0xff7a30},fort:{title:'Thu hồi đạn pháo lạc',desc:'Nhặt 5 quả đạn pháo diễn tập rơi vãi quanh đảo.',col:0xe0e0e0},lab:{title:'Thu thập mẫu đất',desc:'Lấy 5 mẫu đất phát sáng ở các điểm đánh dấu quanh đảo.',col:0x7fe0d0}};
+const SNACKS={flora:[['🍯','Bánh mật ong',8,4],['🍢','Nấm xiên nướng',12,6]],desert:[['🌴','Chà là sấy',9,4],['🍵','Trà bạc hà',12,6]],coral:[['🦑','Mực nướng',12,6],['🥥','Nước dừa tươi',8,4]],ice:[['🍦','Kem tuyết',9,4],['🥛','Sữa nóng mật ong',12,6]],volcano:[['🍠','Khoai nướng than',8,4],['🥚','Trứng luộc suối nóng',12,6]],fort:[['🥫','Lương khô sĩ quan',8,4],['☕','Cà phê doanh trại',10,5]],lab:[['🧃','Nước tảo xoắn',9,4],['🍪','Bánh năng lượng',12,6]],dino:[['🍖','Xiên thịt khủng long',14,7],['🥥','Nước dừa rừng',8,4]]};
+const COLLECT={flora:{title:'Hái nấm vàng quý',desc:'Tìm và hái 5 cây nấm vàng phát sáng mọc rải rác quanh đảo.',col:0xffd36b},desert:{title:'Nhặt mảnh gốm cổ',desc:'Nhặt 5 mảnh gốm cổ lấp lánh nằm vùi trong cát quanh đảo.',col:0x3ad0c0},coral:{title:'Vỏ ốc phát sáng',desc:'Tìm 5 vỏ ốc phát sáng bị sóng đánh dạt quanh đảo.',col:0xff9fc0},ice:{title:'Bông tuyết pha lê',desc:'Tìm 5 bông tuyết pha lê không bao giờ tan quanh đảo.',col:0x9fe8ff},volcano:{title:'Đá núi lửa nóng',desc:'Nhặt 5 viên đá núi lửa còn hồng rực quanh đảo.',col:0xff7a30},fort:{title:'Thu hồi đạn pháo lạc',desc:'Nhặt 5 quả đạn pháo diễn tập rơi vãi quanh đảo.',col:0xe0e0e0},lab:{title:'Thu thập mẫu đất',desc:'Lấy 5 mẫu đất phát sáng ở các điểm đánh dấu quanh đảo.',col:0x7fe0d0},dino:{title:'Nhặt trứng khủng long',desc:'Nhặt 5 quả trứng khủng long bị bỏ rơi quanh đảo (cẩn thận khủng long mẹ!).',col:0xf0e0c0}};
 const DECOR={
   rug:{name:'Thảm hoa văn',icon:'🟥',room:'living',price:120,comfort:1},
   plant:{name:'Chậu cây xanh',icon:'🪴',room:'living',price:60,comfort:1},
@@ -426,6 +452,7 @@ const DECOR={
   sv_volcano:{name:'Đèn dung nham',icon:'🌋',room:'living',price:150,comfort:2,from:'volcano'},
   sv_fort:{name:'Mô hình tàu chiến',icon:'🚢',room:'living',price:160,comfort:2,from:'fort'},
   sv_lab:{name:'Kính hiển vi mini',icon:'🔬',room:'bedroom',price:150,comfort:2,from:'lab'},
+  sv_dino:{name:'Mô hình xương khủng long',icon:'🦕',room:'living',price:180,comfort:2,from:'dino'},
 };
 const ROOM_UP={
   bed2:{name:'Giường nệm êm cho cả thuyền',icon:'🛏️',price:350,desc:'Ngủ ngon hơn: tinh thần +2 mỗi ngày.'},
@@ -444,8 +471,9 @@ const SKINS={
   lava:{name:'Thuyền Hỏa Long',hull:0x2a2224,deck:0x5a4a44,sail:0x8a2a1a,trim:0xff7a20},
   navy:{name:'Thuyền Hải Quân',hull:0x3a4a5a,deck:0x8a8a7a,sail:0xe8e8e0,trim:0xd4af37},
   science:{name:'Thuyền Khoa Học',hull:0xf4f8fa,deck:0xc8d8dc,sail:0xdff8f4,trim:0x2ab0a0},
+  jungle:{name:'Thuyền Rừng Già',hull:0x4a3a22,deck:0x8a7a52,sail:0xc8d8a0,trim:0x6a9a3a},
 };
-const ISL_SKIN={flora:{id:'lotus',gold:150,items:{soi:8}},desert:{id:'stone',gold:200,items:{tt:5,tuong:2}},coral:{id:'coral',gold:250,items:{oc:6,ngoc:2}},ice:{id:'ice',gold:280,items:{bang:5,long:3}},volcano:{id:'lava',gold:300,items:{hoatinh:3,than:5}},fort:{id:'navy',gold:320,items:{thep:4,vaibat:3}},lab:{id:'science',gold:320,items:{tinhthe:2,banve:2}}};
+const ISL_SKIN={flora:{id:'lotus',gold:150,items:{soi:8}},desert:{id:'stone',gold:200,items:{tt:5,tuong:2}},coral:{id:'coral',gold:250,items:{oc:6,ngoc:2}},ice:{id:'ice',gold:280,items:{bang:5,long:3}},volcano:{id:'lava',gold:300,items:{hoatinh:3,than:5}},fort:{id:'navy',gold:320,items:{thep:4,vaibat:3}},lab:{id:'science',gold:320,items:{tinhthe:2,banve:2}},dino:{id:'jungle',gold:350,items:{hoa_thach:3,xuong_kl:3}}};
 const GENERIC_LINES=['Hôm nay trời đẹp ghê!','Bạn là thuyền trưởng mới hả? Trông lạ quá.','Đi biển nhớ mang đủ nước nha.','Chợ hôm nay đông lắm đó.','Tôi đang đi mua đồ ăn tối.','Bạn có thấy con mèo của tôi không? À, tôi không nuôi mèo.','Thuyền của bạn đẹp đó!'];
 const RUMORS=[
   'Dân Sa Cốt giữa sa mạc thèm đồ của rừng lắm — mật với nấm mang tới đó bán được giá gấp đôi.',
@@ -531,19 +559,19 @@ sky.renderOrder=-1; scene.add(sky);
 const OCEAN_SIZE=1500, OCEAN_SEG=200, OCEAN_STEP=OCEAN_SIZE/OCEAN_SEG;
 const oceanGeo=new THREE.PlaneGeometry(OCEAN_SIZE,OCEAN_SIZE,OCEAN_SEG,OCEAN_SEG); oceanGeo.rotateX(-Math.PI/2);
 const oceanBase=Float32Array.from(oceanGeo.attributes.position.array);
-const oceanU={uTime:{value:0},uIsl:{value:[0,1,2,3,4,5,6].map(()=>new THREE.Vector3(1e5,1e5,1))},uDeep:{value:new THREE.Color(0x0d6496)},uShallow:{value:new THREE.Color(0x46e0d2)},uAmp:{value:1.3}};
+const oceanU={uTime:{value:0},uIsl:{value:[0,1,2,3,4,5,6,7].map(()=>new THREE.Vector3(1e5,1e5,1))},uDeep:{value:new THREE.Color(0x0d6496)},uShallow:{value:new THREE.Color(0x46e0d2)},uAmp:{value:1.3}};
 const oceanMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.22,metalness:0.05,transparent:true,opacity:1});
 oceanMat.onBeforeCompile=sh=>{ Object.assign(sh.uniforms,oceanU);
-  sh.vertexShader=`varying vec3 vWP; varying float vH; uniform float uTime; uniform float uAmp; uniform vec3 uIsl[7];
-    float wDamp(vec2 p){ float d=1e5; for(int i=0;i<7;i++) d=min(d,length(p-uIsl[i].xy)-uIsl[i].z); return mix(0.3,1.0,smoothstep(0.0,140.0,d)); }
+  sh.vertexShader=`varying vec3 vWP; varying float vH; uniform float uTime; uniform float uAmp; uniform vec3 uIsl[8];
+    float wDamp(vec2 p){ float d=1e5; for(int i=0;i<8;i++) d=min(d,length(p-uIsl[i].xy)-uIsl[i].z); return mix(0.3,1.0,smoothstep(0.0,140.0,d)); }
     float wH(vec2 p){ float t=uTime; return uAmp*wDamp(p)*(sin(p.x*0.045+t*0.9)*0.9+sin(p.y*0.06+t*1.2)*0.6+sin((p.x+p.y)*0.11+t*1.7)*0.25+sin(p.x*0.21-p.y*0.17+t*2.3)*0.12); }
     `+sh.vertexShader
     .replace('#include <beginnormal_vertex>',`vec2 wp2=(modelMatrix*vec4(position,1.0)).xz; float ee=0.7; float hx=wH(wp2+vec2(ee,0.0))-wH(wp2-vec2(ee,0.0)); float hz=wH(wp2+vec2(0.0,ee))-wH(wp2-vec2(0.0,ee)); vec3 objectNormal=normalize(vec3(-hx/(2.0*ee),1.0,-hz/(2.0*ee)));`)
     .replace('#include <begin_vertex>','vec3 transformed=vec3(position); vH=wH(wp2); transformed.y+=vH;')
     .replace('#include <project_vertex>','#include <project_vertex>\n vWP=(modelMatrix*vec4(transformed,1.0)).xyz;');
-  sh.fragmentShader='varying vec3 vWP; varying float vH; uniform float uAmp; uniform float uTime; uniform vec3 uIsl[7]; uniform vec3 uDeep; uniform vec3 uShallow;\n'+sh.fragmentShader
+  sh.fragmentShader='varying vec3 vWP; varying float vH; uniform float uAmp; uniform float uTime; uniform vec3 uIsl[8]; uniform vec3 uDeep; uniform vec3 uShallow;\n'+sh.fragmentShader
    .replace('vec4 diffuseColor = vec4( diffuse, opacity );',`
-    float dmin=1e5; for(int i=0;i<7;i++){ float d=length(vWP.xz-uIsl[i].xy)-uIsl[i].z; dmin=min(dmin,d); }
+    float dmin=1e5; for(int i=0;i<8;i++){ float d=length(vWP.xz-uIsl[i].xy)-uIsl[i].z; dmin=min(dmin,d); }
     dmin+=sin(vWP.x*0.07+vWP.z*0.05)*4.0+sin(vWP.z*0.11-vWP.x*0.03)*2.5;
     float shl=1.0-smoothstep(-6.0,90.0,dmin);
     vec3 wcol=mix(uDeep,uShallow,shl*shl);
@@ -656,9 +684,10 @@ async function loadAssets(){
   await Promise.all(jobs.map(async([kit,n])=>{ try{ const gl=await ld.loadAsync(`assets/${kit}/${n}.gltf`); if(kit==='chars'||n.startsWith('Characters_')) CHARS[n]=prepChar(gl); else MODELS[n]=prepModel(gl.scene); }catch(e){ console.warn('asset lỗi',n,e); }
     done++; if(el) el.textContent=`Đang tải mô hình 3D… ${Math.round(done/jobs.length*100)}%`; }));
   HAS_ASSETS=Object.keys(MODELS).length>=60; HAS_CHARS=Object.keys(CHARS).length>=20;
+  if(el) el.textContent='Đang tải khủng long…'; await loadDinos();
 }
 // lá cây 2 mặt: không lật pháp tuyến ở mặt sau để lá không bị đen
-function leafMat(m){ if(m.userData.leaf) return; m.userData.leaf=true; m.onBeforeCompile=sh=>{ sh.fragmentShader=sh.fragmentShader.replace('float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;','float faceDirection = 1.0;'); }; m.customProgramCacheKey=()=>'leaf'; }
+function leafMat(m){ if(m.userData.leaf) return; m.userData.leaf=true; m.onBeforeCompile=sh=>{ sh.fragmentShader=sh.fragmentShader.replace('#include <normal_fragment_begin>',THREE.ShaderChunk.normal_fragment_begin.replace('float faceDirection = gl_FrontFacing ? 1.0 : - 1.0;','float faceDirection = 1.0;')); }; m.customProgramCacheKey=()=>'leaf'; }
 function upNormals(g){ const n=g.attributes.normal; if(!n||g.userData.up) return; g.userData.up=true; const v=new THREE.Vector3(), U=new THREE.Vector3(0,0.65,0);
   for(let i=0;i<n.count;i++){ v.fromBufferAttribute(n,i); v.y=Math.abs(v.y); v.multiplyScalar(0.35).add(U).normalize(); n.setXYZ(i,v.x,v.y,v.z); } n.needsUpdate=true; }
 function prepModel(scene){
@@ -674,7 +703,7 @@ function prepModel(scene){
 // màu riêng cho nhà ở từng đảo (nhân với texture gốc)
 const VTINT={flora:{MI_Plaster:0xf2ffe6,MI_RoundTiles:0x8fd8a0},desert:{MI_Plaster:0xf6d6a8,MI_RoundTiles:0xe8a070,MI_UnevenBrick:0xf0c890},coral:{MI_Plaster:0xfff2f4,MI_RoundTiles:0xffa8b8},
   ice:{MI_Plaster:0xf0f8ff,MI_RoundTiles:0xe8f4ff},volcano:{MI_Plaster:0x9a8a88,MI_RoundTiles:0x7a3a34,MI_UnevenBrick:0x8a7a78},fort:{MI_Plaster:0xd8dcd8,MI_RoundTiles:0x7a8a9a,MI_UnevenBrick:0xc8ccc8},
-  lab:{MI_Plaster:0xffffff,MI_RoundTiles:0x8fe8d8}};
+  lab:{MI_Plaster:0xffffff,MI_RoundTiles:0x8fe8d8},dino:{MI_Plaster:0xe8d8b0,MI_RoundTiles:0x7aa04a}};
 const _tintC=new Map();
 function tintMat(m,k){ const key=m.uuid+'|'+k; let t=_tintC.get(key); if(t) return t;
   if(m.name==='MI_WindowGlass'){ t=m.clone(); t.emissive=new THREE.Color(0xffb860); t.emissiveIntensity=1.3; nightMat(t); }
@@ -740,6 +769,8 @@ const VEG_CFG={
     {names:ROCKS,sr:[0.8,1.5],n:30,circ:1.1}],
   lab:[{names:T5('CommonTree'),sr:[1.0,1.4],n:30,circ:0.7},{names:['Flower_3_Group','Flower_4_Group'],sr:[0.5,0.75],n:200,noCast:true},{names:['Plant_1_Big'],sr:[0.7,1.0],n:40},
     {names:['Clover_1','Clover_2'],sr:[0.6,0.9],n:200,noCast:true},{names:['Grass_Common_Short'],sr:[0.55,0.85],n:600,noCast:true},{names:['Bush_Common_Flowers'],sr:[0.7,1.1],n:60}],
+  dino:[{names:T5('CommonTree'),sr:[2.2,3.0],n:14,circ:1.6,minR:0.25},{names:T5('CommonTree'),sr:[1.3,2.0],n:40,circ:0.8,minR:0.15},{names:['Fern_1'],sr:[0.9,1.5],n:45},{names:['Plant_7_Big','Plant_1_Big'],sr:[1.1,1.7],n:70},
+    {names:['Fern_1'],sr:[0.5,0.8],n:60},{names:['Grass_Common_Tall'],sr:[0.6,0.95],n:650,noCast:true},{names:['Mushroom_Laetiporus','Mushroom_Common'],sr:[0.8,1.3],n:40,noCast:true},{names:ROCKS,sr:[1.0,2.2],n:40,circ:1.3}],
 };
 function decoVegModels(vis,L,g,rng){ for(const c of VEG_CFG[L.k]||VEG_CFG.flora) scatterModels(vis,L,g,rng,c); }
 
@@ -774,7 +805,7 @@ function decoVeg(vis,L,g,rng){
     add(scatter(vis,L,g,rng,VEG.flower,[1.4,2.4],{n:200,col:[0xff7f9e,0xc58cff,0xffd36b,0x7fe0d0],maxR:0.98,noCast:true}));
     for(let i=0;i<9;i++){ const p=spot(rng,L,vis,2,0.97,0.75); if(p) palm(g,vis,p.x,p.y-0.3,p.z,9+rng()*5,rng); }
   }
-  const rc={flora:[0x7a8a80,0x8a9a8a,0x6a7a70],desert:[0xc8673e,0xb85a36,0xd9814f],coral:[0x6a8a9a,0x5a7a8a,0x8aa8b8],ice:[0xdfe8f0,0xc8d8e8,0xb0c4d4],volcano:[0x2a2628,0x3a3436,0x1e1a1c],fort:[0x8a8e8a,0x7a7e7a,0x9a9e9a],lab:[0xc8d0d4,0xb8c4c8,0xd8e0e4]}[k];
+  const rc={flora:[0x7a8a80,0x8a9a8a,0x6a7a70],desert:[0xc8673e,0xb85a36,0xd9814f],coral:[0x6a8a9a,0x5a7a8a,0x8aa8b8],ice:[0xdfe8f0,0xc8d8e8,0xb0c4d4],volcano:[0x2a2628,0x3a3436,0x1e1a1c],fort:[0x8a8e8a,0x7a7e7a,0x9a9e9a],lab:[0xc8d0d4,0xb8c4c8,0xd8e0e4],dino:[0x6a6a5a,0x7a7a68,0x5a5a4a]}[k];
   const im=new THREE.InstancedMesh(VEG.rock,matC(0xffffff),28); let n=0;
   for(let t=0;t<90&&n<28;t++){ const a=rng()*TAU, rr=L.R*(0.93+rng()*0.14), x=Math.cos(a)*rr, z=Math.sin(a)*rr, u=x*Math.sin(L.pa)-z*Math.cos(L.pa), v=x*Math.cos(L.pa)+z*Math.sin(L.pa);
     if((u>0&&Math.abs(v)<14)||Math.hypot(x-L.yard.x,z-L.yard.z)<18) continue;
@@ -843,6 +874,7 @@ const CHAR_POOL={
   volcano:['Goblin_Male','Goblin_Female','Worker_Male','Worker_Female','Viking_Male','Ninja_Male'],
   fort:['Soldier_Male','Soldier_Female','BlueSoldier_Male','BlueSoldier_Female','Knight_Male','Knight_Golden_Male','Knight_Golden_Female'],
   lab:['Doctor_Male_Young','Doctor_Female_Young','Doctor_Male_Old','Doctor_Female_Old','Wizard','Suit_Male'],
+  dino:['Cowboy_Male','Cowboy_Female','Worker_Male','Ninja_Sand','Casual_Bald','Viking_Female'],
 };
 const PLAYER_CHARS=[['Pirate_Male','Hải tặc nam'],['Pirate_Female','Hải tặc nữ'],['Characters_Captain_Barbarossa','Râu Đỏ'],['Characters_Anne','Anne'],['Characters_Henry','Henry'],['Characters_Mako','Mako'],
   ['Cowboy_Female','Cao bồi'],['Ninja_Male','Ninja'],['Kimono_Female','Kimono'],['Viking_Male','Viking']];
@@ -1132,6 +1164,7 @@ const TPAL={
   desert:{sand:0xe9c890,wet:0xc9a46a,a:0xe6b46a,b:0xd99a4f,c:0xf0c27e,high:0xc99a68,plaza:0xdcc59c},
   ice:{sand:0xe8f0f6,wet:0xb8c8d8,a:0xf4f8fc,b:0xe2eef8,c:0xd0e4f4,high:0xffffff,plaza:0xc8d8e8},
   fort:{sand:0xd8ccb0,wet:0xa89c80,a:0x6a8a4a,b:0x7a9a5a,c:0x5a7a42,high:0x8a8a82,plaza:0x9a9a98},
+  dino:{sand:0xd8c890,wet:0xa89a70,a:0x4a8a3a,b:0x5a9a42,c:0x3a7a32,high:0x7a6a5a,plaza:0xb8a888},
   lab:{sand:0xf0ecdc,wet:0xc8c0a8,a:0x6fcf8a,b:0x8adf9a,c:0x5fbf7a,high:0xb8e8d0,plaza:0xe8eef0},
   volcano:{sand:0x3a3436,wet:0x2a2426,a:0x4a4042,b:0x5a4a44,c:0x3e3638,high:0x2a2224,plaza:0x6a5a52},
   coral:{sand:0xf3e6cf,wet:0xc8b89c,a:0x9cc3cf,b:0xb8d6dc,c:0xe8b7c0,high:0x7fa8b8,plaza:0xf5efe6},
@@ -1168,6 +1201,7 @@ const STYLE={
   coral:{floor:0xe8d8c8,wall:0xf3d9cf,trim:0xd9a8b0,sign:'#2a6a8a',caps:[0xffb3c6,0xffffff,0xbfe9ff,0xffe1b8,0xd6c3ff]},
   ice:{floor:0xc8dcec,wall:0xe8f4ff,trim:0x8ab8d8,sign:'#2a5a8a',caps:[0xbfe8ff,0xffffff,0xd6e8ff]},
   fort:{floor:0x7a7a78,wall:0x9a9e9a,trim:0x5a5e5a,sign:'#3a4a2a',caps:[0x5a6a4a,0x7a3a2a,0x4a4a52]},
+  dino:{floor:0x8a7a5a,wall:0xb89a70,trim:0x5a4a2a,sign:'#3a5a2a',caps:[0x6a8a3a,0x8a6a3a,0x5a7a3a]},
   lab:{floor:0xdfe8ec,wall:0xf4f8fa,trim:0x7fd0c8,sign:'#1a6a7a',caps:[0xbff4ff,0xe0f8ff,0xc8fff0]},
   volcano:{floor:0x4a3e3a,wall:0x5a4a44,trim:0x2a2224,sign:'#7a2a12',caps:[0xff7a45,0x2a2224,0x8a3a2a]},
 };
@@ -1248,6 +1282,7 @@ function buildDecor(id){ const g=new THREE.Group();
     case 'sv_coral': { mk(GEO.cyl,M(0x7a5a3a),0.3,0.04,0.3,0,1.2,0,g); for(let i=0;i<5;i++){ const a=i/5*TAU; mk(GEO.cyl,M(0xcccccc),0.005,0.4,0.005,Math.cos(a)*0.25,1.0,Math.sin(a)*0.25,g); mk(GEO.cone,M(0xffd9e0),0.06,0.18,0.06,Math.cos(a)*0.25,0.75,Math.sin(a)*0.25,g); } } break;
     case 'sv_ice': { mk(GEO.cyl,M(0x6a4a3a),0.25,0.15,0.25,0,0.08,0,g); mk(GEO.sph,M(0xdff4ff,{transparent:true,opacity:0.35,roughness:0.05}),0.28,0.28,0.28,0,0.42,0,g); mk(GEO.cone,M(0x2f7a5a),0.1,0.25,0.1,0,0.38,0,g); } break;
     case 'sv_fort': { mk(GEO.box,M(0x3a4a5a),1.2,0.3,0.35,0,0.15,0,g); mk(GEO.cyl,M(0x5a3a24),0.02,0.9,0.02,0,0.75,0,g); mk(GEO.box,M(0xe8e8e0),0.6,0.45,0.02,0,0.8,0.04,g); mk(GEO.box,M(0x6a4a2a),1.4,0.08,0.5,0,0.02,0,g); } break;
+    case 'sv_dino': { const bm=M(0xf3ead8); mk(GEO.box,M(0x5a3a22),1.6,0.08,0.5,0,0.04,0,g); for(let i=0;i<6;i++) mk(GEO.sphL,bm,0.09,0.09,0.09,-0.5+i*0.18,0.55+Math.sin(i*0.6)*0.08,0,g); for(let i=0;i<3;i++){ const rb=mk(GEO.tor,bm,0.18,0.18,0.18,-0.25+i*0.18,0.45,0,g); rb.rotation.y=Math.PI/2; } mk(GEO.sph,bm,0.16,0.12,0.12,0.62,0.62,0,g); for(const x of [-0.3,0.3]) mk(GEO.cyl,bm,0.02,0.45,0.02,x,0.25,0,g); } break;
     case 'sv_lab': { mk(GEO.box,M(0x2a3a4a),0.5,0.1,0.4,0,0.05,0,g); mk(GEO.box,M(0x2a3a4a),0.1,0.7,0.1,-0.15,0.4,-0.1,g); const tb=mk(GEO.cyl,M(0xe8eef0,{metalness:.5}),0.07,0.5,0.07,0,0.7,0.02,g); tb.rotation.x=0.4; mk(GEO.cyl,M(0x7fd8ff,{emissive:0x2ab0d0,emissiveIntensity:.8}),0.12,0.04,0.12,0,0.12,0.05,g); } break;
     case 'sv_volcano': { mk(GEO.cylT,M(0x333333),0.15,0.2,0.15,0,0.1,0,g); mk(GEO.cyl,M(0xff7a20,{transparent:true,opacity:0.8,emissive:0xff4a00,emissiveIntensity:1.4}),0.12,0.6,0.12,0,0.5,0,g); mk(GEO.cylT,M(0x333333),0.08,0.12,0.08,0,0.86,0,g); } break;
   } return g; }
@@ -1386,7 +1421,7 @@ function makeGate(vis,L,g){
   else if(L.k==='desert'){ for(const sx of [-1,1]){ mk(GEO.box,M(0xd8b48a),1.8,12,1.8,sx*5.6,6,0,G); mk(GEO.box,M(0xc49a70),2.4,0.8,2.4,sx*5.6,12.2,0,G); mk(GEO.box,M(pick([0xc0392b,0x2e86de],Math.random)),1.2,4,0.08,sx*5.6,8,1.0,G);
       mk(GEO.cylT,M(0x8a6a4a),0.9,1.2,0.9,sx*5.6,0.6,2.4,G); for(let i=0;i<3;i++) mk(GEO.cone,glow(0xff8a2a,2.4),0.35,1.4,0.35,sx*5.6+(i-1)*0.35,1.8,2.4,G); }
     mk(GEO.box,M(0xd8b48a),14,1.8,2.2,0,13.4,0,G); mk(GEO.box,M(0xc49a70),15,0.6,2.6,0,14.5,0,G); const sd=mk(GEO.cyl,M(0xffd27a,{emissive:0xffb000,emissiveIntensity:1.6,metalness:.6,roughness:.3}),1.8,0.3,1.8,0,16.2,0,G); sd.rotation.x=Math.PI/2; }
-  else if(L.k==='coral'){ const bone=M(0xf3ecdf); for(const sx of [-1,1]){ const rib=new THREE.Mesh(new THREE.TorusGeometry(7,0.55,8,24,Math.PI*0.62),bone); rib.position.set(sx*1.2,0,0); rib.rotation.z=sx>0?0:Math.PI-Math.PI*0.62; rib.scale.set(1,1.8,1); G.add(rib); }
+  else if(L.k==='coral'||L.k==='dino'){ const bone=M(0xf3ecdf); for(const sx of [-1,1]){ const rib=new THREE.Mesh(new THREE.TorusGeometry(7,0.55,8,24,Math.PI*0.62),bone); rib.position.set(sx*1.2,0,0); rib.rotation.z=sx>0?0:Math.PI-Math.PI*0.62; rib.scale.set(1,1.8,1); G.add(rib); }
     for(let i=0;i<14;i++){ const a=i/13*Math.PI; mk(GEO.sphL,glow(0xfff6f0,1.4),0.32,0.32,0.32,Math.cos(a)*5.2,10.5+Math.sin(a)*2.6,0.3,G); }
     for(const sx of [-1,1]){ const sh=mk(GEO.cone,M(0xffd9e0),0.9,2.2,0.9,sx*5.6,1.1,1.5,G); sh.rotation.z=0.4; mk(GEO.sphL,glow(0x7fe0ff,1.4),0.4,0.4,0.4,sx*5.6,2.6,1.5,G); } }
   else if(L.k==='ice'){ const im=new THREE.MeshStandardMaterial({color:0xaee8ff,transparent:true,opacity:0.8,roughness:0.05,emissive:0x3aa0e8,emissiveIntensity:0.9,flatShading:true});
@@ -1397,11 +1432,11 @@ function makeGate(vis,L,g){
   else if(L.k==='lab'){ const gm=new THREE.MeshStandardMaterial({color:0xbff4ff,transparent:true,opacity:0.45,roughness:0.05,metalness:0.2}); for(const sx of [-1,1]) mk(GEO.box,gm,1.2,12,1.2,sx*5.6,6,0,G); half(5.6,0.35,glow(0x7fe0d0,1.4),12); half(4.6,0.2,glow(0xbff4ff,1.6),12); }
   else { const ob=M(0x16121a,{roughness:0.15,metalness:0.4}); for(const sx of [-1,1]){ mk(GEO.cyl,ob,0.8,13,0.8,sx*5.6,6.5,0,G); mk(GEO.cylT,M(0x3a3032),1.1,1.4,1.1,sx*7.4,0.7,2,G); for(let i=0;i<3;i++) mk(GEO.cone,glow(0xff7a20,2.6),0.4,1.8,0.4,sx*7.4+(i-1)*0.4,2.1,2,G); }
     mk(GEO.box,ob,15,1.0,1.4,0,13.2,0,G); mk(GEO.box,glow(0xff5a10,1.8),14,0.15,1.45,0,12.6,0,G); mk(GEO.box,ob,12,0.7,1,0,10.8,0,G); mk(GEO.box,glow(0xff5a10,1.6),0.6,1.6,0.3,0,11.9,0.6,G); }
-  const sgTex=signTex(`🏝️ ${ISL[L.k].name}`,STYLE[L.k].sign); for(const fz of [-1,1]){ const sg=new THREE.Mesh(new THREE.PlaneGeometry(6.4,1.6),new THREE.MeshBasicMaterial({map:sgTex,transparent:true})); sg.position.set(0,L.k==='coral'?13.4:L.k==='ice'?15.5:11.2,fz*1.2); if(fz<0) sg.rotation.y=Math.PI; G.add(sg); }
+  const sgTex=signTex(`🏝️ ${ISL[L.k].name}`,STYLE[L.k].sign); for(const fz of [-1,1]){ const sg=new THREE.Mesh(new THREE.PlaneGeometry(6.4,1.6),new THREE.MeshBasicMaterial({map:sgTex,transparent:true})); sg.position.set(0,(L.k==='coral'||L.k==='dino')?13.4:L.k==='ice'?15.5:11.2,fz*1.2); if(fz<0) sg.rotation.y=Math.PI; G.add(sg); }
   for(const sx of [-1,1]){ const q=toI(sx*5.6,0); vis.circ.push({x:q.x,z:q.z,r:1.4}); }
   vis.gateLights=[{...toI(0,0),y:gy+9}];
   // đèn soi đường từ cổng vào quảng trường
-  const from=L.R*0.74, to=L.R*0.36+10, side=dv(L.pa+Math.PI/2), lampC={flora:0x9fffe0,desert:0xffd27a,coral:0xbff0ff,ice:0xbfe8ff,volcano:0xff9a40,fort:0xfff0c0,lab:0x7fe0ff}[L.k];
+  const from=L.R*0.74, to=L.R*0.36+10, side=dv(L.pa+Math.PI/2), lampC={flora:0x9fffe0,desert:0xffd27a,coral:0xbff0ff,ice:0xbfe8ff,volcano:0xff9a40,fort:0xfff0c0,lab:0x7fe0ff,dino:0xffd27a}[L.k];
   let n=0; for(let dd=from;dd>to;dd-=9){ for(const sx of [-1,1]){ const x=pd.x*dd+side.x*sx*3.4, z=pd.z*dd+side.z*sx*3.4, y=terrainH(L,x,z);
       mk(GEO.cyl,M(0x2a2a2e,{metalness:.5}),0.09,2.6,0.09,x,y+1.3,z,g); mk(GEO.sphL,nightMat(glow(lampC,2.2)),0.28,0.34,0.28,x,y+2.75,z,g); mk(GEO.cyl,M(0x2a2a2e),0.22,0.08,0.22,x,y+3.05,z,g);
       mk(GEO.cyl,nightMat(glow(lampC,1.1)),0.25,0.06,0.25,x-side.x*sx*1.6,y+0.08,z-side.z*sx*1.6,g); }
@@ -1615,14 +1650,14 @@ const BREATH={dmg:2,range:150,speed:200,cd:0.5,ammo:null};
 function shoot(cx,cy){ const riding=S.mode==='air'&&plane&&plane.kind==='dragon', w=riding&&!S.equip?BREATH:WEAPONS[S.equip]; if(!w||shotCd>0) return; S.ammo=S.ammo||{}; if(w.ammo&&(S.ammo[w.ammo]||0)<=0){ toast(`Hết ${w.ammo==='arrow'?'mũi tên':'đạn'}! Mua thêm ở Xưởng quân giới đảo Thiết Bảo`); return; }
   if(w.ammo) S.ammo[w.ammo]--; shotCd=w.cd; const breath=w===BREATH; _ray.setFromCamera(new THREE.Vector2(cx/innerWidth*2-1,-(cy/innerHeight)*2+1),camera);
   const o=_ray.ray.origin, d=_ray.ray.direction; let best=null, bt=1e9; const tmp=new THREE.Vector3();
-  for(const s2 of SKY){ if(s2.dead) continue; const c=s2.g.position, t=tmp.copy(c).sub(o).dot(d); if(t<0||t>w.range+60) continue; if(tmp.copy(o).addScaledVector(d,t).distanceTo(c)<s2.r&&t<bt){ bt=t; best=s2; } }
-  const from=shooterPos(), to=best?best.g.position.clone():o.clone().addScaledVector(d,w.range); const dir=to.clone().sub(from), dist=dir.length(); dir.normalize();
+  for(const s2 of [...SKY,...activeDinos()]){ if(s2.dead) continue; const c=s2.dino?dinoCenter(s2):s2.g.position, t=tmp.copy(c).sub(o).dot(d); if(t<0||t>w.range+60) continue; if(tmp.copy(o).addScaledVector(d,t).distanceTo(c)<s2.r&&t<bt){ bt=t; best=s2; } }
+  const from=shooterPos(), to=best?(best.dino?dinoCenter(best):best.g.position.clone()):o.clone().addScaledVector(d,w.range); const dir=to.clone().sub(from), dist=dir.length(); dir.normalize();
   let pj; if(breath){ pj=new THREE.Group(); mk(GEO.sph,M(0xffa020,{emissive:0xff5a00,emissiveIntensity:3}),1.1,1.1,1.1,0,0,0,pj); mk(GEO.cyl,M(0xff8a20),0.01,0.01,0.01,0,0,0,pj); for(let k=1;k<5;k++) puff(from.x+dir.x*k*4,from.y+dir.y*k*4,from.z+dir.z*k*4,k<2?0xffe060:0xff6a1a,0.9+k*0.4,0.6,1); }
   else if(S.equip==='bow'){ pj=new THREE.Group(); mk(GEO.cyl,M(0x8a6a3a),0.05,2.4,0.05,0,0,0,pj); mk(GEO.cone,M(0x9aa0a6,{metalness:.6}),0.12,0.4,0.12,0,1.3,0,pj); mk(GEO.cone4,M(0xffffff),0.15,0.5,0.03,0,-1.1,0,pj); }
   else { pj=new THREE.Group(); mk(GEO.sphL,M(0xffe080,{emissive:0xffb040,emissiveIntensity:3}),0.18,0.18,0.18,0,0,0,pj); mk(GEO.cyl,new THREE.MeshBasicMaterial({color:0xfff0c0,transparent:true,opacity:0.6}),0.04,4,0.04,0,-2,0,pj); puff(from.x+dir.x*1.5,from.y+dir.y*1.5,from.z+dir.z*1.5,0xdddddd,0.6,0.6,1); shake=Math.max(shake,0.15); }
   pj.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir); pj.position.copy(from); const dur=Math.max(0.05,dist/w.speed); let hit=false;
   fxAdd(pj,best?dur+0.05:dur*1.2,(e)=>{ const k=Math.min(1,e.t/dur); pj.position.copy(from).addScaledVector(dir,dist*k*(best?1:1.2)); if(!breath&&S.equip!=='bow') pj.children[1].visible=k<1;
-    if(best&&!hit&&k>=1){ hit=true; e.obj.visible=false; hitSky(best,w.dmg); } }); }
+    if(best&&!hit&&k>=1){ hit=true; e.obj.visible=false; if(best.dino) hitDino(best,w.dmg); else hitSky(best,w.dmg); } }); }
 function hitSky(o,dmg){ if(o.dead) return; o.hp-=dmg; const p=o.g.position; puff(p.x,p.y,p.z,o.type==='dragon'?0xff4a2a:0xffffff,o.type==='dragon'?1.8:0.8,0.6,1);
   if(o.hp>0){ toast(`🎯 Trúng! Rồng còn ${o.hp} máu`); o.sp*=1.15; return; }
   if(o.type==='dragon'&&!o.decided){ o.decided=true; o.hp=0; o.sp*=0.25; o.fire=999; askTame(o); return; }
@@ -1696,6 +1731,79 @@ function askTame(o){ const meat=(S.cargo.thit_chim&&S.cargo.thit_chim.q)||0;
     if(a==='tame'){ if(meat>=2){ S.cargo.thit_chim.q-=2; if(S.cargo.thit_chim.q<=0) delete S.cargo.thit_chim; } else S.gold-=250; o.g.parent&&o.g.parent.remove(o.g); const i=SKY.indexOf(o); if(i>=0) SKY.splice(i,1); S.huntLog.dragon=(S.huntLog.dragon||0)+1; addPetDragon(o.g.userData.col); }
     else hitSky(o,0); },'tame',true); }
 function mountDragon(){ if(!(S.pets||[]).length){ toast('🐉 Bạn chưa có rồng — bắn rồng tới kiệt sức rồi chọn <b>Thuần phục</b>'); return; } takeOff('dragon'); }
+
+// =====================================================================
+// ĐẢO KHỦNG LONG
+// =====================================================================
+const DINO_DEF={
+  Trex:{len:22,hp:14,carn:true,walk:4,run:13,reach:8,aggro:36,loot:[['nanh_trex',1],['thit_kl',3]],gold:160,name:'T-Rex',ic:'🦖'},
+  Velociraptor:{len:6.5,hp:3,carn:true,walk:4,run:12,reach:3.5,aggro:26,loot:[['thit_kl',1]],gold:30,name:'Velociraptor',ic:'🦖'},
+  Triceratops:{len:16,hp:10,walk:2.5,run:9,loot:[['sung_tc',1],['thit_kl',3]],gold:60,name:'Ba Sừng',ic:'🦏'},
+  Stegosaurus:{len:16,hp:10,walk:2.2,run:8,loot:[['xuong_kl',2],['thit_kl',3]],gold:50,name:'Stegosaurus',ic:'🦕'},
+  Apatosaurus:{len:34,hp:16,walk:2,run:6,loot:[['xuong_kl',3],['thit_kl',5]],gold:90,name:'Khủng long cổ dài',ic:'🦕'},
+  Parasaurolophus:{len:12,hp:5,walk:3,run:11,loot:[['thit_kl',2]],gold:30,name:'Mỏ Vịt',ic:'🦕'} };
+const DINO_MODELS={};
+async function loadDinos(){ const ld=new FBXLoader();
+  await Promise.all(Object.keys(DINO_DEF).map(async n=>{ try{ const o=await ld.loadAsync(`assets/dino/${n}.fbx`);
+    o.traverse(c=>{ if(c.isMesh){ const ms=[].concat(c.material).map(m=>{ const q=m.color.clone().convertLinearToSRGB(); const col=new THREE.Color(q.r,q.g,q.b).multiplyScalar(3.0); return new THREE.MeshStandardMaterial({color:col,roughness:0.7,metalness:0,side:THREE.DoubleSide,name:m.name}); });
+      c.material=Array.isArray(c.material)?ms:ms[0]; c.castShadow=true; c.receiveShadow=true; c.frustumCulled=false; } });
+    o.updateMatrixWorld(true); const b=new THREE.Box3().setFromObject(o), sz=b.getSize(new THREE.Vector3()); DINO_MODELS[n]={scene:o,anims:o.animations,len:Math.max(sz.x,sz.z),h:sz.y,minY:b.min.y}; }catch(e){ console.warn('dino',n,e); } })); }
+function dinoOk(L,x,z){ return groundAt(L,x,z).ok&&Math.hypot(x-L.plaza.x,z-L.plaza.z)>L.townR+11&&!onPier(L,x,z); }
+function spawnDino(vis,L,n,x,z,rng){ const md=DINO_MODELS[n], df=DINO_DEF[n]; if(!md) return;
+  const inner=SkeletonUtils.clone(md.scene), sc=df.len/md.len; inner.scale.setScalar(sc); inner.position.y=-md.minY*sc; const root=new THREE.Group(); root.add(inner); vis.detail.add(root);
+  const mixer=new THREE.AnimationMixer(inner), acts={}; for(const c of md.anims) acts[c.name.split('_').pop()]=mixer.clipAction(c);
+  const d={n,df,root,mixer,acts,cur:null,x,z,hx:x,hz:z,yaw:rng()*TAU,tx:x,tz:z,wt:rng()*4,idle:false,hp:df.hp,dead:false,deadT:0,flee:0,angry:0,atkCd:0,h:md.h*sc,r:Math.max(2.5,df.len*0.3),dino:true,vis};
+  root.position.set(x,terrainH(L,x,z),z); playDino(d,'Idle'); mixer.update(rng()*3); vis.dinos.push(d); }
+function playDino(d,mode){ if(d.cur===mode) return; const a=d.acts[mode]||d.acts.Idle; if(!a) return; a.reset(); if(mode==='Death'){ a.setLoop(THREE.LoopOnce); a.clampWhenFinished=true; } else a.setLoop(THREE.LoopRepeat); a.play();
+  if(d.cur&&d.acts[d.cur]&&d.acts[d.cur]!==a) d.acts[d.cur].crossFadeTo(a,0.3,false); d.cur=mode; }
+function dinoCenter(d){ return d.root.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(0,d.h*0.5,0)); }
+function activeDinos(){ const out=[]; for(const v of islandVis) if(v.dinos&&v.detail.visible) for(const d of v.dinos) if(!d.dead) out.push(d); return out; }
+function dinoUpdate(v,dt){ const L=v.L, me=S.mode==='land'&&!S.cabin&&S.land&&S.land.k===v.k, px=me?S.land.x-v.isl.x:1e9, pz=me?S.land.z-v.isl.z:1e9, outside=me&&Math.hypot(px-L.plaza.x,pz-L.plaza.z)>L.townR+5;
+  for(const d of v.dinos){ d.mixer.update(dt*(d.cur==='Run'?1.3:1));
+    if(d.dead){ d.deadT-=dt; if(d.deadT<100) d.root.visible=d.deadT>100||false; if(d.deadT<=0){ d.dead=false; d.hp=d.df.hp; d.x=d.hx; d.z=d.hz; d.root.visible=true; playDino(d,'Idle'); } continue; }
+    const dx=px-d.x, dz=pz-d.z, dist=Math.hypot(dx,dz); let tx=d.tx, tz=d.tz, spd=0, mode='Idle'; d.angry=Math.max(0,d.angry-dt); d.atkCd-=dt;
+    if(d.df.carn&&outside&&(dist<d.df.aggro||(d.angry>0&&dist<90))){ tx=px; tz=pz; if(dist<d.df.reach){ mode='Attack'; if(d.atkCd<=0){ d.atkCd=2.0; dinoBite(d,v,dx,dz,dist); } } else { spd=d.df.run; mode='Run'; } }
+    else if(d.flee>0){ d.flee-=dt; tx=d.x-dx; tz=d.z-dz; spd=d.df.run; mode='Run'; }
+    else { d.wt-=dt; if(d.wt<=0){ d.wt=5+Math.random()*9; d.idle=Math.random()<0.4; for(let k=0;k<8;k++){ const a=Math.random()*TAU, rr=10+Math.random()*40, x2=d.hx+Math.cos(a)*rr, z2=d.hz+Math.sin(a)*rr; if(dinoOk(L,x2,z2)){ d.tx=x2; d.tz=z2; break; } } tx=d.tx; tz=d.tz; }
+      if(!d.idle&&Math.hypot(tx-d.x,tz-d.z)>2){ spd=d.df.walk; mode='Walk'; } }
+    if(mode==='Attack'||spd>0){ const ax=tx-d.x, az=tz-d.z, al=Math.hypot(ax,az)||1; d.yaw+=angDiff(d.yaw,Math.atan2(ax,az))*Math.min(1,dt*4);
+      if(spd>0){ const nx=d.x+ax/al*spd*dt, nz=d.z+az/al*spd*dt; if(dinoOk(L,nx,nz)){ d.x=nx; d.z=nz; } else if(!d.df.carn) d.wt=0; else mode='Idle'; } }
+    d.root.position.set(d.x,terrainH(L,d.x,d.z),d.z); d.root.rotation.y=d.yaw; playDino(d,mode); } }
+function dinoBite(d,v,dx,dz,dist){ const k=8/(dist||1); S.land.x+=dx*k; S.land.z+=dz*k; S.morale=Math.max(0,S.morale-4); S.food=Math.max(0,S.food-0.6); shake=Math.max(shake,0.7);
+  toast(`${d.df.ic} <b>${d.df.name}</b> tấn công bạn! Tinh thần −4 — chạy vào trong hàng rào thị trấn!`,3500); }
+function hitDino(d,dmg){ if(d.dead) return; d.hp-=dmg; const c=dinoCenter(d); puff(c.x,c.y,c.z,0xc0302a,1.2,0.6,1);
+  if(d.hp>0){ if(d.df.carn) d.angry=12; else d.flee=7; toast(`🎯 Trúng ${d.df.name}! (còn ${d.hp} máu)`); return; }
+  d.dead=true; d.deadT=150; playDino(d,'Death'); S.huntLog=S.huntLog||{}; S.huntLog.dino=(S.huntLog.dino||0)+1; let room=cargoCap()-cargoUsed(), got=[];
+  for(const [id,q] of d.df.loot){ const n=Math.min(room,q); if(n>0){ addCargo(id,n); room-=n; got.push(`${n} ${ITEMS[id].icon} ${ITEMS[id].name}`); } }
+  S.gold+=d.df.gold; banner(`${d.df.ic} Hạ gục ${d.df.name}! +${d.df.gold}💰`); toast('Chiến lợi phẩm: '+(got.join(', ')||'khoang hàng đầy')+`, +${d.df.gold}💰`,5000); save(); }
+function decoDino(vis,L,g,rng){ vis.dinos=[]; const wood=M(0x6a4a2a), bone=M(0xf0e6d0);
+  // hàng rào gỗ nhọn quanh thị trấn (chừa lối ra cổng và xưởng thuyền)
+  const R0=L.townR+7, gd=dv(L.pa), gate={x:gd.x*L.R*0.76,z:gd.z*L.R*0.76}, gaps=[Math.atan2(gate.z-L.plaza.z,gate.x-L.plaza.x),Math.atan2(L.yard.z-L.plaza.z,L.yard.x-L.plaza.x)], mats=[];
+  const lg=mergeGeometries([new THREE.CylinderGeometry(0.45,0.5,5,6).translate(0,2.5,0),new THREE.ConeGeometry(0.45,1.2,6).translate(0,5.6,0)]);
+  for(let a=0;a<TAU;a+=1.15/R0){ if(gaps.some(q=>Math.abs(angDiff(a,q))<0.13)) continue; const x=L.plaza.x+Math.cos(a)*R0, z=L.plaza.z+Math.sin(a)*R0; const gy=terrainH(L,x,z); if(gy<0.6) continue;
+    const m=new THREE.Matrix4().compose(new THREE.Vector3(x,gy-0.4,z),new THREE.Quaternion().setFromEuler(new THREE.Euler((rng()-.5)*0.1,rng()*TAU,(rng()-.5)*0.1)),new THREE.Vector3(1,0.85+rng()*0.3,1)); mats.push(m); vis.circ.push({x,z,r:0.7}); }
+  const fence=new THREE.InstancedMesh(lg,wood,mats.length); mats.forEach((m,i)=>fence.setMatrixAt(i,m)); fence.castShadow=true; fence.receiveShadow=true; g.add(fence);
+  for(const q of gaps){ for(const sx of [-1,1]){ const a=q+sx*0.15, x=L.plaza.x+Math.cos(a)*R0, z=L.plaza.z+Math.sin(a)*R0, gy=terrainH(L,x,z); mk(GEO.cyl,wood,0.8,9,0.8,x,gy+4.5,z,g); lantern(g,x,gy+9.6,z); vis.circ.push({x,z,r:1}); } }
+  vis.pois.push({x:L.plaza.x+Math.cos(gaps[0])*R0,z:L.plaza.z+Math.sin(gaps[0])*R0,icon:'🚧',name:'Cổng hàng rào an toàn'});
+  // chòi canh
+  { const a=gaps[0]+0.5, x=L.plaza.x+Math.cos(a)*(R0-4), z=L.plaza.z+Math.sin(a)*(R0-4), gy=terrainH(L,x,z); for(const ox of [-1.5,1.5]) for(const oz of [-1.5,1.5]) mk(GEO.cyl,wood,0.25,14,0.25,x+ox,gy+7,z+oz,g);
+    mk(GEO.box,M(0x8a6a3a),4.4,0.4,4.4,x,gy+14,z,g); mk(GEO.cone4,M(0x5a7a3a),3.6,2.5,3.6,x,gy+16.6,z,g).rotation.y=Math.PI/4; lantern(g,x,gy+15,z); vis.circ.push({x,z,r:2.6}); vis.pois.push({x,z,icon:'🗼',name:'Chòi canh'}); }
+  // bãi khai quật hóa thạch
+  const dg=spot(rng,L,vis,12,0.75,0.4); if(dg){ mk(GEO.cyl,M(0xc8b080),11,0.3,11,dg.x,dg.y+0.05,dg.z,g); const sk=new THREE.Group(); sk.position.set(dg.x,dg.y+0.6,dg.z); sk.rotation.y=rng()*TAU; g.add(sk);
+    for(let i=0;i<12;i++) mk(GEO.sphL,bone,0.55-i*0.025,0.5,0.6,-6+i*1.1,0.2+Math.sin(i*0.35)*0.8,0,sk); for(let i=0;i<7;i++){ const rb=new THREE.Mesh(new THREE.TorusGeometry(1.6-i*0.12,0.16,6,14,Math.PI),bone); rb.position.set(-3.5+i*1.0,0.9,0); rb.rotation.y=Math.PI/2; sk.add(rb); }
+    mk(GEO.sph,bone,1.4,1.0,1.0,7.2,1.3,0,sk); const jaw=mk(GEO.cone,bone,0.7,2.4,0.6,8.8,1.0,0,sk); jaw.rotation.z=-Math.PI/2; for(let i=0;i<4;i++) mk(GEO.cone,M(0xffffff),0.12,0.4,0.12,8.2+i*0.4,0.6,0.35,sk);
+    for(const [x,z] of [[-7,5],[6,-5],[0,6]]){ mk(GEO.cyl,wood,0.08,2.5,0.08,dg.x+x,dg.y+1.25,dg.z+z,g); mk(GEO.box,M(0xe74c3c),0.9,0.5,0.03,dg.x+x+0.45,dg.y+2.3,dg.z+z,g); }
+    placeModel('Crate_Wooden',g,dg.x+8,dg.y,dg.z+3,0.4,1.6); vis.circ.push({x:dg.x,z:dg.z,r:9}); vis.pois.push({x:dg.x,z:dg.z,icon:'🦴',name:'Bãi khai quật hóa thạch'}); }
+  // tổ trứng khủng long
+  for(let i=0;i<3;i++){ const p=spot(rng,L,vis,4,0.88,0.45); if(!p) continue; const nt=mk(GEO.torT,M(0x7a5a32),2.2,1.2,2.2,p.x,p.y+0.4,p.z,g); nt.rotation.x=Math.PI/2;
+    for(let k=0;k<4;k++){ const a=k*1.6; mk(GEO.sph,M(pick([0xf0e6c8,0xd8e8c0,0xe8d0b0],rng)),0.55,0.75,0.55,p.x+Math.cos(a)*0.7,p.y+0.75,p.z+Math.sin(a)*0.7,g); }
+    vis.circ.push({x:p.x,z:p.z,r:2.4}); vis.pois.push({x:p.x,z:p.z,icon:'🥚',name:'Tổ trứng khủng long'}); }
+  // đầm lầy hắc ín
+  const tp=spot(rng,L,vis,9,0.8,0.4); if(tp){ const t=new THREE.Mesh(new THREE.CircleGeometry(8,24).rotateX(-Math.PI/2),new THREE.MeshStandardMaterial({color:0x1a1612,roughness:0.08,metalness:0.3})); t.position.set(tp.x,tp.y+0.15,tp.z); g.add(t); vis.circ.push({x:tp.x,z:tp.z,r:8}); vis.pois.push({x:tp.x,z:tp.z,icon:'🫧',name:'Đầm lầy hắc ín'}); }
+  // khủng long
+  for(const [n,c,mr] of [['Trex',1,0.7],['Velociraptor',3,0.8],['Triceratops',2,0.85],['Stegosaurus',2,0.85],['Apatosaurus',2,0.8],['Parasaurolophus',3,0.88]]){
+    const home=spot(rng,L,vis,8,mr,0.5); if(!home) continue; for(let k=0;k<c;k++){ for(let t=0;t<10;t++){ const x=home.x+(rng()-.5)*14, z=home.z+(rng()-.5)*14; if(dinoOk(L,x,z)){ spawnDino(vis,L,n,x,z,rng); break; } } } }
+  if(vis.dinos.length) vis.pois.push({x:vis.dinos[0].x,z:vis.dinos[0].z,icon:'🦖',name:'Lãnh địa khủng long'}); }
 
 function decoLab(vis,L,g,rng){
   const pk=dv(L.pa+Math.PI), ox=pk.x*L.R*0.45, oz=pk.z*L.R*0.45, oy=terrainH(L,ox,oz);
@@ -1807,7 +1915,7 @@ function buildIsland(isl,idx){
   for(const s of L.slots) vis.buildings.push(makeBuilding(vis,L,s,rng));
   for(const s of L.stalls) vis.buildings.push(makeStall(vis,L,s,rng));
   vis.buildings.push(makeBuilding(vis,L,{type:'shipyard',x:L.yard.x,z:L.yard.z,rot:L.yard.rot},rng));
-  ({flora:decoFlora,desert:decoDesert,coral:decoCoral,ice:decoIce,volcano:decoVolcano,fort:decoFort,lab:decoLab})[isl.k](vis,L,g,rng);
+  ({flora:decoFlora,desert:decoDesert,coral:decoCoral,ice:decoIce,volcano:decoVolcano,fort:decoFort,lab:decoLab,dino:decoDino})[isl.k](vis,L,g,rng);
   { const pk=dv(L.pa+Math.PI), SP={desert:['⛰️','Núi thiêng',0.45],volcano:['🌋','Miệng núi lửa',0.45],ice:['🏔️','Sông băng',0.5],flora:['🌳','Rừng đại thụ',0.5],coral:['🪸','Rạn san hô',0.6]}[L.k]; if(SP) vis.pois.push({x:pk.x*L.R*SP[2],z:pk.z*L.R*SP[2],icon:SP[0],name:SP[1]}); if(L.oasis) vis.pois.push({x:L.oasis.x,z:L.oasis.z,icon:'🏝️',name:'Ốc đảo'}); }
   decoVeg(vis,L,g,rng);
   makeResidents(vis,L,rng,isl);
@@ -2360,7 +2468,8 @@ const FISH_LOOK={f_thu:{len:1.3,h:0.34,col:0x3f6fa8,belly:0xe0e8f0,stripe:0x1a3a
   f_bang:{len:1.2,h:0.4,col:0xbfe8ff,belly:0xeaf8ff,fin:0x9fd8ff,glass:true,kg:[0.6,3],cm:[30,55]},
   f_lua:{len:1.2,h:0.45,col:0x8a1a10,belly:0xff6a20,fin:0xffa030,glow:0xff4a00,kg:[1,5],cm:[35,70]},
   f_kiem:{len:2.6,h:0.55,col:0x5a6a7a,belly:0xd8dde4,fin:0x3a4a5a,sword:true,kg:[30,120],cm:[150,300]},
-  f_sua:{jelly:true,len:1.0,col:0xb08aff,kg:[0.2,1.5],cm:[20,50]}};
+  f_sua:{jelly:true,len:1.0,col:0xb08aff,kg:[0.2,1.5],cm:[20,50]},
+  f_co:{len:1.8,h:0.6,col:0x3a5a7a,belly:0x8aa0b0,fin:0x2a4a6a,stripe:0xd8e0e8,kg:[20,90],cm:[120,200]}};
 function makeFishMesh(id){ const d=FISH_LOOK[id], g=new THREE.Group();
   if(d.jelly){ const bm=M(d.col,{transparent:true,opacity:0.6,emissive:d.col,emissiveIntensity:0.9,side:THREE.DoubleSide}); const b=mk(GEO.hemi,bm,0.6,0.55,0.6,0,0,0.1,g); b.rotation.x=Math.PI/2; const t=new THREE.Group(); g.add(t); for(let i=0;i<8;i++){ const tc=mk(GEO.cyl,bm,0.025,1.2,0.025,Math.cos(i*0.8)*0.35,Math.sin(i*0.8)*0.35,-0.5,t); tc.rotation.x=Math.PI/2; } g.userData.tail=t; return g; }
   if(d.squid){ const b=mk(GEO.cone,M(d.col,{emissive:d.col,emissiveIntensity:.15}),0.32,1.3,0.32,0,0,-0.2,g); b.rotation.x=-Math.PI/2; for(const sx of [-1,1]){ const f=mk(GEO.cone4,M(d.col,{side:THREE.DoubleSide}),0.25,0.35,0.04,sx*0.22,0,-0.7,g); f.rotation.set(-Math.PI/2,0,sx*0.6); }
@@ -2487,7 +2596,7 @@ const CAB_L=[]; for(let i=0;i<4;i++){ const l=new THREE.PointLight(0xffdcb0,10,1
 const ROOMX={storage:-15,bedroom:-5,dining:5,living:15}, cabCam={yaw:-Math.PI/2,pitch:0.62,dist:5.4}; let cabRoom=-1, cabSnap=false;
 const CAB_SPOTS=[[13.5,-0.6,Math.PI*0.6],[16.5,1.6,-Math.PI*0.7],[6.5,1.4,Math.PI],[3.2,1.8,Math.PI/2],[-4.5,1.6,0],[-2,-1,Math.PI]];
 const DECOR_POS={rug:['living',0.8,0.01,-1.4,0],plant:['living',3.9,0,3.7,0],painting:['living',1,2.15,-4.52,0],guitar:['living',-1.4,0.02,-4.2,0],clock:['living',-4.4,0,3.9,Math.PI],globe:['living',1,0.45,-2.2,0],
-  sv_desert:['living',-3.6,0.02,-4.0,0],sv_volcano:['living',3.6,0.02,-3.9,0],sv_fort:['living',-2.4,3.02,4.2,Math.PI],sv_lab:['bedroom',1.8,0.02,-3.9,0],lamp:['bedroom',0,3.3,0,0],curtain:['bedroom',2.5,2.05,4.5,Math.PI],teddy:['bedroom',2.8,0.72,-3.5,0],sv_flora:['bedroom',0.9,0.82,-3.85,0],sv_ice:['bedroom',-4.3,2.42,-3.85,0],
+  sv_desert:['living',-3.6,0.02,-4.0,0],sv_volcano:['living',3.6,0.02,-3.9,0],sv_fort:['living',-2.4,3.02,4.2,Math.PI],sv_lab:['bedroom',1.8,0.02,-3.9,0],sv_dino:['living',-1.2,0.02,-3.9,0],lamp:['bedroom',0,3.3,0,0],curtain:['bedroom',2.5,2.05,4.5,Math.PI],teddy:['bedroom',2.8,0.72,-3.5,0],sv_flora:['bedroom',0.9,0.82,-3.85,0],sv_ice:['bedroom',-4.3,2.42,-3.85,0],
   candle:['dining',-0.9,1.08,-2.2,0],vase:['dining',1,1.08,-2.2,0],sv_coral:['dining',-3.2,2.15,-3,0]};
 let cabinG=null, cabinCrew=[], cabinInteract=[], cabinBoxes=[], cabinDecor=[], cabinBerths=[], cabinSeats=[], cabinFire=[], cabinPortMat=null;
 const PORT_TEX=(()=>{ const c=document.createElement('canvas'); c.width=c.height=128; const g=c.getContext('2d'); const gr=g.createLinearGradient(0,0,0,128); gr.addColorStop(0,'#8fd0ff'); gr.addColorStop(0.55,'#d6f0ff'); gr.addColorStop(0.56,'#3a9ac8'); gr.addColorStop(1,'#14557a'); g.fillStyle=gr; g.fillRect(0,0,128,128); const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t; })();
@@ -3124,6 +3233,7 @@ function visuals(dt){
     if(v.beam) v.beam.material.opacity=0.35+0.25*night;
     if(v.gateStar) v.gateStar.rotation.z+=dt*0.4;
     if(v.yard&&v.detail.visible) yardUpdate(v,dt);
+    if(v.dinos&&v.detail.visible) dinoUpdate(v,dt);
     if(v.armillary) v.armillary.rotation.y+=dt*0.5; if(v.flag) v.flag.rotation.y=Math.sin(T*2)*0.3; if(v.telescope) v.telescope.rotation.y=Math.sin(T*0.05)*1.2;
     if(v.turbines) v.turbines.forEach((h,i)=>h.rotation.z+=dt*(0.6+S.wind.str*1.5));
     if(v.tanks) v.tanks.forEach((j,i)=>{ j.position.y+=Math.sin(T*1.5+i)*0.004; j.rotation.y+=dt*0.3; });
@@ -3280,7 +3390,7 @@ function intro(){
     <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">${sv?`<button class="pri" data-a="cont">Tiếp tục (Ngày ${sv.time.day})</button>`:''}<button ${sv?'':'class="pri"'} data-a="new">Hành trình mới</button></div></div>`,
     a=>{ if(a==='cont') startGame(sv,false); if(a==='new'){ try{localStorage.removeItem(SAVE_KEY);}catch(e){} creator(); } },'intro',true);
 }
-window.__game={openTestPanel,addPetDragon,mountDragon,get QL(){return QL},GPU_NAME,get landCam(){return landCam},get camera(){return camera},openArmory,takeOff,landPlane,spawnSky,hitSky,shoot,cycleWeapon,setEquip,get SKY(){return SKY},get plane(){return plane},get HAS_ASSETS(){return HAS_ASSETS},get HAS_CHARS(){return HAS_CHARS},CHARS,MODELS,WX,openIslandMap,genZones,evChest,evDistress,evFishSchool,evMystery,showCatchCard,get UW(){return UW},refreshShip,get cabin(){return {inter:cabinInteract}},enterCabin,exitCabin,cabinAct,genQuests,renderer,get ev(){return evScene},evPirate,evWhale,evStorm,evWreck,evBottle,evMerchant,evCalm,get fishing(){return fishing},fishKey,openShipPanel,catchFish,get S(){return S},islandVis:()=>islandVis,enterIsland,evPirate,interact,get near(){return nearInteract}}; // hook debug (gỡ khi phát hành)
+window.__game={DINO_MODELS,hitDino,activeDinos,openTestPanel,addPetDragon,mountDragon,get QL(){return QL},GPU_NAME,get landCam(){return landCam},get camera(){return camera},openArmory,takeOff,landPlane,spawnSky,hitSky,shoot,cycleWeapon,setEquip,get SKY(){return SKY},get plane(){return plane},get HAS_ASSETS(){return HAS_ASSETS},get HAS_CHARS(){return HAS_CHARS},CHARS,MODELS,WX,openIslandMap,genZones,evChest,evDistress,evFishSchool,evMystery,showCatchCard,get UW(){return UW},refreshShip,get cabin(){return {inter:cabinInteract}},enterCabin,exitCabin,cabinAct,genQuests,renderer,get ev(){return evScene},evPirate,evWhale,evStorm,evWreck,evBottle,evMerchant,evCalm,get fishing(){return fishing},fishKey,openShipPanel,catchFish,get S(){return S},islandVis:()=>islandVis,enterIsland,evPirate,interact,get near(){return nearInteract}}; // hook debug (gỡ khi phát hành)
 loadAssets().then(intro);
 loop();
 </script>

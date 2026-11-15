@@ -3605,7 +3605,7 @@ function openMenu(){
     if(a==='login'){ closeModal(); cloudLogin(); } if(a==='logout'){ closeModal(); cloudLogout(); } if(a==='cloudsave'){ save(); cloudPush(2); } if(a==='xu'){ closeModal(); openXuShop(); }
     if(a==='test') openTestPanel();
     if(a==='gpu') openGpuHelp();
-    if(a==='new'){ if(confirm('Xóa tiến trình hiện tại và bắt đầu hành trình mới?')){ try{localStorage.removeItem(SAVE_KEY);}catch(e){} location.reload(); } } },'menu'); }
+    if(a==='new'){ save(); confirmNewGame(S,()=>{ try{ sessionStorage.setItem('htvd_new','1'); }catch(e){} location.reload(); },openMenu); } },'menu'); }
 addEventListener('beforeunload',()=>save());
 
 function costText(cost){ return [`${cost.gold}💰`,...Object.entries(cost.items).map(([id,n])=>{ const has=S.cargo[id]?S.cargo[id].q:0; return `<span class="${has>=n?'good':'bad'}">${ITEMS[id].icon}${ITEMS[id].name} ${has}/${n}</span>`; })].join(' · '); }
@@ -4726,16 +4726,25 @@ function startPreview(look){
   const tick=()=>{ if(!run) return; const t=(performance.now()-t0)/1000; ch.root.rotation.y=Math.sin(t*0.6)*0.8; ch.a.mode=Math.floor(t/3)%3===1?'wave':'idle'; animChar(ch,0.016,t); r.render(sc,cam); requestAnimationFrame(tick); };
   tick(); pv={stop(){ run=false; r.dispose(); }};
 }
+// Hỏi lại trước khi bắt đầu hành trình mới (tiến trình cũ chỉ bị ghi đè khi đã tạo xong và vào game)
+function confirmNewGame(sv,onYes,onNo){ const ship=TIERS[sv.tier]?TIERS[sv.tier].name:'', nm=(sv.player&&sv.player.name)||'';
+  openModal(`<div style="text-align:center;font-size:46px">⚠️</div><h2 style="text-align:center">Bắt đầu hành trình mới?</h2>
+    <p style="text-align:center">Bạn đang có tiến trình: <b>${nm}</b> · Ngày <b>${sv.time.day}</b> · <b>${Math.floor(sv.gold).toLocaleString('vi-VN')}💰</b> · ${ship} · ${(sv.islands||[]).filter(i=>i.disc).length} đảo đã khám phá.</p>
+    <p style="text-align:center;color:#ffb060">Hành trình mới sẽ <b>XÓA VĨNH VIỄN</b> tiến trình này${CLOUD.user?' (cả bản lưu trên mây)':''} khi bạn hạ thủy thuyền mới. Không thể khôi phục!</p>
+    <div class="choices"><button data-a="backup">📤 Tải file lưu về máy trước (để phòng)</button><button class="pri" data-a="no">↩️ Không, giữ tiến trình cũ</button><button data-a="yes" style="background:#8a2a1a">🗑️ Tôi hiểu, bắt đầu hành trình mới</button></div>`,a=>{
+      if(a==='backup'){ const u=URL.createObjectURL(new Blob([JSON.stringify(sv)],{type:'application/json'})), el=document.createElement('a'); el.href=u; el.download=`hai-trinh-van-dao-ngay${sv.time.day}.json`; document.body.appendChild(el); el.click(); el.remove(); setTimeout(()=>URL.revokeObjectURL(u),3000); toast('📤 Đã tải file lưu — có thể nhập lại ở Menu → Nhập file lưu'); return; }
+      closeModal(); if(a==='yes') onYes(); else if(onNo) onNo(); },'confirm',true); }
 function stopPreview(){ if(pv){ pv.stop(); pv=null; } }
 function intro(){
   $('loading').style.display='none'; if(!CLOUD.pagehide){ CLOUD.pagehide=1; addEventListener('pagehide',()=>{ if(CLOUD.user&&S) cloudPush(true); }); }
-  if(!CLOUD.init){ CLOUD.init=1; initCloud().then(()=>{ if(CLOUD.ok&&!S) intro(); }); } const sv=loadSave();
+  if(!CLOUD.init){ CLOUD.init=1; initCloud().then(()=>{ if(CLOUD.ok&&!S&&modalKind==='intro') intro(); }); }
+  try{ if(sessionStorage.getItem('htvd_new')){ sessionStorage.removeItem('htvd_new'); creator(); return; } }catch(e){} const sv=loadSave();
   openModal(`<div style="text-align:center"><div style="font-size:56px">🌊⛵🏝️</div><h2 style="font-size:32px">Hải Trình Vạn Đảo</h2>
     <h3>Trên chiếc thuyền nan đơn sơ, bạn ra khơi tìm những hòn đảo kỳ lạ giữa đại dương mù sương.</h3>
     <p class="sm" style="max-width:580px;margin:0 auto">Không có bến nhà — mỗi hòn đảo đều có thị trấn riêng với chợ, nhà hàng, quán rượu, kho dầu và xưởng thuyền.
     Lên đảo, đi bộ gặp cư dân, mua bán đặc sản, thuê thủy thủ, nâng cấp thuyền và sống sót qua bão tố, hải tặc giữa biển khơi.</p>
     <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">${sv?`<button class="pri" data-a="cont">Tiếp tục (Ngày ${sv.time.day})</button>`:''}<button ${sv?'':'class="pri"'} data-a="new">Hành trình mới</button>${CLOUD.ok?(CLOUD.user?'<button data-a="logout">🚪 Đăng xuất</button>':'<button data-a="login">👤 Đăng nhập Google</button>'):''}</div>${CLOUD.user?`<p class="sm" style="margin-top:12px;color:#9fe8a0">✅ Đã đăng nhập: <b>${CLOUD.user.email}</b> · 🪙 ${CLOUD.xu} xu — tiến trình sẽ tự lưu lên mây. Chọn <b>Hành trình mới</b> để vào server và đặt biệt danh.</p>`:CLOUD.ok?'<p class="sm" style="margin-top:12px">Đăng nhập Gmail để lưu tiến trình lên mây, chơi trên máy khác và nạp xu.</p>':''}</div>`,
-    a=>{ if(a==='login'){ cloudLogin(); return; } if(a==='logout'){ cloudLogout().then(()=>setTimeout(intro,300)); return; } if(a==='cont') startGame(sv,false); if(a==='new'){ try{localStorage.removeItem(SAVE_KEY);}catch(e){} creator(); } },'intro',true);
+    a=>{ if(a==='login'){ cloudLogin(); return; } if(a==='logout'){ cloudLogout().then(()=>setTimeout(intro,300)); return; } if(a==='cont') startGame(sv,false); if(a==='new'){ if(sv) confirmNewGame(sv,()=>creator(),intro); else creator(); } },'intro',true);
 }
 window.__game={shipCreator,bowFire,get SHIP_SPLIT(){return SHIP_SPLIT},get shipMesh(){return shipMesh},HULLS,BOWS,openKingdom,get RAINC(){return RAINC},get rainLocal(){return rainLocal},seabedH,findMerK,get raider(){return raider},enemyShot,sink,respawnAtYard,raiderUpdate,CLOUD,openXuShop,SUBS,openSubPicker,get subMesh(){return subMesh},openTemple,openWukong,openMaze,evPilgrim,doSight,warKill,get warAlt(){return warAltUpdate},toggleMedit,breakthrough,openCult,openHeaven,openHell,get trib(){return trib},evKaiju,evUFO,evPortal,evKraken,evMeteor,evAngel,evDemon,evSiren,evDragonKing,leaveIsland,diveSub,surfaceSub,startWar,winWar,get SUB(){return SUB},get SEA_CR(){return SEA_CR},spawnSea,hitSea,scanSea,subAct,evGhost,get warShips(){return warShips},openForge,armyPower,breathFX,get T(){return T},togglePerch,skyShip,openMountPicker,mountDino,addPetPtero,get mountMesh(){return mountMesh},DRAGON_TYPES,DINO_MODELS,hitDino,activeDinos,openTestPanel,addPetDragon,mountDragon,get QL(){return QL},GPU_NAME,get landCam(){return landCam},get camera(){return camera},openArmory,takeOff,landPlane,spawnSky,hitSky,shoot,cycleWeapon,setEquip,get SKY(){return SKY},get plane(){return plane},get HAS_ASSETS(){return HAS_ASSETS},get HAS_CHARS(){return HAS_CHARS},CHARS,MODELS,WX,openIslandMap,genZones,evChest,evDistress,evFishSchool,evMystery,showCatchCard,get UW(){return UW},refreshShip,get cabin(){return {inter:cabinInteract}},enterCabin,exitCabin,cabinAct,genQuests,renderer,get ev(){return evScene},evPirate,evWhale,evStorm,evWreck,evBottle,evMerchant,evCalm,get fishing(){return fishing},fishKey,openShipPanel,catchFish,get S(){return S},islandVis:()=>islandVis,enterIsland,evPirate,interact,get near(){return nearInteract}}; // hook debug (gỡ khi phát hành)
 loadAssets().then(intro);

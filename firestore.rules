@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    // Tiến trình game: mỗi người chỉ đọc/ghi được bản lưu của chính mình
+    match /saves/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid
+                         && (request.resource == null || request.resource.data.data.size() < 900000);
+    }
+    // Ví xu: người chơi chỉ được TẠO với 0 xu và chỉ được GIẢM xu (khi tiêu). Chỉ máy chủ (webhook) mới cộng xu.
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create: if request.auth != null && request.auth.uid == uid && request.resource.data.xu == 0;
+      allow update: if request.auth != null && request.auth.uid == uid
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['xu'])
+                    && request.resource.data.xu >= 0
+                    && request.resource.data.xu < resource.data.xu;
+    }
+    // Đơn nạp: chỉ máy chủ ghi; người chơi xem được đơn của mình
+    match /orders/{id} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+  }
+}

@@ -661,7 +661,7 @@ const RUMORS=[
 // =====================================================================
 let S=null;
 function tier(){return TIERS[S.tier];}
-function cargoCap(){ return Math.round(TIERS[S.tier].cargo*(S.upg&&S.upg.storage2?1.25:1)); }
+function cargoCap(){ return Math.round(TIERS[S.tier].cargo*(S.upg&&S.upg.storage2?1.25:1)*((typeof hullStat==='function'&&S.shipLook)?hullStat().cargo:1)); }
 function jobLv(j){return S.crew.filter(c=>c.job===j).reduce((a,c)=>a+c.lv,0);}
 function discoverR(){return 300*(1+0.15*Math.min(4,jobLv('nav')))*(1-0.5*WX.fog);}
 function hintR(){return 800+90*Math.min(4,jobLv('nav'));}
@@ -1103,9 +1103,30 @@ function makeCharModel(look){ const nm=pickCharModel(look), md=CHARS[nm], inner=
   if(hand){ hand.add(handR); root.updateMatrixWorld(true); const ws=new THREE.Vector3(); hand.getWorldScale(ws); handR.scale.set(1/ws.x,1/ws.y,1/ws.z); }
   else { handR.position.set(0.45,1.45,0.3); body.add(handR); }
   const P={body,ty:1.22,handR,head:body,torso:body};
+  if(look.pl) try{ charAcc(inner,root,look); }catch(e){ console.warn('acc',e); }
   const ch={root,P,look,a:{mode:'idle',ph:Math.random()*10,spd:1},mixer,acts,cur:null,model:nm};
   playClip(ch,'idle'); mixer.update(Math.random()*2); return ch; }
 function makeCharacter(look){ return HAS_CHARS?makeCharModel(look):makeCharacterProc(look); }
+// --- phụ kiện của thuyền trưởng: mũ & đồ trên mặt, gắn vào xương đầu (chỉ nhân vật người chơi)
+const ACC_HATS=[['model','Theo nhân vật'],['tricorn','Mũ ba góc thuyền trưởng'],['nonla','Nón lá'],['straw','Mũ rơm'],['bandana','Khăn bandana'],['crown','Vương miện'],['navy','Mũ hải quân'],['none','Đầu trần']];
+const ACC_FACE=[['none','Không'],['glasses','Kính tròn'],['shades','Kính râm'],['patch','Bịt mắt'],['mustache','Ria mép'],['beard','Râu quai nón'],['scar','Vết sẹo']];
+function charAcc(inner,root,look){ let head=null; inner.traverse(o=>{ if(!head&&o.isBone&&/^Head$/i.test(o.name)) head=o; }); if(!head) return;
+  root.updateMatrixWorld(true); const box=new THREE.Box3().setFromObject(inner), hp=head.getWorldPosition(new THREE.Vector3()), ws=new THREE.Vector3(), wq=new THREE.Quaternion(); head.getWorldScale(ws); head.getWorldQuaternion(wq);
+  const A=new THREE.Group(); A.scale.set(1/ws.x,1/ws.y,1/ws.z); A.quaternion.copy(wq).invert(); head.add(A);
+  const top=box.max.y-hp.y, hr=Math.max(0.3,top*0.48), fy=top*0.39, fz=hr*0.94, hair=look.hair??0x2b1d14;
+  const hat=look.hat||'model', face=look.face||'none', blk=M(0x1a1a1a), gold=M(0xd4af37,{metalness:0.7,roughness:0.3});
+  if(hat==='tricorn'){ const g=new THREE.Group(); g.position.y=top*0.88; A.add(g); for(let i=0;i<3;i++){ const w=mk(GEO.box,blk,hr*1.7,hr*0.32,hr*0.32,0,0,0,g); w.rotation.y=i/3*TAU; w.position.set(Math.sin(i/3*TAU)*hr*0.42,hr*0.08,Math.cos(i/3*TAU)*hr*0.42); w.rotation.x=-0.35; } mk(GEO.hemi,blk,hr*0.82,hr*0.55,hr*0.82,0,0.05,0,g); mk(GEO.tor,gold,hr*0.84,hr*0.84,hr*0.05,0,0.04,0,g).rotation.x=Math.PI/2; mk(GEO.sphL,M(0xffffff),hr*0.12,hr*0.12,hr*0.05,0,hr*0.3,hr*0.8,g); }
+  if(hat==='nonla'){ mk(GEO.cone,M(0xe8d090,{roughness:0.9}),hr*1.6,hr*0.75,hr*1.6,0,top*0.92,0,A); }
+  if(hat==='straw'){ mk(GEO.cyl,M(0xe8c870),hr*1.55,hr*0.06,hr*1.55,0,top*0.85,0,A); mk(GEO.cyl,M(0xe8c870),hr*0.82,hr*0.5,hr*0.82,0,top*0.85+hr*0.25,0,A); mk(GEO.cyl,M(0xc0392b),hr*0.84,hr*0.12,hr*0.84,0,top*0.85+hr*0.08,0,A); }
+  if(hat==='bandana'){ mk(GEO.hemi,M(0xc0392b),hr*0.98,hr*0.72,hr*1.0,0,top*0.6,0,A); mk(GEO.sph,M(0xc0392b),hr*0.18,hr*0.18,hr*0.3,hr*0.2,top*0.62,-hr*0.98,A); }
+  if(hat==='crown'){ const c=new THREE.Group(); c.position.y=top*0.88; A.add(c); mk(GEO.cylT,gold,hr*0.72,hr*0.38,hr*0.72,0,0,0,c); for(let i=0;i<6;i++){ const a=i/6*TAU; mk(GEO.cone,gold,hr*0.1,hr*0.38,hr*0.1,Math.cos(a)*hr*0.68,hr*0.32,Math.sin(a)*hr*0.68,c); mk(GEO.sphL,M([0xe0204a,0x2a8aff,0x30d070][i%3],{emissive:[0x600010,0x103a80,0x0a5020][i%3]}),hr*0.07,hr*0.07,hr*0.07,Math.cos(a)*hr*0.72,0,Math.sin(a)*hr*0.72,c); } }
+  if(hat==='navy'){ mk(GEO.cyl,M(0xf4f4f4),hr*0.9,hr*0.32,hr*0.9,0,top*0.9,0,A); mk(GEO.cyl,blk,hr*0.92,hr*0.1,hr*0.92,0,top*0.78,0,A); mk(GEO.box,blk,hr*0.9,hr*0.05,hr*0.5,0,top*0.76,hr*0.75,A); mk(GEO.sphL,gold,hr*0.1,hr*0.1,hr*0.04,0,top*0.84,hr*0.9,A); }
+  if(face==='glasses'||face==='shades'){ const m=face==='shades'?M(0x101010,{metalness:0.6,roughness:0.2}):M(0x3a2a1a); for(const sx of [-1,1]){ if(face==='shades') mk(GEO.box,m,hr*0.34,hr*0.2,hr*0.05,sx*hr*0.27,fy-hr*0.04,fz,A); else mk(GEO.tor,m,hr*0.17,hr*0.17,hr*0.03,sx*hr*0.28,fy,fz,A); } mk(GEO.box,m,hr*0.22,hr*0.04,hr*0.04,0,fy+hr*0.04,fz,A); }
+  if(face==='patch'){ mk(GEO.cyl,blk,hr*0.2,hr*0.04,hr*0.2,hr*0.28,fy,fz,A).rotation.x=Math.PI/2; const st=mk(GEO.tor,blk,hr*0.95,hr*0.95,hr*0.025,0,fy+hr*0.12,0,A); st.rotation.set(Math.PI/2,0,0.35); }
+  if(face==='mustache'){ for(const sx of [-1,1]){ const mu=mk(GEO.sph,M(hair),hr*0.24,hr*0.08,hr*0.08,sx*hr*0.16,fy-hr*0.38,fz*0.98,A); mu.rotation.z=sx*0.35; } }
+  if(face==='beard'){ mk(GEO.sph,M(hair),hr*0.48,hr*0.34,hr*0.3,0,fy-hr*0.78,fz*0.82,A); for(const sx of [-1,1]) mk(GEO.sph,M(hair),hr*0.12,hr*0.3,hr*0.2,sx*hr*0.58,fy-hr*0.42,fz*0.6,A); }
+  if(face==='scar'){ const sc=mk(GEO.box,M(0x8a2a2a),hr*0.04,hr*0.42,hr*0.02,-hr*0.3,fy,fz*1.02,A); sc.rotation.z=0.4; }
+  A.traverse(o=>{ if(o.isMesh) o.castShadow=true; }); }
 function makeCharacterProc(look){
   const kit=look.sp==='human'?'human':(SPECIES[look.sp].kit||look.sp);
   const m1=matC(look.c1), m2=matC(look.c2), mD=matC(0x1d1a1a);
@@ -2070,7 +2091,7 @@ const GEAR={
   armor4:{name:'Giáp vảy rồng',icon:'🐲',type:'a',def:9,cost:{gold:1100,items:{vay_rong:4,pha_le_troi:1}}},
   armor5:{name:'Giáp Titan',icon:'🗿',type:'a',def:14,titan:true,cost:{gold:1400,items:{da_titan:5,sat_cu:4}}} };
 function gearVal(g){ if(!g) return 0; let v=0; if(g.w&&GEAR[g.w]) v+=GEAR[g.w].pow*(1+0.2*(g.wl||0)); if(g.a&&GEAR[g.a]) v+=GEAR[g.a].def*(1+0.2*(g.al||0)); return v; }
-function armyPower(){ let pw=0; for(const c of S.crew) pw+=(c.job==='war'?3*c.lv:c.lv)+gearVal(c.gear); pw+=(S.squad||0)*4+gearVal(S.pgear)+(S.cannon||0)*5+((S.cult||{}).r||0)*5+((S.blessUntil??-1)>=S.time.day?20:0)+(S.angelGuard?15:0)+(S.wukong?25:0); return Math.round(pw); }
+function armyPower(){ let pw=0; for(const c of S.crew) pw+=(c.job==='war'?3*c.lv:c.lv)+gearVal(c.gear); pw+=(S.squad||0)*4+gearVal(S.pgear)+(S.cannon||0)*5+((S.cult||{}).r||0)*5+((S.blessUntil??-1)>=S.time.day?20:0)+(S.angelGuard?15:0)+(S.wukong?25:0)+(S.shipLook?hullStat().army:0); return Math.round(pw); }
 function upCost(lv){ return {gold:120*(lv+1),items:{thep:lv+1}}; }
 function openForge(titan){ S.pgear=S.pgear||{}; const who=[['P','🧑‍✈️ '+S.player.name,S.pgear],...S.crew.map((c,i)=>[String(i),`${c.icon} ${c.name} (${JOBS[c.job].name} ${c.lv})`,c.gear||(c.gear={})])];
   const sel=`<select id="fgT" style="font-size:14px;padding:4px 8px;border-radius:8px">${who.map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select>`;
@@ -2236,7 +2257,7 @@ function makeSubOf(t){ let g;
   g.userData.t=t; shadowize(g); return g; }
 function openSubPicker(onPick){ const own=Object.keys(SUBS).filter(t=>(S.subs||{})[t]);
   openModal(`<h2>🚤 Chọn tàu ngầm</h2><div class="choices">${own.map(t=>{ const q=SUBS[t]; return `<button data-a="u_${t}" class="${S.subType===t?'pri':''}">${q.ic} <b>${q.name}</b> — tốc độ ${q.spd} · vỏ ${q.hull} · ngư lôi ${q.dmg}<br><span class="sm">${q.desc}</span></button>`; }).join('')}<button data-a="close">Đóng</button></div>`,a=>{ closeModal(); if(a.startsWith('u_')){ const t=a.slice(2); if(S.subType!==t){ S.subType=t; S.subHull=SUBS[t].hull; } onPick&&onPick(); } }); }
-function startSubAt(x,y,z,yaw){ if(!subMesh||subMesh.userData.t!==S.subType){ if(subMesh) world.remove(subMesh); subMesh=makeSubOf(S.subType); } world.add(subMesh); const sp0=subSpec(); TORPEDO.dmg=sp0.dmg; TORPEDO.cd=sp0.cd; buildUnderwater(); SUB={x,y,z,yaw,spd:0,vy:0,biteCd:0}; S.mode='sub'; helmCam=false; S.subHull=S.subHull??100;
+function startSubAt(x,y,z,yaw){ if(!subMesh||subMesh.userData.t!==S.subType){ if(subMesh) world.remove(subMesh); subMesh=makeSubOf(S.subType); subMesh.scale.setScalar(0.5); } world.add(subMesh); const sp0=subSpec(); TORPEDO.dmg=sp0.dmg; TORPEDO.cd=sp0.cd; buildUnderwater(); SUB={x,y,z,yaw,spd:0,vy:0,biteCd:0}; S.mode='sub'; helmCam=false; S.subHull=S.subHull??100;
   if(playerCh&&playerCh.root.parent) playerCh.root.parent.remove(playerCh.root); updateSeabed(x,z); }
 function diveSub(pk){ if(!pk&&S.mode==='sea'&&!evScene&&Object.keys(S.subs||{}).length>1){ openSubPicker(()=>diveSub(true)); return; } if(!S.sub){ toast('🚤 Bạn chưa có tàu ngầm — mua ở <b>Xưởng quân giới</b> đảo Thiết Bảo'); return; } if(S.mode!=='sea'||(S.ship.alt||0)>1||S.cabin||evScene||fishing.st!=='idle'){ toast('Chỉ lặn được khi đang ở trên mặt biển'); return; }
   if(S.subHull<=0){ S.subHull=Math.round(subSpec().hull*0.4); } fadeTo(()=>{ startSubAt(S.ship.x+Math.cos(S.ship.h)*10,-6,S.ship.z+Math.sin(S.ship.h)*10,-S.ship.h); banner('🚤 Lặn xuống! W/S tiến lùi · A/D rẽ · Space nổi · Shift lặn'); toast('F quét sinh vật vào Sách sinh vật · nhấp chuột bắn ngư lôi · E nhặt rương / vào Thủy Cung · U nổi lên',8000); }); }
@@ -2337,7 +2358,7 @@ function subAct(){ const n=SUB&&SUB.near; if(!n) return; if(n.kind==='kingdom'){
   if(n.kind==='mermaid'){ n.o.gift=true; const r2=Math.random(); if(r2<0.5){ banner('🧜 Nàng tiên cá tặng bạn một viên ngọc trai!'+lootN('ngoc',1)); } else if(r2<0.8){ S.subHull=Math.min(subSpec().hull,S.subHull+40); banner('🧜 Nàng tiên cá hát — vỏ tàu ngầm được hồi phục!'); } else { if(S.merK){ S.merKhint=true; } banner('🧜 "Vương quốc của chúng tôi ở vực sâu nhất đại dương" — đã đánh dấu 👑 trên hải đồ'); } save(); return; } if(n.kind==='wreck'){ const w=n.w, g2=200+Math.floor(Math.random()*300), id=pick(['ngoc','tuong','vang_nguyen','la_ban_co']), q=Math.min(cargoCap()-cargoUsed(),1+Math.floor(Math.random()*2));
     w.got=true; if(w.mesh) w.mesh.visible=false; S.gold+=g2; if(q>0) addCargo(id,q); banner(`💰 Rương xác tàu: +${g2}💰`+(q>0?` · ${q} ${ITEMS[id].icon} ${ITEMS[id].name}`:'')); save(); }
   if(n.kind==='abyss'){ world.remove(subMesh); SUB=null; S.mode='sea'; enterIsland(n.v.k); } }
-function subCamera(dt){ const P=SUB; if(!P) return; const fx=-Math.sin(P.yaw), fz=-Math.cos(P.yaw), k=1-Math.exp(-dt*3); camera.position.lerp(_v3.set(P.x-fx*17,P.y+5,P.z-fz*17),k); camera.lookAt(P.x+fx*12,P.y,P.z+fz*12); }
+function subCamera(dt){ const P=SUB; if(!P) return; const fx=-Math.sin(P.yaw), fz=-Math.cos(P.yaw), k=1-Math.exp(-dt*3); camera.position.lerp(_v3.set(P.x-fx*10,P.y+3.2,P.z-fz*10),k); camera.lookAt(P.x+fx*10,P.y,P.z+fz*10); }
 // --- Thủy Cung
 function decoAbyss(vis,L,g,rng){ const R2=L.R+45, gm=new THREE.MeshStandardMaterial({color:0xbff4ff,transparent:true,opacity:0.16,roughness:0.05,metalness:0.3,side:THREE.DoubleSide,depthWrite:false});
   const dg=new THREE.Group(); dg.position.y=-4; dg.scale.y=55/R2; g.add(dg); const dome=new THREE.Mesh(new THREE.SphereGeometry(R2,48,20,0,TAU,0,Math.PI/2),gm); dg.add(dome);
@@ -3153,13 +3174,20 @@ function buildShip(ti,skinId,crew,mods,opt={}){
 // =====================================================================
 // XƯỞNG THIẾT KẾ THUYỀN: kiểu thân · màu thân · kiểu buồm · màu & hoa văn buồm · vũ khí mũi tàu
 // =====================================================================
-const HULLS={galleon:{n:'Galleon cổ điển',ic:'⛵'},viking:{n:'Thuyền Viking',ic:'🛡️'},dragon:{n:'Thuyền Rồng',ic:'🐉'},junk:{n:'Thuyền Mành phương Đông',ic:'🏮'},ironclad:{n:'Chiến hạm bọc thép',ic:'⚙️'},royal:{n:'Du thuyền Hoàng gia',ic:'👑'},ghost:{n:'Thuyền Ma',ic:'👻'}};
-const TINTS={natural:['Gỗ tự nhiên',0xffffff],dark:['Gỗ mun',0x8a7468],black:['Đen hải tặc',0x5a5a5a],red:['Đỏ son',0xffa090],navy:['Xanh hải quân',0x9ab4ff],gold:['Vàng hoàng kim',0xffe08a],jade:['Xanh ngọc',0xa8ffe0],ivory:['Trắng ngà',0xfff6e8]};
+const HULLS={galleon:{n:'Galleon cổ điển',ic:'⛵',spd:1,dmg:1,cargo:1,army:0,desc:'Cân bằng mọi mặt — dễ chơi cho người mới.'},
+  viking:{n:'Thuyền dài Viking',ic:'🛡️',spd:1.25,dmg:1.2,cargo:0.85,army:5,desc:'Dài, thấp, hai đầu cong vút. ⚡Nhanh nhất · ⚠️ vỏ mỏng, chở ít.'},
+  dragon:{n:'Thuyền Rồng',ic:'🐉',spd:1.12,dmg:0.95,cargo:0.9,army:12,desc:'Mũi tạc đầu rồng, đuôi rồng. ⚔️ Sức chiến đấu +12 · ⚠️ chở ít hơn.'},
+  junk:{n:'Thuyền Mành phương Đông',ic:'🏮',spd:0.9,dmg:0.95,cargo:1.35,army:0,desc:'Lầu đuôi cao, thân rộng. 📦 Khoang +35% · ⚠️ chạy chậm.'},
+  ironclad:{n:'Chiến hạm bọc thép',ic:'⚙️',spd:0.78,dmg:0.6,cargo:1,army:15,desc:'Thân thấp bọc giáp, ống khói. 🛡️ Giảm 40% sát thương · ⚠️ chậm nhất.'},
+  royal:{n:'Du thuyền Hoàng gia',ic:'👑',spd:1,dmg:1.05,cargo:1.1,army:0,morale:3,desc:'Lâu đài đuôi cao dát vàng, cửa sổ sáng đèn. 😊 Tinh thần +3/ngày · khoang +10%.'},
+  ghost:{n:'Thuyền Ma',ic:'👻',spd:1.08,dmg:0.9,cargo:0.9,stealth:0.35,desc:'Thân mục phát sáng xanh, buồm rách. 🌫️ Hải tặc hiếm khi phát hiện · ⚠️ chở ít.'}};
+const TINTS={natural:['Gỗ sồi tự nhiên',0xffffff],teak:['Gỗ tếch vàng',0xffd49a],red:['Gỗ hồng mộc',0xffa890],dark:['Gỗ mun đen',0x8a7468],ivory:['Gỗ bạch dương',0xfff6e8],black:['Sơn đen hải tặc',0x5a5a5a],navy:['Sơn xanh hải quân',0x9ab4ff],jade:['Sơn ngọc bích',0xa8ffe0],gold:['Mạ vàng hoàng gia',0xffe08a]};
 const SAILS={square:'Buồm vuông',twin:'Buồm 2 tầng',lateen:'Buồm tam giác',junk:'Buồm mành (nan tre)',viking:'Buồm Viking rộng',bat:'Buồm cánh dơi'};
 const SAIL_C=['#f4ecd8','#ffffff','#c0392b','#1f2a44','#2a2a2a','#2e7d4f','#d4af37','#6a3a9a','#e67e22','#5dade2'];
 const PATS={plain:'Trơn',stripe:'Sọc dọc',band:'Sọc ngang',cross:'Chữ thập',skull:'Đầu lâu',sun:'Mặt trời',anchor:'Mỏ neo',dragon:'Rồng',wave:'Sóng'};
 const BOWS={none:{n:'Không',ic:'—',desc:''},ram:{n:'Mũi húc đồng',ic:'🔱',desc:'Lao thẳng vào tàu địch (tốc độ > 4) để húc thủng.',dmg:38,cd:1.5},cannon:{n:'Pháo mũi',ic:'💣',desc:'Nhấp chuột vào tàu địch để bắn.',dmg:28,cd:1.4,range:170},
   harpoon:{n:'Nỏ lao móc',ic:'🏹',desc:'Bắn chậm nhưng cực mạnh.',dmg:55,cd:3,range:210},fire:{n:'Đầu rồng phun lửa',ic:'🔥',desc:'Tầm gần, phun liên tục.',dmg:14,cd:0.35,range:65},lightning:{n:'Tháp sét Tesla',ic:'⚡',desc:'Sét đánh trúng ngay lập tức.',dmg:24,cd:1.1,range:115}};
+const hullStat=()=>HULLS[(S&&S.shipLook&&S.shipLook.hull)||'galleon']||HULLS.galleon;
 const DEF_LOOK={hull:'galleon',tint:'natural',sail:'square',sailCol:'#f4ecd8',sailCol2:'#c0392b',pat:'band',bow:'cannon'};
 let SHIP_SPLIT=null;
 function splitShipModel(){ const md=MODELS.Ship_Large; if(!md) return; let mesh=null; md.scene.updateMatrixWorld(true); md.scene.traverse(o=>{ if(o.isMesh&&!mesh) mesh=o; }); const map=mesh&&mesh.material&&mesh.material.map; if(!map||!map.image) return;
@@ -3170,7 +3198,7 @@ function splitShipModel(){ const md=MODELS.Ship_Large; if(!md) return; let mesh=
     if(sail.length<40) return; const g2=geo.clone(); g2.setIndex(keep); const cl=[];
     for(const s2 of sail){ let c=cl.find(q=>Math.abs(q.x-s2.x)<1.2); if(!c){ c={x:s2.x,pts:[]}; cl.push(c); } c.pts.push(s2); }
     for(const c of cl){ const xs=c.pts.map(q=>q.x), ys=c.pts.map(q=>q.y), zs=c.pts.map(q=>q.z); c.cx=(Math.min(...xs)+Math.max(...xs))/2; c.y0=Math.min(...ys); c.y1=Math.max(...ys); c.w=Math.max(...zs)-Math.min(...zs); delete c.pts; }
-    SHIP_SPLIT={geo:g2,cl:cl.sort((a,b)=>a.cx-b.cx)}; }catch(e){ console.warn('splitShip',e); } }
+    SHIP_SPLIT={geo:g2,cl:cl.sort((a,b)=>a.cx-b.cx),mw:mesh.matrixWorld.clone(),geos:{}}; }catch(e){ console.warn('splitShip',e); } }
 const _patTex={};
 function sailPatTex(c1,c2,pat){ const key=c1+c2+pat; if(_patTex[key]) return _patTex[key]; const cv=document.createElement('canvas'); cv.width=cv.height=256; const x=cv.getContext('2d'); x.fillStyle=c1; x.fillRect(0,0,256,256); x.fillStyle=c2; x.strokeStyle=c2;
   if(pat==='stripe') for(let i=0;i<4;i++) x.fillRect(16+i*64,0,32,256); if(pat==='band'){ x.fillRect(0,70,256,40); x.fillRect(0,150,256,40); } if(pat==='cross'){ x.fillRect(108,0,40,256); x.fillRect(0,100,256,40); }
@@ -3178,14 +3206,45 @@ function sailPatTex(c1,c2,pat){ const key=c1+c2+pat; if(_patTex[key]) return _pa
   if(pat==='sun'){ x.beginPath(); x.arc(128,128,46,0,TAU); x.fill(); x.lineWidth=10; for(let i=0;i<12;i++){ const a=i/12*TAU; x.beginPath(); x.moveTo(128+Math.cos(a)*60,128+Math.sin(a)*60); x.lineTo(128+Math.cos(a)*96,128+Math.sin(a)*96); x.stroke(); } }
   if(pat==='skull'||pat==='anchor'||pat==='dragon'){ x.font='bold 150px "Segoe UI Symbol","Noto Sans Symbols",serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText({skull:'☠',anchor:'⚓',dragon:'龍'}[pat],128,138); }
   x.strokeStyle='rgba(0,0,0,.25)'; x.lineWidth=6; x.strokeRect(3,3,250,250); const t=new THREE.CanvasTexture(cv); t.colorSpace=THREE.SRGBColorSpace; _patTex[key]=t; return t; }
+function ghostSailTex(c1){ const key='ghost'+c1; if(_patTex[key]) return _patTex[key]; const cv=document.createElement('canvas'); cv.width=cv.height=256; const x=cv.getContext('2d'); x.fillStyle='#c8d8c0'; x.fillRect(0,0,256,256); x.globalCompositeOperation='destination-out';
+  let sd=3; const rn=()=>{ sd=(sd*16807)%2147483647; return sd/2147483647; }; for(let i=0;i<16;i++){ x.beginPath(); const cx=rn()*256, cy=rn()*256, r0=10+rn()*26; for(let k=0;k<9;k++){ const a=k/9*TAU, rr=r0*(0.6+rn()*0.6); x.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr); } x.fill(); }
+  x.beginPath(); for(let i=0;i<=256;i+=16) x.lineTo(i,256-rn()*40); x.lineTo(256,256); x.lineTo(0,256); x.fill(); x.globalCompositeOperation='source-over'; x.strokeStyle='rgba(40,60,40,.5)'; x.lineWidth=3; for(let i=0;i<6;i++){ x.beginPath(); x.moveTo(rn()*256,0); x.lineTo(rn()*256,256); x.stroke(); }
+  const t=new THREE.CanvasTexture(cv); t.colorSpace=THREE.SRGBColorSpace; _patTex[key]=t; return t; }
 function sailGeo(style,w,h){ const g=new THREE.PlaneGeometry(w,h,10,6), p=g.attributes.position;
   for(let i=0;i<p.count;i++){ let X=p.getX(i), Y=p.getY(i); const t=(Y+h/2)/h;
-    if(style==='lateen') X=X*(1.02-t*0.92)+t*w*0.18; if(style==='junk') X=X*(0.72+0.4*t); if(style==='bat'){ X=X*(0.8+0.3*t); if(t<0.02) Y+=Math.abs(Math.sin((X/w+0.5)*Math.PI*3))*h*0.16; } p.setXY(i,X,Y); } p.needsUpdate=true; g.computeVertexNormals(); return g; }
+    if(style==='lateen') X=X*(1.02-t*0.92)+t*w*0.18; if(style==='junk') X=X*(0.72+0.4*t); if(style==='bat'){ const u=X/(w/2); X=X*(0.55+0.75*t); Y+=u*u*h*0.32*t; if(t<0.02) Y+=Math.abs(Math.sin((u*0.5+0.5)*Math.PI*4))*h*0.3; } p.setXY(i,X,Y); } p.needsUpdate=true; g.computeVertexNormals(); return g; }
+// mỗi kiểu thân có khung riêng: kéo dài, cong hai đầu, lầu đuôi cao, thân thấp bọc giáp…
+const HULL_FORM={galleon:{xs:1,ys:0},viking:{xs:1.18,ys:0},dragon:{xs:1.1,ys:0},junk:{xs:1,ys:0},ironclad:{xs:1,ys:-0.6},royal:{xs:1,ys:0},ghost:{xs:1,ys:0}};
+function hullGeo(type){ if(!SHIP_SPLIT) return null; if(SHIP_SPLIT.geos[type]) return SHIP_SPLIT.geos[type]; const g=SHIP_SPLIT.geo.clone(); if(type==='galleon'){ SHIP_SPLIT.geos[type]=g; return g; }
+  const mw=SHIP_SPLIT.mw, inv=mw.clone().invert(), pa=g.attributes.position, v=new THREE.Vector3(); let seed=7; const rnd=()=>{ seed=(seed*16807)%2147483647; return seed/2147483647-0.5; };
+  for(let i=0;i<pa.count;i++){ v.fromBufferAttribute(pa,i).applyMatrix4(mw); let {x,y,z}=v; // x: dọc thân (mũi ở -x), y: lên, z: ngang
+    if(type==='viking'){ x*=1.18; if(y>0.4&&y<3.4){ const e=Math.min(2.6,Math.max(0,Math.abs(x)-3.6)); y+=e*e*0.32; } if(y<3.2) z*=0.9; }
+    if(type==='dragon'){ x*=1.1; if(y>0.4&&x<-3) y+=(-3-x)*0.35; if(y>0.4&&x>3.5) y+=(x-3.5)*0.25; }
+    if(type==='junk'){ z*=1.15; if(y>1&&x>2.2) y+=(x-2.2)*0.5; if(y>1&&x<-4) y+=(-4-x)*0.25; }
+    if(type==='ironclad'){ z*=1.12; if(y>0.8&&y<3.2) y=0.8+(y-0.8)*0.75; else if(y>=3.2) y-=0.6; }
+    if(type==='royal'){ z*=1.06; if(y>1&&x>2) y+=(x-2)*0.65; }
+    if(type==='ghost'){ x+=rnd()*0.14; y+=rnd()*0.14; z+=rnd()*0.14; if(y>3) z+=Math.sin(y*1.7)*0.12; }
+    v.set(x,y,z).applyMatrix4(inv); pa.setXYZ(i,v.x,v.y,v.z); }
+  pa.needsUpdate=true; g.computeVertexNormals(); g.computeBoundingSphere(); SHIP_SPLIT.geos[type]=g; return g; }
+function makeDragonHead(sc,col){ const H=new THREE.Group(), sk=M(col,{roughness:0.45,metalness:0.15}), gold=M(0xffc840,{metalness:0.75,roughness:0.25,emissive:0x5a3a00,emissiveIntensity:0.4}), ivory=M(0xfff4dc);
+  const neck=[]; for(let i=0;i<7;i++){ const t=i/6, r0=(0.55-t*0.18)*sc; const seg=mk(GEO.sph,sk,r0,r0,r0*1.25,0,(Math.sin(t*1.6)*1.6+t*0.6)*sc,-t*2.2*sc,H); neck.push(seg); mk(GEO.cone,gold,0.09*sc,0.45*sc,0.09*sc,0,(Math.sin(t*1.6)*1.6+t*0.6)*sc+r0*0.95,-t*2.2*sc,H).rotation.x=0.4; }
+  const hd=new THREE.Group(); hd.position.set(0,2.35*sc,-2.6*sc); H.add(hd);
+  mk(GEO.sph,sk,0.62*sc,0.55*sc,0.75*sc,0,0,0,hd); const sn=mk(GEO.cylT,sk,0.42*sc,1.15*sc,0.36*sc,0,-0.05*sc,-0.85*sc,hd); sn.rotation.x=-Math.PI/2; mk(GEO.sph,sk,0.38*sc,0.3*sc,0.3*sc,0,0,-1.45*sc,hd);
+  const jaw=new THREE.Group(); jaw.position.set(0,-0.28*sc,-0.2*sc); jaw.rotation.x=0.35; hd.add(jaw); mk(GEO.box,sk,0.55*sc,0.16*sc,1.25*sc,0,0,-0.6*sc,jaw);
+  for(let k=0;k<5;k++) for(const sx of [-1,1]){ mk(GEO.cone,ivory,0.05*sc,0.2*sc,0.05*sc,sx*0.2*sc,0.14*sc,-0.2*sc-k*0.24*sc,jaw); const tu=mk(GEO.cone,ivory,0.05*sc,0.2*sc,0.05*sc,sx*0.2*sc,-0.24*sc,-1.0*sc+k*0.17*sc,hd); tu.rotation.x=Math.PI; }
+  for(const sx of [-1,1]){ mk(GEO.sphL,M(0xffb020,{emissive:0xff8000,emissiveIntensity:2.2}),0.14*sc,0.12*sc,0.1*sc,sx*0.36*sc,0.2*sc,-0.45*sc,hd); mk(GEO.sphL,M(0x111111),0.05*sc,0.09*sc,0.04*sc,sx*0.41*sc,0.2*sc,-0.5*sc,hd);
+    let px=sx*0.3*sc, py=0.4*sc, pz=0.1*sc; for(let k=0;k<4;k++){ const hn=mk(GEO.cone,gold,(0.11-k*0.02)*sc,0.5*sc,(0.11-k*0.02)*sc,px,py,pz,hd); hn.rotation.set(-1.0-k*0.25,0,sx*0.25); px+=sx*0.06*sc; py+=0.3*sc*Math.cos(k*0.3); pz+=0.36*sc; }
+    const wk=new THREE.Line(new THREE.BufferGeometry().setFromPoints([0,1,2,3,4,5].map(k=>new THREE.Vector3(sx*(0.3+k*0.18)*sc,(-0.1-Math.sin(k*0.7)*0.3)*sc,(-1.3+k*0.22)*sc))),new THREE.LineBasicMaterial({color:0xffe080})); hd.add(wk);
+    mk(GEO.sphL,M(0x3a0a0a),0.05*sc,0.05*sc,0.05*sc,sx*0.12*sc,0.12*sc,-1.68*sc,hd); }
+  for(let k=0;k<5;k++) mk(GEO.cone4,M(0xc83020),0.04*sc,0.42*sc,0.3*sc,0,0.55*sc-k*0.02*sc,0.3*sc+k*0.25*sc,hd).rotation.x=-0.5;
+  H.userData.jaw=jaw; return H; }
 function applyShipLook(g,sc,deckY,lk){ const pal=TINTS[lk.tint]||TINTS.natural, m0=(SHIP_SPLIT?null:null);
-  g.traverse(o=>{ if(o.isMesh&&o.userData.shipHull){ o.material=o.material.clone(); o.material.color.setHex(pal[1]); if(lk.hull==='ghost'){ o.material.transparent=true; o.material.opacity=0.55; o.material.emissive=new THREE.Color(0x30ff90); o.material.emissiveIntensity=0.35; o.material.depthWrite=false; } } });
+  const hg=hullGeo(lk.hull||'galleon'); g.traverse(o=>{ if(o.isMesh&&o.userData.shipHull){ if(hg) o.geometry=hg; o.material=o.material.clone(); o.material.color.setHex(lk.hull==='ghost'?0x9ab8a8:pal[1]); if(lk.tint==='gold'){ o.material.metalness=0.45; o.material.roughness=0.35; }
+    if(lk.hull==='ghost'){ o.material.transparent=true; o.material.opacity=0.88; o.material.emissive=new THREE.Color(0x30ff90); o.material.emissiveIntensity=0.22; } } });
+  const HF=HULL_FORM[lk.hull]||HULL_FORM.galleon;
   // buồm
-  const sm=new THREE.MeshStandardMaterial({map:sailPatTex(lk.sailCol,lk.sailCol2,lk.pat),side:THREE.DoubleSide,roughness:0.85,transparent:lk.hull==='ghost',opacity:lk.hull==='ghost'?0.6:1});
-  for(const c of SHIP_SPLIT.cl){ const gz=(c.cx+1.8)*sc, h=(c.y1-c.y0)*sc, w=c.w*sc*(lk.sail==='viking'?1.35:1.05), piv=new THREE.Group(); piv.position.set(0,0,gz); g.add(piv);
+  const sm=new THREE.MeshStandardMaterial({map:lk.hull==='ghost'?ghostSailTex(lk.sailCol):sailPatTex(lk.sailCol,lk.sailCol2,lk.pat),side:THREE.DoubleSide,roughness:0.85,alphaTest:lk.hull==='ghost'?0.5:0,emissive:lk.hull==='ghost'?0x1a6a40:0x000000,emissiveIntensity:lk.hull==='ghost'?0.5:0});
+  for(const c of SHIP_SPLIT.cl){ const gz=(c.cx*HF.xs+1.8)*sc, h=(c.y1-c.y0)*sc, w=c.w*sc*(lk.sail==='viking'?1.35:lk.sail==='bat'?1.6:1.05), piv=new THREE.Group(); piv.position.set(0,HF.ys*sc,gz); g.add(piv);
     const layers=lk.sail==='twin'?[[c.y0+(c.y1-c.y0)*0.72,0.48,0.78],[c.y0+(c.y1-c.y0)*0.26,0.5,1]]:[[(c.y0+c.y1)/2,1,1]];
     for(const [yc,hk,wk] of layers){ const sw=w*wk, shh=h*hk*(lk.sail==='lateen'?1.25:1), gg=sailGeo(lk.sail,sw,shh), mesh=new THREE.Mesh(gg,sm); mesh.position.set(0,yc*sc+(lk.sail==='lateen'?shh*0.1:0),0); mesh.castShadow=true; piv.add(mesh);
       g.userData.sails.push({mesh,base:Float32Array.from(gg.attributes.position.array),sw,shh,piv});
@@ -3194,13 +3253,15 @@ function applyShipLook(g,sc,deckY,lk){ const pal=TINTS[lk.tint]||TINTS.natural, 
   // trang trí theo kiểu thân
   const wood=M(0x6a4a2a), gold=M(0xd4af37,{metalness:0.7,roughness:0.3}), hw=2.05*sc, ry=1.75*sc;
   if(lk.hull==='viking') for(const sx of [-1,1]) for(let i=0;i<8;i++){ const z=(-3.3+i*0.85)*sc, sh=mk(GEO.cyl,M([0xc0392b,0xf0e0b0,0x2a5a8a,0xd4af37][i%4]),0.36*sc,0.08*sc,0.36*sc,sx*hw,ry,z,g); sh.rotation.z=Math.PI/2; mk(GEO.sphL,M(0x8a8a8a,{metalness:.6}),0.09*sc,0.09*sc,0.09*sc,sx*(hw+0.05*sc),ry,z,g); }
-  if(lk.hull==='dragon'||lk.bow==='fire'){ const hd=new THREE.Group(); hd.position.set(0,2.5*sc,-5.3*sc); g.add(hd); const dm=M(lk.hull==='dragon'?0xc8302a:0x2a6a3a,{roughness:0.5}); for(let i=0;i<4;i++) mk(GEO.sph,dm,0.42*sc-i*0.03*sc,0.42*sc,0.5*sc,0,i*0.35*sc,-i*0.35*sc,hd);
+  if(lk.hull==='dragon'||lk.bow==='fire'){ const DH=makeDragonHead(sc,lk.hull==='dragon'?0xc8302a:0x2a7a4a); DH.position.set(0,1.9*sc,-5.6*sc*(HF.xs||1)); g.add(DH); g.userData.dragonHead=DH; }
+  if(false){ const hd=new THREE.Group(); hd.position.set(0,2.5*sc,-5.3*sc); g.add(hd); const dm=M(lk.hull==='dragon'?0xc8302a:0x2a6a3a,{roughness:0.5}); for(let i=0;i<4;i++) mk(GEO.sph,dm,0.42*sc-i*0.03*sc,0.42*sc,0.5*sc,0,i*0.35*sc,-i*0.35*sc,hd);
     const head=mk(GEO.sph,dm,0.55*sc,0.45*sc,0.8*sc,0,1.5*sc,-1.55*sc,hd); mk(GEO.cone,dm,0.35*sc,0.8*sc,0.25*sc,0,1.35*sc,-2.3*sc,hd).rotation.x=-Math.PI/2; for(const sx of [-1,1]){ mk(GEO.cone,gold,0.08*sc,0.7*sc,0.08*sc,sx*0.25*sc,2.0*sc,-1.3*sc,hd).rotation.x=-0.5; mk(GEO.sphL,M(0xffd040,{emissive:0xffa000,emissiveIntensity:2}),0.08*sc,0.08*sc,0.08*sc,sx*0.3*sc,1.6*sc,-1.9*sc,hd); }
   }
   if(lk.hull==='junk'){ for(const sx of [-1,1]) for(const z of [-2.5,0.5,3.5]){ mk(GEO.cyl,M(0x3a2a1a),0.03*sc,0.6*sc,0.03*sc,sx*hw,ry+0.35*sc,z*sc,g); mk(GEO.sph,M(0xff4020,{emissive:0xff3000,emissiveIntensity:1.2}),0.18*sc,0.24*sc,0.18*sc,sx*hw,ry+0.5*sc,z*sc,g); } }
   if(lk.hull==='ironclad'){ const st=M(0x5a6068,{metalness:0.7,roughness:0.4}); for(const sx of [-1,1]) for(let i=0;i<6;i++) mk(GEO.box,st,0.12*sc,0.9*sc,1.1*sc,sx*(hw+0.02*sc),0.95*sc,(-3+i*1.2)*sc,g); mk(GEO.cyl,M(0x2a2a2a),0.45*sc,2.4*sc,0.45*sc,0,3.1*sc,0.4*sc,g); mk(GEO.cyl,M(0xc0392b),0.47*sc,0.3*sc,0.47*sc,0,4.0*sc,0.4*sc,g); g.userData.funnel={x:0,y:4.4*sc,z:0.4*sc}; }
   if(lk.hull==='royal'){ for(const sx of [-1,1]) mk(GEO.box,gold,0.08*sc,0.1*sc,9*sc,sx*hw,ry+0.15*sc,0.4*sc,g); const cr=new THREE.Group(); cr.position.set(0,4.1*sc,7.3*sc); g.add(cr); mk(GEO.cylT,gold,0.45*sc,0.4*sc,0.45*sc,0,0,0,cr); for(let i=0;i<5;i++){ const a=i/5*TAU; mk(GEO.cone,gold,0.07*sc,0.35*sc,0.07*sc,Math.cos(a)*0.4*sc,0.35*sc,Math.sin(a)*0.4*sc,cr); } }
-  if(lk.hull==='ghost') g.userData.ghost=true;
+  if(lk.hull==='ghost'){ g.userData.ghost=true; for(const [x,z] of [[-1.6,-3.5],[1.6,-3.5],[-1.6,4.5],[1.6,4.5]]){ mk(GEO.cyl,M(0x2a2a2a),0.03*sc,0.7*sc,0.03*sc,x*sc,2.7*sc,z*sc,g); mk(GEO.sph,M(0x60ffa0,{emissive:0x30ff80,emissiveIntensity:2}),0.2*sc,0.26*sc,0.2*sc,x*sc,2.4*sc,z*sc,g); } }
+  if(lk.hull==='royal'){ const wm=M(0xffe08a,{emissive:0xffb040,emissiveIntensity:1.2}); for(let k=-2;k<=2;k++){ mk(GEO.box,wm,0.32*sc,0.4*sc,0.05*sc,k*0.55*sc,3.4*sc,8.15*sc,g); mk(GEO.box,gold,0.4*sc,0.06*sc,0.07*sc,k*0.55*sc,3.65*sc,8.15*sc,g); } for(const c of SHIP_SPLIT.cl){ const pf=mk(GEO.cone4,M(0xc0392b,{side:THREE.DoubleSide}),0.05*sc,1.4*sc,0.5*sc,0,(c.y1+2.4)*sc,(c.cx+1.8)*sc+0.6*sc,g); pf.rotation.x=Math.PI/2; } }
   // vũ khí mũi tàu
   const bp=new THREE.Group(); bp.position.set(0,2.55*sc,-4.7*sc); g.add(bp); g.userData.bowP=bp;
   if(lk.bow==='ram'){ const rm=mk(GEO.cone,M(0xb87333,{metalness:0.8,roughness:0.3}),0.55*sc,3.2*sc,0.55*sc,0,-1.4*sc,-2.4*sc,bp); rm.rotation.x=-Math.PI/2; }
@@ -3233,7 +3294,7 @@ function shipCreator(mode,onDone){ const lk=Object.assign({},DEF_LOOK,mode==='ed
   const sw=(key)=>SAIL_C.map(c=>`<span class="sw ${lk[key]===c?'on':''}" style="background:${c}" data-a="lk" data-k="${key}" data-v="${c}"></span>`).join('');
   const render=()=>{ openModal(`<h2>⛵ ${mode==='edit'?'Thiết kế lại thuyền':'Chọn con thuyền của bạn'}</h2><h3>${mode==='edit'?`Phí đóng lại: ${cost}💰 (bạn có ${Math.floor(S.gold)}💰)`:'Mỗi thuyền trưởng một phong cách — có thể đổi lại sau ở Menu.'}</h3>
     <div class="creator"><canvas id="spv" width="520" height="440"></canvas><div style="flex:1;min-width:280px">
-    ${tabs('hull',HULLS,'Kiểu thân thuyền')}${tabs('tint',TINTS,'Màu thân')}${tabs('sail',SAILS,'Kiểu buồm')}
+    ${tabs('hull',HULLS,'Kiểu thân thuyền')}<p class="sm" style="margin:-4px 0 8px;color:#ffd27a">${HULLS[lk.hull].ic} <b>${HULLS[lk.hull].n}</b>: ${HULLS[lk.hull].desc} <span style="opacity:.8">(tốc độ ×${HULLS[lk.hull].spd} · nhận sát thương ×${HULLS[lk.hull].dmg} · khoang ×${HULLS[lk.hull].cargo}${HULLS[lk.hull].army?` · chiến đấu +${HULLS[lk.hull].army}`:''})</span></p>${tabs('tint',TINTS,'Màu thân')}${tabs('sail',SAILS,'Kiểu buồm')}
     <div class="opt"><div class="sm">Màu buồm</div>${sw('sailCol')}</div><div class="opt"><div class="sm">Màu hoa văn</div>${sw('sailCol2')}</div>${tabs('pat',PATS,'Hoa văn buồm')}
     ${tabs('bow',BOWS,'Vũ khí mũi tàu')}<p class="sm">${BOWS[lk.bow].desc}</p></div></div>
     <div class="foot"><button data-a="rnd">🎲 Ngẫu nhiên</button>${mode==='edit'?'<button data-a="cancel">Hủy</button>':''}<button class="pri" data-a="ok" ${mode==='edit'&&S.gold<cost?'disabled':''}>${mode==='edit'?`Đóng lại thuyền (${cost}💰)`:'Hạ thủy ⛵'}</button></div>`,(a,ds)=>{
@@ -3246,7 +3307,7 @@ function startShipPreview(lk){ stopShipPreview(); const cv=$('spv'); if(!cv) ret
   const sc=new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xffffff,0x335577,1.7)); const dl=new THREE.DirectionalLight(0xffffff,2.2); dl.position.set(4,6,5); sc.add(dl);
   const cam=new THREE.PerspectiveCamera(34,520/440,0.1,200); let g; try{ g=buildShip(2,'default',[],[],{look:lk}); }catch(e){ console.warn(e); g=new THREE.Group(); } sc.add(g);
   const wt=new THREE.Mesh(new THREE.CircleGeometry(30,40).rotateX(-Math.PI/2),new THREE.MeshStandardMaterial({color:0x2a7ab0,roughness:0.2,transparent:true,opacity:0.85})); wt.position.y=0.3; sc.add(wt);
-  let run=true; const t0=performance.now(); const tick=()=>{ if(!run) return; const t=(performance.now()-t0)/1000; g.rotation.y=t*0.35; cam.position.set(Math.sin(0.6)*40,15,Math.cos(0.6)*40); cam.lookAt(0,5,0); r.render(sc,cam); requestAnimationFrame(tick); }; tick();
+  let run=true; const t0=performance.now(); const tick=()=>{ if(!run) return; const t=(performance.now()-t0)/1000; g.rotation.y=window.__pvAngle!=null?window.__pvAngle:t*0.35; cam.position.set(Math.sin(0.6)*40,15,Math.cos(0.6)*40); cam.lookAt(0,5,0); r.render(sc,cam); requestAnimationFrame(tick); }; tick();
   spv={stop(){ run=false; }}; }
 // =====================================================================
 // SERVER (tối đa 1000 người / server) · BIỆT DANH KHÔNG TRÙNG
@@ -3779,17 +3840,17 @@ async function renameNick(){ if(needLogin()) return; const {fs,db}=CLOUD.fb, uid
 // --- đổi trang phục: 10 xu (= 1.000đ)
 const OUTFIT_XU=10;
 function openOutfit(){ if(!S) return; if(needLogin()) return; const L0=S.player.look||{}, hx=n=>'#'+(n>>>0).toString(16).padStart(6,'0');
-  const st={model:L0.model||'Pirate_Male',skin:hx(L0.skin??0xf6d2b0),hair:hx(L0.hair??0x2b1d14),oc:hx(L0.oc??0x1f2a44),sc:hx(L0.sc??0xc0392b),hat:L0.hat||'captain'};
-  const look=()=>Object.assign({},L0,{model:HAS_CHARS?st.model:undefined,skin:parseInt(st.skin.slice(1),16),hair:parseInt(st.hair.slice(1),16),oc:parseInt(st.oc.slice(1),16),sc:parseInt(st.sc.slice(1),16),hat:st.hat});
+  const st={model:L0.model||'Pirate_Male',skin:hx(L0.skin??0xf6d2b0),hair:hx(L0.hair??0x2b1d14),oc:hx(L0.oc??0x1f2a44),sc:hx(L0.sc??0xc0392b),hat:ACC_HATS.some(h=>h[0]===L0.hat)?L0.hat:'model',face:L0.face||'none'};
+  const look=()=>Object.assign({},L0,{model:HAS_CHARS?st.model:undefined,skin:parseInt(st.skin.slice(1),16),hair:parseInt(st.hair.slice(1),16),oc:parseInt(st.oc.slice(1),16),sc:parseInt(st.sc.slice(1),16),hat:st.hat,face:st.face,pl:1});
   const sw=(key,arr)=>arr.map(c=>`<span class="sw ${st[key]===c?'on':''}" style="background:${c}" data-a="set" data-k="${key}" data-v="${c}"></span>`).join('');
   const render=()=>{ openModal(`<h2>👕 Đổi trang phục</h2><h3>Phí: <b>${OUTFIT_XU} xu</b> (= ${(OUTFIT_XU*100).toLocaleString('vi-VN')}đ) · bạn có ${CLOUD.xu} xu</h3>
     <div class="creator"><canvas id="pv" width="480" height="600"></canvas><div style="flex:1;min-width:260px">
     ${HAS_CHARS?`<div class="opt"><div class="sm">Nhân vật</div><div class="tabs">${PLAYER_CHARS.filter(([k])=>CHARS[k]).map(([k,l])=>`<button data-a="model" data-v="${k}" class="${st.model===k?'on':''}">${l}</button>`).join('')}</div></div>`:''}
     <div class="opt"><div class="sm">Màu da</div>${sw('skin',SKIN_C)}</div><div class="opt"><div class="sm">Màu tóc</div>${sw('hair',HAIR_C)}</div>
     <div class="opt"><div class="sm">Áo khoác</div>${sw('oc',COAT_C)}</div><div class="opt"><div class="sm">Khăn choàng</div>${sw('sc',SCARF_C)}</div>
-    <div class="opt"><div class="sm">Mũ</div><div class="tabs">${PHATS.map(([k,l])=>`<button data-a="hat" data-v="${k}" class="${st.hat===k?'on':''}">${l}</button>`).join('')}</div></div></div></div>
+    <div class="opt"><div class="sm">Mũ / nón</div><div class="tabs">${ACC_HATS.map(([k,l])=>`<button data-a="hat" data-v="${k}" class="${st.hat===k?'on':''}">${l}</button>`).join('')}</div></div><div class="opt"><div class="sm">Khuôn mặt</div><div class="tabs">${ACC_FACE.map(([k,l])=>`<button data-a="face" data-v="${k}" class="${st.face===k?'on':''}">${l}</button>`).join('')}</div></div></div></div>
     <div class="foot"><button data-a="cancel">Hủy</button>${CLOUD.xu<OUTFIT_XU?'<button data-a="buyxu">🪙 Nạp xu</button>':''}<button class="pri" data-a="ok" ${CLOUD.xu<OUTFIT_XU?'disabled':''}>Đổi trang phục (${OUTFIT_XU} xu)</button></div>`,async (a,ds)=>{
-      if(a==='set') st[ds.k]=ds.v; if(a==='hat') st.hat=ds.v; if(a==='model') st.model=ds.v;
+      if(a==='set') st[ds.k]=ds.v; if(a==='hat') st.hat=ds.v; if(a==='face') st.face=ds.v; if(a==='model') st.model=ds.v;
       if(a==='cancel'){ stopPreview(); closeModal(); return; } if(a==='buyxu'){ stopPreview(); openXuShop(); return; }
       if(a==='ok'){ const {fs,db}=CLOUD.fb, ref=fs.doc(db,'users',CLOUD.user.uid);
         try{ await fs.runTransaction(db,async t=>{ const d=await t.get(ref), xu=(d.data()||{}).xu||0; if(xu<OUTFIT_XU) throw new Error('Không đủ xu'); t.update(ref,{xu:xu-OUTFIT_XU}); }); }catch(e){ toast('❌ '+(e.message||e.code)); return; }
@@ -4354,7 +4415,7 @@ function enemyShot(from,base=10){ if(S.mode!=='sea'||S.sinkT) return; if(newbie(
     const el=Math.hypot(along/(L*0.5),side/(Wd*0.5+0.8)); if(el>=1||S.mode!=='sea'){ splash(tx,tz,1); return; }
     const arm=Math.max(0.45,1-armyPower()*0.003), center=el<0.28; let dmg=Math.max(1,Math.round(base*(1.7-1.4*el)*(center?1.4:1)*arm));
     if(S.sshield>0){ const ab=Math.min(S.sshield,dmg); S.sshield-=ab; dmg-=ab; const bub=mk(GEO.sph,new THREE.MeshBasicMaterial({color:0x6ae0ff,transparent:true,opacity:0.35,depthWrite:false}),L*0.6,L*0.35,L*0.6,s2.x,3,s2.z); fxAdd(bub,0.5,e=>{ bub.material.opacity=0.35*(1-e.t/0.5); }); if(dmg<=0){ toast(`🔰 Lá chắn đỡ trọn phát pháo (còn ${Math.round(S.sshield)})`,1500); return; } }
-    S.hull=Math.max(0,S.hull-dmg); if(center||dmg>=12){ S.shipDmg=(S.shipDmg||0)+1; if(S.shipDmg===2) banner('⚠️ THUYỀN HƯ HẠI NẶNG! Chạy chậm — hãy sửa ở xưởng thuyền'); }
+    dmg=Math.max(1,Math.round(dmg*(S.shipLook?hullStat().dmg:1))); S.hull=Math.max(0,S.hull-dmg); if(center||dmg>=12){ S.shipDmg=(S.shipDmg||0)+1; if(S.shipDmg===2) banner('⚠️ THUYỀN HƯ HẠI NẶNG! Chạy chậm — hãy sửa ở xưởng thuyền'); }
     for(let i=0;i<6;i++) puff(tx+(Math.random()-.5)*2,3+Math.random()*2,tz+(Math.random()-.5)*2,i%2?0xff8a20:0x5a4a3a,center?2.2:1.4,0.9,3); shake=Math.max(shake,center?1.2:0.6);
     hitFlash(center); if(center) banner(`💥 TRÚNG TÂM THUYỀN! −${dmg} thân thuyền`); else toast(`💥 Trúng ${Math.abs(along)>L*0.3?(along>0?'mũi':'đuôi'):'mạn'} thuyền −${dmg} (thân ${Math.round(S.hull)})`,1800);
     if(S.hull<=0) sink(); }); }
@@ -4364,7 +4425,7 @@ function hitFlash(big){ let f=document.getElementById('hitfx'); if(!f){ f=docume
 let raider=null, raidT=0;
 function raiderUpdate(dt){ const sh=S.ship;
   if(!raider){ raidT+=dt; if(raidT<90||newbie()||S.mode!=='sea'||S.sinkT||evScene||(sh.alt||0)>1||S.war||(S.peaceUntil??-1)>=S.time.day) return; if(S.islands.some(i=>Math.hypot(i.x-sh.x,i.z-sh.z)<ISL[i.k].R+220)) return;
-    if(Math.random()>dt/120) return; raidT=0; const a=Math.random()*TAU, g=buildShip(2+(S.tier>2?1:0),'pirate',pirateCrew(),[]); shadowize(g); world.add(g);
+    if(Math.random()>dt/120*(S.shipLook&&hullStat().stealth||1)) return; raidT=0; const a=Math.random()*TAU, g=buildShip(2+(S.tier>2?1:0),'pirate',pirateCrew(),[]); shadowize(g); world.add(g);
     raider={g,x:sh.x+Math.cos(a)*260,z:sh.z+Math.sin(a)*260,h:0,hp:100+S.tier*30,cd:4,myCd:2,sinkT:0}; banner('🏴‍☠️ Tàu hải tặc đang đuổi theo bạn!'); toast('Chúng sẽ nã pháo — trúng tâm thuyền mất rất nhiều máu! Lại gần (dưới 110m) để thuyền tự bắn trả, hoặc hết ga bỏ chạy.',7000); return; }
   const R0=raider, g=R0.g; if(!R0.sinkT&&R0.hp<=0){ R0.sinkT=0.01; const g2=250+Math.floor(Math.random()*250)+S.tier*80; S.gold+=g2; S.morale=Math.min(100,S.morale+8); addMerit(2); banner(`💥 Đánh chìm tàu hải tặc! +${g2}💰`); save(); }
   if(R0.sinkT){ R0.sinkT+=dt; g.position.y-=dt*1.4; g.rotation.z+=dt*0.2; if(R0.sinkT>7){ world.remove(g); raider=null; } return; }
@@ -4550,7 +4611,7 @@ function merchantPanel(onBye){
 // TIME / DAYS
 // =====================================================================
 function advanceTime(days){ S.time.t+=days; while(S.time.t>=1){ S.time.t-=1; newDay(); } }
-function newDay(){ if(S.occupied&&S.time.day>=S.occupied.until){ toast(`🎉 Đảo <b>${ISL[S.occupied.k].name}</b> đã được giải phóng khỏi hải tặc.`); S.occupied=null; }
+function newDay(){ if(S.shipLook&&hullStat().morale) S.morale=Math.min(100,S.morale+hullStat().morale); if(S.occupied&&S.time.day>=S.occupied.until){ toast(`🎉 Đảo <b>${ISL[S.occupied.k].name}</b> đã được giải phóng khỏi hải tặc.`); S.occupied=null; }
   if(S.war&&S.time.day-S.war.day0>=3) loseWar(); else if(!S.war&&S.time.day>2&&Math.random()<0.22) setTimeout(startWar,1500); if(S.squad>0){ const w=S.squad*8; if(S.gold>=w) S.gold-=w; else { S.squad--; toast('🪖 Không đủ tiền trả lương — 1 lính đánh thuê bỏ đi'); } } if(S.cargo&&S.cargo.r_sky&&S.cargo.r_sky.q>0){ S.cargo.r_sky.q--; if(S.cargo.r_sky.q<=0) delete S.cargo.r_sky; setTimeout(()=>{ addPetDragon('celestial'); banner('🥚✨ Trứng rồng thần đã nở! Bạn có một Thần Long'); },600); }
   S.time.day++; const n=S.crew.length+1, cook=jobLv('cook'), carp=jobLv('carp'), foodNeed=n*(1-Math.min(0.6,cook*0.15+(S.upg.kitchen2?0.15:0))), waterNeed=n;
   let dm=-2+cook*1.5; const msgs=[];
@@ -4657,7 +4718,7 @@ function interact(it){
 let hintTimer=0, hintText='', lowFuelWarned=false, edgeWarn=0, autosave=0, mapTimer=0;
 function seaUpdate(dt){ if(S.sinkT){ S.sinkT+=dt; S.ship.speed=0; S.ship.thr=0; if(Math.random()<dt*8) puff(S.ship.x+(Math.random()-.5)*8,1,S.ship.z+(Math.random()-.5)*8,0xffffff,1.5,1.2,1.5); if(S.sinkT>3.5&&S.sinkT<90){ S.sinkT=99; fadeTo(respawnAtYard); } return; }
   const sh=S.ship, t=tier();
-  const turn=(keys['a']||keys['arrowleft']?-1:0)+(keys['d']||keys['arrowright']?1:0), boost=((S.shipDmg||0)>=2?0.6:1)*(S.whaleBoost>0?1.4:1)*(1+0.15*Math.max(0,Math.cos(sh.h-S.wind.dir))*S.wind.str), moraleF=S.morale<30?0.85:1; steer=turn;
+  const turn=(keys['a']||keys['arrowleft']?-1:0)+(keys['d']||keys['arrowright']?1:0), boost=((S.shipDmg||0)>=2?0.6:1)*(S.shipLook?hullStat().spd:1)*(S.whaleBoost>0?1.4:1)*(1+0.15*Math.max(0,Math.cos(sh.h-S.wind.dir))*S.wind.str), moraleF=S.morale<30?0.85:1; steer=turn;
   let target; if(S.fuel>0) target=[-0.25,0,0.4,0.7,1][sh.thr+1]*t.speed*boost*moraleF;
   else { const wf=0.45+0.55*Math.max(0,Math.cos(sh.h-S.wind.dir))*S.wind.str; target=sh.thr>0?t.speed*0.4*wf*boost:sh.thr<0?-2:0; }
   sh.speed=lerp(sh.speed,target,1-Math.exp(-dt*0.7)); sh.h+=turn*dt*0.85*(0.3+0.7*Math.min(1,Math.abs(sh.speed)/8));
@@ -4963,8 +5024,8 @@ const SKIN_C=['#f6d2b0','#e8b48a','#c68a5e','#8d5a3b'], HAIR_C=['#2b1d14','#5a3a
 const PHATS=[['captain','Mũ thuyền trưởng'],['nonla','Nón lá'],['bandana','Khăn bandana'],['straw','Mũ rơm']];
 function creator(prevName){
   const r=Math.random;
-  const st={model:'Pirate_Male',name:prevName||pick(['Thuyền trưởng Gió','Thuyền trưởng Sóng','Thuyền trưởng Mây','Thuyền trưởng Bão'],r),skin:pick(SKIN_C,r),hair:pick(HAIR_C,r),oc:pick(COAT_C,r),sc:pick(SCARF_C,r),hat:'captain'};
-  const look=()=>({model:HAS_CHARS?st.model:undefined,sp:'human',skin:parseInt(st.skin.slice(1),16),hair:parseInt(st.hair.slice(1),16),oc:parseInt(st.oc.slice(1),16),sc:parseInt(st.sc.slice(1),16),pants:0x3a3f55,hat:st.hat,outfit:'scarf',prop:'none',pat:0,size:1,eye:{s:0.13,style:2,pupil:0x2a1a10}});
+  const st={model:'Pirate_Male',name:prevName||pick(['Thuyền trưởng Gió','Thuyền trưởng Sóng','Thuyền trưởng Mây','Thuyền trưởng Bão'],r),skin:pick(SKIN_C,r),hair:pick(HAIR_C,r),oc:pick(COAT_C,r),sc:pick(SCARF_C,r),hat:'model',face:'none'};
+  const look=()=>({model:HAS_CHARS?st.model:undefined,sp:'human',skin:parseInt(st.skin.slice(1),16),hair:parseInt(st.hair.slice(1),16),oc:parseInt(st.oc.slice(1),16),sc:parseInt(st.sc.slice(1),16),pants:0x3a3f55,hat:st.hat,face:st.face,pl:1,outfit:'scarf',prop:'none',pat:0,size:1,eye:{s:0.13,style:2,pupil:0x2a1a10}});
   const sw=(key,arr)=>arr.map(c=>`<span class="sw ${st[key]===c?'on':''}" style="background:${c}" data-a="set" data-k="${key}" data-v="${c}"></span>`).join('');
   const render=()=>{ const nm=$('pname')?$('pname').value:st.name; st.name=nm;
     openModal(`<h2>🧑‍✈️ Tạo thuyền trưởng của bạn</h2><h3>Nhân vật này sẽ đi bộ trên các hòn đảo và đứng lái thuyền.</h3>
@@ -4975,10 +5036,10 @@ function creator(prevName){
       <div class="opt"><div class="sm">Màu tóc</div>${sw('hair',HAIR_C)}</div>
       <div class="opt"><div class="sm">Áo khoác</div>${sw('oc',COAT_C)}</div>
       <div class="opt"><div class="sm">Khăn choàng</div>${sw('sc',SCARF_C)}</div>
-      <div class="opt"><div class="sm">Mũ</div><div class="tabs">${PHATS.map(([k,l])=>`<button data-a="hat" data-v="${k}" class="${st.hat===k?'on':''}">${l}</button>`).join('')}</div></div>
+      <div class="opt"><div class="sm">Mũ / nón</div><div class="tabs">${ACC_HATS.map(([k,l])=>`<button data-a="hat" data-v="${k}" class="${st.hat===k?'on':''}">${l}</button>`).join('')}</div></div><div class="opt"><div class="sm">Khuôn mặt</div><div class="tabs">${ACC_FACE.map(([k,l])=>`<button data-a="face" data-v="${k}" class="${st.face===k?'on':''}">${l}</button>`).join('')}</div></div>
       </div></div><div class="foot"><button data-a="rand">🎲 Ngẫu nhiên</button><button class="pri" data-a="go">Ra khơi ⛵</button></div>`,(a,ds)=>{
-        if(a==='set'){ st[ds.k]=ds.v; } if(a==='hat') st.hat=ds.v; if(a==='model') st.model=ds.v;
-        if(a==='rand'){ st.skin=pick(SKIN_C); st.hair=pick(HAIR_C); st.oc=pick(COAT_C); st.sc=pick(SCARF_C); st.hat=pick(PHATS)[0]; }
+        if(a==='set'){ st[ds.k]=ds.v; } if(a==='hat') st.hat=ds.v; if(a==='face') st.face=ds.v; if(a==='model') st.model=ds.v;
+        if(a==='rand'){ st.skin=pick(SKIN_C); st.hair=pick(HAIR_C); st.oc=pick(COAT_C); st.sc=pick(SCARF_C); st.hat=pick(ACC_HATS)[0]; st.face=pick(ACC_FACE)[0]; }
         if(a==='go'){ stopPreview(); const name=($('pname').value||'Thuyền trưởng').trim().slice(0,20); const lkc=look(); shipCreator('new',lk=>finishNew(name,lkc,lk)); return; }
         render(); },'creator',true);
     startPreview(look()); };
@@ -4994,7 +5055,7 @@ function startPreview(look){
   const sc=new THREE.Scene(); sc.add(new THREE.HemisphereLight(0xffffff,0x334455,1.6)); const dl=new THREE.DirectionalLight(0xffffff,2); dl.position.set(2,4,5); sc.add(dl);
   const cam=new THREE.PerspectiveCamera(32,240/300,0.1,50); cam.position.set(0,2.0,7.2); cam.lookAt(0,1.45,0);
   const ch=makeCharacter(look); sc.add(ch.root); let run=true, t0=performance.now();
-  const tick=()=>{ if(!run) return; const t=(performance.now()-t0)/1000; ch.root.rotation.y=Math.sin(t*0.6)*0.8; ch.a.mode=Math.floor(t/3)%3===1?'wave':'idle'; animChar(ch,0.016,t); r.render(sc,cam); requestAnimationFrame(tick); };
+  const tick=()=>{ if(!run) return; const t=(performance.now()-t0)/1000; ch.root.rotation.y=window.__pvCharA!=null?window.__pvCharA:Math.sin(t*0.6)*0.8; ch.a.mode=Math.floor(t/3)%3===1?'wave':'idle'; animChar(ch,0.016,t); r.render(sc,cam); requestAnimationFrame(tick); };
   tick(); pv={stop(){ run=false; }};
 }
 // Hỏi lại trước khi bắt đầu hành trình mới (tiến trình cũ chỉ bị ghi đè khi đã tạo xong và vào game)

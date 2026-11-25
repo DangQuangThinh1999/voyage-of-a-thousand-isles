@@ -185,6 +185,40 @@ function distractorWords(u, target, n) {
   const pool = [...new Set(u.sentences.flatMap(([en]) => tokens(en)))].filter((w) => !have.has(norm(w)));
   return sample(pool, n);
 }
+const pick1 = (a) => a[Math.floor(Math.random() * a.length)];
+// Bài "sửa lỗi sai": lấy câu đúng, đổi 1 từ thành lỗi người Việt hay mắc
+const THIRD = { works: 'work', wakes: 'wake', goes: 'go', eats: 'eat', reads: 'read', drinks: 'drink', buys: 'buy', wants: 'want',
+  cooks: 'cook', visits: 'visit', brings: 'bring', has: 'have', rains: 'rain' };
+const FIX_RULES = [
+  (w) => ({ am: ['is', 'Với “I” phải dùng “am” (I am)'], is: ['are', 'Chủ ngữ số ít (he, she, it, this, tên người…) dùng “is”'],
+    are: ['is', '“You”, “we”, “they” và danh từ số nhiều dùng “are”'] }[w]),
+  (w) => THIRD[w] && [THIRD[w], 'Chủ ngữ là he/she/it hoặc một người: động từ phải thêm -s/-es (she works, he goes)'],
+  (w) => w === 'an' && ['a', 'Trước từ bắt đầu bằng nguyên âm (a, e, i, o, u) phải dùng “an” (an egg)'],
+  (w) => w === 'my' && ['me', '“my” = của tôi, đứng trước danh từ (my mother)'],
+  (w) => w === 'his' && ['he', '“his” = của anh ấy, đứng trước danh từ (his wife)'],
+];
+const COUNT = new Set(['two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'twenty', 'fifty']);
+function makeFix(pair) {
+  const toks = pair[0].split(' '), cands = [];
+  toks.forEach((tok, i) => {
+    const m = tok.match(/^([A-Za-z']+)(.*)$/); if (!m) return;
+    const w = m[1].toLowerCase();
+    for (const r of FIX_RULES) { const x = r(w); if (x) cands.push({ i, wrong: x[0], why: x[1] }); }
+    if (i > 0 && COUNT.has(toks[i - 1].toLowerCase()) && /[^s]s$/.test(w)) cands.push({ i, wrong: w.slice(0, -1), why: 'Sau số lớn hơn 1, danh từ phải thêm -s (two cats)' });
+  });
+  if (!cands.length) return null;
+  const c = pick1(cands), m = toks[c.i].match(/^([A-Za-z']+)(.*)$/);
+  const wrong = /^[A-Z]/.test(m[1]) ? c.wrong[0].toUpperCase() + c.wrong.slice(1) : c.wrong;
+  const wt = [...toks]; wt[c.i] = wrong + m[2];
+  return { t: 'fix', toks: wt, i: c.i, right: m[1], why: c.why, s: pair };
+}
+function fixSteps(u, n) {
+  const out = [];
+  for (const pair of shuffle([...u.sentences, ...u.reading])) { const f = makeFix(pair); if (f) out.push(f); if (out.length >= n) break; }
+  return out;
+}
+const passageText = (u) => u.reading.map((r) => r[0]).join(' ');
+
 const BUILD = {
   vocab(u) {
     const learn = u.words.map((w) => ({ t: 'learn', w }));
@@ -196,7 +230,8 @@ const BUILD = {
     const words = sample(u.words, 4).map((w) => ({ t: 'pickWord', w, opts: shuffle([w, ...sample(u.words.filter((x) => x !== w), 3)]) }));
     const sents = sample(u.sentences, 3).map((s) => ({ t: 'pickSentence', s, opts: shuffle([s, ...sample(u.sentences.filter((x) => x !== s), 2)]) }));
     const dict = sample(u.sentences, 3).map((s) => ({ t: 'dictation', s, bank: shuffle([...tokens(s[0]), ...distractorWords(u, s[0], 2)]) }));
-    return [...words, ...sents, ...dict];
+    const lq = sample(u.questions, 2).map((q) => ({ t: 'lquestion', q, u }));
+    return [...words, ...sents, ...dict, ...lq];
   },
   speak(u) {
     return [...sample(u.words, 3).map((w) => ({ t: 'speak', en: w[0], vi: `${w[2]} ${w[1]}` })),
@@ -209,7 +244,7 @@ const BUILD = {
     const spell = sample(u.words, 3).map((w) => ({ t: 'spell', w }));
     const [a, b, c, d, e] = shuffle(u.sentences);
     const build = [a, b, c].map((s) => ({ t: 'build', s, bank: shuffle([...tokens(s[0]), ...distractorWords(u, s[0], 2)]) }));
-    return [...spell, ...build, { t: 'type', s: d }, { t: 'type', s: e }];
+    return [...spell, ...build, ...fixSteps(u, 2), { t: 'type', s: d }, { t: 'type', s: e }];
   },
 };
 
@@ -226,16 +261,67 @@ const MK = {
   spell: (u) => ({ t: 'spell', w: sample(u.words, 1)[0] }),
   speak: (u) => { const s = sample(u.sentences, 1)[0]; return { t: 'speak', en: s[0], vi: s[1] }; },
 };
-const SKILL_OF_STEP = { pickWord: 'listen', pickSentence: 'listen', dictation: 'listen', pickEn: 'read', question: 'read', spell: 'write', build: 'write', type: 'write', speak: 'speak' };
+const SKILL_OF_STEP = { pickWord: 'listen', pickSentence: 'listen', dictation: 'listen', pickEn: 'read', question: 'read', spell: 'write', build: 'write', type: 'write', para: 'write', fix: 'write', lquestion: 'listen', speak: 'speak' };
 const SKILL_NAME = { listen: '🎧 Nghe', read: '📖 Đọc', write: '✍️ Viết', speak: '🗣️ Nói' };
 // 1 bài: 7 câu (đủ mọi dạng). 1 tuần: mỗi bài 4 câu ngẫu nhiên. Có micro thì thêm 1 câu nói ở cuối.
+// Đủ 4 kỹ năng. 1 bài: 14 câu. 1 tuần: 21 câu. Thứ tự: câu lẻ → nghe đoạn văn → nói → viết đoạn văn.
 function buildTest(units) {
-  const types = ['pickWord', 'pickSentence', 'dictation', 'pickEn', 'question', 'spell', 'build'];
-  const steps = units.flatMap((u) => (units.length === 1 ? types : sample(types, 4)).map((t) => ({ ...MK[t](u), u })));
-  const out = shuffle(steps);
-  if (SR) out.push({ ...MK.speak(sample(units, 1)[0]), u: units[0] });
-  return out;
+  const one = units.length === 1, lu = pick1(units);
+  const steps = [], speaks = [];
+  let lsteps = [];
+  for (const u of units) {
+    const pool = shuffle(u.sentences); let k = 0;
+    const sent = () => pool[k++ % pool.length];
+    const tiles = (t, x) => ({ t, s: x, bank: shuffle([...tokens(x[0]), ...distractorWords(u, x[0], 2)]) });
+    const mk = {
+      pickWord: () => MK.pickWord(u), pickEn: () => MK.pickEn(u), spell: () => MK.spell(u),
+      pickSentence: () => { const x = sent(); return { t: 'pickSentence', s: x, opts: shuffle([x, ...sample(u.sentences.filter((y) => y !== x), 2)]) }; },
+      dictation: () => tiles('dictation', sent()), build: () => tiles('build', sent()),
+      type: () => ({ t: 'type', s: sent() }), fix: () => fixSteps(u, 1)[0],
+    };
+    const qs = shuffle(u.questions); // câu 0,1: nghe đoạn văn · câu 2: đọc
+    if (u === lu) lsteps = qs.slice(0, 2).map((q) => ({ t: 'lquestion', q, u }));
+    const list = one
+      ? [mk.pickWord(), mk.pickSentence(), mk.dictation(), mk.pickEn(), { t: 'question', q: qs[2] }, mk.spell(), mk.build(), mk.type(), mk.fix()]
+      : [mk[pick1(['pickWord', 'pickSentence', 'dictation'])](), u === lu ? mk.pickEn() : pick1([() => mk.pickEn(), () => ({ t: 'question', q: qs[2] })])(),
+        mk[pick1(['spell', 'build'])](), mk.type(), mk.fix()];
+    steps.push(...list.filter(Boolean).map((x) => ({ ...x, u })));
+    for (let n = 0; n < (one ? 2 : 1); n++) { const x = sent(); speaks.push({ t: 'speak', en: x[0], vi: x[1], u }); }
+  }
+  const vocab = units.flatMap((u) => u.words.map((w) => w[0])).filter((w) => w.length >= 3 && w !== 'you');
+  const pu = pick1(units), minWords = one ? 20 : 30;
+  const idea = (window.JOURNAL_PROMPTS[pu.id] || '').replace(/\s*Viết \d+ câu\.?/g, '').replace(/^Viết \d+ câu/, 'Viết').trim();
+  const para = { t: 'para', u: pu, units, vocab, minWords, minVocab: one ? 3 : 5,
+    prompt: `Viết đoạn văn ít nhất ${minWords} từ về chủ đề ${pu.emoji} ${pu.vi}.${idea ? ' Gợi ý: ' + idea : ''}` };
+  return [...shuffle(steps), ...lsteps, ...speaks, para];
 }
+
+// Chấm đoạn văn bằng luật (máy chưa chấm được ngữ pháp như giáo viên, nhưng bắt được các lỗi hay gặp)
+const VI_RE = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
+const ADJ = 'happy sad tired angry hungry scared bored sick hot cold fine good small big new kind free okay expensive cheap beautiful busy late ready young old tall short'.split(' ');
+const JOBS = ['student', 'teacher', 'doctor', 'driver'];
+const MISS_BE = new RegExp(`\\b(i|you|he|she|it|we|they|this|that) (very )?(${[...ADJ, ...JOBS, ...JOBS.map((j) => 'a ' + j)].join('|')})\\b`);
+function paraChecks(text, st) {
+  const t = text.trim(), words = t.match(/[A-Za-z']+/g) || [];
+  const sents = t.split(/(?<=[.!?])\s+/).map((x) => x.trim()).filter(Boolean);
+  const nt = ' ' + norm(t) + ' ';
+  const used = st.vocab.filter((w) => new RegExp(` ${norm(w)}(s|es)? `).test(nt));
+  const known = new Set(st.units.flatMap((u) => [...u.sentences, ...u.reading].map((x) => norm(x[0]))));
+  const own = sents.filter((x) => !known.has(norm(x)));
+  const miss = t.toLowerCase().replace(/[^a-z' ]+/g, ' ').match(MISS_BE);
+  return [
+    [words.length >= st.minWords, `Ít nhất ${st.minWords} từ (đang có ${words.length})`],
+    [sents.length >= 3, `Ít nhất 3 câu (đang có ${sents.length})`],
+    [used.length >= st.minVocab, `Dùng ít nhất ${st.minVocab} từ vựng đã học (đang dùng ${used.length}${used.length ? ': ' + used.join(', ') : ''})`],
+    [sents.length > 0 && sents.every((x) => /^["']?[A-Z]/.test(x)), 'Mỗi câu bắt đầu bằng chữ in hoa'],
+    [sents.length > 0 && sents.every((x) => /[.!?]["']?$/.test(x)), 'Mỗi câu kết thúc bằng dấu . ? hoặc !'],
+    [!/\bi\b/.test(t), 'Chữ “I” (tôi) luôn viết hoa'],
+    [!VI_RE.test(t), 'Chỉ viết tiếng Anh, không có chữ tiếng Việt'],
+    [!miss, miss ? `Thiếu am/is/are ở: “${miss[0]}”` : 'Không thiếu am/is/are (ví dụ: “I am happy”, không viết “I happy”)'],
+    [own.length >= 2, `Ít nhất 2 câu tự viết, không chép y câu mẫu (đang có ${own.length})`],
+  ];
+}
+const checksHTML = (cs) => `<ul class="checks">${cs.map(([ok, msg]) => `<li class="${ok ? 'pass' : 'fail'}">${ok ? '✅' : '❌'} ${esc(msg)}</li>`).join('')}</ul>`;
 function startTest(units, key, title) {
   S = { kind: 'test', u: units[0], units, key, title, steps: buildTest(units), i: 0, ok: 0, graded: 0, state: null, requeued: new Set(), skill: {} };
   scr = 'session';
@@ -365,7 +451,7 @@ function unitView() {
   return `
     <div class="row gap"><button class="icon" data-act="tab" data-tab="home">←</button><h2>${u.emoji} ${esc(u.title)} <small class="muted">· ${esc(u.vi)}</small></h2></div>
     <div class="list">
-      ${doneCount(u.id) < 5 ? `<button class="item quick" data-act="test" data-u="${u.id}"><span class="em">⚡</span><span class="t"><b>Kiểm tra nhanh</b><small>Biết rồi? Làm ${SR ? 8 : 7} câu, đúng hết 100% là qua luôn bài này</small></span><span class="go">Làm</span></button>` : ''}
+      ${doneCount(u.id) < 5 ? `<button class="item quick" data-act="test" data-u="${u.id}"><span class="em">⚡</span><span class="t"><b>Kiểm tra nhanh</b><small>Biết rồi? 15 câu đủ Nghe (có nghe đoạn văn), Nói, Đọc, Viết (có sửa lỗi sai và viết đoạn văn). Đạt hết 100% là qua luôn bài này</small></span><span class="go">Làm</span></button>` : ''}
       ${KINDS.map(([k, ic, name, desc]) => `
       <button class="item" data-act="start" data-u="${u.id}" data-k="${k}">
         <span class="em">${ic}</span><span class="t"><b>${name}</b><small>${desc}</small></span>
@@ -397,8 +483,9 @@ function beginStep() {
   if (S.kind === 'test') curSkill = SKILL_OF_STEP[st.t];
   if (st.t === 'learn' || st.t === 'pickWord') speak(st.w[0]);
   if (st.t === 'pickSentence' || st.t === 'dictation') speak(st.s[0]);
+  if (st.t === 'lquestion' && (S.i === 0 || S.steps[S.i - 1].t !== 'lquestion')) speak(passageText(st.u));
 }
-const GRADED = new Set(['pickWord', 'pickEn', 'pickSentence', 'dictation', 'build', 'type', 'spell', 'speak', 'question']);
+const GRADED = new Set(['pickWord', 'pickEn', 'pickSentence', 'dictation', 'build', 'type', 'spell', 'speak', 'question', 'para', 'fix', 'lquestion']);
 function answer(correct, fb) {
   const st = step(); S.state.answered = true; S.state.correct = correct; S.state.fb = fb;
   if (GRADED.has(st.t)) {
@@ -407,7 +494,7 @@ function answer(correct, fb) {
     if (!correct && S.kind !== 'test' && !S.requeued.has(S.i) && st.t !== 'speak') { S.requeued.add(S.steps.length); S.steps.push(st); S.state.pushed = true; }
   }
   render();
-  const say = { pickEn: st.w && st.w[0], spell: st.w && st.w[0], type: st.s && st.s[0], build: st.s && st.s[0], dictation: st.s && st.s[0], pickSentence: st.s && st.s[0] }[st.t];
+  const say = { pickEn: st.w && st.w[0], spell: st.w && st.w[0], type: st.s && st.s[0], build: st.s && st.s[0], dictation: st.s && st.s[0], pickSentence: st.s && st.s[0], fix: st.s && st.s[0] }[st.t];
   if (say) speak(say);
 }
 function nextStep() { S.i++; if (S.i >= S.steps.length) finishSession(); else beginStep(); }
@@ -492,15 +579,15 @@ function sessionView() {
       body = `<p class="ask">Viết từ tiếng Anh</p><div class="center"><div class="huge">${em}</div><div class="vi">${esc(vi)}</div>
         <p class="hint">${ss.hint ? esc(en[0]) + ' ' : ''}${en.split('').slice(ss.hint ? 1 : 0).map((c) => (c === ' ' ? '&nbsp;&nbsp;' : '_')).join(' ')}</p></div>
         <input id="ans" class="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Gõ từ tiếng Anh…" ${ss.answered ? 'disabled' : 'autofocus'} value="${esc(ss.typed || '')}">`;
-      if (!ss.answered) foot = `<button class="btn ghost" data-act="hint">💡 Gợi ý</button><button class="btn big" data-act="checkType">Kiểm tra</button>`;
+      if (!ss.answered) foot = `${kind === 'test' ? '' : '<button class="btn ghost" data-act="hint">💡 Gợi ý</button>'}<button class="btn big" data-act="checkType">Kiểm tra</button>`;
       break;
     }
     case 'type': {
       const hint = st.s[0].split(' ').map((w) => w[0] + w.slice(1).replace(/[a-z]/gi, '_')).join(' ');
       body = `<p class="ask">Tự viết câu tiếng Anh</p><div class="card vi-prompt">🇻🇳 ${esc(st.s[1])}</div>
-        ${ss.hint ? `<p class="hint">${esc(hint)}</p>` : ''}
+        ${ss.hint ? `<p class="hint">${esc(hint)}</p>` : ''}${kind === 'test' ? `<p class="muted small">Câu có ${tokens(st.s[0]).length} từ</p>` : ''}
         <textarea id="ans" class="ans" rows="2" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="Gõ câu tiếng Anh…" ${ss.answered ? 'disabled' : 'autofocus'}>${esc(ss.typed || '')}</textarea>`;
-      if (!ss.answered) foot = `<button class="btn ghost" data-act="hint">💡 Gợi ý</button><button class="btn big" data-act="checkType">Kiểm tra</button>`;
+      if (!ss.answered) foot = `${kind === 'test' ? '' : '<button class="btn ghost" data-act="hint">💡 Gợi ý</button>'}<button class="btn big" data-act="checkType">Kiểm tra</button>`;
       break;
     }
     case 'speak': {
@@ -513,6 +600,33 @@ function sessionView() {
         foot = SR ? (ss.tries ? `<button class="btn ghost" data-act="skipSpeak">Bỏ qua</button>` : '')
           : `<button class="btn ghost" data-act="selfSpeak" data-ok="0">Chưa được</button><button class="btn big" data-act="selfSpeak" data-ok="1">Tôi đã đọc to ✅</button>`;
       }
+      break;
+    }
+    case 'fix': {
+      body = `<p class="ask">🔎 Câu này có 1 lỗi sai. Bấm vào từ sai, rồi gõ từ đúng.</p>
+        <div class="fixline">${st.toks.map((w, i) => `<button class="tile ${ss.fixI === i ? 'sel' : ''} ${ss.answered && i === st.i ? 'errw' : ''}" data-act="fixpick" data-i="${i}" ${ss.answered ? 'disabled' : ''}>${esc(w)}</button>`).join('')}</div>
+        <p class="muted">🇻🇳 ${esc(st.s[1])}</p>
+        ${ss.fixI != null ? `<label class="lbl">Sửa “<b>${esc(st.toks[ss.fixI].replace(/[.,!?]/g, ''))}</b>” thành:</label>
+          <input id="ans" class="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Gõ từ đúng…" value="${esc(ss.typed || '')}" ${ss.answered ? 'disabled' : 'autofocus'}>` : ''}`;
+      if (!ss.answered) foot = `<button class="btn big" data-act="checkFix" ${ss.fixI == null ? 'disabled' : ''}>Kiểm tra</button>`;
+      break;
+    }
+    case 'lquestion': {
+      const [q, qvi, opts, ans] = st.q, text = passageText(st.u); ss.correctIdx = ans;
+      body = `<p class="ask">🎧 Nghe đoạn văn rồi trả lời</p>
+        <div class="row gap center"><button class="btn ghost" data-act="say" data-t="${esc(text)}">🔊 Nghe đoạn văn</button><button class="icon" data-act="say" data-t="${esc(text)}" data-slow="1" title="Đọc chậm">🐢</button></div>
+        ${ss.answered ? `<details class="card"><summary>📄 Xem lời đoạn văn</summary>${passageHTML(st.u, false)}</details>` : ''}
+        <p class="ask">${esc(q)} ${say(q)}</p><p class="muted">${esc(qvi)}</p>
+        <div class="opts">${opts.map((o, i) => opt(esc(o), i, 'en')).join('')}</div>`;
+      break;
+    }
+    case 'para': {
+      body = `<p class="ask">✍️ Viết đoạn văn</p><div class="card vi-prompt">${esc(st.prompt)}</div>
+        <p class="muted small">Từ nên dùng: ${st.vocab.map(esc).join(', ')}</p>
+        <textarea id="para" rows="7" spellcheck="false" placeholder="Viết bằng tiếng Anh…" ${ss.answered ? 'disabled' : 'autofocus'}>${esc(ss.typed || '')}</textarea>
+        <div id="checks">${checksHTML(paraChecks(ss.typed || '', st))}</div>
+        <p class="muted small">Máy kiểm tra hình thức và các lỗi hay gặp. Bài sẽ được lưu vào Nhật ký, bấm 📋 ở đó để nhờ sửa ngữ pháp.</p>`;
+      if (!ss.answered) foot = `<button class="btn big" data-act="submitPara">Nộp bài</button>`;
       break;
     }
     case 'passage': {
@@ -536,7 +650,7 @@ function sessionView() {
     foot = `<div class="fb ${cls}"><div><b>${ss.correct ? (ss.fb || 'Chính xác! 🎉') : (ss.fb || 'Chưa đúng')}</b>
       ${right && (!ss.correct || ss.fb) ? `<div>Đáp án: <b>${esc(right)}</b> ${say(right.split(' = ')[0])}</div>` : ''}
       ${st.s && !ss.correct ? `<div class="muted">${esc(st.s[1])}</div>` : ''}</div>
-      ${st.t === 'type' && !ss.correct ? `<button class="btn ghost sm" data-act="overrule">Câu tôi cũng đúng</button>` : ''}
+      ${st.t === 'type' && !ss.correct && kind !== 'test' ? `<button class="btn ghost sm" data-act="overrule">Câu tôi cũng đúng</button>` : ''}
       <button class="btn big" data-act="next">Tiếp tục →</button></div>`;
   }
   return `<div class="sess-top"><button class="icon" data-act="quit">✕</button><div class="bar"><i style="width:${pct}%"></i></div><span class="muted small">${kd[1]}</span></div>
@@ -681,7 +795,21 @@ const ACT = {
   unit: (d) => go('unit', d.u),
   locked: () => toast('🔒 Làm xong 3/5 phần của bài trước để mở bài này'),
   start: (d) => startSession(d.u, d.k),
-  test: (d) => (d.w ? startTest(UNITS.filter((u) => u.week === +d.w), 'w' + d.w, `Tuần ${d.w}`)
+  fixpick: (d) => { const a = $('#ans'); if (a) S.state.typed = a.value; S.state.fixI = +d.i; render(); },
+  checkFix: () => {
+    const st = step(), a = $('#ans'), v = a ? a.value.trim() : ''; if (!v) return;
+    S.state.typed = v;
+    const ok = S.state.fixI === st.i && norm(v) === norm(st.right);
+    answer(ok, (ok ? 'Chính xác! ' : 'Chưa đúng. ') + st.why);
+  },
+  submitPara: () => {
+    const st = step(), t = $('#para').value.trim(); if (!t) return;
+    S.state.typed = t;
+    const cs = paraChecks(t, st), bad = cs.filter((c) => !c[0]).length;
+    P.journal.unshift({ id: Date.now(), d: dayKey(), u: st.u.id, t }); save();
+    answer(!bad, bad ? `Đoạn văn chưa đạt ${bad} yêu cầu (xem dấu ❌)` : 'Đoạn văn đạt yêu cầu! 🎉');
+  },
+  test: (d) => (!SR ? toast('Bài kiểm tra có phần Nói, cần mở bằng Chrome hoặc Edge và cho phép micro') : d.w ? startTest(UNITS.filter((u) => u.week === +d.w), 'w' + d.w, `Tuần ${d.w}`)
     : startTest([unitById(d.u)], 'u' + d.u, `bài ${unitById(d.u).title}`)),
   say: (d) => speak(d.t, d.slow === '1'),
   quit: () => { if (confirm('Thoát bài này? Kết quả phần này sẽ không được lưu.')) { const id = S.u.id; S = null; go('unit', id); } },
@@ -732,11 +860,12 @@ document.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter' || scr !== 'session' || !S || S.done) return;
   if (e.target.id === 'jtext' || e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT') return;
-  if (e.target.id === 'ans' && !S.state.answered) { e.preventDefault(); ACT.checkType(); return; }
+  if (e.target.id === 'ans' && !S.state.answered) { e.preventDefault(); (step().t === 'fix' ? ACT.checkFix : ACT.checkType)(); return; }
   if (S.state.answered || ['learn', 'passage'].includes((step() || {}).t)) { e.preventDefault(); nextStep(); }
 });
 document.addEventListener('input', (e) => {
   if (e.target.id === 'rate') { P.settings.rate = +e.target.value; $('#rateV').textContent = P.settings.rate; save(); }
+  if (e.target.id === 'para' && S) { S.state.typed = e.target.value; $('#checks').innerHTML = checksHTML(paraChecks(e.target.value, step())); }
   if (e.target.id === 'jtext') $('#wc').textContent = (e.target.value.trim().match(/\S+/g) || []).length + ' từ';
 });
 document.addEventListener('change', (e) => {

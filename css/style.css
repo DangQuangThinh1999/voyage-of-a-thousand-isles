@@ -209,3 +209,10 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
 .item.quick { border-color: var(--pri); background: var(--pri-soft); }
 .card.left { text-align: left; }
 .card.left .row { padding: 4px 0; }
+.checks { list-style: none; padding: 0; margin: 10px 0; font-size: .92rem; }
+.checks li { padding: 3px 0; }
+.checks li.fail { color: var(--bad); }
+.checks li.pass { color: var(--good); }
+.fixline { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.tile.sel { border-color: var(--pri); background: var(--pri-soft); }
+.tile.errw { border-color: var(--bad); background: var(--bad-soft); }

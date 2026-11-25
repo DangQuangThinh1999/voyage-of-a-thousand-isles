@@ -348,3 +348,20 @@ window.JOURNAL_PROMPTS = {
   shopping: 'Lần cuối bạn mua gì? Giá bao nhiêu? Viết 4 câu.',
   feelings: 'Hôm nay bạn cảm thấy thế nào? Vì sao? Viết 3 câu.',
 };
+
+// Mục tiêu từng tuần: trình độ CEFR và điểm IELTS ước tính khi học xong tuần đó.
+// (Ước tính để theo dõi tiến độ, không phải điểm thi thật.)
+window.WEEK_GOALS = {
+  1: { cefr: 'A1', band: '2.0', goal: 'Chào hỏi, giới thiệu bản thân, số đếm' },
+  2: { cefr: 'A1', band: '2.5', goal: 'Gia đình, màu sắc, đồ ăn' },
+  3: { cefr: 'A1', band: '3.0', goal: 'Việc hằng ngày, nhà cửa, giờ giấc' },
+  4: { cefr: 'A1+', band: '3.0', goal: 'Thời tiết, mua sắm, cảm xúc' },
+  5: { cefr: 'A2', band: '3.5', goal: 'Kể chuyện hôm qua (quá khứ đơn)' },
+  6: { cefr: 'A2', band: '3.5', goal: 'Du lịch, chỉ đường, gọi món' },
+  7: { cefr: 'A2', band: '4.0', goal: 'So sánh, kế hoạch tương lai' },
+  8: { cefr: 'A2+', band: '4.0', goal: 'Viết đoạn 80 từ, nói liền 1 phút' },
+  9: { cefr: 'B1', band: '4.5', goal: 'Làm quen đề IELTS Listening & Reading' },
+  10: { cefr: 'B1', band: '5.0', goal: 'Writing Task 1 & 2, Speaking Part 1–2' },
+  11: { cefr: 'B1', band: '5.0–5.5', goal: 'Luyện đề đầy đủ có tính giờ' },
+  12: { cefr: 'B1+', band: '5.5', goal: 'Thi thử, sửa lỗi cuối cùng' },
+};

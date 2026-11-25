@@ -24,6 +24,16 @@ const SKILL_OF = { vocab: 'review', listen: 'listen', speak: 'speak', read: 'rea
 const PLAN_KEYS = ['listen', 'speak', 'read', 'write', 'review'];
 const SRS_DAYS = [0, 1, 2, 4, 7, 14, 30, 60];
 const TOTAL_DAYS = 90;
+const WG = window.WEEK_GOALS;
+// Trình độ ước tính = tuần cao nhất đã xong liên tục từ tuần 1
+function levelNow() {
+  let lv = null;
+  for (const w of Object.keys(WG).map(Number).sort((a, b) => a - b)) {
+    const us = UNITS.filter((u) => u.week === w);
+    if (us.length && us.every((u) => doneCount(u.id) === 5)) lv = WG[w].band; else break;
+  }
+  return lv || 'dưới 2.0';
+}
 
 // ---------- tiến độ ----------
 const STORE = 'ht55.progress.v1';
@@ -108,7 +118,7 @@ function speak(text, slow) {
     const u = new SpeechSynthesisUtterance(text);
     const v = pickVoice(); if (v) u.voice = v;
     u.lang = v ? v.lang : 'en-US';
-    u.rate = slow ? 0.55 : P.settings.rate;
+    u.rate = slow ? 0.55 : inTest() ? Math.max(1, P.settings.rate) : P.settings.rate; // bài kiểm tra đọc nhanh hơn
     u.onend = u.onerror = () => res();
     TTS.speak(u);
   });
@@ -266,15 +276,18 @@ const SKILL_NAME = { listen: '🎧 Nghe', read: '📖 Đọc', write: '✍️ Vi
 // 1 bài: 7 câu (đủ mọi dạng). 1 tuần: mỗi bài 4 câu ngẫu nhiên. Có micro thì thêm 1 câu nói ở cuối.
 // Đủ 4 kỹ năng. 1 bài: 14 câu. 1 tuần: 21 câu. Thứ tự: câu lẻ → nghe đoạn văn → nói → viết đoạn văn.
 function buildTest(units) {
-  const one = units.length === 1, lu = pick1(units);
+  const one = units.length === 1, lu = pick1(units), allW = units.flatMap((u) => u.words);
   const steps = [], speaks = [];
   let lsteps = [];
   for (const u of units) {
     const pool = shuffle(u.sentences); let k = 0;
     const sent = () => pool[k++ % pool.length];
-    const tiles = (t, x) => ({ t, s: x, bank: shuffle([...tokens(x[0]), ...distractorWords(u, x[0], 2)]) });
+    const tiles = (t, x) => ({ t, s: x, bank: shuffle([...tokens(x[0]), ...distractorWords(u, x[0], 4)]) });
+    const six = (w) => shuffle([w, ...sample(allW.filter((x) => x !== w && x[1] !== w[1]), 5)]);
     const mk = {
-      pickWord: () => MK.pickWord(u), pickEn: () => MK.pickEn(u), spell: () => MK.spell(u),
+      pickWord: () => { const w = pick1(u.words); return { t: 'pickWord', w, opts: six(w) }; },
+      pickEn: () => { const w = pick1(u.words); return { t: 'pickEn', w, opts: six(w) }; },
+      spell: () => MK.spell(u),
       pickSentence: () => { const x = sent(); return { t: 'pickSentence', s: x, opts: shuffle([x, ...sample(u.sentences.filter((y) => y !== x), 2)]) }; },
       dictation: () => tiles('dictation', sent()), build: () => tiles('build', sent()),
       type: () => ({ t: 'type', s: sent() }), fix: () => fixSteps(u, 1)[0],
@@ -289,9 +302,9 @@ function buildTest(units) {
     for (let n = 0; n < (one ? 2 : 1); n++) { const x = sent(); speaks.push({ t: 'speak', en: x[0], vi: x[1], u }); }
   }
   const vocab = units.flatMap((u) => u.words.map((w) => w[0])).filter((w) => w.length >= 3 && w !== 'you');
-  const pu = pick1(units), minWords = one ? 20 : 30;
+  const pu = pick1(units), minWords = one ? 40 : 60;
   const idea = (window.JOURNAL_PROMPTS[pu.id] || '').replace(/\s*Viết \d+ câu\.?/g, '').replace(/^Viết \d+ câu/, 'Viết').trim();
-  const para = { t: 'para', u: pu, units, vocab, minWords, minVocab: one ? 3 : 5,
+  const para = { t: 'para', u: pu, units, vocab, minWords, minVocab: one ? 5 : 8, minSents: one ? 5 : 6,
     prompt: `Viết đoạn văn ít nhất ${minWords} từ về chủ đề ${pu.emoji} ${pu.vi}.${idea ? ' Gợi ý: ' + idea : ''}` };
   return [...shuffle(steps), ...lsteps, ...speaks, para];
 }
@@ -311,7 +324,7 @@ function paraChecks(text, st) {
   const miss = t.toLowerCase().replace(/[^a-z' ]+/g, ' ').match(MISS_BE);
   return [
     [words.length >= st.minWords, `Ít nhất ${st.minWords} từ (đang có ${words.length})`],
-    [sents.length >= 3, `Ít nhất 3 câu (đang có ${sents.length})`],
+    [sents.length >= (st.minSents || 3), `Ít nhất ${st.minSents || 3} câu (đang có ${sents.length})`],
     [used.length >= st.minVocab, `Dùng ít nhất ${st.minVocab} từ vựng đã học (đang dùng ${used.length}${used.length ? ': ' + used.join(', ') : ''})`],
     [sents.length > 0 && sents.every((x) => /^["']?[A-Z]/.test(x)), 'Mỗi câu bắt đầu bằng chữ in hoa'],
     [sents.length > 0 && sents.every((x) => /[.!?]["']?$/.test(x)), 'Mỗi câu kết thúc bằng dấu . ? hoặc !'],
@@ -323,9 +336,40 @@ function paraChecks(text, st) {
 }
 const checksHTML = (cs) => `<ul class="checks">${cs.map(([ok, msg]) => `<li class="${ok ? 'pass' : 'fail'}">${ok ? '✅' : '❌'} ${esc(msg)}</li>`).join('')}</ul>`;
 function startTest(units, key, title) {
-  S = { kind: 'test', u: units[0], units, key, title, steps: buildTest(units), i: 0, ok: 0, graded: 0, state: null, requeued: new Set(), skill: {} };
-  scr = 'session';
-  beginStep();
+  S = { kind: 'test', intro: true, u: units[0], units, key, title, steps: buildTest(units), i: 0, ok: 0, graded: 0, state: {}, requeued: new Set(), skill: {} };
+  scr = 'session'; render(); scrollTo(0, 0);
+}
+// Giới hạn thời gian mỗi câu trong bài kiểm tra (giây)
+const LIMITS = { pickWord: 15, pickEn: 15, pickSentence: 20, dictation: 60, lquestion: 60, question: 40, spell: 25, build: 45, type: 60, fix: 40, speak: 45, para: 900 };
+const AUTO_PLAY = new Set(['pickWord', 'pickSentence', 'dictation', 'lquestion']);
+const fmtSec = (x) => (x >= 60 ? `${Math.floor(x / 60)}:${String(x % 60).padStart(2, '0')}` : `${x}s`);
+const inTest = () => scr === 'session' && S && S.kind === 'test' && !S.done && !S.intro;
+function startTimer() {
+  const ss = S.state;
+  const id = setInterval(() => {
+    if (!S || S.state !== ss || ss.answered) { clearInterval(id); return; }
+    const left = Math.ceil((ss.deadline - Date.now()) / 1000), el = $('#timer');
+    if (el) { el.textContent = '⏱ ' + fmtSec(Math.max(0, left)); el.classList.toggle('low', left <= 5); }
+    if (left <= 0) { clearInterval(id); if (step().t === 'para') ACT.submitPara(true); else answer(false, 'Hết giờ ⏰'); }
+  }, 250);
+}
+function testIntroView() {
+  const para = S.steps[S.steps.length - 1], w = S.key[0] === 'w' ? +S.key.slice(1) : null;
+  return `<div class="card">
+    <h2>⚡ Kiểm tra nhanh · ${esc(S.title)}</h2>
+    ${w ? `<p>Qua bài này nghĩa là bạn đạt mục tiêu <b>🎯 IELTS ~${WG[w].band}</b> (${WG[w].cefr}).</p>` : ''}
+    <p><b>${S.steps.length} câu</b>, đủ 4 kỹ năng. Bài kiểm tra <b>khó hơn bài học thường</b>:</p>
+    <ul class="rules">
+      <li>⏱ Mỗi câu có giới hạn thời gian. Hết giờ tính là sai.</li>
+      <li>🎧 Mỗi bài nghe chỉ được nghe <b>tối đa 2 lần</b>, giọng đọc nhanh, không có nút đọc chậm.</li>
+      <li>🚫 Không gợi ý, không dịch tiếng Việt, không có hình minh họa. Chọn nghĩa có 6 đáp án.</li>
+      <li>✍️ Nghe chép và tự viết câu phải <b>gõ cả câu</b>, đúng chữ hoa và dấu câu. Sai 1 chữ cái là sai.</li>
+      <li>🗣️ Phần nói không có mẫu để nghe, phải đọc <b>đúng 100% số từ</b>, tối đa 2 lần.</li>
+      <li>📝 Đoạn văn: ít nhất ${para.minWords} từ, ${para.minSents} câu, dùng ${para.minVocab} từ vựng đã học.</li>
+      <li>🎯 Phải <b>đúng hết 100%</b> mới qua.</li>
+    </ul>
+    <div class="row gap"><button class="btn ghost" data-act="tab" data-tab="home">Để sau</button><button class="btn big" data-act="beginTest">Bắt đầu ⚡</button></div>
+  </div>`;
 }
 function finishTest() {
   const pct = S.graded ? S.ok / S.graded : 0, passed = pct >= PASS;
@@ -351,6 +395,7 @@ function testDoneView() {
   return `<div class="card center finish">
     <div class="huge">${d.passed ? '🎉' : '💪'}</div>
     <h2>${d.passed ? `Qua rồi! ${esc(S.title)} đã xong` : `Chưa qua ${esc(S.title)}`}</h2>
+    ${d.passed && S.key[0] === 'w' ? `<p class="xp">🎯 Bạn đạt ~IELTS ${WG[+S.key.slice(1)].band}</p>` : ''}
     <p>Đúng <b>${S.ok}/${S.graded}</b> (${d.pct}%) · cần đúng hết 100%</p>
     <div class="card left">${rows}</div>
     <p>${d.passed ? 'Các bài đã được đánh dấu học xong. Từ vựng đã vào thẻ ôn, vài ngày nữa sẽ được nhắc lại.'
@@ -372,12 +417,37 @@ function go(s, a = null) {
   render(); scrollTo(0, 0);
 }
 function render() {
-  renderHeader();
+  renderHeader(); renderCrumbs(); renderSide();
   const html = { home: homeView, unit: unitView, session: sessionView, review: reviewView, plan: planView, journal: journalView, settings: settingsView }[scr]();
   $('#main').innerHTML = html;
   document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === scr || (b.dataset.tab === 'home' && ['unit', 'session'].includes(scr))));
   $('.tabs').style.display = scr === 'session' ? 'none' : '';
   const inp = $('#main input[autofocus], #main textarea[autofocus]'); if (inp) inp.focus();
+}
+function renderCrumbs() {
+  const parts = ['<button data-act="tab" data-tab="home">🏠 Học</button>'];
+  const u = scr === 'unit' ? unitById(arg) : scr === 'session' && S ? S.u : null;
+  const weekCrumb = (w) => `<button data-act="week" data-w="${w}">Tuần ${w} · 🎯 ${WG[w].band}</button>`;
+  if (scr === 'session' && S && S.kind === 'test' && S.key[0] === 'w') parts.push(weekCrumb(+S.key.slice(1)), '<span>⚡ Kiểm tra tuần</span>');
+  else if (u) {
+    parts.push(weekCrumb(u.week), `<button data-act="unit" data-u="${u.id}">${u.emoji} ${esc(u.title)}</button>`);
+    if (scr === 'session' && S) { const k = KINDS.find(([x]) => x === S.kind); parts.push(`<span>${k ? k[1] + ' ' + k[2] : '⚡ Kiểm tra'}</span>`); }
+  } else if (scr !== 'home') parts.push(`<span>${{ review: '🔁 Ôn từ', journal: '📝 Nhật ký', plan: '🗺️ Lộ trình', settings: '⚙️ Cài đặt' }[scr]}</span>`);
+  $('#crumbs').innerHTML = `<div class="path">${parts.join('<i>›</i>')}</div><span class="lv">🎯 Trình độ ~IELTS <b>${levelNow()}</b> → 5.5</span>`;
+}
+function renderSide() {
+  const cur = scr === 'unit' ? arg : scr === 'session' && S ? S.u.id : null;
+  $('#side').innerHTML = `<div class="side-lv"><small>Trình độ ước tính</small><b>IELTS ${levelNow()}</b><small>Mục tiêu: IELTS 5.5</small></div>
+    ${Object.entries(WG).map(([w, g]) => {
+    const us = UNITS.filter((u) => u.week === +w), done = us.length && us.every((u) => doneCount(u.id) === 5);
+    return `<div class="side-wk ${done ? 'done' : ''}">
+        <button class="side-h" data-act="week" data-w="${w}"><b>Tuần ${w}</b><span class="band">${g.cefr} · 🎯 ${g.band}${done ? ' ✓' : ''}</span></button>
+        ${us.length ? us.map((u) => {
+    const lock = !unlocked(UNITS.indexOf(u));
+    return `<button class="side-u ${u.id === cur ? 'on' : ''} ${lock ? 'locked' : ''}" data-act="${lock ? 'locked' : 'unit'}" data-u="${u.id}"><span>${lock ? '🔒' : u.emoji}</span><span class="t">${esc(u.title)}</span><span class="n">${doneCount(u.id)}/5</span></button>`;
+  }).join('') : `<div class="muted small soon">Sắp có · ${esc(g.goal)}</div>`}
+      </div>`;
+  }).join('')}`;
 }
 function renderHeader() {
   const min = minutesToday(), goal = P.settings.goalMin;
@@ -409,7 +479,7 @@ function homeView() {
       <p>Đây là app luyện <b>Nghe · Nói · Đọc · Viết</b> từ mức mới bắt đầu. Mọi câu tiếng Anh đều có nút 🔊 để nghe và có dịch tiếng Việt.</p>
       <ul>
         <li>Mỗi bài có 5 phần nhỏ, mỗi phần khoảng 5–10 phút.</li>
-        <li>Phần nào đã biết thì bấm <b>⚡ Kiểm tra nhanh</b>. Đúng hết 100% là qua luôn.</li>
+        <li>Phần nào đã biết thì bấm <b>⚡ Kiểm tra nhanh</b>. Bài kiểm tra khó hơn bài học, đúng hết 100% mới qua.</li>
         <li>Phần <b>Nói</b> dùng micro. Nên dùng <b>Chrome</b> hoặc <b>Edge</b>.</li>
         <li>Mục tiêu IELTS 5.5 trong 3 tháng cần học <b>khoảng 3,5 giờ/ngày</b>. Xem tab 🗺️ Lộ trình.</li>
       </ul>
@@ -420,6 +490,7 @@ function homeView() {
     <div class="card today">
       <div class="row between"><b>Hôm nay · Ngày ${dayNumber()}/${TOTAL_DAYS}</b><span class="muted">${min} / ${goal} phút</span></div>
       <div class="bar"><i style="width:${pct}%"></i></div>
+      <p class="lvline">🎯 Trình độ ước tính: <b>IELTS ${levelNow()}</b> · Mục tiêu: <b>IELTS 5.5</b><br><span class="muted small">Ước tính theo các tuần đã học xong hoặc đã qua kiểm tra, không phải điểm thi thật.</span></p>
       <div class="row gap">
         ${nt ? `<button class="btn big" data-act="start" data-u="${nt.u.id}" data-k="${nt.k[0]}">▶ Học tiếp: ${nt.u.emoji} ${esc(nt.u.title)} · ${nt.k[1]} ${nt.k[2]}</button>`
     : `<div class="muted">Bạn đã xong tất cả bài hiện có 🎉 Bài mới cho tuần 5–8 sẽ được thêm vào.</div>`}
@@ -427,7 +498,7 @@ function homeView() {
       </div>
     </div>
     ${weeks.map((w) => `
-      <div class="row between wkrow"><h3 class="wk">Tuần ${w}</h3>${weekBadge(w)}</div>
+      <div class="wkrow" id="wk-${w}"><div class="row between"><h3 class="wk">Tuần ${w} · ${WG[w].cefr} · 🎯 IELTS ${WG[w].band}</h3>${weekBadge(w)}</div><div class="muted small">${esc(WG[w].goal)}</div></div>
       <div class="units">${UNITS.map((u, i) => [u, i]).filter(([u]) => u.week === w).map(([u, i]) => {
     const lock = !unlocked(i), dc = doneCount(u.id);
     return `<button class="unit ${lock ? 'locked' : ''} ${dc === 5 ? 'done' : ''}" data-act="${lock ? 'locked' : 'unit'}" data-u="${u.id}">
@@ -436,11 +507,15 @@ function homeView() {
           <span class="dots">${KINDS.map(([k]) => `<i class="${(P.units[u.id] || {})[k] ? 'on' : ''}"></i>`).join('')}</span>
         </button>`;
   }).join('')}</div>`).join('')}
+    <h3>Các tuần tiếp theo</h3>
+    <div class="card upcoming">${Object.entries(WG).filter(([w]) => !weeks.includes(+w)).map(([w, g]) => `
+      <div class="row between"><span><b>Tuần ${w}</b> · ${g.cefr} · ${esc(g.goal)}</span><span class="band">🎯 ${g.band}</span></div>`).join('')}
+      <p class="muted small">Bài cho các tuần này sẽ được thêm dần.</p></div>
     <p class="muted center small">Bài tiếp theo mở khi bạn làm xong 3/5 phần của bài trước.<br>Đã biết rồi? Bấm <b>⚡ Kiểm tra nhanh</b>: đúng hết 100% là qua luôn cả tuần.</p>`;
 }
 function weekBadge(w) {
   const us = UNITS.filter((u) => u.week === w);
-  if (us.every((u) => doneCount(u.id) === 5)) return '<span class="okc small">✓ Đã xong</span>';
+  if (us.every((u) => doneCount(u.id) === 5)) return `<span class="okc small">✓ Đạt ~IELTS ${WG[w].band}</span>`;
   if (!unlocked(UNITS.indexOf(us[0]))) return '<span class="muted small">🔒</span>';
   const t = (P.tests || {})['w' + w];
   return `<button class="btn ghost sm" data-act="test" data-w="${w}">⚡ Kiểm tra nhanh${t ? ` · ${t.best}%` : ''}</button>`;
@@ -449,9 +524,9 @@ function weekBadge(w) {
 function unitView() {
   const u = unitById(arg), up = P.units[u.id] || {};
   return `
-    <div class="row gap"><button class="icon" data-act="tab" data-tab="home">←</button><h2>${u.emoji} ${esc(u.title)} <small class="muted">· ${esc(u.vi)}</small></h2></div>
+    <div class="row gap"><h2>${u.emoji} ${esc(u.title)} <small class="muted">· ${esc(u.vi)}</small></h2></div>
     <div class="list">
-      ${doneCount(u.id) < 5 ? `<button class="item quick" data-act="test" data-u="${u.id}"><span class="em">⚡</span><span class="t"><b>Kiểm tra nhanh</b><small>Biết rồi? 15 câu đủ Nghe (có nghe đoạn văn), Nói, Đọc, Viết (có sửa lỗi sai và viết đoạn văn). Đạt hết 100% là qua luôn bài này</small></span><span class="go">Làm</span></button>` : ''}
+      ${doneCount(u.id) < 5 ? `<button class="item quick" data-act="test" data-u="${u.id}"><span class="em">⚡</span><span class="t"><b>Kiểm tra nhanh</b><small>Khó hơn bài học: 14 câu đủ 4 kỹ năng, có giới hạn thời gian, chỉ nghe 2 lần, không gợi ý. Đúng hết 100% mới qua</small></span><span class="go">Làm</span></button>` : ''}
       ${KINDS.map(([k, ic, name, desc]) => `
       <button class="item" data-act="start" data-u="${u.id}" data-k="${k}">
         <span class="em">${ic}</span><span class="t"><b>${name}</b><small>${desc}</small></span>
@@ -477,9 +552,15 @@ function startSession(uid, kind) {
 function step() { return S.steps[S.i]; }
 function beginStep() {
   const st = step();
-  S.state = { answered: false, picked: [], tries: 0, result: null, hint: false, showVi: false };
+  S.state = { answered: false, picked: [], tries: 0, result: null, hint: false, showVi: false, plays: 0 };
+  const test = S.kind === 'test' && st;
+  if (test) {
+    S.state.deadline = Date.now() + LIMITS[st.t] * 1000;
+    if (AUTO_PLAY.has(st.t) && !(st.t === 'lquestion' && S.i > 0 && S.steps[S.i - 1].t === 'lquestion')) S.state.plays = 1;
+  }
   render(); scrollTo(0, 0);
   if (!st) return;
+  if (test) startTimer();
   if (S.kind === 'test') curSkill = SKILL_OF_STEP[st.t];
   if (st.t === 'learn' || st.t === 'pickWord') speak(st.w[0]);
   if (st.t === 'pickSentence' || st.t === 'dictation') speak(st.s[0]);
@@ -510,10 +591,13 @@ function finishSession() {
 }
 
 const say = (t, label = '🔊') => `<button class="icon" data-act="say" data-t="${esc(t)}">${label}</button>`;
-const sayBoth = (t) => `${say(t)}<button class="icon" data-act="say" data-t="${esc(t)}" data-slow="1" title="Đọc chậm">🐢</button>`;
+const sayBoth = (t) => (inTest() && !S.state.answered
+  ? `<button class="icon" data-act="say" data-t="${esc(t)}" data-lim="1" title="Số lượt nghe còn lại">🔊 còn ${Math.max(0, 2 - S.state.plays)}</button>`
+  : `${say(t)}<button class="icon" data-act="say" data-t="${esc(t)}" data-slow="1" title="Đọc chậm">🐢</button>`);
 
 function sessionView() {
   const { u, kind } = S, kd = kind === 'test' ? ['test', '⚡', 'Kiểm tra nhanh'] : KINDS.find(([k]) => k === kind);
+  if (S.intro) return testIntroView();
   if (S.done && kind === 'test') return testDoneView();
   if (S.done) {
     const pct = S.graded ? Math.round((S.ok / S.graded) * 100) : 100;
@@ -528,7 +612,7 @@ function sessionView() {
         ${nt ? `<button class="btn" data-act="start" data-u="${nt.u.id}" data-k="${nt.k[0]}">Tiếp: ${nt.u.emoji} ${nt.k[1]} ${nt.k[2]} →</button>` : ''}
       </div></div>`;
   }
-  const st = step(), ss = S.state, pct = Math.round((S.i / S.steps.length) * 100);
+  const st = step(), ss = S.state, pct = Math.round((S.i / S.steps.length) * 100), T = kind === 'test' && !ss.answered;
   let body = '', foot = '';
   const opt = (label, i, cls = '') => {
     let c = '';
@@ -547,12 +631,12 @@ function sessionView() {
       ss.correctIdx = st.opts.indexOf(st.w);
       body = `<p class="ask">Nghe và chọn nghĩa đúng</p><div class="row gap center">${sayBoth(st.w[0])}</div>
         ${ss.answered ? `<p class="center en">${esc(st.w[0])}</p>` : ''}
-        <div class="opts grid2">${st.opts.map((w, i) => opt(`<span class="em">${w[2]}</span>${esc(w[1])}`, i)).join('')}</div>`;
+        <div class="opts grid2">${st.opts.map((w, i) => opt(`${T ? '' : `<span class="em">${w[2]}</span>`}${esc(w[1])}`, i)).join('')}</div>`;
       break;
     }
     case 'pickEn': {
       ss.correctIdx = st.opts.indexOf(st.w);
-      body = `<p class="ask">Từ nào nghĩa là:</p><div class="center"><div class="huge">${st.w[2]}</div><div class="vi">${esc(st.w[1])}</div></div>
+      body = `<p class="ask">Từ nào nghĩa là:</p><div class="center">${T ? '' : `<div class="huge">${st.w[2]}</div>`}<div class="vi">${esc(st.w[1])}</div></div>
         <div class="opts grid2">${st.opts.map((w, i) => opt(esc(w[0]), i, 'en')).join('')}</div>`;
       break;
     }
@@ -565,6 +649,12 @@ function sessionView() {
     }
     case 'dictation':
     case 'build': {
+      if (st.t === 'dictation' && kind === 'test') {
+        body = `<p class="ask">Nghe và gõ lại cả câu (đúng chữ hoa và dấu câu)</p><div class="row gap center">${sayBoth(st.s[0])}</div>
+          <textarea id="ans" class="ans" rows="2" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Gõ câu bạn nghe được…" ${ss.answered ? 'disabled' : 'autofocus'}>${esc(ss.typed || '')}</textarea>`;
+        if (!ss.answered) foot = `<button class="btn big" data-act="checkType">Kiểm tra</button>`;
+        break;
+      }
       const prompt = st.t === 'dictation'
         ? `<p class="ask">Nghe và xếp lại câu bạn nghe được</p><div class="row gap center">${sayBoth(st.s[0])}</div>`
         : `<p class="ask">Dịch sang tiếng Anh</p><div class="card vi-prompt">🇻🇳 ${esc(st.s[1])}</div>`;
@@ -576,8 +666,8 @@ function sessionView() {
     }
     case 'spell': {
       const [en, vi, em] = st.w;
-      body = `<p class="ask">Viết từ tiếng Anh</p><div class="center"><div class="huge">${em}</div><div class="vi">${esc(vi)}</div>
-        <p class="hint">${ss.hint ? esc(en[0]) + ' ' : ''}${en.split('').slice(ss.hint ? 1 : 0).map((c) => (c === ' ' ? '&nbsp;&nbsp;' : '_')).join(' ')}</p></div>
+      body = `<p class="ask">Viết từ tiếng Anh</p><div class="center">${T ? '' : `<div class="huge">${em}</div>`}<div class="vi">${esc(vi)}</div>
+        <p class="hint">${T ? '' : `${ss.hint ? esc(en[0]) + ' ' : ''}${en.split('').slice(ss.hint ? 1 : 0).map((c) => (c === ' ' ? '&nbsp;&nbsp;' : '_')).join(' ')}`}</p></div>
         <input id="ans" class="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Gõ từ tiếng Anh…" ${ss.answered ? 'disabled' : 'autofocus'} value="${esc(ss.typed || '')}">`;
       if (!ss.answered) foot = `${kind === 'test' ? '' : '<button class="btn ghost" data-act="hint">💡 Gợi ý</button>'}<button class="btn big" data-act="checkType">Kiểm tra</button>`;
       break;
@@ -585,14 +675,14 @@ function sessionView() {
     case 'type': {
       const hint = st.s[0].split(' ').map((w) => w[0] + w.slice(1).replace(/[a-z]/gi, '_')).join(' ');
       body = `<p class="ask">Tự viết câu tiếng Anh</p><div class="card vi-prompt">🇻🇳 ${esc(st.s[1])}</div>
-        ${ss.hint ? `<p class="hint">${esc(hint)}</p>` : ''}${kind === 'test' ? `<p class="muted small">Câu có ${tokens(st.s[0]).length} từ</p>` : ''}
+        ${ss.hint ? `<p class="hint">${esc(hint)}</p>` : ''}${T ? '<p class="muted small">Gõ cả câu, đúng chữ hoa và dấu câu.</p>' : ''}
         <textarea id="ans" class="ans" rows="2" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="Gõ câu tiếng Anh…" ${ss.answered ? 'disabled' : 'autofocus'}>${esc(ss.typed || '')}</textarea>`;
       if (!ss.answered) foot = `${kind === 'test' ? '' : '<button class="btn ghost" data-act="hint">💡 Gợi ý</button>'}<button class="btn big" data-act="checkType">Kiểm tra</button>`;
       break;
     }
     case 'speak': {
-      body = `<p class="ask">Nghe mẫu rồi đọc to</p><div class="card center speakcard"><div class="en">${esc(st.en)}</div><div class="vi">${esc(st.vi)}</div>
-        <div class="row gap center">${sayBoth(st.en)}</div></div>
+      body = `<p class="ask">${T ? 'Đọc to câu này (không có mẫu · phải đúng 100% số từ · tối đa 2 lần)' : 'Nghe mẫu rồi đọc to'}</p><div class="card center speakcard"><div class="en">${esc(st.en)}</div>
+        ${T ? '' : `<div class="vi">${esc(st.vi)}</div><div class="row gap center">${sayBoth(st.en)}</div>`}</div>
         ${SR ? `<div class="center"><button class="mic ${ss.listening ? 'rec' : ''}" data-act="mic" data-t="${esc(st.en)}" ${ss.answered ? 'disabled' : ''}>🎤</button>
           <p class="muted small">${ss.listening ? 'Đang nghe… hãy nói!' : 'Bấm micro rồi nói'}</p></div><div id="micres">${micResult()}</div>`
     : `<p class="note">Trình duyệt này không hỗ trợ chấm giọng nói. Hãy mở bằng <b>Chrome</b> hoặc <b>Edge</b>. Tạm thời bạn đọc to theo mẫu rồi tự chấm.</p>`}`;
@@ -605,7 +695,7 @@ function sessionView() {
     case 'fix': {
       body = `<p class="ask">🔎 Câu này có 1 lỗi sai. Bấm vào từ sai, rồi gõ từ đúng.</p>
         <div class="fixline">${st.toks.map((w, i) => `<button class="tile ${ss.fixI === i ? 'sel' : ''} ${ss.answered && i === st.i ? 'errw' : ''}" data-act="fixpick" data-i="${i}" ${ss.answered ? 'disabled' : ''}>${esc(w)}</button>`).join('')}</div>
-        <p class="muted">🇻🇳 ${esc(st.s[1])}</p>
+        ${T ? '' : `<p class="muted">🇻🇳 ${esc(st.s[1])}</p>`}
         ${ss.fixI != null ? `<label class="lbl">Sửa “<b>${esc(st.toks[ss.fixI].replace(/[.,!?]/g, ''))}</b>” thành:</label>
           <input id="ans" class="ans" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Gõ từ đúng…" value="${esc(ss.typed || '')}" ${ss.answered ? 'disabled' : 'autofocus'}>` : ''}`;
       if (!ss.answered) foot = `<button class="btn big" data-act="checkFix" ${ss.fixI == null ? 'disabled' : ''}>Kiểm tra</button>`;
@@ -614,9 +704,10 @@ function sessionView() {
     case 'lquestion': {
       const [q, qvi, opts, ans] = st.q, text = passageText(st.u); ss.correctIdx = ans;
       body = `<p class="ask">🎧 Nghe đoạn văn rồi trả lời</p>
-        <div class="row gap center"><button class="btn ghost" data-act="say" data-t="${esc(text)}">🔊 Nghe đoạn văn</button><button class="icon" data-act="say" data-t="${esc(text)}" data-slow="1" title="Đọc chậm">🐢</button></div>
+        <div class="row gap center">${T ? `<button class="btn ghost" data-act="say" data-t="${esc(text)}" data-lim="1">🔊 Nghe đoạn văn (còn ${Math.max(0, 2 - ss.plays)} lượt)</button>`
+    : `<button class="btn ghost" data-act="say" data-t="${esc(text)}">🔊 Nghe đoạn văn</button><button class="icon" data-act="say" data-t="${esc(text)}" data-slow="1" title="Đọc chậm">🐢</button>`}</div>
         ${ss.answered ? `<details class="card"><summary>📄 Xem lời đoạn văn</summary>${passageHTML(st.u, false)}</details>` : ''}
-        <p class="ask">${esc(q)} ${say(q)}</p><p class="muted">${esc(qvi)}</p>
+        <p class="ask">${esc(q)} ${say(q)}</p>${T ? '' : `<p class="muted">${esc(qvi)}</p>`}
         <div class="opts">${opts.map((o, i) => opt(esc(o), i, 'en')).join('')}</div>`;
       break;
     }
@@ -639,7 +730,7 @@ function sessionView() {
     case 'question': {
       const [q, qvi, opts, ans] = st.q; ss.correctIdx = ans;
       body = `<details class="card" ${kind === 'test' ? 'open' : ''}><summary>📖 ${kind === 'test' ? 'Đoạn văn' : 'Xem lại đoạn văn'}</summary>${passageHTML(st.u || u, false)}</details>
-        <p class="ask">${esc(q)} ${say(q)}</p><p class="muted">${esc(qvi)}</p>
+        <p class="ask">${esc(q)} ${say(q)}</p>${T ? '' : `<p class="muted">${esc(qvi)}</p>`}
         <div class="opts">${opts.map((o, i) => opt(esc(o), i, 'en')).join('')}</div>`;
       break;
     }
@@ -653,7 +744,7 @@ function sessionView() {
       ${st.t === 'type' && !ss.correct && kind !== 'test' ? `<button class="btn ghost sm" data-act="overrule">Câu tôi cũng đúng</button>` : ''}
       <button class="btn big" data-act="next">Tiếp tục →</button></div>`;
   }
-  return `<div class="sess-top"><button class="icon" data-act="quit">✕</button><div class="bar"><i style="width:${pct}%"></i></div><span class="muted small">${kd[1]}</span></div>
+  return `<div class="sess-top"><button class="icon" data-act="quit">✕</button><div class="bar"><i style="width:${pct}%"></i></div>${kind === 'test' ? `<span id="timer" class="timer">⏱ ${ss.answered ? '–' : fmtSec(Math.max(0, Math.ceil((ss.deadline - Date.now()) / 1000)))}</span>` : `<span class="muted small">${kd[1]}</span>`}</div>
     <div class="sess">${body}</div><div class="foot">${foot}</div>`;
 }
 function passageHTML(u, clickable) {
@@ -671,17 +762,21 @@ async function doMic(target) {
   const ss = S.state; ss.listening = true; ss.result = null; render();
   try {
     const heard = await hear();
+    if (S.state !== ss || ss.answered) return;
     ss.result = scoreSpeech(target, heard);
+    ss.scored = (ss.scored || 0) + 1;
   } catch (e) {
     const m = { 'not-allowed': 'Bạn chưa cho phép dùng micro. Bấm biểu tượng 🔒 trên thanh địa chỉ để bật micro.', 'no-speech': 'Không nghe thấy gì. Hãy nói to và rõ hơn nhé.', network: 'Lỗi mạng. Chấm giọng nói cần có Internet.' };
+    if (S.state !== ss || ss.answered) return;
     ss.result = { err: m[e] || 'Không nhận được giọng nói (' + e + ').' };
   }
   ss.listening = false; ss.tries++;
   const st = step();
   if (st.t === 'speak' && ss.result && !ss.result.err) {
     const sc = ss.result.score;
-    if (sc >= 0.75) { answer(true, sc === 1 ? 'Phát âm tuyệt vời! 🎉' : 'Tốt lắm! Từ màu đỏ cần đọc rõ hơn.'); return; }
-    if (ss.tries >= 3) { answer(false, 'Chưa đạt. Nghe lại mẫu và luyện thêm nhé.'); return; }
+    const test = S.kind === 'test', need = test ? 1 : 0.75;
+    if (sc >= need) { answer(true, sc === 1 ? 'Phát âm tuyệt vời! 🎉' : 'Tốt lắm! Từ màu đỏ cần đọc rõ hơn.'); return; }
+    if (ss.scored >= (test ? 2 : 3)) { answer(false, test ? 'Chưa đạt: bài kiểm tra cần đọc đúng 100% các từ.' : 'Chưa đạt. Nghe lại mẫu và luyện thêm nhé.'); return; }
   }
   render();
 }
@@ -768,7 +863,7 @@ function planView() {
 // ---------- cài đặt ----------
 function settingsView() {
   const u = Cloud.user, vs = englishVoices(), cur = pickVoice();
-  return `<div class="row gap"><button class="icon" data-act="tab" data-tab="home">←</button><h2>⚙️ Cài đặt</h2></div>
+  return `<div class="row gap"><h2>⚙️ Cài đặt</h2></div>
     <div class="card"><h3>Tài khoản</h3>
       ${!Cloud.configured ? '<p class="muted">Chưa cấu hình Firebase. Tiến độ chỉ lưu trên trình duyệt này.</p>'
     : u ? `<p>Đã đăng nhập: <b>${esc(u.email || u.displayName || '')}</b>. Tiến độ tự lưu lên mây.</p><button class="btn ghost" data-act="logout">Đăng xuất</button>`
@@ -802,8 +897,8 @@ const ACT = {
     const ok = S.state.fixI === st.i && norm(v) === norm(st.right);
     answer(ok, (ok ? 'Chính xác! ' : 'Chưa đúng. ') + st.why);
   },
-  submitPara: () => {
-    const st = step(), t = $('#para').value.trim(); if (!t) return;
+  submitPara: (d) => {
+    const st = step(), el = $('#para'), t = el ? el.value.trim() : (S.state.typed || ''); if (!t && d !== true) return;
     S.state.typed = t;
     const cs = paraChecks(t, st), bad = cs.filter((c) => !c[0]).length;
     P.journal.unshift({ id: Date.now(), d: dayKey(), u: st.u.id, t }); save();
@@ -811,7 +906,17 @@ const ACT = {
   },
   test: (d) => (!SR ? toast('Bài kiểm tra có phần Nói, cần mở bằng Chrome hoặc Edge và cho phép micro') : d.w ? startTest(UNITS.filter((u) => u.week === +d.w), 'w' + d.w, `Tuần ${d.w}`)
     : startTest([unitById(d.u)], 'u' + d.u, `bài ${unitById(d.u).title}`)),
-  say: (d) => speak(d.t, d.slow === '1'),
+  say: (d) => {
+    if (d.lim && inTest() && !S.state.answered) {
+      const ss = S.state;
+      if (ss.plays >= 2) { toast('Hết lượt nghe (tối đa 2 lần)'); return; }
+      const a = $('#ans'); if (a) ss.typed = a.value;
+      ss.plays++; render();
+    }
+    speak(d.t, d.slow === '1');
+  },
+  beginTest: () => { S.intro = false; beginStep(); },
+  week: (d) => { go('home'); const el = document.getElementById('wk-' + d.w); if (el) el.scrollIntoView({ block: 'start' }); },
   quit: () => { if (confirm('Thoát bài này? Kết quả phần này sẽ không được lưu.')) { const id = S.u.id; S = null; go('unit', id); } },
   next: () => nextStep(),
   pick: (d) => { if (S.state.answered) return; S.state.pickedIdx = +d.i; answer(+d.i === S.state.correctIdx); },
@@ -826,6 +931,9 @@ const ACT = {
     const st = step(), v = $('#ans').value.trim(); if (!v) return;
     S.state.typed = v;
     const target = st.t === 'spell' ? st.w[0] : st.s[0], r = checkTyped(v, target);
+    if (S.kind === 'test' && st.t !== 'spell' && r !== 'bad' && (!/^[A-Z]/.test(v) || v.slice(-1) !== target.slice(-1))) {
+      answer(false, `Sai hình thức: câu phải viết hoa chữ cái đầu và kết thúc bằng dấu “${target.slice(-1)}”`); return;
+    }
     if (S.kind === 'test' && r === 'almost') { answer(false, 'Sai chính tả (bài kiểm tra cần viết đúng hoàn toàn)'); return; }
     answer(r !== 'bad', r === 'almost' ? 'Gần đúng! Chú ý chính tả:' : null);
   },
@@ -855,7 +963,11 @@ const ACT = {
 };
 document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-act]');
-  if (b && ACT[b.dataset.act]) { e.preventDefault(); if (b.disabled) return; ACT[b.dataset.act](b.dataset); }
+  if (!b || !ACT[b.dataset.act]) return;
+  e.preventDefault(); if (b.disabled) return;
+  if (['unit', 'tab', 'settings', 'week'].includes(b.dataset.act) && scr === 'session' && S && !S.done && !S.intro
+    && !confirm('Thoát bài đang làm? Kết quả bài này sẽ không được lưu.')) return;
+  ACT[b.dataset.act](b.dataset);
 });
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Enter' || scr !== 'session' || !S || S.done) return;

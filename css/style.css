@@ -200,3 +200,12 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
   .opts.grid2 { grid-template-columns: 1fr; }
   .huge { font-size: 3.4rem; }
 }
+
+/* kiểm tra nhanh */
+.wkrow { margin: 22px 0 8px; }
+.wkrow h3 { margin: 0; }
+.okc { color: var(--good); font-weight: 700; }
+.badc { color: var(--bad); font-weight: 700; }
+.item.quick { border-color: var(--pri); background: var(--pri-soft); }
+.card.left { text-align: left; }
+.card.left .row { padding: 4px 0; }

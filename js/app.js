@@ -27,7 +27,7 @@ const TOTAL_DAYS = 90;
 
 // ---------- tiến độ ----------
 const STORE = 'ht55.progress.v1';
-const fresh = () => ({ v: 1, xp: 0, streak: 0, lastDay: '', days: {}, units: {}, srs: {}, journal: [],
+const fresh = () => ({ v: 1, xp: 0, streak: 0, lastDay: '', days: {}, units: {}, srs: {}, journal: [], tests: {},
   settings: { rate: 0.85, voice: '', goalMin: 210 }, startDate: dayKey(), updated: 0, seenIntro: false });
 function load() {
   try {
@@ -73,6 +73,8 @@ function merge(r) {
     for (const [s, v] of Object.entries(d.sec || {})) sec[s] = Math.max(sec[s] || 0, v);
     m.days[k] = { xp: Math.max(o.xp || 0, d.xp || 0), sec };
   }
+  m.tests = { ...(older.tests || {}) };
+  for (const [k, v] of Object.entries(newer.tests || {})) { const o = m.tests[k] || {}; m.tests[k] = { ...v, best: Math.max(o.best || 0, v.best || 0), passed: !!(o.passed || v.passed) }; }
   m.srs = { ...(older.srs || {}) };
   for (const [w, v] of Object.entries(newer.srs || {})) if (!m.srs[w] || v.b >= m.srs[w].b) m.srs[w] = v;
   const ids = new Set(), j = [];
@@ -211,6 +213,70 @@ const BUILD = {
   },
 };
 
+// ---------- kiểm tra nhanh: biết rồi thì qua luôn ----------
+const PASS = 1; // phải đúng hết mới qua
+const opts4 = (u, w) => shuffle([w, ...sample(u.words.filter((x) => x !== w), 3)]);
+const MK = {
+  pickWord: (u) => { const w = sample(u.words, 1)[0]; return { t: 'pickWord', w, opts: opts4(u, w) }; },
+  pickEn: (u) => { const w = sample(u.words, 1)[0]; return { t: 'pickEn', w, opts: opts4(u, w) }; },
+  pickSentence: (u) => { const s = sample(u.sentences, 1)[0]; return { t: 'pickSentence', s, opts: shuffle([s, ...sample(u.sentences.filter((x) => x !== s), 2)]) }; },
+  dictation: (u) => { const s = sample(u.sentences, 1)[0]; return { t: 'dictation', s, bank: shuffle([...tokens(s[0]), ...distractorWords(u, s[0], 2)]) }; },
+  build: (u) => { const s = sample(u.sentences, 1)[0]; return { t: 'build', s, bank: shuffle([...tokens(s[0]), ...distractorWords(u, s[0], 2)]) }; },
+  question: (u) => ({ t: 'question', q: sample(u.questions, 1)[0] }),
+  spell: (u) => ({ t: 'spell', w: sample(u.words, 1)[0] }),
+  speak: (u) => { const s = sample(u.sentences, 1)[0]; return { t: 'speak', en: s[0], vi: s[1] }; },
+};
+const SKILL_OF_STEP = { pickWord: 'listen', pickSentence: 'listen', dictation: 'listen', pickEn: 'read', question: 'read', spell: 'write', build: 'write', type: 'write', speak: 'speak' };
+const SKILL_NAME = { listen: '🎧 Nghe', read: '📖 Đọc', write: '✍️ Viết', speak: '🗣️ Nói' };
+// 1 bài: 7 câu (đủ mọi dạng). 1 tuần: mỗi bài 4 câu ngẫu nhiên. Có micro thì thêm 1 câu nói ở cuối.
+function buildTest(units) {
+  const types = ['pickWord', 'pickSentence', 'dictation', 'pickEn', 'question', 'spell', 'build'];
+  const steps = units.flatMap((u) => (units.length === 1 ? types : sample(types, 4)).map((t) => ({ ...MK[t](u), u })));
+  const out = shuffle(steps);
+  if (SR) out.push({ ...MK.speak(sample(units, 1)[0]), u: units[0] });
+  return out;
+}
+function startTest(units, key, title) {
+  S = { kind: 'test', u: units[0], units, key, title, steps: buildTest(units), i: 0, ok: 0, graded: 0, state: null, requeued: new Set(), skill: {} };
+  scr = 'session';
+  beginStep();
+}
+function finishTest() {
+  const pct = S.graded ? S.ok / S.graded : 0, passed = pct >= PASS;
+  if (!P.tests) P.tests = {};
+  const prev = P.tests[S.key] || {};
+  P.tests[S.key] = { best: Math.max(prev.best || 0, Math.round(pct * 100)), passed: !!(prev.passed || passed), date: dayKey() };
+  if (passed) {
+    for (const u of S.units) {
+      const up = unitProg(u.id); KINDS.forEach(([k]) => { up[k] = 1; });
+      u.words.forEach(([en]) => { if (!P.srs[en] || P.srs[en].b < 2) P.srs[en] = { b: 2, due: addDays(dayKey(), 4) }; });
+    }
+  }
+  const xp = 5 + S.ok * 2;
+  S.done = { xp, passed, pct: Math.round(pct * 100) };
+  addXP(xp);
+  render();
+}
+function testDoneView() {
+  const d = S.done, next = S.key[0] === 'w' ? +S.key.slice(1) + 1 : null;
+  const hasNext = next && UNITS.some((u) => u.week === next);
+  const rows = Object.entries(S.skill).map(([k, [ok, n]]) => `<div class="row between"><span>${SKILL_NAME[k]}</span><b class="${ok / n >= PASS ? 'okc' : 'badc'}">${ok}/${n}</b></div>`).join('');
+  const weak = Object.entries(S.skill).filter(([, [ok, n]]) => ok / n < PASS).map(([k]) => SKILL_NAME[k]);
+  return `<div class="card center finish">
+    <div class="huge">${d.passed ? '🎉' : '💪'}</div>
+    <h2>${d.passed ? `Qua rồi! ${esc(S.title)} đã xong` : `Chưa qua ${esc(S.title)}`}</h2>
+    <p>Đúng <b>${S.ok}/${S.graded}</b> (${d.pct}%) · cần đúng hết 100%</p>
+    <div class="card left">${rows}</div>
+    <p>${d.passed ? 'Các bài đã được đánh dấu học xong. Từ vựng đã vào thẻ ôn, vài ngày nữa sẽ được nhắc lại.'
+    : `Không sao cả! ${weak.length ? `Bạn nên học kỹ phần <b>${weak.join(', ')}</b>.` : ''} Học xong rồi làm lại bài kiểm tra nhé.`}</p>
+    <p class="xp">+${d.xp} ⭐</p>
+    <div class="row gap center">
+      <button class="btn ghost" data-act="tab" data-tab="home">← Trang chủ</button>
+      ${d.passed && hasNext ? `<button class="btn" data-act="test" data-w="${next}">⚡ Kiểm tra tuần ${next} →</button>` : ''}
+      ${!d.passed ? `<button class="btn" data-act="unit" data-u="${S.u.id}">Học bài ${esc(S.u.title)} →</button>` : ''}
+    </div></div>`;
+}
+
 // ---------- màn hình ----------
 let scr = 'home', arg = null, S = null, R = null, flash = '';
 function go(s, a = null) {
@@ -257,6 +323,7 @@ function homeView() {
       <p>Đây là app luyện <b>Nghe · Nói · Đọc · Viết</b> từ mức mới bắt đầu. Mọi câu tiếng Anh đều có nút 🔊 để nghe và có dịch tiếng Việt.</p>
       <ul>
         <li>Mỗi bài có 5 phần nhỏ, mỗi phần khoảng 5–10 phút.</li>
+        <li>Phần nào đã biết thì bấm <b>⚡ Kiểm tra nhanh</b>. Đúng hết 100% là qua luôn.</li>
         <li>Phần <b>Nói</b> dùng micro. Nên dùng <b>Chrome</b> hoặc <b>Edge</b>.</li>
         <li>Mục tiêu IELTS 5.5 trong 3 tháng cần học <b>khoảng 3,5 giờ/ngày</b>. Xem tab 🗺️ Lộ trình.</li>
       </ul>
@@ -274,7 +341,7 @@ function homeView() {
       </div>
     </div>
     ${weeks.map((w) => `
-      <h3 class="wk">Tuần ${w}</h3>
+      <div class="row between wkrow"><h3 class="wk">Tuần ${w}</h3>${weekBadge(w)}</div>
       <div class="units">${UNITS.map((u, i) => [u, i]).filter(([u]) => u.week === w).map(([u, i]) => {
     const lock = !unlocked(i), dc = doneCount(u.id);
     return `<button class="unit ${lock ? 'locked' : ''} ${dc === 5 ? 'done' : ''}" data-act="${lock ? 'locked' : 'unit'}" data-u="${u.id}">
@@ -283,14 +350,23 @@ function homeView() {
           <span class="dots">${KINDS.map(([k]) => `<i class="${(P.units[u.id] || {})[k] ? 'on' : ''}"></i>`).join('')}</span>
         </button>`;
   }).join('')}</div>`).join('')}
-    <p class="muted center small">Bài tiếp theo mở khi bạn làm xong 3/5 phần của bài trước.</p>`;
+    <p class="muted center small">Bài tiếp theo mở khi bạn làm xong 3/5 phần của bài trước.<br>Đã biết rồi? Bấm <b>⚡ Kiểm tra nhanh</b>: đúng hết 100% là qua luôn cả tuần.</p>`;
+}
+function weekBadge(w) {
+  const us = UNITS.filter((u) => u.week === w);
+  if (us.every((u) => doneCount(u.id) === 5)) return '<span class="okc small">✓ Đã xong</span>';
+  if (!unlocked(UNITS.indexOf(us[0]))) return '<span class="muted small">🔒</span>';
+  const t = (P.tests || {})['w' + w];
+  return `<button class="btn ghost sm" data-act="test" data-w="${w}">⚡ Kiểm tra nhanh${t ? ` · ${t.best}%` : ''}</button>`;
 }
 
 function unitView() {
   const u = unitById(arg), up = P.units[u.id] || {};
   return `
     <div class="row gap"><button class="icon" data-act="tab" data-tab="home">←</button><h2>${u.emoji} ${esc(u.title)} <small class="muted">· ${esc(u.vi)}</small></h2></div>
-    <div class="list">${KINDS.map(([k, ic, name, desc]) => `
+    <div class="list">
+      ${doneCount(u.id) < 5 ? `<button class="item quick" data-act="test" data-u="${u.id}"><span class="em">⚡</span><span class="t"><b>Kiểm tra nhanh</b><small>Biết rồi? Làm ${SR ? 8 : 7} câu, đúng hết 100% là qua luôn bài này</small></span><span class="go">Làm</span></button>` : ''}
+      ${KINDS.map(([k, ic, name, desc]) => `
       <button class="item" data-act="start" data-u="${u.id}" data-k="${k}">
         <span class="em">${ic}</span><span class="t"><b>${name}</b><small>${desc}</small></span>
         <span class="${up[k] ? 'ok' : 'go'}">${up[k] ? '✓ Làm lại' : 'Bắt đầu'}</span>
@@ -318,6 +394,7 @@ function beginStep() {
   S.state = { answered: false, picked: [], tries: 0, result: null, hint: false, showVi: false };
   render(); scrollTo(0, 0);
   if (!st) return;
+  if (S.kind === 'test') curSkill = SKILL_OF_STEP[st.t];
   if (st.t === 'learn' || st.t === 'pickWord') speak(st.w[0]);
   if (st.t === 'pickSentence' || st.t === 'dictation') speak(st.s[0]);
 }
@@ -326,7 +403,8 @@ function answer(correct, fb) {
   const st = step(); S.state.answered = true; S.state.correct = correct; S.state.fb = fb;
   if (GRADED.has(st.t)) {
     if (!S.requeued.has(S.i)) { S.graded++; if (correct) S.ok++; }
-    if (!correct && !S.requeued.has(S.i) && st.t !== 'speak') { S.requeued.add(S.steps.length); S.steps.push(st); S.state.pushed = true; }
+    if (S.kind === 'test') { const k = SKILL_OF_STEP[st.t], v = S.skill[k] || (S.skill[k] = [0, 0]); v[1]++; if (correct) v[0]++; }
+    if (!correct && S.kind !== 'test' && !S.requeued.has(S.i) && st.t !== 'speak') { S.requeued.add(S.steps.length); S.steps.push(st); S.state.pushed = true; }
   }
   render();
   const say = { pickEn: st.w && st.w[0], spell: st.w && st.w[0], type: st.s && st.s[0], build: st.s && st.s[0], dictation: st.s && st.s[0], pickSentence: st.s && st.s[0] }[st.t];
@@ -334,6 +412,7 @@ function answer(correct, fb) {
 }
 function nextStep() { S.i++; if (S.i >= S.steps.length) finishSession(); else beginStep(); }
 function finishSession() {
+  if (S.kind === 'test') { finishTest(); return; }
   const { u, kind } = S;
   const xp = 10 + S.ok * 2;
   unitProg(u.id)[kind] = 1;
@@ -347,7 +426,8 @@ const say = (t, label = '🔊') => `<button class="icon" data-act="say" data-t="
 const sayBoth = (t) => `${say(t)}<button class="icon" data-act="say" data-t="${esc(t)}" data-slow="1" title="Đọc chậm">🐢</button>`;
 
 function sessionView() {
-  const { u, kind } = S, kd = KINDS.find(([k]) => k === kind);
+  const { u, kind } = S, kd = kind === 'test' ? ['test', '⚡', 'Kiểm tra nhanh'] : KINDS.find(([k]) => k === kind);
+  if (S.done && kind === 'test') return testDoneView();
   if (S.done) {
     const pct = S.graded ? Math.round((S.ok / S.graded) * 100) : 100;
     const nt = nextTask();
@@ -444,7 +524,7 @@ function sessionView() {
     }
     case 'question': {
       const [q, qvi, opts, ans] = st.q; ss.correctIdx = ans;
-      body = `<details class="card"><summary>📖 Xem lại đoạn văn</summary>${passageHTML(u, false)}</details>
+      body = `<details class="card" ${kind === 'test' ? 'open' : ''}><summary>📖 ${kind === 'test' ? 'Đoạn văn' : 'Xem lại đoạn văn'}</summary>${passageHTML(st.u || u, false)}</details>
         <p class="ask">${esc(q)} ${say(q)}</p><p class="muted">${esc(qvi)}</p>
         <div class="opts">${opts.map((o, i) => opt(esc(o), i, 'en')).join('')}</div>`;
       break;
@@ -601,6 +681,8 @@ const ACT = {
   unit: (d) => go('unit', d.u),
   locked: () => toast('🔒 Làm xong 3/5 phần của bài trước để mở bài này'),
   start: (d) => startSession(d.u, d.k),
+  test: (d) => (d.w ? startTest(UNITS.filter((u) => u.week === +d.w), 'w' + d.w, `Tuần ${d.w}`)
+    : startTest([unitById(d.u)], 'u' + d.u, `bài ${unitById(d.u).title}`)),
   say: (d) => speak(d.t, d.slow === '1'),
   quit: () => { if (confirm('Thoát bài này? Kết quả phần này sẽ không được lưu.')) { const id = S.u.id; S = null; go('unit', id); } },
   next: () => nextStep(),
@@ -616,6 +698,7 @@ const ACT = {
     const st = step(), v = $('#ans').value.trim(); if (!v) return;
     S.state.typed = v;
     const target = st.t === 'spell' ? st.w[0] : st.s[0], r = checkTyped(v, target);
+    if (S.kind === 'test' && r === 'almost') { answer(false, 'Sai chính tả (bài kiểm tra cần viết đúng hoàn toàn)'); return; }
     answer(r !== 'bad', r === 'almost' ? 'Gần đúng! Chú ý chính tả:' : null);
   },
   overrule: () => { if (S.state.pushed) { S.steps.pop(); S.requeued.delete(S.steps.length); } if (!S.requeued.has(S.i)) S.ok++; nextStep(); },

@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    // Tiến độ học: mỗi người chỉ đọc/ghi bản lưu của chính mình
+    match /saves/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.data is string && request.resource.data.data.size() < 900000;
+    }
+    // Mọi thứ khác: cấm
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

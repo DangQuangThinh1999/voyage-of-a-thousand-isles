@@ -1,0 +1,2557 @@
+{
+  "curriculum": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/kəˈrɪk.jə.ləm/",
+    "syn": [
+      "syllabus",
+      "programme of study",
+      "course"
+    ],
+    "ant": [],
+    "para": [
+      "Many schools are updating their curriculum to teach practical digital skills.",
+      "Many schools are revising what they teach so that pupils gain practical digital skills."
+    ],
+    "collocations": [
+      "national curriculum",
+      "school curriculum",
+      "core curriculum"
+    ],
+    "vi_note": "curriculum là toàn bộ chương trình; syllabus là đề cương của một môn."
+  },
+  "assessment": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/əˈses.mənt/",
+    "syn": [
+      "evaluation",
+      "appraisal",
+      "testing"
+    ],
+    "ant": [],
+    "para": [
+      "Continuous assessment is often fairer than a single final exam.",
+      "Evaluating students throughout the year is frequently fairer than relying on one final test."
+    ],
+    "collocations": [
+      "continuous assessment",
+      "risk assessment",
+      "carry out an assessment"
+    ]
+  },
+  "motivation": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˌməʊ.tɪˈveɪ.ʃən/",
+    "syn": [
+      "drive",
+      "incentive",
+      "enthusiasm"
+    ],
+    "ant": [
+      "apathy"
+    ],
+    "para": [
+      "Motivation matters more than talent when you learn a language.",
+      "Being driven to succeed is more important than natural ability when people learn a language."
+    ],
+    "collocations": [
+      "lack of motivation",
+      "intrinsic motivation",
+      "a source of motivation"
+    ]
+  },
+  "discipline": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˈdɪs.ə.plɪn/",
+    "syn": [
+      "self-control",
+      "order",
+      "regulation"
+    ],
+    "ant": [
+      "indiscipline",
+      "disorder"
+    ],
+    "para": [
+      "Students who lack discipline often find it hard to study alone.",
+      "Learners who are unable to organise themselves often struggle to study independently."
+    ],
+    "collocations": [
+      "a lack of discipline",
+      "maintain discipline",
+      "strict discipline"
+    ]
+  },
+  "literacy": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˈlɪt.ər.ə.si/",
+    "syn": [
+      "reading and writing skills",
+      "literateness"
+    ],
+    "ant": [
+      "illiteracy"
+    ],
+    "para": [
+      "Adult literacy has improved significantly in many countries.",
+      "Far more adults in many nations are now able to read and write than before."
+    ],
+    "collocations": [
+      "literacy rate",
+      "adult literacy",
+      "digital literacy"
+    ]
+  },
+  "compulsory": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/kəmˈpʌl.sər.i/",
+    "syn": [
+      "mandatory",
+      "obligatory",
+      "required"
+    ],
+    "ant": [
+      "optional",
+      "voluntary"
+    ],
+    "para": [
+      "In some countries, education is compulsory until the age of eighteen.",
+      "In certain nations, young people are required to stay in school until they turn eighteen."
+    ],
+    "collocations": [
+      "compulsory education",
+      "compulsory subject",
+      "make something compulsory"
+    ]
+  },
+  "qualification": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˌkwɒl.ɪ.fɪˈkeɪ.ʃən/",
+    "syn": [
+      "credential",
+      "certificate",
+      "diploma"
+    ],
+    "ant": [],
+    "para": [
+      "She hopes that an international qualification will help her find a job abroad.",
+      "She hopes that being internationally certified will make it easier for her to get work overseas."
+    ],
+    "collocations": [
+      "gain a qualification",
+      "professional qualification",
+      "academic qualifications"
+    ]
+  },
+  "vocational": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/vəʊˈkeɪ.ʃən.əl/",
+    "syn": [
+      "occupational",
+      "practical",
+      "career-oriented"
+    ],
+    "ant": [
+      "academic"
+    ],
+    "para": [
+      "Vocational courses are becoming popular among young people.",
+      "Training programmes that prepare students for specific jobs are attracting more young people."
+    ],
+    "collocations": [
+      "vocational training",
+      "vocational course",
+      "vocational qualification"
+    ]
+  },
+  "nutrition": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/njuːˈtrɪʃ.ən/",
+    "syn": [
+      "nourishment",
+      "diet"
+    ],
+    "ant": [
+      "malnutrition"
+    ],
+    "para": [
+      "Good nutrition in childhood can prevent many health problems later in life.",
+      "Eating healthily as a child can stop numerous illnesses from developing in adulthood."
+    ],
+    "collocations": [
+      "good nutrition",
+      "poor nutrition",
+      "nutrition labelling"
+    ]
+  },
+  "sedentary": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/ˈsed.ən.tər.i/",
+    "syn": [
+      "inactive",
+      "desk-bound",
+      "stationary"
+    ],
+    "ant": [
+      "active"
+    ],
+    "para": [
+      "People with sedentary jobs should walk for at least thirty minutes a day.",
+      "Those who sit down for most of their working day ought to walk for half an hour daily."
+    ],
+    "collocations": [
+      "sedentary lifestyle",
+      "sedentary job",
+      "sedentary behaviour"
+    ]
+  },
+  "obesity": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/əʊˈbiː.sə.ti/",
+    "syn": [
+      "being overweight",
+      "corpulence"
+    ],
+    "ant": [],
+    "para": [
+      "Childhood obesity is rising because fast food is cheap and convenient.",
+      "More and more children are becoming seriously overweight as junk food is so inexpensive and easy to buy."
+    ],
+    "collocations": [
+      "childhood obesity",
+      "obesity rates",
+      "tackle obesity"
+    ]
+  },
+  "prevention": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/prɪˈven.ʃən/",
+    "syn": [
+      "avoidance",
+      "precaution",
+      "deterrence"
+    ],
+    "ant": [],
+    "para": [
+      "Governments often say that prevention is cheaper than treatment.",
+      "Authorities frequently claim that stopping an illness from occurring costs less than curing it."
+    ],
+    "collocations": [
+      "disease prevention",
+      "crime prevention",
+      "prevention is better than cure"
+    ]
+  },
+  "wellbeing": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˌwelˈbiː.ɪŋ/",
+    "syn": [
+      "welfare",
+      "health",
+      "happiness"
+    ],
+    "ant": [],
+    "para": [
+      "Regular contact with friends has a positive effect on our mental wellbeing.",
+      "Seeing friends often makes us feel psychologically healthier."
+    ],
+    "collocations": [
+      "mental wellbeing",
+      "physical and emotional wellbeing",
+      "promote wellbeing"
+    ]
+  },
+  "moderate": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/ˈmɒd.ər.ət/",
+    "syn": [
+      "reasonable",
+      "gentle",
+      "modest"
+    ],
+    "ant": [
+      "intense",
+      "excessive"
+    ],
+    "para": [
+      "Doctors recommend moderate exercise for most adults.",
+      "Medical experts advise most adults to do exercise that is not too strenuous."
+    ],
+    "collocations": [
+      "moderate exercise",
+      "moderate amount",
+      "moderate drinking"
+    ],
+    "vi_note": "Tính từ đọc /ˈmɒd.ər.ət/, động từ đọc /ˈmɒd.ər.eɪt/."
+  },
+  "addiction": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/əˈdɪk.ʃən/",
+    "syn": [
+      "dependence",
+      "compulsion",
+      "habit"
+    ],
+    "ant": [],
+    "para": [
+      "His addiction to online games was affecting his sleep and his studies.",
+      "Because he was hooked on online games, he was neither sleeping nor studying properly."
+    ],
+    "collocations": [
+      "drug addiction",
+      "internet addiction",
+      "overcome an addiction"
+    ]
+  },
+  "symptom": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˈsɪmp.təm/",
+    "syn": [
+      "sign",
+      "indication",
+      "manifestation"
+    ],
+    "ant": [],
+    "para": [
+      "A headache can be an early symptom of stress.",
+      "Stress may first show itself through a headache."
+    ],
+    "collocations": [
+      "early symptom",
+      "common symptoms",
+      "develop symptoms"
+    ]
+  },
+  "infrastructure": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˈɪn.frəˌstrʌk.tʃər/",
+    "syn": [
+      "facilities",
+      "public works",
+      "basic services"
+    ],
+    "ant": [],
+    "para": [
+      "Without modern infrastructure, a growing city cannot provide clean water.",
+      "A city that is expanding cannot supply clean water unless its roads, pipes and power networks are up to date."
+    ],
+    "collocations": [
+      "transport infrastructure",
+      "invest in infrastructure",
+      "public infrastructure"
+    ]
+  },
+  "congestion": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/kənˈdʒes.tʃən/",
+    "syn": [
+      "traffic jams",
+      "gridlock",
+      "overcrowding"
+    ],
+    "ant": [],
+    "para": [
+      "Traffic congestion has been reduced since the new metro line opened.",
+      "Roads have become less jammed since the new underground railway began operating."
+    ],
+    "collocations": [
+      "traffic congestion",
+      "reduce congestion",
+      "congestion charge"
+    ]
+  },
+  "urbanisation": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˌɜː.bən.aɪˈzeɪ.ʃən/",
+    "syn": [
+      "urban growth",
+      "urban expansion"
+    ],
+    "ant": [],
+    "para": [
+      "Rapid urbanisation has put pressure on housing.",
+      "As cities have grown quickly, finding enough homes has become a serious problem."
+    ],
+    "collocations": [
+      "rapid urbanisation",
+      "the process of urbanisation",
+      "urbanisation rate"
+    ],
+    "vi_note": "Anh Mỹ viết urbanization."
+  },
+  "residential": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/ˌrez.ɪˈden.ʃəl/",
+    "syn": [
+      "housing",
+      "suburban",
+      "domestic"
+    ],
+    "ant": [
+      "commercial",
+      "industrial"
+    ],
+    "para": [
+      "Heavy lorries are not allowed to drive through residential areas at night.",
+      "Large trucks are banned from neighbourhoods where people live after dark."
+    ],
+    "collocations": [
+      "residential area",
+      "residential district",
+      "residential property"
+    ]
+  },
+  "overcrowded": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/ˌəʊ.vəˈkraʊ.dɪd/",
+    "syn": [
+      "crowded",
+      "packed",
+      "congested"
+    ],
+    "ant": [
+      "empty",
+      "sparsely populated"
+    ],
+    "para": [
+      "The buses are so overcrowded at rush hour that many people cycle.",
+      "Because buses are packed during peak times, lots of commuters ride bicycles instead."
+    ],
+    "collocations": [
+      "overcrowded classrooms",
+      "overcrowded prisons",
+      "overcrowded housing"
+    ]
+  },
+  "commute": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/kəˈmjuːt/",
+    "syn": [
+      "journey to work",
+      "daily travel"
+    ],
+    "ant": [],
+    "para": [
+      "He spends almost two hours on his daily commute.",
+      "Travelling to and from work takes him nearly two hours every day."
+    ],
+    "collocations": [
+      "daily commute",
+      "long commute",
+      "commute to work"
+    ]
+  },
+  "sustainable": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/səˈsteɪ.nə.bəl/",
+    "syn": [
+      "eco-friendly",
+      "green",
+      "viable"
+    ],
+    "ant": [
+      "unsustainable",
+      "wasteful"
+    ],
+    "para": [
+      "Planners are trying to design sustainable neighbourhoods.",
+      "Urban planners are attempting to create districts that can be maintained without harming the environment."
+    ],
+    "collocations": [
+      "sustainable development",
+      "sustainable energy",
+      "environmentally sustainable"
+    ]
+  },
+  "density": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˈden.sə.ti/",
+    "syn": [
+      "concentration",
+      "compactness",
+      "crowding"
+    ],
+    "ant": [
+      "sparseness"
+    ],
+    "para": [
+      "Cities with a high population density usually have better public transport.",
+      "Where many people live close together, public transport tends to be better."
+    ],
+    "collocations": [
+      "population density",
+      "high density",
+      "low density housing"
+    ]
+  },
+  "multinational": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˌmʌl.tiˈnæʃ.ən.əl/",
+    "syn": [
+      "global corporation",
+      "international company",
+      "conglomerate"
+    ],
+    "ant": [],
+    "para": [
+      "A multinational that opens a factory here could create thousands of jobs.",
+      "If a global corporation set up a plant here, thousands of positions might be created."
+    ],
+    "collocations": [
+      "multinational corporation",
+      "multinational company",
+      "large multinationals"
+    ]
+  },
+  "outsource": {
+    "level": "B2",
+    "pos": "verb",
+    "ipa": "/ˈaʊt.sɔːs/",
+    "syn": [
+      "contract out",
+      "subcontract",
+      "offshore"
+    ],
+    "ant": [
+      "insource"
+    ],
+    "para": [
+      "Many firms outsource their customer service to other countries.",
+      "Customer service is often contracted out to overseas companies by many businesses."
+    ],
+    "collocations": [
+      "outsource production",
+      "outsource jobs",
+      "outsource work to"
+    ]
+  },
+  "inequality": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˌɪn.ɪˈkwɒl.ə.ti/",
+    "syn": [
+      "disparity",
+      "inequity",
+      "imbalance"
+    ],
+    "ant": [
+      "equality"
+    ],
+    "para": [
+      "Economic growth does not always reduce inequality.",
+      "A stronger economy does not necessarily narrow the gap between rich and poor."
+    ],
+    "collocations": [
+      "income inequality",
+      "social inequality",
+      "widening inequality"
+    ]
+  },
+  "consequence": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˈkɒn.sɪ.kwəns/",
+    "syn": [
+      "result",
+      "outcome",
+      "effect"
+    ],
+    "ant": [
+      "cause"
+    ],
+    "para": [
+      "One consequence of global trade is that local shops struggle to compete.",
+      "As a result of international commerce, small local stores find it hard to survive."
+    ],
+    "collocations": [
+      "serious consequences",
+      "as a consequence",
+      "face the consequences"
+    ]
+  },
+  "significant": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/sɪɡˈnɪf.ɪ.kənt/",
+    "syn": [
+      "considerable",
+      "substantial",
+      "major"
+    ],
+    "ant": [
+      "insignificant",
+      "negligible"
+    ],
+    "para": [
+      "Tourism makes a significant contribution to the economy.",
+      "Tourism contributes considerably to the national economy."
+    ],
+    "collocations": [
+      "significant impact",
+      "significant increase",
+      "statistically significant"
+    ]
+  },
+  "contribute": {
+    "level": "B2",
+    "pos": "verb",
+    "ipa": "/kənˈtrɪb.juːt/",
+    "syn": [
+      "add to",
+      "play a part in",
+      "donate"
+    ],
+    "ant": [
+      "detract"
+    ],
+    "para": [
+      "Migrant workers contribute to the economy by paying taxes.",
+      "Through the taxes they pay, migrant workers play an important part in the economy."
+    ],
+    "collocations": [
+      "contribute to",
+      "contribute significantly",
+      "contribute money"
+    ]
+  },
+  "competitive": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/kəmˈpet.ɪ.tɪv/",
+    "syn": [
+      "affordable",
+      "cost-effective",
+      "marketable"
+    ],
+    "ant": [
+      "uncompetitive"
+    ],
+    "para": [
+      "Lower prices would make our products more competitive.",
+      "If we reduced our prices, our goods would be better able to compete."
+    ],
+    "collocations": [
+      "competitive market",
+      "competitive advantage",
+      "highly competitive"
+    ]
+  },
+  "revenue": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˈrev.ən.juː/",
+    "syn": [
+      "income",
+      "earnings",
+      "turnover"
+    ],
+    "ant": [
+      "expenditure"
+    ],
+    "para": [
+      "The company earns most of its revenue from sales in Asia.",
+      "Most of the firm's income comes from sales in Asia."
+    ],
+    "collocations": [
+      "tax revenue",
+      "generate revenue",
+      "advertising revenue"
+    ]
+  },
+  "innovation": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˌɪn.əˈveɪ.ʃən/",
+    "syn": [
+      "invention",
+      "new ideas",
+      "modernisation"
+    ],
+    "ant": [
+      "stagnation"
+    ],
+    "para": [
+      "Innovation is encouraged when governments fund small technology companies.",
+      "When the state provides money to small technology firms, new ideas tend to flourish."
+    ],
+    "collocations": [
+      "technological innovation",
+      "encourage innovation",
+      "drive innovation"
+    ]
+  },
+  "approach": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/əˈprəʊtʃ/",
+    "syn": [
+      "method",
+      "strategy",
+      "technique"
+    ],
+    "ant": [],
+    "para": [
+      "Scientists are testing a new approach to treating diseases.",
+      "Researchers are trialling a novel method of curing illnesses."
+    ],
+    "collocations": [
+      "a new approach",
+      "take an approach",
+      "a different approach to"
+    ]
+  },
+  "breakthrough": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˈbreɪk.θruː/",
+    "syn": [
+      "discovery",
+      "advance",
+      "milestone"
+    ],
+    "ant": [
+      "setback"
+    ],
+    "para": [
+      "The discovery of vaccines was a breakthrough that saved millions of lives.",
+      "Vaccines represented a major medical advance and have saved millions of people."
+    ],
+    "collocations": [
+      "major breakthrough",
+      "scientific breakthrough",
+      "make a breakthrough"
+    ]
+  },
+  "automation": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ˌɔː.təˈmeɪ.ʃən/",
+    "syn": [
+      "mechanisation",
+      "computerisation",
+      "robotisation"
+    ],
+    "ant": [],
+    "para": [
+      "Automation has replaced many factory jobs.",
+      "Many factory jobs are now done by machines instead of people."
+    ],
+    "collocations": [
+      "increased automation",
+      "factory automation",
+      "home automation"
+    ]
+  },
+  "artificial": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/ˌɑː.tɪˈfɪʃ.əl/",
+    "syn": [
+      "man-made",
+      "synthetic",
+      "simulated"
+    ],
+    "ant": [
+      "natural",
+      "genuine"
+    ],
+    "para": [
+      "Artificial intelligence helps doctors read medical scans more quickly.",
+      "Computer systems that imitate human thinking are helping doctors to interpret scans faster."
+    ],
+    "collocations": [
+      "artificial intelligence",
+      "artificial sweeteners",
+      "artificial light"
+    ]
+  },
+  "rely": {
+    "level": "B2",
+    "pos": "verb",
+    "ipa": "/rɪˈlaɪ/",
+    "syn": [
+      "depend on",
+      "count on",
+      "trust"
+    ],
+    "ant": [],
+    "para": [
+      "Young people rely on their smartphones for news and shopping.",
+      "Young people are dependent on their phones for news and shopping."
+    ],
+    "collocations": [
+      "rely on",
+      "rely heavily on",
+      "rely on someone to do something"
+    ]
+  },
+  "ethical": {
+    "level": "B2",
+    "pos": "adjective",
+    "ipa": "/ˈeθ.ɪ.kəl/",
+    "syn": [
+      "moral",
+      "principled",
+      "right"
+    ],
+    "ant": [
+      "unethical",
+      "immoral"
+    ],
+    "para": [
+      "There are serious ethical questions about who owns personal data.",
+      "The ownership of personal data raises serious moral issues."
+    ],
+    "collocations": [
+      "ethical issues",
+      "ethical dilemma",
+      "ethical standards"
+    ]
+  },
+  "laboratory": {
+    "level": "B2",
+    "pos": "noun",
+    "ipa": "/ləˈbɒr.ə.tər.i/",
+    "syn": [
+      "lab",
+      "research facility"
+    ],
+    "ant": [],
+    "para": [
+      "My cousin works in a laboratory where new materials are tested.",
+      "My cousin works at a research facility that tests new materials."
+    ],
+    "collocations": [
+      "research laboratory",
+      "laboratory tests",
+      "laboratory conditions"
+    ],
+    "vi_note": "Anh Anh nhấn âm 2 /ləˈbɒr/, Anh Mỹ nhấn âm 1 /ˈlæb/."
+  },
+  "mitigate": {
+    "level": "C1",
+    "pos": "verb",
+    "ipa": "/ˈmɪt.ɪ.ɡeɪt/",
+    "syn": [
+      "alleviate",
+      "reduce",
+      "lessen"
+    ],
+    "ant": [
+      "aggravate",
+      "exacerbate"
+    ],
+    "para": [
+      "New laws aim to mitigate the impact of coastal flooding.",
+      "New laws are intended to lessen how badly coastal floods affect people."
+    ],
+    "collocations": [
+      "mitigate the risk",
+      "mitigate the effects of",
+      "mitigate climate change"
+    ]
+  },
+  "unprecedented": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ʌnˈpres.ɪ.den.tɪd/",
+    "syn": [
+      "unparalleled",
+      "unheard of",
+      "record-breaking"
+    ],
+    "ant": [
+      "common",
+      "typical"
+    ],
+    "para": [
+      "The region is experiencing heatwaves of unprecedented intensity.",
+      "Heatwaves in the region are now more intense than ever before."
+    ],
+    "collocations": [
+      "unprecedented scale",
+      "unprecedented levels",
+      "at an unprecedented rate"
+    ],
+    "vi_note": "Từ này xuất hiện ở cả C1 và C2."
+  },
+  "depletion": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/dɪˈpliː.ʃən/",
+    "syn": [
+      "exhaustion",
+      "reduction",
+      "draining"
+    ],
+    "ant": [
+      "replenishment"
+    ],
+    "para": [
+      "The rapid depletion of groundwater threatens food security.",
+      "As groundwater is used up quickly, food supplies are put at risk."
+    ],
+    "collocations": [
+      "ozone depletion",
+      "resource depletion",
+      "depletion of reserves"
+    ]
+  },
+  "incentive": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ɪnˈsen.tɪv/",
+    "syn": [
+      "motivation",
+      "inducement",
+      "encouragement"
+    ],
+    "ant": [
+      "disincentive",
+      "deterrent"
+    ],
+    "para": [
+      "A tax incentive for installing solar panels has proved effective.",
+      "Encouraging households to install solar panels by cutting their taxes has worked well."
+    ],
+    "collocations": [
+      "financial incentive",
+      "tax incentive",
+      "provide an incentive"
+    ]
+  },
+  "irreversible": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ˌɪr.ɪˈvɜː.sə.bəl/",
+    "syn": [
+      "permanent",
+      "irreparable",
+      "lasting"
+    ],
+    "ant": [
+      "reversible",
+      "temporary"
+    ],
+    "para": [
+      "The damage to coral reefs may prove irreversible.",
+      "Coral reefs may never recover from the harm done to them."
+    ],
+    "collocations": [
+      "irreversible damage",
+      "irreversible decline",
+      "irreversible change"
+    ]
+  },
+  "stringent": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ˈstrɪn.dʒənt/",
+    "syn": [
+      "strict",
+      "rigorous",
+      "tough"
+    ],
+    "ant": [
+      "lax",
+      "lenient"
+    ],
+    "para": [
+      "The city must enforce more stringent emission standards.",
+      "The city needs to apply stricter limits on emissions."
+    ],
+    "collocations": [
+      "stringent regulations",
+      "stringent controls",
+      "stringent standards"
+    ]
+  },
+  "offset": {
+    "level": "C1",
+    "pos": "verb",
+    "ipa": "/ˌɒfˈset/",
+    "syn": [
+      "counterbalance",
+      "compensate for",
+      "cancel out"
+    ],
+    "ant": [],
+    "para": [
+      "The company claims to offset its carbon emissions by planting trees.",
+      "The firm says that planting trees compensates for the carbon it releases."
+    ],
+    "collocations": [
+      "offset the cost",
+      "offset carbon emissions",
+      "partly offset"
+    ]
+  },
+  "biodiversity": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˌbaɪ.əʊ.daɪˈvɜː.sə.ti/",
+    "syn": [
+      "biological diversity",
+      "variety of species"
+    ],
+    "ant": [],
+    "para": [
+      "She pledges to make biodiversity a central pillar of national policy.",
+      "She has promised to put the protection of the variety of species at the heart of national policy."
+    ],
+    "collocations": [
+      "loss of biodiversity",
+      "protect biodiversity",
+      "rich biodiversity"
+    ]
+  },
+  "deterrent": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/dɪˈter.ənt/",
+    "syn": [
+      "disincentive",
+      "discouragement",
+      "restraint"
+    ],
+    "ant": [
+      "incentive",
+      "encouragement"
+    ],
+    "para": [
+      "Longer prison sentences may not act as an effective deterrent.",
+      "Lengthier jail terms do not necessarily discourage people from committing crimes."
+    ],
+    "collocations": [
+      "effective deterrent",
+      "nuclear deterrent",
+      "act as a deterrent"
+    ]
+  },
+  "recidivism": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/rɪˈsɪd.ɪ.vɪ.zəm/",
+    "syn": [
+      "reoffending",
+      "relapse into crime"
+    ],
+    "ant": [],
+    "para": [
+      "Rates of recidivism are lower among inmates who complete vocational training.",
+      "Prisoners who finish vocational training are less likely to reoffend."
+    ],
+    "collocations": [
+      "recidivism rate",
+      "reduce recidivism",
+      "high recidivism"
+    ],
+    "vi_note": "Thuật ngữ trang trọng; reoffending phổ biến hơn trong Anh Anh."
+  },
+  "rehabilitation": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˌriː.əˌbɪl.ɪˈteɪ.ʃən/",
+    "syn": [
+      "reform",
+      "reintegration",
+      "recovery"
+    ],
+    "ant": [],
+    "para": [
+      "The prison system prioritises punishment over rehabilitation.",
+      "Prisons focus more on punishing offenders than on helping them return to normal life."
+    ],
+    "collocations": [
+      "drug rehabilitation",
+      "rehabilitation programme",
+      "offender rehabilitation"
+    ]
+  },
+  "lenient": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ˈliː.ni.ənt/",
+    "syn": [
+      "mild",
+      "merciful",
+      "soft"
+    ],
+    "ant": [
+      "harsh",
+      "strict"
+    ],
+    "para": [
+      "The judge was accused of being too lenient.",
+      "People criticised the judge for punishing the offender too mildly."
+    ],
+    "collocations": [
+      "lenient sentence",
+      "lenient approach",
+      "too lenient"
+    ]
+  },
+  "jurisdiction": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˌdʒʊə.rɪsˈdɪk.ʃən/",
+    "syn": [
+      "authority",
+      "legal power",
+      "control"
+    ],
+    "ant": [],
+    "para": [
+      "Offenders often operate beyond the jurisdiction of national police forces.",
+      "Criminals frequently work in places where national police have no legal authority."
+    ],
+    "collocations": [
+      "under the jurisdiction of",
+      "have jurisdiction over",
+      "outside the jurisdiction"
+    ]
+  },
+  "prosecute": {
+    "level": "C1",
+    "pos": "verb",
+    "ipa": "/ˈprɒs.ɪ.kjuːt/",
+    "syn": [
+      "charge",
+      "indict",
+      "take to court"
+    ],
+    "ant": [
+      "acquit",
+      "defend"
+    ],
+    "para": [
+      "The authorities decided not to prosecute the company.",
+      "No legal action was taken against the firm by the authorities."
+    ],
+    "collocations": [
+      "prosecute offenders",
+      "be prosecuted for",
+      "decide to prosecute"
+    ]
+  },
+  "legislation": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˌledʒ.ɪˈsleɪ.ʃən/",
+    "syn": [
+      "laws",
+      "regulations",
+      "statutes"
+    ],
+    "ant": [],
+    "para": [
+      "New legislation is being drafted to address online harassment.",
+      "Lawmakers are writing new laws to tackle abuse on the internet."
+    ],
+    "collocations": [
+      "introduce legislation",
+      "pass legislation",
+      "environmental legislation"
+    ],
+    "vi_note": "Danh từ không đếm được: không dùng a legislation."
+  },
+  "disproportionate": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ˌdɪs.prəˈpɔː.ʃən.ət/",
+    "syn": [
+      "excessive",
+      "unreasonable",
+      "out of proportion"
+    ],
+    "ant": [
+      "proportionate",
+      "appropriate"
+    ],
+    "para": [
+      "A sentence of ten years was disproportionate to the minor offence.",
+      "Ten years in prison was far too harsh a punishment for such a small crime."
+    ],
+    "collocations": [
+      "disproportionate effect",
+      "disproportionate amount",
+      "disproportionate to"
+    ]
+  },
+  "advocate": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˈæd.və.kət/",
+    "syn": [
+      "supporter",
+      "champion",
+      "proponent"
+    ],
+    "ant": [
+      "opponent",
+      "critic"
+    ],
+    "para": [
+      "She has long been an advocate of universal basic income.",
+      "She has supported the idea of a universal basic income for many years."
+    ],
+    "collocations": [
+      "strong advocate",
+      "advocate of",
+      "leading advocate"
+    ],
+    "vi_note": "Danh từ đọc /ˈæd.və.kət/, động từ đọc /ˈæd.və.keɪt/."
+  },
+  "accountability": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/əˌkaʊn.təˈbɪl.ə.ti/",
+    "syn": [
+      "responsibility",
+      "answerability",
+      "liability"
+    ],
+    "ant": [
+      "impunity"
+    ],
+    "para": [
+      "Citizens should demand genuine accountability from their leaders.",
+      "People should insist that their leaders take responsibility for their actions."
+    ],
+    "collocations": [
+      "public accountability",
+      "demand accountability",
+      "lack of accountability"
+    ],
+    "vi_note": "Từ này xuất hiện ở cả C1 và C2."
+  },
+  "bureaucracy": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/bjʊəˈrɒk.rə.si/",
+    "syn": [
+      "red tape",
+      "administration",
+      "paperwork"
+    ],
+    "ant": [],
+    "para": [
+      "Excessive bureaucracy stifles innovation in small businesses.",
+      "Too much red tape prevents small firms from being creative."
+    ],
+    "collocations": [
+      "excessive bureaucracy",
+      "cut bureaucracy",
+      "government bureaucracy"
+    ],
+    "vi_note": "red tape mang sắc thái tiêu cực, thân mật hơn."
+  },
+  "marginalised": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ˈmɑː.dʒɪ.nəl.aɪzd/",
+    "syn": [
+      "disadvantaged",
+      "excluded",
+      "underprivileged"
+    ],
+    "ant": [
+      "privileged",
+      "mainstream"
+    ],
+    "para": [
+      "Policies rarely succeed without consulting marginalised communities.",
+      "Policies seldom work if disadvantaged groups are not consulted."
+    ],
+    "collocations": [
+      "marginalised groups",
+      "marginalised communities",
+      "socially marginalised"
+    ]
+  },
+  "cohesion": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/kəʊˈhiː.ʒən/",
+    "syn": [
+      "unity",
+      "solidarity",
+      "togetherness"
+    ],
+    "ant": [
+      "division",
+      "fragmentation"
+    ],
+    "para": [
+      "Rapid urbanisation can undermine social cohesion.",
+      "When cities grow fast, communities may become less united."
+    ],
+    "collocations": [
+      "social cohesion",
+      "community cohesion",
+      "lack of cohesion"
+    ]
+  },
+  "implement": {
+    "level": "C1",
+    "pos": "verb",
+    "ipa": "/ˈɪm.plɪ.ment/",
+    "syn": [
+      "carry out",
+      "execute",
+      "put into practice"
+    ],
+    "ant": [
+      "abandon"
+    ],
+    "para": [
+      "The government struggled to implement the reform at the local level.",
+      "The government found it hard to put the reform into practice locally."
+    ],
+    "collocations": [
+      "implement a policy",
+      "implement changes",
+      "fully implement"
+    ],
+    "vi_note": "Động từ đọc /ˈɪm.plɪ.ment/, danh từ (dụng cụ) đọc /ˈɪm.plɪ.mənt/."
+  },
+  "scrutiny": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˈskruː.tɪ.ni/",
+    "syn": [
+      "examination",
+      "inspection",
+      "investigation"
+    ],
+    "ant": [],
+    "para": [
+      "Every decision the mayor makes is subject to intense public scrutiny.",
+      "The public examines every decision the mayor makes very closely."
+    ],
+    "collocations": [
+      "public scrutiny",
+      "close scrutiny",
+      "come under scrutiny"
+    ]
+  },
+  "welfare": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˈwel.feər/",
+    "syn": [
+      "social security",
+      "benefits",
+      "wellbeing"
+    ],
+    "ant": [],
+    "para": [
+      "A generous welfare system is the hallmark of a civilised society.",
+      "A civilised society can be recognised by how well the state supports people in need."
+    ],
+    "collocations": [
+      "welfare state",
+      "social welfare",
+      "animal welfare"
+    ]
+  },
+  "aesthetic": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/esˈθet.ɪk/",
+    "syn": [
+      "style",
+      "look",
+      "design"
+    ],
+    "ant": [],
+    "para": [
+      "The building is criticised for its stark aesthetic.",
+      "The building has been criticised because it looks so plain and harsh."
+    ],
+    "collocations": [
+      "aesthetic appeal",
+      "aesthetic value",
+      "minimalist aesthetic"
+    ]
+  },
+  "patronage": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˈpæt.rə.nɪdʒ/",
+    "syn": [
+      "sponsorship",
+      "support",
+      "backing"
+    ],
+    "ant": [],
+    "para": [
+      "The patronage of wealthy families enabled many painters to pursue ambitious projects.",
+      "Financial support from rich families allowed many painters to undertake ambitious work."
+    ],
+    "collocations": [
+      "royal patronage",
+      "political patronage",
+      "patronage of the arts"
+    ]
+  },
+  "heritage": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˈher.ɪ.tɪdʒ/",
+    "syn": [
+      "legacy",
+      "tradition",
+      "inheritance"
+    ],
+    "ant": [],
+    "para": [
+      "Tourism can threaten the very heritage it celebrates.",
+      "Tourism may damage the historic sites and traditions that it showcases."
+    ],
+    "collocations": [
+      "cultural heritage",
+      "heritage site",
+      "national heritage"
+    ]
+  },
+  "subsidise": {
+    "level": "C1",
+    "pos": "verb",
+    "ipa": "/ˈsʌb.sɪ.daɪz/",
+    "syn": [
+      "fund",
+      "finance",
+      "support"
+    ],
+    "ant": [],
+    "para": [
+      "Should the state subsidise opera and ballet?",
+      "Should public money be used to fund opera and ballet?"
+    ],
+    "collocations": [
+      "heavily subsidised",
+      "subsidise public transport",
+      "government subsidised"
+    ],
+    "vi_note": "Anh Mỹ viết subsidize."
+  },
+  "authenticity": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˌɔː.θenˈtɪs.ə.ti/",
+    "syn": [
+      "genuineness",
+      "legitimacy",
+      "originality"
+    ],
+    "ant": [
+      "falseness",
+      "artificiality"
+    ],
+    "para": [
+      "Critics question the authenticity of festivals staged for tourists.",
+      "Some critics doubt whether festivals put on for visitors are genuine."
+    ],
+    "collocations": [
+      "cultural authenticity",
+      "question the authenticity of",
+      "sense of authenticity"
+    ]
+  },
+  "provocative": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/prəˈvɒk.ə.tɪv/",
+    "syn": [
+      "controversial",
+      "challenging",
+      "inflammatory"
+    ],
+    "ant": [
+      "uncontroversial",
+      "bland"
+    ],
+    "para": [
+      "His latest installation is deliberately provocative.",
+      "His newest installation was designed to challenge and unsettle viewers on purpose."
+    ],
+    "collocations": [
+      "deliberately provocative",
+      "provocative question",
+      "highly provocative"
+    ]
+  },
+  "curate": {
+    "level": "C1",
+    "pos": "verb",
+    "ipa": "/kjʊəˈreɪt/",
+    "syn": [
+      "organise",
+      "select",
+      "assemble"
+    ],
+    "ant": [],
+    "para": [
+      "She was invited to curate an exhibition about migration.",
+      "She was asked to select and organise the works for an exhibition about migration."
+    ],
+    "collocations": [
+      "curate an exhibition",
+      "carefully curated",
+      "curate content"
+    ]
+  },
+  "indigenous": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ɪnˈdɪdʒ.ɪ.nəs/",
+    "syn": [
+      "native",
+      "aboriginal",
+      "original"
+    ],
+    "ant": [
+      "foreign",
+      "introduced"
+    ],
+    "para": [
+      "Efforts to preserve indigenous languages are hampered by a lack of funding.",
+      "Attempts to protect native languages are held back because there is not enough money."
+    ],
+    "collocations": [
+      "indigenous people",
+      "indigenous languages",
+      "indigenous culture"
+    ]
+  },
+  "empirical": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ɪmˈpɪr.ɪ.kəl/",
+    "syn": [
+      "observational",
+      "experimental",
+      "evidence-based"
+    ],
+    "ant": [
+      "theoretical"
+    ],
+    "para": [
+      "The theory has not yet been supported by empirical data.",
+      "No evidence from observation or experiment has backed up the theory so far."
+    ],
+    "collocations": [
+      "empirical evidence",
+      "empirical research",
+      "empirical study"
+    ]
+  },
+  "discrepancy": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/dɪˈskrep.ən.si/",
+    "syn": [
+      "difference",
+      "inconsistency",
+      "mismatch"
+    ],
+    "ant": [
+      "agreement",
+      "consistency"
+    ],
+    "para": [
+      "The researchers could not explain the discrepancy between the predicted and actual results.",
+      "The researchers were unable to explain why the actual results differed from their predictions."
+    ],
+    "collocations": [
+      "a discrepancy between",
+      "significant discrepancy",
+      "explain the discrepancy"
+    ]
+  },
+  "hypothesis": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/haɪˈpɒθ.ə.sɪs/",
+    "syn": [
+      "theory",
+      "proposition",
+      "assumption"
+    ],
+    "ant": [],
+    "para": [
+      "The hypothesis that sleep deprivation impairs memory is now well supported.",
+      "The theory that a lack of sleep harms memory is now backed by a great deal of research."
+    ],
+    "collocations": [
+      "test a hypothesis",
+      "support the hypothesis",
+      "working hypothesis"
+    ],
+    "vi_note": "Số nhiều: hypotheses /haɪˈpɒθ.ə.siːz/."
+  },
+  "rigorous": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ˈrɪɡ.ər.əs/",
+    "syn": [
+      "thorough",
+      "meticulous",
+      "strict"
+    ],
+    "ant": [
+      "careless",
+      "superficial"
+    ],
+    "para": [
+      "Every new drug must undergo rigorous testing.",
+      "All new medicines have to be tested thoroughly and carefully."
+    ],
+    "collocations": [
+      "rigorous testing",
+      "rigorous analysis",
+      "rigorous standards"
+    ]
+  },
+  "methodology": {
+    "level": "C1",
+    "pos": "noun",
+    "ipa": "/ˌmeθ.əˈdɒl.ə.dʒi/",
+    "syn": [
+      "method",
+      "approach",
+      "procedure"
+    ],
+    "ant": [],
+    "para": [
+      "The study was criticised for its flawed methodology.",
+      "Critics attacked the study because the methods used were faulty."
+    ],
+    "collocations": [
+      "research methodology",
+      "flawed methodology",
+      "develop a methodology"
+    ]
+  },
+  "replicate": {
+    "level": "C1",
+    "pos": "verb",
+    "ipa": "/ˈrep.lɪ.keɪt/",
+    "syn": [
+      "reproduce",
+      "repeat",
+      "duplicate"
+    ],
+    "ant": [],
+    "para": [
+      "Other laboratories have been unable to replicate the findings.",
+      "The results have not been reproduced by other laboratories."
+    ],
+    "collocations": [
+      "replicate the results",
+      "replicate a study",
+      "difficult to replicate"
+    ]
+  },
+  "plausible": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ˈplɔː.zə.bəl/",
+    "syn": [
+      "credible",
+      "believable",
+      "reasonable"
+    ],
+    "ant": [
+      "implausible",
+      "unlikely"
+    ],
+    "para": [
+      "It seems plausible that the decline in bees is linked to pesticides.",
+      "It is believable that pesticides are connected to the falling number of bees."
+    ],
+    "collocations": [
+      "plausible explanation",
+      "entirely plausible",
+      "plausible argument"
+    ]
+  },
+  "inconclusive": {
+    "level": "C1",
+    "pos": "adjective",
+    "ipa": "/ˌɪn.kəŋˈkluː.sɪv/",
+    "syn": [
+      "indefinite",
+      "unresolved",
+      "ambiguous"
+    ],
+    "ant": [
+      "conclusive",
+      "decisive"
+    ],
+    "para": [
+      "My supervisor believes the results are inconclusive.",
+      "My supervisor thinks the results do not prove anything definite."
+    ],
+    "collocations": [
+      "inconclusive results",
+      "inconclusive evidence",
+      "remain inconclusive"
+    ]
+  },
+  "dichotomy": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/daɪˈkɒt.ə.mi/",
+    "syn": [
+      "division",
+      "contrast",
+      "split"
+    ],
+    "ant": [],
+    "para": [
+      "The dichotomy between reason and emotion is increasingly questioned.",
+      "Neuroscientists increasingly doubt that reason and emotion are truly separate."
+    ],
+    "collocations": [
+      "false dichotomy",
+      "a dichotomy between",
+      "sharp dichotomy"
+    ]
+  },
+  "utilitarian": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ˌjuː.tɪl.ɪˈteə.ri.ən/",
+    "syn": [
+      "practical",
+      "pragmatic",
+      "consequentialist"
+    ],
+    "ant": [],
+    "para": [
+      "A strictly utilitarian approach would sacrifice the few for the many.",
+      "If actions were judged only by their overall benefit, a minority might be sacrificed for the majority."
+    ],
+    "collocations": [
+      "utilitarian approach",
+      "utilitarian ethics",
+      "utilitarian argument"
+    ],
+    "vi_note": "Hai nghĩa: thực dụng (đồ vật, thiết kế) và thuộc thuyết vị lợi (triết học)."
+  },
+  "moral relativism": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˌmɒr.əl ˈrel.ə.tɪ.vɪ.zəm/",
+    "syn": [
+      "ethical relativism",
+      "relativism"
+    ],
+    "ant": [
+      "moral absolutism",
+      "moral universalism"
+    ],
+    "para": [
+      "Critics argue that moral relativism makes it impossible to condemn injustice.",
+      "Critics claim that if no ethical standard is universal, nobody can condemn injustice."
+    ],
+    "collocations": [
+      "embrace moral relativism",
+      "cultural and moral relativism",
+      "a form of moral relativism"
+    ]
+  },
+  "ostensibly": {
+    "level": "C2",
+    "pos": "adverb",
+    "ipa": "/ɒsˈten.sə.bli/",
+    "syn": [
+      "apparently",
+      "supposedly",
+      "seemingly"
+    ],
+    "ant": [
+      "genuinely",
+      "actually"
+    ],
+    "para": [
+      "The policy was ostensibly designed to protect consumers.",
+      "The policy was supposedly intended to protect shoppers."
+    ],
+    "collocations": [
+      "ostensibly designed to",
+      "ostensibly because",
+      "ostensibly independent"
+    ],
+    "vi_note": "Hàm ý bề ngoài là vậy nhưng thực tế có thể khác."
+  },
+  "tenet": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˈten.ɪt/",
+    "syn": [
+      "principle",
+      "belief",
+      "doctrine"
+    ],
+    "ant": [],
+    "para": [
+      "A central tenet of his philosophy is that freedom brings responsibility.",
+      "One of the core principles of his thinking is that being free means being responsible."
+    ],
+    "collocations": [
+      "central tenet",
+      "basic tenet",
+      "core tenets"
+    ]
+  },
+  "intrinsic": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ɪnˈtrɪn.zɪk/",
+    "syn": [
+      "inherent",
+      "innate",
+      "fundamental"
+    ],
+    "ant": [
+      "extrinsic",
+      "external"
+    ],
+    "para": [
+      "Kant believed that every human being has intrinsic worth.",
+      "According to Kant, the value of each person is inherent and cannot be measured."
+    ],
+    "collocations": [
+      "intrinsic value",
+      "intrinsic motivation",
+      "an intrinsic part of"
+    ]
+  },
+  "slippery slope": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˌslɪp.ər.i ˈsləʊp/",
+    "syn": [
+      "downward spiral",
+      "chain reaction",
+      "thin end of the wedge"
+    ],
+    "ant": [],
+    "para": [
+      "Opponents warned that legalising the practice would put society on a slippery slope.",
+      "Critics feared that legalising the practice would gradually lead to much worse abuses."
+    ],
+    "collocations": [
+      "on a slippery slope",
+      "slippery slope argument",
+      "the start of a slippery slope"
+    ]
+  },
+  "culpable": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ˈkʌl.pə.bəl/",
+    "syn": [
+      "guilty",
+      "blameworthy",
+      "responsible"
+    ],
+    "ant": [
+      "innocent",
+      "blameless"
+    ],
+    "para": [
+      "Is a bystander who does nothing as culpable as the criminal?",
+      "Should a passive onlooker be blamed as much as the person who commits the crime?"
+    ],
+    "collocations": [
+      "culpable negligence",
+      "morally culpable",
+      "hold someone culpable"
+    ]
+  },
+  "inexorable": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ɪˈnek.sər.ə.bəl/",
+    "syn": [
+      "relentless",
+      "unstoppable",
+      "inevitable"
+    ],
+    "ant": [
+      "avoidable",
+      "reversible"
+    ],
+    "para": [
+      "The inexorable rise of housing costs has pushed young people out of the city centre.",
+      "Housing costs have risen relentlessly, forcing a generation out of the city centre."
+    ],
+    "collocations": [
+      "inexorable rise",
+      "inexorable decline",
+      "the inexorable march of"
+    ]
+  },
+  "exacerbate": {
+    "level": "C2",
+    "pos": "verb",
+    "ipa": "/ɪɡˈzæs.ə.beɪt/",
+    "syn": [
+      "worsen",
+      "aggravate",
+      "intensify"
+    ],
+    "ant": [
+      "alleviate",
+      "mitigate"
+    ],
+    "para": [
+      "Cutting public spending during a recession can exacerbate unemployment.",
+      "Unemployment may be made worse if public spending is reduced during an economic downturn."
+    ],
+    "collocations": [
+      "exacerbate the problem",
+      "exacerbate tensions",
+      "further exacerbate"
+    ]
+  },
+  "austerity": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ɒˈster.ə.ti/",
+    "syn": [
+      "spending cuts",
+      "belt-tightening",
+      "frugality"
+    ],
+    "ant": [
+      "extravagance"
+    ],
+    "para": [
+      "Years of austerity left many local services underfunded.",
+      "After years of government spending cuts, many local services lacked money."
+    ],
+    "collocations": [
+      "austerity measures",
+      "a period of austerity",
+      "austerity programme"
+    ]
+  },
+  "volatile": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ˈvɒl.ə.taɪl/",
+    "syn": [
+      "unstable",
+      "unpredictable",
+      "erratic"
+    ],
+    "ant": [
+      "stable",
+      "steady"
+    ],
+    "para": [
+      "Cryptocurrency markets are notoriously volatile.",
+      "The value of cryptocurrencies is known to change suddenly and unpredictably."
+    ],
+    "collocations": [
+      "volatile market",
+      "highly volatile",
+      "volatile situation"
+    ]
+  },
+  "double-edged sword": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˌdʌb.əl ˌedʒd ˈsɔːd/",
+    "syn": [
+      "mixed blessing",
+      "trade-off"
+    ],
+    "ant": [],
+    "para": [
+      "Cheap credit is a double-edged sword.",
+      "Cheap credit is a mixed blessing, because it brings both benefits and dangers."
+    ],
+    "collocations": [
+      "prove a double-edged sword",
+      "something of a double-edged sword",
+      "a real double-edged sword"
+    ]
+  },
+  "disparity": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/dɪˈspær.ə.ti/",
+    "syn": [
+      "gap",
+      "inequality",
+      "imbalance"
+    ],
+    "ant": [
+      "parity",
+      "equality"
+    ],
+    "para": [
+      "The disparity between executive pay and average wages has widened.",
+      "The gap between what bosses earn and what ordinary workers receive has grown."
+    ],
+    "collocations": [
+      "wide disparity",
+      "income disparity",
+      "regional disparities"
+    ]
+  },
+  "fiscal": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ˈfɪs.kəl/",
+    "syn": [
+      "budgetary",
+      "financial"
+    ],
+    "ant": [],
+    "para": [
+      "The government must show fiscal discipline after borrowing heavily.",
+      "After heavy borrowing, the government has to control its budget carefully."
+    ],
+    "collocations": [
+      "fiscal policy",
+      "fiscal year",
+      "fiscal deficit"
+    ],
+    "vi_note": "fiscal liên quan đến ngân sách và thuế nhà nước; monetary liên quan đến tiền tệ, lãi suất."
+  },
+  "speculative": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ˈspek.jə.lə.tɪv/",
+    "syn": [
+      "risky",
+      "conjectural",
+      "hypothetical"
+    ],
+    "ant": [
+      "grounded",
+      "factual"
+    ],
+    "para": [
+      "Much of the recent surge in land prices is speculative.",
+      "Land prices have risen largely because investors are betting on future gains rather than because of real demand."
+    ],
+    "collocations": [
+      "speculative investment",
+      "speculative bubble",
+      "purely speculative"
+    ]
+  },
+  "cognitive dissonance": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˌkɒɡ.nə.tɪv ˈdɪs.ən.əns/",
+    "syn": [
+      "mental conflict",
+      "inner conflict",
+      "psychological tension"
+    ],
+    "ant": [],
+    "para": [
+      "Smokers who know the risks often experience cognitive dissonance.",
+      "Many smokers feel mentally uncomfortable because their behaviour contradicts what they know."
+    ],
+    "collocations": [
+      "experience cognitive dissonance",
+      "reduce cognitive dissonance",
+      "a state of cognitive dissonance"
+    ]
+  },
+  "predisposition": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˌpriː.dɪs.pəˈzɪʃ.ən/",
+    "syn": [
+      "tendency",
+      "susceptibility",
+      "inclination"
+    ],
+    "ant": [
+      "immunity",
+      "resistance"
+    ],
+    "para": [
+      "Some people have a genetic predisposition to anxiety.",
+      "Some individuals are genetically more likely to suffer from anxiety."
+    ],
+    "collocations": [
+      "genetic predisposition",
+      "a predisposition to",
+      "natural predisposition"
+    ]
+  },
+  "ambivalent": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/æmˈbɪv.ə.lənt/",
+    "syn": [
+      "uncertain",
+      "conflicted",
+      "undecided"
+    ],
+    "ant": [
+      "certain",
+      "decisive"
+    ],
+    "para": [
+      "She is deeply ambivalent about her promotion.",
+      "She has very mixed feelings about being promoted."
+    ],
+    "collocations": [
+      "ambivalent about",
+      "deeply ambivalent",
+      "ambivalent attitude"
+    ]
+  },
+  "resilience": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/rɪˈzɪl.i.əns/",
+    "syn": [
+      "toughness",
+      "adaptability",
+      "endurance"
+    ],
+    "ant": [
+      "fragility",
+      "vulnerability"
+    ],
+    "para": [
+      "Psychologists believe that resilience is a skill that can be cultivated.",
+      "Psychologists think the ability to recover from difficulties can be developed."
+    ],
+    "collocations": [
+      "build resilience",
+      "emotional resilience",
+      "economic resilience"
+    ]
+  },
+  "innate": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ɪˈneɪt/",
+    "syn": [
+      "inborn",
+      "inherent",
+      "natural"
+    ],
+    "ant": [
+      "acquired",
+      "learned"
+    ],
+    "para": [
+      "Whether our sense of fairness is innate remains an open question.",
+      "It is still unclear whether people are born with a sense of fairness."
+    ],
+    "collocations": [
+      "innate ability",
+      "innate talent",
+      "an innate sense of"
+    ]
+  },
+  "rationalise": {
+    "level": "C2",
+    "pos": "verb",
+    "ipa": "/ˈræʃ.ən.əl.aɪz/",
+    "syn": [
+      "justify",
+      "explain away",
+      "excuse"
+    ],
+    "ant": [],
+    "para": [
+      "I used to rationalise my procrastination by claiming I worked better under pressure.",
+      "I used to justify putting things off by saying I performed best under pressure."
+    ],
+    "collocations": [
+      "rationalise behaviour",
+      "rationalise a decision",
+      "try to rationalise"
+    ],
+    "vi_note": "Nghĩa khác trong kinh doanh: tinh giản, sắp xếp lại cho hiệu quả."
+  },
+  "complacency": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/kəmˈpleɪ.sən.si/",
+    "syn": [
+      "self-satisfaction",
+      "smugness",
+      "overconfidence"
+    ],
+    "ant": [
+      "vigilance",
+      "caution"
+    ],
+    "para": [
+      "Years of success bred a dangerous complacency within the company.",
+      "After years of success, the firm became overconfident and stopped trying to improve."
+    ],
+    "collocations": [
+      "dangerous complacency",
+      "no room for complacency",
+      "guard against complacency"
+    ]
+  },
+  "elicit": {
+    "level": "C2",
+    "pos": "verb",
+    "ipa": "/iˈlɪs.ɪt/",
+    "syn": [
+      "provoke",
+      "draw out",
+      "evoke"
+    ],
+    "ant": [],
+    "para": [
+      "The experiment was designed to elicit an emotional response.",
+      "The experiment aimed to provoke an emotional reaction."
+    ],
+    "collocations": [
+      "elicit a response",
+      "elicit information",
+      "elicit sympathy"
+    ],
+    "vi_note": "Đừng nhầm với illicit (bất hợp pháp)."
+  },
+  "ubiquitous": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/juːˈbɪk.wɪ.təs/",
+    "syn": [
+      "omnipresent",
+      "pervasive",
+      "widespread"
+    ],
+    "ant": [
+      "rare",
+      "scarce"
+    ],
+    "para": [
+      "English has become ubiquitous in business.",
+      "English is now used almost everywhere in the business world."
+    ],
+    "collocations": [
+      "ubiquitous presence",
+      "become ubiquitous",
+      "increasingly ubiquitous"
+    ]
+  },
+  "nuance": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˈnjuː.ɑːns/",
+    "syn": [
+      "subtlety",
+      "shade of meaning",
+      "distinction"
+    ],
+    "ant": [],
+    "para": [
+      "Machine translation still struggles to capture the nuance of humour.",
+      "Automatic translation still finds it hard to convey the subtleties of humour."
+    ],
+    "collocations": [
+      "subtle nuance",
+      "cultural nuances",
+      "nuance of meaning"
+    ]
+  },
+  "articulate": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ɑːˈtɪk.jə.lət/",
+    "syn": [
+      "eloquent",
+      "fluent",
+      "expressive"
+    ],
+    "ant": [
+      "inarticulate"
+    ],
+    "para": [
+      "He is an articulate speaker who makes complex arguments sound effortless.",
+      "He expresses himself so clearly that complex arguments seem easy when he speaks."
+    ],
+    "collocations": [
+      "articulate speaker",
+      "highly articulate",
+      "articulate and intelligent"
+    ],
+    "vi_note": "Tính từ đọc /ɑːˈtɪk.jə.lət/, động từ đọc /ɑːˈtɪk.jə.leɪt/."
+  },
+  "ambiguity": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˌæm.bɪˈɡjuː.ə.ti/",
+    "syn": [
+      "vagueness",
+      "uncertainty",
+      "equivocation"
+    ],
+    "ant": [
+      "clarity",
+      "precision"
+    ],
+    "para": [
+      "Diplomats sometimes exploit ambiguity deliberately.",
+      "Diplomats occasionally use vague wording on purpose."
+    ],
+    "collocations": [
+      "deliberate ambiguity",
+      "moral ambiguity",
+      "avoid ambiguity"
+    ]
+  },
+  "euphemism": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˈjuː.fə.mɪ.zəm/",
+    "syn": [
+      "polite term",
+      "softened expression",
+      "understatement"
+    ],
+    "ant": [
+      "dysphemism"
+    ],
+    "para": [
+      "Rightsizing is a corporate euphemism for mass dismissals.",
+      "Companies use the word rightsizing as a gentler way of describing mass job cuts."
+    ],
+    "collocations": [
+      "a euphemism for",
+      "polite euphemism",
+      "use a euphemism"
+    ]
+  },
+  "eloquent": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ˈel.ə.kwənt/",
+    "syn": [
+      "articulate",
+      "persuasive",
+      "expressive"
+    ],
+    "ant": [
+      "inarticulate"
+    ],
+    "para": [
+      "Her eloquent defence of press freedom won over the audience.",
+      "She defended press freedom so persuasively that the audience was won over."
+    ],
+    "collocations": [
+      "eloquent speech",
+      "eloquent speaker",
+      "eloquent testimony"
+    ]
+  },
+  "lingua franca": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˌlɪŋ.ɡwə ˈfræŋ.kə/",
+    "syn": [
+      "common language",
+      "global language",
+      "shared language"
+    ],
+    "ant": [],
+    "para": [
+      "For centuries Latin served as the lingua franca of European scholarship.",
+      "For centuries, scholars across Europe communicated in Latin as their common language."
+    ],
+    "collocations": [
+      "a global lingua franca",
+      "serve as a lingua franca",
+      "the lingua franca of"
+    ]
+  },
+  "convey": {
+    "level": "C2",
+    "pos": "verb",
+    "ipa": "/kənˈveɪ/",
+    "syn": [
+      "communicate",
+      "express",
+      "transmit"
+    ],
+    "ant": [
+      "conceal"
+    ],
+    "para": [
+      "A single gesture can convey more contempt than a paragraph of words.",
+      "One gesture may express more scorn than a whole paragraph."
+    ],
+    "collocations": [
+      "convey a message",
+      "convey meaning",
+      "convey emotion"
+    ]
+  },
+  "paradigm": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˈpær.ə.daɪm/",
+    "syn": [
+      "model",
+      "framework",
+      "pattern"
+    ],
+    "ant": [],
+    "para": [
+      "The smartphone created an entirely new paradigm of communication.",
+      "The smartphone established a completely new model for how people communicate."
+    ],
+    "collocations": [
+      "paradigm shift",
+      "new paradigm",
+      "dominant paradigm"
+    ]
+  },
+  "scrutinise": {
+    "level": "C2",
+    "pos": "verb",
+    "ipa": "/ˈskruː.tɪ.naɪz/",
+    "syn": [
+      "examine",
+      "inspect",
+      "investigate"
+    ],
+    "ant": [
+      "overlook",
+      "ignore"
+    ],
+    "para": [
+      "Regulators have begun to scrutinise how platforms collect children's data.",
+      "The way platforms gather data on children is now being closely examined by regulators."
+    ],
+    "collocations": [
+      "closely scrutinise",
+      "scrutinise the evidence",
+      "carefully scrutinised"
+    ],
+    "vi_note": "Anh Mỹ viết scrutinize."
+  },
+  "obsolete": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/ˈɒb.səl.iːt/",
+    "syn": [
+      "outdated",
+      "outmoded",
+      "redundant"
+    ],
+    "ant": [
+      "current",
+      "modern"
+    ],
+    "para": [
+      "Many skills may become obsolete within a decade.",
+      "Within ten years, many skills could be out of date."
+    ],
+    "collocations": [
+      "become obsolete",
+      "render obsolete",
+      "obsolete technology"
+    ]
+  },
+  "unintended consequences": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/ˌʌn.ɪnˌten.dɪd ˈkɒn.sɪ.kwən.sɪz/",
+    "syn": [
+      "side effects",
+      "unforeseen effects",
+      "knock-on effects"
+    ],
+    "ant": [],
+    "para": [
+      "Even innovations with good intentions often produce unintended consequences.",
+      "New inventions frequently have side effects that nobody predicted."
+    ],
+    "collocations": [
+      "have unintended consequences",
+      "the law of unintended consequences",
+      "serious unintended consequences"
+    ]
+  },
+  "disruptive": {
+    "level": "C2",
+    "pos": "adjective",
+    "ipa": "/dɪsˈrʌp.tɪv/",
+    "syn": [
+      "transformative",
+      "revolutionary",
+      "destabilising"
+    ],
+    "ant": [
+      "conventional"
+    ],
+    "para": [
+      "Streaming proved so disruptive that video rental chains collapsed.",
+      "Streaming transformed the industry so radically that video rental shops went out of business."
+    ],
+    "collocations": [
+      "disruptive technology",
+      "disruptive innovation",
+      "disruptive behaviour"
+    ],
+    "vi_note": "Trong kinh doanh: mang tính đột phá; trong lớp học: gây rối."
+  },
+  "Pandora's box": {
+    "level": "C2",
+    "pos": "noun",
+    "ipa": "/pænˌdɔː.rəz ˈbɒks/",
+    "syn": [
+      "can of worms",
+      "source of trouble"
+    ],
+    "ant": [],
+    "para": [
+      "Editing the human genome could open a Pandora's box.",
+      "Some scientists fear that genetic editing will unleash problems that can never be contained."
+    ],
+    "collocations": [
+      "open a Pandora's box",
+      "a Pandora's box of problems",
+      "unleash a Pandora's box"
+    ]
+  }
+}

@@ -1,0 +1,4514 @@
+[
+  {
+    "w": "achievement",
+    "r": 2001,
+    "pos": "noun",
+    "vi": "thành tích; thành tựu; sự đạt được",
+    "ipa": "/əˈtʃiːv.mənt/",
+    "ex": "Winning the national prize was a great achievement for her.",
+    "exvi": "Giành giải thưởng quốc gia là một thành tích lớn của cô ấy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "negotiate",
+    "r": 2002,
+    "pos": "verb",
+    "vi": "đàm phán; thương lượng",
+    "ipa": "/nəˈɡəʊ.ʃi.eɪt/",
+    "ex": "The union is negotiating with the company about higher pay.",
+    "exvi": "Công đoàn đang đàm phán với công ty về việc tăng lương.",
+    "forms": [
+      "negotiating"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "dominate",
+    "r": 2003,
+    "pos": "verb",
+    "vi": "chiếm ưu thế; thống trị; chi phối",
+    "ipa": "/ˈdɒm.ɪ.neɪt/",
+    "ex": "A few large companies dominate the mobile phone market.",
+    "exvi": "Một vài công ty lớn thống trị thị trường điện thoại di động.",
+    "forms": [],
+    "awl": 3
+  },
+  {
+    "w": "supplier",
+    "r": 2004,
+    "pos": "noun",
+    "vi": "nhà cung cấp",
+    "ipa": "/səˈplaɪ.ə/",
+    "ex": "We found a cheaper supplier for our office paper.",
+    "exvi": "Chúng tôi đã tìm được một nhà cung cấp giấy văn phòng rẻ hơn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "prize",
+    "r": 2005,
+    "pos": "noun",
+    "vi": "giải thưởng; phần thưởng",
+    "ipa": "/praɪz/",
+    "ex": "She won first prize in the photography competition.",
+    "exvi": "Cô ấy đã giành giải nhất trong cuộc thi nhiếp ảnh.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "typically",
+    "r": 2006,
+    "pos": "adverb",
+    "vi": "thường thì; điển hình là",
+    "ipa": "/ˈtɪp.ɪ.kli/",
+    "ex": "The journey typically takes about two hours by train.",
+    "exvi": "Chuyến đi thường mất khoảng hai tiếng bằng tàu hỏa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "peer",
+    "r": 2007,
+    "pos": "noun, verb",
+    "vi": "người cùng lứa; bạn đồng trang lứa; nhìn kỹ, nheo mắt nhìn",
+    "ipa": "/pɪə/",
+    "ex": "Teenagers often care a lot about what their peers think.",
+    "exvi": "Thanh thiếu niên thường rất quan tâm bạn bè cùng lứa nghĩ gì.",
+    "forms": [
+      "peers"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "pension",
+    "r": 2008,
+    "pos": "noun",
+    "vi": "lương hưu; tiền trợ cấp",
+    "ipa": "/ˈpen.ʃən/",
+    "ex": "My grandfather lives on a small pension.",
+    "exvi": "Ông tôi sống bằng đồng lương hưu ít ỏi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "wing",
+    "r": 2009,
+    "pos": "noun",
+    "vi": "cánh (chim, máy bay); cánh, dãy nhà; phe",
+    "ipa": "/wɪŋ/",
+    "ex": "The bird hurt its wing and could not fly.",
+    "exvi": "Con chim bị thương ở cánh và không thể bay.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "acquisition",
+    "r": 2010,
+    "pos": "noun",
+    "vi": "sự mua lại, thâu tóm (công ty); sự đạt được, tiếp thu",
+    "ipa": "/ˌæk.wɪˈzɪʃ.ən/",
+    "ex": "The acquisition of the small firm made the company much bigger.",
+    "exvi": "Việc mua lại công ty nhỏ đã khiến công ty lớn hơn nhiều.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "laughter",
+    "r": 2011,
+    "pos": "noun",
+    "vi": "tiếng cười; sự cười",
+    "ipa": "/ˈlɑːf.tə/",
+    "ex": "We could hear laughter coming from the next room.",
+    "exvi": "Chúng tôi có thể nghe tiếng cười từ phòng bên cạnh.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "deeply",
+    "r": 2012,
+    "pos": "adverb",
+    "vi": "sâu sắc; rất, vô cùng; sâu",
+    "ipa": "/ˈdiːp.li/",
+    "ex": "I was deeply moved by his kind words.",
+    "exvi": "Tôi vô cùng xúc động trước những lời tử tế của anh ấy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "recognition",
+    "r": 2013,
+    "pos": "noun",
+    "vi": "sự công nhận; sự nhận ra",
+    "ipa": "/ˌrek.əɡˈnɪʃ.ən/",
+    "ex": "She finally received recognition for her hard work.",
+    "exvi": "Cuối cùng cô ấy cũng được công nhận vì sự chăm chỉ của mình.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "electricity",
+    "r": 2014,
+    "pos": "noun",
+    "vi": "điện",
+    "ipa": "/ɪˌlekˈtrɪs.ə.ti/",
+    "ex": "The storm cut off the electricity for several hours.",
+    "exvi": "Cơn bão đã làm mất điện trong vài tiếng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "assistance",
+    "r": 2015,
+    "pos": "noun",
+    "vi": "sự giúp đỡ; sự hỗ trợ",
+    "ipa": "/əˈsɪs.təns/",
+    "ex": "Please call us if you need any assistance.",
+    "exvi": "Vui lòng gọi cho chúng tôi nếu bạn cần bất kỳ sự hỗ trợ nào.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "roof",
+    "r": 2016,
+    "pos": "noun",
+    "vi": "mái nhà; nóc (xe)",
+    "ipa": "/ruːf/",
+    "ex": "The rain came in through a hole in the roof.",
+    "exvi": "Mưa lọt vào qua một lỗ thủng trên mái nhà.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "retirement",
+    "r": 2017,
+    "pos": "noun",
+    "vi": "sự nghỉ hưu; thời gian nghỉ hưu",
+    "ipa": "/rɪˈtaɪə.mənt/",
+    "ex": "He plans to travel around the world after his retirement.",
+    "exvi": "Ông ấy dự định đi du lịch vòng quanh thế giới sau khi nghỉ hưu.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "respectively",
+    "r": 2018,
+    "pos": "adverb",
+    "vi": "lần lượt là; tương ứng",
+    "ipa": "/rɪˈspek.tɪv.li/",
+    "ex": "Tom and Anna are ten and twelve years old respectively.",
+    "exvi": "Tom và Anna lần lượt mười và mười hai tuổi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "variation",
+    "r": 2019,
+    "pos": "noun",
+    "vi": "sự thay đổi, biến động; biến thể",
+    "ipa": "/ˌveə.riˈeɪ.ʃən/",
+    "ex": "There is a big variation in prices between the two shops.",
+    "exvi": "Có sự chênh lệch lớn về giá giữa hai cửa hàng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "ultimately",
+    "r": 2020,
+    "pos": "adverb",
+    "vi": "cuối cùng; rốt cuộc; về cơ bản",
+    "ipa": "/ˈʌl.tɪ.mət.li/",
+    "ex": "Ultimately, the decision about where to live is yours.",
+    "exvi": "Rốt cuộc thì quyết định sống ở đâu là của bạn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "proof",
+    "r": 2021,
+    "pos": "noun",
+    "vi": "bằng chứng; chứng cứ",
+    "ipa": "/pruːf/",
+    "ex": "Do you have any proof that he took the money?",
+    "exvi": "Bạn có bằng chứng nào cho thấy anh ta lấy tiền không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "soil",
+    "r": 2022,
+    "pos": "noun",
+    "vi": "đất (trồng trọt)",
+    "ipa": "/sɔɪl/",
+    "ex": "These plants grow best in wet soil.",
+    "exvi": "Những cây này mọc tốt nhất trong đất ẩm.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "smart",
+    "r": 2023,
+    "pos": "adjective",
+    "vi": "thông minh; lịch sự, bảnh bao; thông minh (thiết bị)",
+    "ipa": "/smɑːt/",
+    "ex": "He looked very smart in his new suit.",
+    "exvi": "Anh ấy trông rất bảnh bao trong bộ vest mới.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "layer",
+    "r": 2024,
+    "pos": "noun",
+    "vi": "lớp; tầng",
+    "ipa": "/ˈleɪ.ə/",
+    "ex": "There was a thin layer of dust on the table.",
+    "exvi": "Có một lớp bụi mỏng trên bàn.",
+    "forms": [],
+    "awl": 3
+  },
+  {
+    "w": "upset",
+    "r": 2025,
+    "pos": "adjective, verb",
+    "vi": "buồn bực, khó chịu; làm buồn lòng; làm đảo lộn",
+    "ipa": "/ʌpˈset/",
+    "ex": "She was upset because nobody remembered her birthday.",
+    "exvi": "Cô ấy buồn vì không ai nhớ sinh nhật mình.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "tooth",
+    "r": 2026,
+    "pos": "noun",
+    "vi": "răng",
+    "ipa": "/tuːθ/",
+    "ex": "I broke a tooth while eating a hard sweet.",
+    "exvi": "Tôi bị gãy một chiếc răng khi ăn kẹo cứng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "representation",
+    "r": 2027,
+    "pos": "noun",
+    "vi": "sự đại diện; sự thể hiện, hình ảnh miêu tả",
+    "ipa": "/ˌrep.rɪ.zenˈteɪ.ʃən/",
+    "ex": "Women still have little representation in the government.",
+    "exvi": "Phụ nữ vẫn có ít đại diện trong chính phủ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "preparation",
+    "r": 2028,
+    "pos": "noun",
+    "vi": "sự chuẩn bị",
+    "ipa": "/ˌprep.əˈreɪ.ʃən/",
+    "ex": "Good preparation is the key to passing the exam.",
+    "exvi": "Chuẩn bị tốt là chìa khóa để vượt qua kỳ thi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "dispute",
+    "r": 2029,
+    "pos": "noun, verb",
+    "vi": "cuộc tranh chấp; tranh cãi; phản đối, nghi ngờ",
+    "ipa": "/dɪˈspjuːt/",
+    "ex": "The two neighbours had a dispute about the fence.",
+    "exvi": "Hai người hàng xóm có tranh chấp về hàng rào.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "agenda",
+    "r": 2030,
+    "pos": "noun",
+    "vi": "chương trình nghị sự; kế hoạch, mục tiêu",
+    "ipa": "/əˈdʒen.də/",
+    "ex": "What is the first item on the agenda today?",
+    "exvi": "Mục đầu tiên trong chương trình họp hôm nay là gì?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "emphasis",
+    "r": 2031,
+    "pos": "noun",
+    "vi": "sự nhấn mạnh; sự chú trọng",
+    "ipa": "/ˈem.fə.sɪs/",
+    "ex": "The school puts a lot of emphasis on speaking skills.",
+    "exvi": "Trường rất chú trọng vào kỹ năng nói.",
+    "forms": [],
+    "awl": 3
+  },
+  {
+    "w": "edition",
+    "r": 2032,
+    "pos": "noun",
+    "vi": "ấn bản; số (báo); phiên bản",
+    "ipa": "/ɪˈdɪʃ.ən/",
+    "ex": "The new edition of the dictionary has many more words.",
+    "exvi": "Ấn bản mới của cuốn từ điển có nhiều từ hơn hẳn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "silver",
+    "r": 2033,
+    "pos": "noun, adjective",
+    "vi": "bạc; màu bạc",
+    "ipa": "/ˈsɪl.və/",
+    "ex": "She wore a beautiful silver necklace.",
+    "exvi": "Cô ấy đeo một sợi dây chuyền bạc rất đẹp.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "entertainment",
+    "r": 2034,
+    "pos": "noun",
+    "vi": "sự giải trí; chương trình giải trí",
+    "ipa": "/ˌen.təˈteɪn.mənt/",
+    "ex": "The hotel offers live music and other entertainment.",
+    "exvi": "Khách sạn có nhạc sống và các hoạt động giải trí khác.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "honest",
+    "r": 2035,
+    "pos": "adjective",
+    "vi": "trung thực; thật thà; thẳng thắn",
+    "ipa": "/ˈɒn.ɪst/",
+    "ex": "To be honest, I didn't like the film.",
+    "exvi": "Thành thật mà nói, tôi không thích bộ phim đó.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "undertake",
+    "r": 2036,
+    "pos": "verb",
+    "vi": "đảm nhận; tiến hành; cam kết",
+    "ipa": "/ˌʌn.dəˈteɪk/",
+    "ex": "The company will undertake a study of customer needs.",
+    "exvi": "Công ty sẽ tiến hành một nghiên cứu về nhu cầu khách hàng.",
+    "forms": [],
+    "awl": 4
+  },
+  {
+    "w": "retail",
+    "r": 2037,
+    "pos": "noun, adjective",
+    "vi": "bán lẻ; ngành bán lẻ",
+    "ipa": "/ˈriː.teɪl/",
+    "ex": "She has worked in retail for ten years.",
+    "exvi": "Cô ấy đã làm trong ngành bán lẻ được mười năm.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "wire",
+    "r": 2038,
+    "pos": "noun",
+    "vi": "dây điện; dây kim loại",
+    "ipa": "/waɪə/",
+    "ex": "Don't touch that wire, it might be dangerous.",
+    "exvi": "Đừng chạm vào sợi dây điện đó, có thể nguy hiểm đấy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "unlikely",
+    "r": 2039,
+    "pos": "adjective",
+    "vi": "không chắc xảy ra; khó có khả năng",
+    "ipa": "/ʌnˈlaɪ.kli/",
+    "ex": "It is unlikely to rain this afternoon.",
+    "exvi": "Chiều nay khó có khả năng mưa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "gay",
+    "r": 2040,
+    "pos": "adjective, noun",
+    "vi": "đồng tính (nam); người đồng tính",
+    "ipa": "/ɡeɪ/",
+    "ex": "The film tells the story of a young gay man.",
+    "exvi": "Bộ phim kể câu chuyện về một chàng trai trẻ đồng tính.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "publication",
+    "r": 2041,
+    "pos": "noun",
+    "vi": "sự xuất bản; ấn phẩm; sự công bố",
+    "ipa": "/ˌpʌb.lɪˈkeɪ.ʃən/",
+    "ex": "The book is ready for publication next month.",
+    "exvi": "Cuốn sách sẵn sàng để xuất bản vào tháng sau.",
+    "forms": [],
+    "awl": 7
+  },
+  {
+    "w": "slight",
+    "r": 2042,
+    "pos": "adjective",
+    "vi": "nhẹ; nhỏ, không đáng kể",
+    "ipa": "/slaɪt/",
+    "ex": "I have a slight headache this morning.",
+    "exvi": "Sáng nay tôi hơi đau đầu một chút.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "unknown",
+    "r": 2043,
+    "pos": "adjective",
+    "vi": "không được biết đến; chưa rõ; vô danh",
+    "ipa": "/ʌnˈnəʊn/",
+    "ex": "The cause of the fire is still unknown.",
+    "exvi": "Nguyên nhân vụ cháy vẫn chưa rõ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "framework",
+    "r": 2044,
+    "pos": "noun",
+    "vi": "khung; cơ cấu; khuôn khổ",
+    "ipa": "/ˈfreɪm.wɜːk/",
+    "ex": "The law provides a framework for protecting workers.",
+    "exvi": "Luật này đưa ra một khuôn khổ để bảo vệ người lao động.",
+    "forms": [],
+    "awl": 3
+  },
+  {
+    "w": "zone",
+    "r": 2045,
+    "pos": "noun",
+    "vi": "khu vực; vùng",
+    "ipa": "/zəʊn/",
+    "ex": "You can't park your car in this zone.",
+    "exvi": "Bạn không thể đỗ xe trong khu vực này.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "restrict",
+    "r": 2046,
+    "pos": "verb",
+    "vi": "hạn chế; giới hạn",
+    "ipa": "/rɪˈstrɪkt/",
+    "ex": "The city wants to restrict the number of cars in the centre.",
+    "exvi": "Thành phố muốn hạn chế số lượng ô tô ở trung tâm.",
+    "forms": [],
+    "awl": 2
+  },
+  {
+    "w": "trace",
+    "r": 2047,
+    "pos": "verb, noun",
+    "vi": "truy tìm, lần ra; dấu vết",
+    "ipa": "/treɪs/",
+    "ex": "The police traced the call to a hotel in London.",
+    "exvi": "Cảnh sát đã lần ra cuộc gọi từ một khách sạn ở London.",
+    "forms": [
+      "traced"
+    ],
+    "awl": 6
+  },
+  {
+    "w": "inch",
+    "r": 2048,
+    "pos": "noun",
+    "vi": "inch (đơn vị đo, khoảng 2,54 cm)",
+    "ipa": "/ɪntʃ/",
+    "ex": "The snow was about six inches deep.",
+    "exvi": "Tuyết dày khoảng sáu inch.",
+    "forms": [
+      "inches"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "equivalent",
+    "r": 2049,
+    "pos": "noun, adjective",
+    "vi": "vật tương đương; tương đương",
+    "ipa": "/ɪˈkwɪv.əl.ənt/",
+    "ex": "One mile is equivalent to about one point six kilometres.",
+    "exvi": "Một dặm tương đương khoảng một phẩy sáu ki lô mét.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "solid",
+    "r": 2050,
+    "pos": "adjective, noun",
+    "vi": "rắn, đặc; chắc chắn, vững; chất rắn",
+    "ipa": "/ˈsɒl.ɪd/",
+    "ex": "The table is made of solid wood.",
+    "exvi": "Chiếc bàn được làm bằng gỗ đặc.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "enterprise",
+    "r": 2051,
+    "pos": "noun",
+    "vi": "doanh nghiệp; sự kinh doanh; tính dám nghĩ dám làm",
+    "ipa": "/ˈen.tə.praɪz/",
+    "ex": "The government supports small and medium enterprises.",
+    "exvi": "Chính phủ hỗ trợ các doanh nghiệp vừa và nhỏ.",
+    "forms": [
+      "enterprises"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "elderly",
+    "r": 2052,
+    "pos": "adjective",
+    "vi": "cao tuổi; già",
+    "ipa": "/ˈel.dəl.i/",
+    "ex": "She looks after her elderly parents.",
+    "exvi": "Cô ấy chăm sóc bố mẹ già của mình.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "owe",
+    "r": 2053,
+    "pos": "verb",
+    "vi": "nợ; mang ơn",
+    "ipa": "/əʊ/",
+    "ex": "I still owe you ten pounds for lunch.",
+    "exvi": "Tôi vẫn còn nợ bạn mười bảng tiền ăn trưa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "governor",
+    "r": 2054,
+    "pos": "noun",
+    "vi": "thống đốc; người đứng đầu (tổ chức)",
+    "ipa": "/ˈɡʌv.ən.ə/",
+    "ex": "The governor visited the area after the flood.",
+    "exvi": "Thống đốc đã đến thăm khu vực sau trận lũ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "uniform",
+    "r": 2055,
+    "pos": "noun, adjective",
+    "vi": "đồng phục; đồng đều, giống nhau",
+    "ipa": "/ˈjuː.nɪ.fɔːm/",
+    "ex": "All students must wear a uniform at school.",
+    "exvi": "Tất cả học sinh phải mặc đồng phục ở trường.",
+    "forms": [],
+    "awl": 8
+  },
+  {
+    "w": "port",
+    "r": 2056,
+    "pos": "noun",
+    "vi": "cảng; thành phố cảng; cổng (máy tính)",
+    "ipa": "/pɔːt/",
+    "ex": "The ship arrived at the port early in the morning.",
+    "exvi": "Con tàu cập cảng vào sáng sớm.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "pitch",
+    "r": 2057,
+    "pos": "noun, verb",
+    "vi": "sân (bóng); cao độ (âm thanh); chào hàng, thuyết phục",
+    "ipa": "/pɪtʃ/",
+    "ex": "The players ran onto the pitch.",
+    "exvi": "Các cầu thủ chạy ra sân.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "arrival",
+    "r": 2058,
+    "pos": "noun",
+    "vi": "sự đến; sự xuất hiện",
+    "ipa": "/əˈraɪ.vəl/",
+    "ex": "We had dinner soon after our arrival at the hotel.",
+    "exvi": "Chúng tôi ăn tối ngay sau khi đến khách sạn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "contemporary",
+    "r": 2059,
+    "pos": "adjective, noun",
+    "vi": "đương đại, hiện đại; cùng thời; người cùng thời",
+    "ipa": "/kənˈtem.pər.ər.i/",
+    "ex": "The museum has a large collection of contemporary art.",
+    "exvi": "Bảo tàng có một bộ sưu tập lớn về nghệ thuật đương đại.",
+    "forms": [],
+    "awl": 8
+  },
+  {
+    "w": "gate",
+    "r": 2060,
+    "pos": "noun",
+    "vi": "cổng; cửa ra máy bay",
+    "ipa": "/ɡeɪt/",
+    "ex": "Please close the gate when you leave.",
+    "exvi": "Vui lòng đóng cổng khi bạn ra về.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "ease",
+    "r": 2061,
+    "pos": "noun, verb",
+    "vi": "sự dễ dàng; sự thoải mái; làm dịu, giảm bớt",
+    "ipa": "/iːz/",
+    "ex": "This medicine will ease the pain.",
+    "exvi": "Thuốc này sẽ làm giảm cơn đau.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "beer",
+    "r": 2062,
+    "pos": "noun",
+    "vi": "bia",
+    "ipa": "/bɪə/",
+    "ex": "Would you like a glass of beer?",
+    "exvi": "Bạn có muốn một cốc bia không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "specialist",
+    "r": 2063,
+    "pos": "noun, adjective",
+    "vi": "chuyên gia; bác sĩ chuyên khoa; chuyên môn",
+    "ipa": "/ˈspeʃ.əl.ɪst/",
+    "ex": "My doctor sent me to see a skin specialist.",
+    "exvi": "Bác sĩ của tôi đã giới thiệu tôi đến gặp bác sĩ chuyên khoa da liễu.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "assure",
+    "r": 2064,
+    "pos": "verb",
+    "vi": "cam đoan; đảm bảo; trấn an",
+    "ipa": "/əˈʃʊə/",
+    "ex": "I can assure you that your money is safe.",
+    "exvi": "Tôi có thể cam đoan với bạn rằng tiền của bạn an toàn.",
+    "forms": [],
+    "awl": 9
+  },
+  {
+    "w": "profile",
+    "r": 2065,
+    "pos": "noun",
+    "vi": "hồ sơ, lý lịch; mặt nghiêng; mức độ nổi bật",
+    "ipa": "/ˈprəʊ.faɪl/",
+    "ex": "I updated my profile on the website yesterday.",
+    "exvi": "Hôm qua tôi đã cập nhật hồ sơ của mình trên trang web.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "mood",
+    "r": 2066,
+    "pos": "noun",
+    "vi": "tâm trạng; không khí",
+    "ipa": "/muːd/",
+    "ex": "She's in a good mood today.",
+    "exvi": "Hôm nay cô ấy đang có tâm trạng tốt.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "episode",
+    "r": 2067,
+    "pos": "noun",
+    "vi": "tập (phim); sự kiện, giai đoạn",
+    "ipa": "/ˈep.ɪ.səʊd/",
+    "ex": "I watched the last episode of the series last night.",
+    "exvi": "Tối qua tôi đã xem tập cuối của bộ phim.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "crack",
+    "r": 2068,
+    "pos": "noun, verb",
+    "vi": "vết nứt; làm nứt, nứt ra; giải mã",
+    "ipa": "/kræk/",
+    "ex": "There is a crack in the window.",
+    "exvi": "Có một vết nứt trên cửa sổ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "numerous",
+    "r": 2069,
+    "pos": "adjective",
+    "vi": "nhiều, đông đảo",
+    "ipa": "/ˈnjuː.mər.əs/",
+    "ex": "He has visited Japan on numerous occasions.",
+    "exvi": "Anh ấy đã đến Nhật Bản rất nhiều lần.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "submit",
+    "r": 2070,
+    "pos": "verb",
+    "vi": "nộp, đệ trình; chịu, khuất phục",
+    "ipa": "/səbˈmɪt/",
+    "ex": "You must submit your essay by Friday.",
+    "exvi": "Bạn phải nộp bài luận trước thứ Sáu.",
+    "forms": [],
+    "awl": 7
+  },
+  {
+    "w": "symptom",
+    "r": 2071,
+    "pos": "noun",
+    "vi": "triệu chứng; dấu hiệu",
+    "ipa": "/ˈsɪmp.təm/",
+    "ex": "A high temperature is a common symptom of flu.",
+    "exvi": "Sốt cao là một triệu chứng phổ biến của cúm.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "virtually",
+    "r": 2072,
+    "pos": "adverb",
+    "vi": "hầu như, gần như; trên mạng, ảo",
+    "ipa": "/ˈvɜː.tʃu.ə.li/",
+    "ex": "Virtually everyone in the village came to the party.",
+    "exvi": "Hầu như mọi người trong làng đều đến dự bữa tiệc.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "era",
+    "r": 2073,
+    "pos": "noun",
+    "vi": "kỷ nguyên; thời đại",
+    "ipa": "/ˈɪə.rə/",
+    "ex": "We are living in the era of the internet.",
+    "exvi": "Chúng ta đang sống trong thời đại internet.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "coverage",
+    "r": 2074,
+    "pos": "noun",
+    "vi": "sự đưa tin; phạm vi phủ sóng; phạm vi bảo hiểm",
+    "ipa": "/ˈkʌv.ər.ɪdʒ/",
+    "ex": "The TV coverage of the match was excellent.",
+    "exvi": "Việc truyền hình trận đấu rất tuyệt.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "tension",
+    "r": 2075,
+    "pos": "noun",
+    "vi": "sự căng thẳng; sức căng",
+    "ipa": "/ˈten.ʃən/",
+    "ex": "There is a lot of tension between the two countries.",
+    "exvi": "Có rất nhiều căng thẳng giữa hai nước.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "cable",
+    "r": 2076,
+    "pos": "noun",
+    "vi": "dây cáp; truyền hình cáp",
+    "ipa": "/ˈkeɪ.bəl/",
+    "ex": "I need a longer cable to connect my laptop to the TV.",
+    "exvi": "Tôi cần một sợi cáp dài hơn để nối máy tính với TV.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "sensitive",
+    "r": 2077,
+    "pos": "adjective",
+    "vi": "nhạy cảm; tế nhị; dễ bị tổn thương",
+    "ipa": "/ˈsen.sɪ.tɪv/",
+    "ex": "My skin is very sensitive to the sun.",
+    "exvi": "Da tôi rất nhạy cảm với ánh nắng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "nervous",
+    "r": 2078,
+    "pos": "adjective",
+    "vi": "lo lắng, hồi hộp; (thuộc) thần kinh",
+    "ipa": "/ˈnɜː.vəs/",
+    "ex": "I always feel nervous before an exam.",
+    "exvi": "Tôi luôn cảm thấy hồi hộp trước kỳ thi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "input",
+    "r": 2079,
+    "pos": "noun, verb",
+    "vi": "ý kiến đóng góp; dữ liệu đầu vào; nhập (dữ liệu)",
+    "ipa": "/ˈɪn.pʊt/",
+    "ex": "Thank you for your input at the meeting.",
+    "exvi": "Cảm ơn ý kiến đóng góp của bạn trong cuộc họp.",
+    "forms": [],
+    "awl": 6
+  },
+  {
+    "w": "isolate",
+    "r": 2080,
+    "pos": "verb",
+    "vi": "cô lập; cách ly; tách riêng",
+    "ipa": "/ˈaɪ.sə.leɪt/",
+    "ex": "Doctors isolated the sick patients from the others.",
+    "exvi": "Các bác sĩ đã cách ly những bệnh nhân ốm khỏi những người khác.",
+    "forms": [
+      "isolated"
+    ],
+    "awl": 7
+  },
+  {
+    "w": "prisoner",
+    "r": 2081,
+    "pos": "noun",
+    "vi": "tù nhân; người bị giam giữ",
+    "ipa": "/ˈprɪz.ən.ə/",
+    "ex": "The prisoner escaped during the night.",
+    "exvi": "Tên tù nhân đã trốn thoát trong đêm.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "eliminate",
+    "r": 2082,
+    "pos": "verb",
+    "vi": "loại bỏ; loại (khỏi cuộc thi)",
+    "ipa": "/iˈlɪm.ɪ.neɪt/",
+    "ex": "We want to eliminate mistakes from the report.",
+    "exvi": "Chúng tôi muốn loại bỏ các lỗi trong bản báo cáo.",
+    "forms": [],
+    "awl": 7
+  },
+  {
+    "w": "tight",
+    "r": 2083,
+    "pos": "adjective, adverb",
+    "vi": "chật, bó; chặt; eo hẹp (thời gian, tiền)",
+    "ipa": "/taɪt/",
+    "ex": "These shoes are too tight for me.",
+    "exvi": "Đôi giày này quá chật với tôi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "wet",
+    "r": 2084,
+    "pos": "adjective",
+    "vi": "ướt; ẩm; có mưa",
+    "ipa": "/wet/",
+    "ex": "My hair is still wet from the shower.",
+    "exvi": "Tóc tôi vẫn còn ướt sau khi tắm.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "secondary",
+    "r": 2085,
+    "pos": "adjective",
+    "vi": "thứ yếu; (giáo dục) trung học",
+    "ipa": "/ˈsek.ən.dər.i/",
+    "ex": "She teaches maths at a secondary school.",
+    "exvi": "Cô ấy dạy toán ở một trường trung học.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "welfare",
+    "r": 2086,
+    "pos": "noun",
+    "vi": "phúc lợi; sự an sinh; trợ cấp xã hội",
+    "ipa": "/ˈwel.feə/",
+    "ex": "The government should do more for the welfare of children.",
+    "exvi": "Chính phủ nên làm nhiều hơn cho phúc lợi của trẻ em.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "recruit",
+    "r": 2087,
+    "pos": "verb, noun",
+    "vi": "tuyển dụng; tuyển mộ; người mới vào",
+    "ipa": "/rɪˈkruːt/",
+    "ex": "The company plans to recruit twenty new staff this year.",
+    "exvi": "Công ty dự định tuyển hai mươi nhân viên mới trong năm nay.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "exclude",
+    "r": 2088,
+    "pos": "verb",
+    "vi": "loại trừ; không bao gồm; không cho tham gia",
+    "ipa": "/ɪkˈskluːd/",
+    "ex": "The price of the room excludes breakfast and tax.",
+    "exvi": "Giá phòng chưa bao gồm bữa sáng và thuế.",
+    "forms": [
+      "excludes"
+    ],
+    "awl": 3
+  },
+  {
+    "w": "string",
+    "r": 2089,
+    "pos": "noun",
+    "vi": "dây; sợi dây; chuỗi",
+    "ipa": "/strɪŋ/",
+    "ex": "She tied the parcel with a piece of string.",
+    "exvi": "Cô ấy buộc gói hàng bằng một sợi dây.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "cloud",
+    "r": 2090,
+    "pos": "noun",
+    "vi": "mây; đám (khói, bụi); điện toán đám mây",
+    "ipa": "/klaʊd/",
+    "ex": "There wasn't a single cloud in the sky.",
+    "exvi": "Trên bầu trời không có lấy một gợn mây.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "persuade",
+    "r": 2091,
+    "pos": "verb",
+    "vi": "thuyết phục",
+    "ipa": "/pəˈsweɪd/",
+    "ex": "I tried to persuade him to stay, but he left.",
+    "exvi": "Tôi đã cố thuyết phục anh ấy ở lại nhưng anh ấy vẫn đi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "inspire",
+    "r": 2092,
+    "pos": "verb",
+    "vi": "truyền cảm hứng; khơi dậy",
+    "ipa": "/ɪnˈspaɪə/",
+    "ex": "Her story inspired me to start my own business.",
+    "exvi": "Câu chuyện của cô ấy đã truyền cảm hứng cho tôi tự kinh doanh.",
+    "forms": [
+      "inspired"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "grand",
+    "r": 2093,
+    "pos": "adjective",
+    "vi": "hoành tráng, lộng lẫy; lớn, vĩ đại",
+    "ipa": "/ɡrænd/",
+    "ex": "They stayed in a grand old hotel by the sea.",
+    "exvi": "Họ ở trong một khách sạn cổ lộng lẫy bên bờ biển.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "hence",
+    "r": 2094,
+    "pos": "adverb",
+    "vi": "vì thế, do đó; kể từ bây giờ",
+    "ipa": "/hens/",
+    "ex": "The car is very old, hence the low price.",
+    "exvi": "Chiếc xe đã rất cũ, vì thế giá mới thấp.",
+    "forms": [],
+    "awl": 4
+  },
+  {
+    "w": "crew",
+    "r": 2095,
+    "pos": "noun",
+    "vi": "thủy thủ đoàn; phi hành đoàn; đội, nhóm làm việc",
+    "ipa": "/kruː/",
+    "ex": "The plane had a crew of ten.",
+    "exvi": "Chiếc máy bay có phi hành đoàn mười người.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "phenomenon",
+    "r": 2096,
+    "pos": "noun",
+    "vi": "hiện tượng",
+    "ipa": "/fəˈnɒm.ɪ.nən/",
+    "ex": "Snow in this area is a rare phenomenon.",
+    "exvi": "Tuyết ở vùng này là một hiện tượng hiếm gặp.",
+    "forms": [],
+    "awl": 7
+  },
+  {
+    "w": "pupil",
+    "r": 2097,
+    "pos": "noun",
+    "vi": "học sinh; con ngươi",
+    "ipa": "/ˈpjuː.pəl/",
+    "ex": "There are thirty pupils in each class.",
+    "exvi": "Mỗi lớp có ba mươi học sinh.",
+    "forms": [
+      "pupils"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "false",
+    "r": 2098,
+    "pos": "adjective",
+    "vi": "sai; giả; không đúng sự thật",
+    "ipa": "/fɔːls/",
+    "ex": "Decide whether these sentences are true or false.",
+    "exvi": "Hãy xác định các câu này đúng hay sai.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "assist",
+    "r": 2099,
+    "pos": "verb",
+    "vi": "giúp đỡ; hỗ trợ",
+    "ipa": "/əˈsɪst/",
+    "ex": "Two nurses assisted the doctor during the operation.",
+    "exvi": "Hai y tá đã hỗ trợ bác sĩ trong ca phẫu thuật.",
+    "forms": [
+      "assisted"
+    ],
+    "awl": 2
+  },
+  {
+    "w": "restore",
+    "r": 2100,
+    "pos": "verb",
+    "vi": "khôi phục; phục hồi; trùng tu",
+    "ipa": "/rɪˈstɔː/",
+    "ex": "They spent two years restoring the old house.",
+    "exvi": "Họ đã mất hai năm để trùng tu ngôi nhà cổ.",
+    "forms": [
+      "restoring"
+    ],
+    "awl": 8
+  },
+  {
+    "w": "formula",
+    "r": 2101,
+    "pos": "noun",
+    "vi": "công thức; cách thức",
+    "ipa": "/ˈfɔː.mjə.lə/",
+    "ex": "There is no simple formula for success.",
+    "exvi": "Không có công thức đơn giản nào cho thành công.",
+    "forms": [],
+    "awl": 1
+  },
+  {
+    "w": "alter",
+    "r": 2102,
+    "pos": "verb",
+    "vi": "thay đổi; sửa (quần áo)",
+    "ipa": "/ˈɔːl.tə/",
+    "ex": "We had to alter our plans because of the weather.",
+    "exvi": "Chúng tôi phải thay đổi kế hoạch vì thời tiết.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "perceive",
+    "r": 2103,
+    "pos": "verb",
+    "vi": "nhận thấy; nhận thức; coi là",
+    "ipa": "/pəˈsiːv/",
+    "ex": "Many people perceive him as a strong leader.",
+    "exvi": "Nhiều người coi ông ấy là một nhà lãnh đạo mạnh mẽ.",
+    "forms": [],
+    "awl": 2
+  },
+  {
+    "w": "routine",
+    "r": 2104,
+    "pos": "noun, adjective",
+    "vi": "thói quen hằng ngày; công việc thường lệ; thường lệ",
+    "ipa": "/ruːˈtiːn/",
+    "ex": "Exercise is part of my daily routine.",
+    "exvi": "Tập thể dục là một phần trong thói quen hằng ngày của tôi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "sink",
+    "r": 2105,
+    "pos": "verb, noun",
+    "vi": "chìm; lún xuống; bồn rửa",
+    "ipa": "/sɪŋk/",
+    "ex": "The boat began to sink after it hit a rock.",
+    "exvi": "Con thuyền bắt đầu chìm sau khi đâm vào đá.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "stare",
+    "r": 2106,
+    "pos": "verb, noun",
+    "vi": "nhìn chằm chằm; cái nhìn chằm chằm",
+    "ipa": "/steə/",
+    "ex": "It's rude to stare at people.",
+    "exvi": "Nhìn chằm chằm vào người khác là bất lịch sự.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "anymore",
+    "r": 2107,
+    "pos": "adverb",
+    "vi": "không còn nữa (dùng trong câu phủ định, nghi vấn)",
+    "ipa": "/ˌen.iˈmɔː/",
+    "ex": "I don't live in London anymore.",
+    "exvi": "Tôi không còn sống ở London nữa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "hero",
+    "r": 2108,
+    "pos": "noun",
+    "vi": "anh hùng; nhân vật chính (nam); thần tượng",
+    "ipa": "/ˈhɪə.rəʊ/",
+    "ex": "The firefighter was called a hero for saving the child.",
+    "exvi": "Người lính cứu hỏa được gọi là anh hùng vì đã cứu đứa trẻ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "supporter",
+    "r": 2109,
+    "pos": "noun",
+    "vi": "người ủng hộ; cổ động viên",
+    "ipa": "/səˈpɔː.tə/",
+    "ex": "Thousands of supporters came to watch the final.",
+    "exvi": "Hàng nghìn cổ động viên đã đến xem trận chung kết.",
+    "forms": [
+      "supporters"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "convert",
+    "r": 2110,
+    "pos": "verb",
+    "vi": "chuyển đổi; cải đạo",
+    "ipa": "/kənˈvɜːt/",
+    "ex": "They converted the old barn into a house.",
+    "exvi": "Họ đã chuyển đổi nhà kho cũ thành một ngôi nhà.",
+    "forms": [
+      "converted"
+    ],
+    "awl": 7
+  },
+  {
+    "w": "steady",
+    "r": 2111,
+    "pos": "adjective",
+    "vi": "đều đặn, ổn định; vững vàng",
+    "ipa": "/ˈsted.i/",
+    "ex": "He has a steady job at a bank.",
+    "exvi": "Anh ấy có một công việc ổn định ở ngân hàng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "meter",
+    "r": 2112,
+    "pos": "noun",
+    "vi": "đồng hồ đo (điện, nước, taxi); mét (cách viết Mỹ)",
+    "ipa": "/ˈmiː.tə/",
+    "ex": "The man came to read the gas meter.",
+    "exvi": "Người đàn ông đến để đọc đồng hồ đo khí ga.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "truck",
+    "r": 2113,
+    "pos": "noun",
+    "vi": "xe tải",
+    "ipa": "/trʌk/",
+    "ex": "A large truck was blocking the road.",
+    "exvi": "Một chiếc xe tải lớn đang chắn ngang đường.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "nose",
+    "r": 2114,
+    "pos": "noun",
+    "vi": "mũi",
+    "ipa": "/nəʊz/",
+    "ex": "He has a cold and a runny nose.",
+    "exvi": "Anh ấy bị cảm và chảy nước mũi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "beside",
+    "r": 2115,
+    "pos": "preposition",
+    "vi": "bên cạnh; so với",
+    "ipa": "/bɪˈsaɪd/",
+    "ex": "Come and sit beside me on the sofa.",
+    "exvi": "Hãy đến ngồi cạnh tôi trên ghế sofa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "sail",
+    "r": 2116,
+    "pos": "verb, noun",
+    "vi": "đi thuyền buồm; giong buồm; cánh buồm",
+    "ipa": "/seɪl/",
+    "ex": "We sailed across the lake in a small boat.",
+    "exvi": "Chúng tôi đi thuyền nhỏ qua hồ.",
+    "forms": [
+      "sailed"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "disaster",
+    "r": 2117,
+    "pos": "noun",
+    "vi": "thảm họa; tai họa; sự thất bại hoàn toàn",
+    "ipa": "/dɪˈzɑː.stə/",
+    "ex": "The earthquake was the worst disaster in the country's history.",
+    "exvi": "Trận động đất là thảm họa tồi tệ nhất trong lịch sử đất nước.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "pace",
+    "r": 2118,
+    "pos": "noun",
+    "vi": "tốc độ; nhịp độ; bước chân",
+    "ipa": "/peɪs/",
+    "ex": "Everyone can learn at their own pace.",
+    "exvi": "Mọi người có thể học theo tốc độ của riêng mình.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "heavily",
+    "r": 2119,
+    "pos": "adverb",
+    "vi": "nặng nề; nhiều, nặng hạt; rất",
+    "ipa": "/ˈhev.ɪ.li/",
+    "ex": "It rained heavily all night, so the roads flooded.",
+    "exvi": "Trời mưa to suốt đêm nên đường bị ngập.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "devote",
+    "r": 2120,
+    "pos": "verb",
+    "vi": "dành (thời gian, công sức); cống hiến",
+    "ipa": "/dɪˈvəʊt/",
+    "ex": "She devotes most of her free time to her children.",
+    "exvi": "Cô ấy dành phần lớn thời gian rảnh cho các con.",
+    "forms": [
+      "devotes"
+    ],
+    "awl": 9
+  },
+  {
+    "w": "terrorist",
+    "r": 2121,
+    "pos": "noun, adjective",
+    "vi": "kẻ khủng bố; (thuộc) khủng bố",
+    "ipa": "/ˈter.ər.ɪst/",
+    "ex": "The police arrested the terrorist before the attack.",
+    "exvi": "Cảnh sát đã bắt giữ kẻ khủng bố trước khi vụ tấn công xảy ra.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "justify",
+    "r": 2122,
+    "pos": "verb",
+    "vi": "biện minh; chứng minh là đúng",
+    "ipa": "/ˈdʒʌs.tɪ.faɪ/",
+    "ex": "How can you justify spending so much money on a bag?",
+    "exvi": "Làm sao bạn có thể biện minh cho việc tiêu nhiều tiền như vậy vào một chiếc túi?",
+    "forms": [],
+    "awl": 3
+  },
+  {
+    "w": "vital",
+    "r": 2123,
+    "pos": "adjective",
+    "vi": "thiết yếu, cực kỳ quan trọng; (thuộc) sự sống",
+    "ipa": "/ˈvaɪ.təl/",
+    "ex": "Water is vital for all living things.",
+    "exvi": "Nước là thiết yếu với mọi sinh vật.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "fascinate",
+    "r": 2124,
+    "pos": "verb",
+    "vi": "mê hoặc; làm say mê",
+    "ipa": "/ˈfæs.ɪ.neɪt/",
+    "ex": "Space has always fascinated me since I was a child.",
+    "exvi": "Vũ trụ luôn khiến tôi say mê từ khi còn nhỏ.",
+    "forms": [
+      "fascinated"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "external",
+    "r": 2125,
+    "pos": "adjective",
+    "vi": "bên ngoài; từ bên ngoài",
+    "ipa": "/ɪkˈstɜː.nəl/",
+    "ex": "The company hired an external expert to check its accounts.",
+    "exvi": "Công ty thuê một chuyên gia bên ngoài để kiểm tra sổ sách.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "spare",
+    "r": 2126,
+    "pos": "adjective, verb",
+    "vi": "dư, dự phòng; rảnh rỗi; dành ra",
+    "ipa": "/speə/",
+    "ex": "What do you do in your spare time?",
+    "exvi": "Bạn làm gì vào thời gian rảnh?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "whenever",
+    "r": 2127,
+    "pos": "conjunction",
+    "vi": "bất cứ khi nào; mỗi khi",
+    "ipa": "/wenˈev.ə/",
+    "ex": "Come and visit us whenever you like.",
+    "exvi": "Hãy đến thăm chúng tôi bất cứ khi nào bạn muốn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "depression",
+    "r": 2128,
+    "pos": "noun",
+    "vi": "bệnh trầm cảm; sự suy thoái (kinh tế); vùng áp thấp",
+    "ipa": "/dɪˈpreʃ.ən/",
+    "ex": "He suffered from depression after losing his job.",
+    "exvi": "Anh ấy bị trầm cảm sau khi mất việc.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "guilty",
+    "r": 2129,
+    "pos": "adjective",
+    "vi": "có tội; cảm thấy có lỗi",
+    "ipa": "/ˈɡɪl.ti/",
+    "ex": "I feel guilty about forgetting her birthday.",
+    "exvi": "Tôi cảm thấy có lỗi vì quên sinh nhật cô ấy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "underlie",
+    "r": 2130,
+    "pos": "verb",
+    "vi": "nằm bên dưới; là nguyên nhân sâu xa của",
+    "ipa": "/ˌʌn.dəˈlaɪ/",
+    "ex": "Poverty often underlies many social problems.",
+    "exvi": "Nghèo đói thường là nguyên nhân sâu xa của nhiều vấn đề xã hội.",
+    "forms": [
+      "underlies"
+    ],
+    "awl": 6
+  },
+  {
+    "w": "mom",
+    "r": 2131,
+    "pos": "noun",
+    "vi": "mẹ (Anh Mỹ, thân mật)",
+    "ipa": "/mɒm/",
+    "ex": "My mom makes the best chicken soup.",
+    "exvi": "Mẹ tôi nấu súp gà ngon nhất.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "distinction",
+    "r": 2132,
+    "pos": "noun",
+    "vi": "sự phân biệt, sự khác biệt; sự xuất sắc; loại giỏi",
+    "ipa": "/dɪˈstɪŋk.ʃən/",
+    "ex": "There is a clear distinction between the two words.",
+    "exvi": "Có sự khác biệt rõ ràng giữa hai từ này.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "satisfaction",
+    "r": 2133,
+    "pos": "noun",
+    "vi": "sự hài lòng; sự thỏa mãn",
+    "ipa": "/ˌsæt.ɪsˈfæk.ʃən/",
+    "ex": "Customer satisfaction is very important to us.",
+    "exvi": "Sự hài lòng của khách hàng rất quan trọng với chúng tôi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "incorporate",
+    "r": 2134,
+    "pos": "verb",
+    "vi": "kết hợp; đưa vào, bao gồm",
+    "ipa": "/ɪnˈkɔː.pər.eɪt/",
+    "ex": "We will incorporate your ideas into the new plan.",
+    "exvi": "Chúng tôi sẽ đưa ý tưởng của bạn vào kế hoạch mới.",
+    "forms": [],
+    "awl": 6
+  },
+  {
+    "w": "pour",
+    "r": 2135,
+    "pos": "verb",
+    "vi": "rót, đổ; mưa như trút; đổ xô đến",
+    "ipa": "/pɔː/",
+    "ex": "Could you pour me a glass of water?",
+    "exvi": "Bạn có thể rót cho tôi một cốc nước không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "sweep",
+    "r": 2136,
+    "pos": "verb, noun",
+    "vi": "quét; lướt qua; càn quét",
+    "ipa": "/swiːp/",
+    "ex": "Can you sweep the kitchen floor, please?",
+    "exvi": "Bạn có thể quét sàn bếp được không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "obligation",
+    "r": 2137,
+    "pos": "noun",
+    "vi": "nghĩa vụ; bổn phận",
+    "ipa": "/ˌɒb.lɪˈɡeɪ.ʃən/",
+    "ex": "Parents have an obligation to send their children to school.",
+    "exvi": "Cha mẹ có nghĩa vụ cho con đến trường.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "sir",
+    "r": 2138,
+    "pos": "noun",
+    "vi": "thưa ông, thưa ngài; tước hiệu Sir (Anh)",
+    "ipa": "/sɜː/",
+    "ex": "Excuse me, sir, can I help you with your bags?",
+    "exvi": "Xin lỗi ông, tôi có thể giúp ông mang túi không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "evaluate",
+    "r": 2139,
+    "pos": "verb",
+    "vi": "đánh giá; định giá",
+    "ipa": "/ɪˈvæl.ju.eɪt/",
+    "ex": "Teachers evaluate students' progress every term.",
+    "exvi": "Giáo viên đánh giá sự tiến bộ của học sinh mỗi học kỳ.",
+    "forms": [],
+    "awl": 2
+  },
+  {
+    "w": "anger",
+    "r": 2140,
+    "pos": "noun, verb",
+    "vi": "sự tức giận; làm tức giận",
+    "ipa": "/ˈæŋ.ɡə/",
+    "ex": "He couldn't hide his anger when he heard the news.",
+    "exvi": "Anh ấy không thể che giấu cơn giận khi nghe tin đó.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "pub",
+    "r": 2141,
+    "pos": "noun",
+    "vi": "quán rượu (kiểu Anh)",
+    "ipa": "/pʌb/",
+    "ex": "Let's meet at the pub after work.",
+    "exvi": "Hẹn gặp nhau ở quán rượu sau giờ làm nhé.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "perception",
+    "r": 2142,
+    "pos": "noun",
+    "vi": "nhận thức; cách nhìn nhận; sự cảm nhận",
+    "ipa": "/pəˈsep.ʃən/",
+    "ex": "The film changed my perception of life in the city.",
+    "exvi": "Bộ phim đã thay đổi cách nhìn của tôi về cuộc sống thành phố.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "naturally",
+    "r": 2143,
+    "pos": "adverb",
+    "vi": "tất nhiên; một cách tự nhiên; bẩm sinh",
+    "ipa": "/ˈnætʃ.ər.əl.i/",
+    "ex": "Naturally, I was disappointed when I failed the test.",
+    "exvi": "Tất nhiên là tôi thất vọng khi trượt bài kiểm tra.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "currency",
+    "r": 2144,
+    "pos": "noun",
+    "vi": "tiền tệ",
+    "ipa": "/ˈkʌr.ən.si/",
+    "ex": "You can change your currency at the airport.",
+    "exvi": "Bạn có thể đổi tiền ở sân bay.",
+    "forms": [],
+    "awl": 8
+  },
+  {
+    "w": "database",
+    "r": 2145,
+    "pos": "noun",
+    "vi": "cơ sở dữ liệu",
+    "ipa": "/ˈdeɪ.tə.beɪs/",
+    "ex": "All our customers' details are kept in a database.",
+    "exvi": "Mọi thông tin của khách hàng được lưu trong một cơ sở dữ liệu.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "initially",
+    "r": 2146,
+    "pos": "adverb",
+    "vi": "ban đầu; lúc đầu",
+    "ipa": "/ɪˈnɪʃ.əl.i/",
+    "ex": "Initially, I didn't like him, but now we're good friends.",
+    "exvi": "Lúc đầu tôi không thích anh ấy, nhưng giờ chúng tôi là bạn tốt.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "territory",
+    "r": 2147,
+    "pos": "noun",
+    "vi": "lãnh thổ; địa bàn; lĩnh vực",
+    "ipa": "/ˈter.ɪ.tər.i/",
+    "ex": "The island is part of British territory.",
+    "exvi": "Hòn đảo là một phần lãnh thổ Anh.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "stream",
+    "r": 2148,
+    "pos": "noun, verb",
+    "vi": "dòng suối; dòng (người, xe); phát trực tuyến",
+    "ipa": "/striːm/",
+    "ex": "The children played by the stream.",
+    "exvi": "Lũ trẻ chơi bên dòng suối.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "rarely",
+    "r": 2149,
+    "pos": "adverb",
+    "vi": "hiếm khi",
+    "ipa": "/ˈreə.li/",
+    "ex": "I rarely eat meat these days.",
+    "exvi": "Dạo này tôi hiếm khi ăn thịt.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "height",
+    "r": 2150,
+    "pos": "noun",
+    "vi": "chiều cao; độ cao; đỉnh điểm",
+    "ipa": "/haɪt/",
+    "ex": "What is the height of that building?",
+    "exvi": "Tòa nhà đó cao bao nhiêu?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "apparent",
+    "r": 2151,
+    "pos": "adjective",
+    "vi": "rõ ràng; hiển nhiên; bề ngoài",
+    "ipa": "/əˈpær.ənt/",
+    "ex": "It soon became apparent that she was not happy.",
+    "exvi": "Chẳng bao lâu đã thấy rõ là cô ấy không vui.",
+    "forms": [],
+    "awl": 4
+  },
+  {
+    "w": "western",
+    "r": 2152,
+    "pos": "adjective",
+    "vi": "(thuộc) phía tây; (thuộc) phương Tây",
+    "ipa": "/ˈwes.tən/",
+    "ex": "The town is in the western part of the country.",
+    "exvi": "Thị trấn nằm ở phía tây của đất nước.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "expansion",
+    "r": 2153,
+    "pos": "noun",
+    "vi": "sự mở rộng; sự phát triển",
+    "ipa": "/ɪkˈspæn.ʃən/",
+    "ex": "The company is planning an expansion into Asia.",
+    "exvi": "Công ty đang lên kế hoạch mở rộng sang châu Á.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "constantly",
+    "r": 2154,
+    "pos": "adverb",
+    "vi": "liên tục; luôn luôn",
+    "ipa": "/ˈkɒn.stənt.li/",
+    "ex": "My little brother is constantly asking questions.",
+    "exvi": "Em trai tôi liên tục đặt câu hỏi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "muscle",
+    "r": 2155,
+    "pos": "noun",
+    "vi": "cơ bắp",
+    "ipa": "/ˈmʌs.əl/",
+    "ex": "I pulled a muscle in my leg while running.",
+    "exvi": "Tôi bị căng cơ chân khi chạy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "scare",
+    "r": 2156,
+    "pos": "verb, noun",
+    "vi": "làm sợ hãi; sự hoảng sợ",
+    "ipa": "/skeə/",
+    "ex": "Sorry, I didn't mean to scare you.",
+    "exvi": "Xin lỗi, tôi không có ý làm bạn sợ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "badly",
+    "r": 2157,
+    "pos": "adverb",
+    "vi": "tệ, kém; nặng (bị thương); rất (cần)",
+    "ipa": "/ˈbæd.li/",
+    "ex": "He was badly hurt in the accident.",
+    "exvi": "Anh ấy bị thương nặng trong vụ tai nạn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "everyday",
+    "r": 2158,
+    "pos": "adjective",
+    "vi": "hằng ngày; thông thường",
+    "ipa": "/ˈev.ri.deɪ/",
+    "ex": "Mobile phones are part of everyday life.",
+    "exvi": "Điện thoại di động là một phần của cuộc sống hằng ngày.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "boundary",
+    "r": 2159,
+    "pos": "noun",
+    "vi": "ranh giới; biên giới; giới hạn",
+    "ipa": "/ˈbaʊn.dər.i/",
+    "ex": "The river forms the boundary between the two towns.",
+    "exvi": "Con sông tạo thành ranh giới giữa hai thị trấn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "ratio",
+    "r": 2160,
+    "pos": "noun",
+    "vi": "tỷ lệ; tỷ số",
+    "ipa": "/ˈreɪ.ʃi.əʊ/",
+    "ex": "The ratio of students to teachers is twenty to one.",
+    "exvi": "Tỷ lệ học sinh trên giáo viên là hai mươi trên một.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "essay",
+    "r": 2161,
+    "pos": "noun",
+    "vi": "bài luận; tiểu luận",
+    "ipa": "/ˈes.eɪ/",
+    "ex": "We have to write an essay about climate change.",
+    "exvi": "Chúng tôi phải viết một bài luận về biến đổi khí hậu.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "scream",
+    "r": 2162,
+    "pos": "verb, noun",
+    "vi": "hét lên, la hét; tiếng thét",
+    "ipa": "/skriːm/",
+    "ex": "She screamed when she saw the spider.",
+    "exvi": "Cô ấy hét lên khi nhìn thấy con nhện.",
+    "forms": [
+      "screamed"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "withdraw",
+    "r": 2163,
+    "pos": "verb",
+    "vi": "rút (tiền); rút lui; rút lại",
+    "ipa": "/wɪðˈdrɔː/",
+    "ex": "I need to withdraw some money from the bank.",
+    "exvi": "Tôi cần rút một ít tiền từ ngân hàng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "pollution",
+    "r": 2164,
+    "pos": "noun",
+    "vi": "sự ô nhiễm",
+    "ipa": "/pəˈluː.ʃən/",
+    "ex": "Air pollution is a serious problem in big cities.",
+    "exvi": "Ô nhiễm không khí là vấn đề nghiêm trọng ở các thành phố lớn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "disorder",
+    "r": 2165,
+    "pos": "noun",
+    "vi": "rối loạn (sức khỏe); sự hỗn loạn, mất trật tự",
+    "ipa": "/dɪˈsɔː.də/",
+    "ex": "She suffers from a rare skin disorder.",
+    "exvi": "Cô ấy mắc một chứng rối loạn da hiếm gặp.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "furniture",
+    "r": 2166,
+    "pos": "noun",
+    "vi": "đồ nội thất; đồ đạc",
+    "ipa": "/ˈfɜː.nɪ.tʃə/",
+    "ex": "We bought some new furniture for the living room.",
+    "exvi": "Chúng tôi đã mua một số đồ nội thất mới cho phòng khách.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "symbol",
+    "r": 2167,
+    "pos": "noun",
+    "vi": "biểu tượng; ký hiệu",
+    "ipa": "/ˈsɪm.bəl/",
+    "ex": "The dove is a symbol of peace.",
+    "exvi": "Chim bồ câu là biểu tượng của hòa bình.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "apartment",
+    "r": 2168,
+    "pos": "noun",
+    "vi": "căn hộ",
+    "ipa": "/əˈpɑːt.mənt/",
+    "ex": "They live in a small apartment in the city centre.",
+    "exvi": "Họ sống trong một căn hộ nhỏ ở trung tâm thành phố.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "demonstration",
+    "r": 2169,
+    "pos": "noun",
+    "vi": "cuộc biểu tình; sự trình diễn, minh họa",
+    "ipa": "/ˌdem.ənˈstreɪ.ʃən/",
+    "ex": "Thousands of people joined the demonstration against the war.",
+    "exvi": "Hàng nghìn người đã tham gia cuộc biểu tình phản đối chiến tranh.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "analyst",
+    "r": 2170,
+    "pos": "noun",
+    "vi": "nhà phân tích; chuyên viên phân tích",
+    "ipa": "/ˈæn.ə.lɪst/",
+    "ex": "She works as a financial analyst for a bank.",
+    "exvi": "Cô ấy làm chuyên viên phân tích tài chính cho một ngân hàng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "platform",
+    "r": 2171,
+    "pos": "noun",
+    "vi": "sân ga; bục, sân khấu; nền tảng",
+    "ipa": "/ˈplæt.fɔːm/",
+    "ex": "The train to Oxford leaves from platform two.",
+    "exvi": "Tàu đi Oxford khởi hành từ sân ga số hai.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "steel",
+    "r": 2172,
+    "pos": "noun",
+    "vi": "thép",
+    "ipa": "/stiːl/",
+    "ex": "The bridge is made of steel.",
+    "exvi": "Cây cầu được làm bằng thép.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "cake",
+    "r": 2173,
+    "pos": "noun",
+    "vi": "bánh ngọt; bánh kem",
+    "ipa": "/keɪk/",
+    "ex": "She made a chocolate cake for my birthday.",
+    "exvi": "Cô ấy làm một chiếc bánh sô cô la cho sinh nhật tôi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "transform",
+    "r": 2174,
+    "pos": "verb",
+    "vi": "biến đổi; thay đổi hoàn toàn",
+    "ipa": "/trænsˈfɔːm/",
+    "ex": "The internet has transformed the way we live.",
+    "exvi": "Internet đã thay đổi hoàn toàn cách chúng ta sống.",
+    "forms": [
+      "transformed"
+    ],
+    "awl": 6
+  },
+  {
+    "w": "wound",
+    "r": 2175,
+    "pos": "noun, verb",
+    "vi": "vết thương; làm bị thương",
+    "ipa": "/wuːnd/",
+    "ex": "The nurse cleaned the wound on his arm.",
+    "exvi": "Y tá đã rửa vết thương trên tay anh ấy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "restriction",
+    "r": 2176,
+    "pos": "noun",
+    "vi": "sự hạn chế; quy định hạn chế",
+    "ipa": "/rɪˈstrɪk.ʃən/",
+    "ex": "There are restrictions on how much luggage you can take.",
+    "exvi": "Có những quy định hạn chế về lượng hành lý bạn được mang.",
+    "forms": [
+      "restrictions"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "foundation",
+    "r": 2177,
+    "pos": "noun",
+    "vi": "nền tảng; nền móng; quỹ, tổ chức",
+    "ipa": "/faʊnˈdeɪ.ʃən/",
+    "ex": "Good health is the foundation of a happy life.",
+    "exvi": "Sức khỏe tốt là nền tảng của một cuộc sống hạnh phúc.",
+    "forms": [],
+    "awl": 7
+  },
+  {
+    "w": "designer",
+    "r": 2178,
+    "pos": "noun",
+    "vi": "nhà thiết kế",
+    "ipa": "/dɪˈzaɪ.nə/",
+    "ex": "She wants to become a fashion designer.",
+    "exvi": "Cô ấy muốn trở thành nhà thiết kế thời trang.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "strain",
+    "r": 2179,
+    "pos": "noun, verb",
+    "vi": "sự căng thẳng, áp lực; làm căng, làm quá sức",
+    "ipa": "/streɪn/",
+    "ex": "Looking after a baby can put a strain on a marriage.",
+    "exvi": "Chăm sóc em bé có thể gây áp lực lên cuộc hôn nhân.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "innovation",
+    "r": 2180,
+    "pos": "noun",
+    "vi": "sự đổi mới; sự cải tiến; phát kiến mới",
+    "ipa": "/ˌɪn.əˈveɪ.ʃən/",
+    "ex": "The company is famous for its innovation in technology.",
+    "exvi": "Công ty nổi tiếng với sự đổi mới về công nghệ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "album",
+    "r": 2181,
+    "pos": "noun",
+    "vi": "album (nhạc); quyển album ảnh",
+    "ipa": "/ˈæl.bəm/",
+    "ex": "The band is recording a new album.",
+    "exvi": "Ban nhạc đang thu âm một album mới.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "singer",
+    "r": 2182,
+    "pos": "noun",
+    "vi": "ca sĩ",
+    "ipa": "/ˈsɪŋ.ə/",
+    "ex": "She is my favourite singer and I love her songs.",
+    "exvi": "Cô ấy là ca sĩ yêu thích của tôi và tôi thích các bài hát của cô ấy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "trail",
+    "r": 2183,
+    "pos": "noun, verb",
+    "vi": "đường mòn; dấu vết; tụt lại phía sau",
+    "ipa": "/treɪl/",
+    "ex": "We followed a trail through the forest.",
+    "exvi": "Chúng tôi đi theo một con đường mòn xuyên qua rừng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "trap",
+    "r": 2184,
+    "pos": "noun, verb",
+    "vi": "cái bẫy; mắc kẹt; bẫy",
+    "ipa": "/træp/",
+    "ex": "Many people were trapped in the building by the fire.",
+    "exvi": "Nhiều người bị mắc kẹt trong tòa nhà do đám cháy.",
+    "forms": [
+      "trapped"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "loose",
+    "r": 2185,
+    "pos": "adjective",
+    "vi": "lỏng; rộng (quần áo); không bị buộc, tự do",
+    "ipa": "/luːs/",
+    "ex": "This screw is loose, so the chair moves a lot.",
+    "exvi": "Con ốc này bị lỏng nên chiếc ghế lung lay nhiều.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "extension",
+    "r": 2186,
+    "pos": "noun",
+    "vi": "sự gia hạn; phần mở rộng (nhà); số máy lẻ",
+    "ipa": "/ɪkˈsten.ʃən/",
+    "ex": "I asked my teacher for an extension on my essay.",
+    "exvi": "Tôi đã xin thầy giáo gia hạn nộp bài luận.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "wealth",
+    "r": 2187,
+    "pos": "noun",
+    "vi": "sự giàu có; của cải; sự phong phú",
+    "ipa": "/welθ/",
+    "ex": "He made his wealth from selling cars.",
+    "exvi": "Ông ấy làm giàu nhờ bán ô tô.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "gradually",
+    "r": 2188,
+    "pos": "adverb",
+    "vi": "dần dần; từ từ",
+    "ipa": "/ˈɡrædʒ.u.ə.li/",
+    "ex": "The weather gradually got warmer as spring arrived.",
+    "exvi": "Thời tiết dần ấm lên khi mùa xuân đến.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "tank",
+    "r": 2189,
+    "pos": "noun",
+    "vi": "bể, bồn chứa; xe tăng; bình xăng",
+    "ipa": "/tæŋk/",
+    "ex": "I need to fill the tank with petrol.",
+    "exvi": "Tôi cần đổ đầy bình xăng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "evil",
+    "r": 2190,
+    "pos": "adjective, noun",
+    "vi": "độc ác; xấu xa; điều ác",
+    "ipa": "/ˈiː.vəl/",
+    "ex": "In the story, an evil queen tries to kill the princess.",
+    "exvi": "Trong câu chuyện, một bà hoàng hậu độc ác tìm cách giết công chúa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "remarkable",
+    "r": 2191,
+    "pos": "adjective",
+    "vi": "đáng chú ý; phi thường; đặc biệt",
+    "ipa": "/rɪˈmɑː.kə.bəl/",
+    "ex": "She made a remarkable recovery after the accident.",
+    "exvi": "Cô ấy hồi phục một cách phi thường sau tai nạn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "tune",
+    "r": 2192,
+    "pos": "noun, verb",
+    "vi": "giai điệu; chỉnh (đài, nhạc cụ)",
+    "ipa": "/tʃuːn/",
+    "ex": "He was whistling a happy tune.",
+    "exvi": "Anh ấy đang huýt sáo một giai điệu vui vẻ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "grass",
+    "r": 2193,
+    "pos": "noun",
+    "vi": "cỏ; bãi cỏ",
+    "ipa": "/ɡrɑːs/",
+    "ex": "The children were sitting on the grass.",
+    "exvi": "Lũ trẻ đang ngồi trên bãi cỏ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "invitation",
+    "r": 2194,
+    "pos": "noun",
+    "vi": "lời mời; thiệp mời",
+    "ipa": "/ˌɪn.vɪˈteɪ.ʃən/",
+    "ex": "Thank you for the invitation to your wedding.",
+    "exvi": "Cảm ơn lời mời dự đám cưới của bạn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "transition",
+    "r": 2195,
+    "pos": "noun",
+    "vi": "sự chuyển đổi; sự chuyển tiếp",
+    "ipa": "/trænˈzɪʃ.ən/",
+    "ex": "The transition from school to university can be hard.",
+    "exvi": "Việc chuyển từ trường phổ thông lên đại học có thể khó khăn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "frighten",
+    "r": 2196,
+    "pos": "verb",
+    "vi": "làm hoảng sợ; dọa",
+    "ipa": "/ˈfraɪ.tən/",
+    "ex": "The loud noise frightened the baby.",
+    "exvi": "Tiếng ồn lớn làm em bé hoảng sợ.",
+    "forms": [
+      "frightened"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "bid",
+    "r": 2197,
+    "pos": "noun, verb",
+    "vi": "sự trả giá, bỏ thầu; nỗ lực; trả giá",
+    "ipa": "/bɪd/",
+    "ex": "He made a bid of five hundred pounds for the painting.",
+    "exvi": "Anh ấy trả giá năm trăm bảng cho bức tranh.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "breed",
+    "r": 2198,
+    "pos": "noun, verb",
+    "vi": "giống (vật nuôi); nhân giống, nuôi; sinh sản",
+    "ipa": "/briːd/",
+    "ex": "What breed of dog is that?",
+    "exvi": "Đó là giống chó gì vậy?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "extraordinary",
+    "r": 2199,
+    "pos": "adjective",
+    "vi": "phi thường; khác thường; đặc biệt",
+    "ipa": "/ɪkˈstrɔː.dən.ər.i/",
+    "ex": "She has an extraordinary talent for music.",
+    "exvi": "Cô ấy có tài năng âm nhạc phi thường.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "brilliant",
+    "r": 2200,
+    "pos": "adjective",
+    "vi": "xuất sắc, tài giỏi; tuyệt vời; rực rỡ",
+    "ipa": "/ˈbrɪl.jənt/",
+    "ex": "He is a brilliant scientist who has won many prizes.",
+    "exvi": "Ông ấy là một nhà khoa học xuất sắc đã giành nhiều giải thưởng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "adviser",
+    "r": 2201,
+    "pos": "noun",
+    "vi": "cố vấn; người tư vấn",
+    "ipa": "/ədˈvaɪ.zə/",
+    "ex": "She works as a financial adviser.",
+    "exvi": "Cô ấy làm cố vấn tài chính.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "stem",
+    "r": 2202,
+    "pos": "noun, verb",
+    "vi": "thân cây, cuống; bắt nguồn từ; ngăn chặn",
+    "ipa": "/stem/",
+    "ex": "Many of his problems stem from his childhood.",
+    "exvi": "Nhiều vấn đề của anh ấy bắt nguồn từ thời thơ ấu.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "reverse",
+    "r": 2203,
+    "pos": "verb, noun, adjective",
+    "vi": "đảo ngược; lùi (xe); điều ngược lại",
+    "ipa": "/rɪˈvɜːs/",
+    "ex": "She reversed the car into the garage.",
+    "exvi": "Cô ấy lùi xe vào ga ra.",
+    "forms": [
+      "reversed"
+    ],
+    "awl": 7
+  },
+  {
+    "w": "mode",
+    "r": 2204,
+    "pos": "noun",
+    "vi": "chế độ (máy); cách thức, phương thức",
+    "ipa": "/məʊd/",
+    "ex": "Please switch your phone to silent mode.",
+    "exvi": "Vui lòng chuyển điện thoại sang chế độ im lặng.",
+    "forms": [],
+    "awl": 7
+  },
+  {
+    "w": "mirror",
+    "r": 2205,
+    "pos": "noun, verb",
+    "vi": "gương; phản ánh",
+    "ipa": "/ˈmɪr.ə/",
+    "ex": "She looked at herself in the mirror.",
+    "exvi": "Cô ấy ngắm mình trong gương.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "awful",
+    "r": 2206,
+    "pos": "adjective",
+    "vi": "kinh khủng; tồi tệ; rất nhiều",
+    "ipa": "/ˈɔː.fəl/",
+    "ex": "The weather was awful all week.",
+    "exvi": "Thời tiết cả tuần đều tệ kinh khủng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "pose",
+    "r": 2207,
+    "pos": "verb, noun",
+    "vi": "gây ra (vấn đề, mối đe dọa); đặt ra (câu hỏi); tạo dáng",
+    "ipa": "/pəʊz/",
+    "ex": "Smoking poses a serious risk to your health.",
+    "exvi": "Hút thuốc gây ra nguy cơ nghiêm trọng cho sức khỏe.",
+    "forms": [
+      "poses"
+    ],
+    "awl": 10
+  },
+  {
+    "w": "adjust",
+    "r": 2208,
+    "pos": "verb",
+    "vi": "điều chỉnh; thích nghi",
+    "ipa": "/əˈdʒʌst/",
+    "ex": "It took me a few weeks to adjust to the new job.",
+    "exvi": "Tôi mất vài tuần để thích nghi với công việc mới.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "creative",
+    "r": 2209,
+    "pos": "adjective",
+    "vi": "sáng tạo",
+    "ipa": "/kriˈeɪ.tɪv/",
+    "ex": "She is very creative and loves painting.",
+    "exvi": "Cô ấy rất sáng tạo và thích vẽ tranh.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "nowadays",
+    "r": 2210,
+    "pos": "adverb",
+    "vi": "ngày nay; thời nay",
+    "ipa": "/ˈnaʊ.ə.deɪz/",
+    "ex": "Nowadays, most people buy their clothes online.",
+    "exvi": "Ngày nay, hầu hết mọi người mua quần áo trực tuyến.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "poem",
+    "r": 2211,
+    "pos": "noun",
+    "vi": "bài thơ",
+    "ipa": "/ˈpəʊ.ɪm/",
+    "ex": "He wrote a poem for his mother.",
+    "exvi": "Anh ấy đã viết một bài thơ cho mẹ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "agricultural",
+    "r": 2212,
+    "pos": "adjective",
+    "vi": "(thuộc) nông nghiệp",
+    "ipa": "/ˌæɡ.rɪˈkʌl.tʃər.əl/",
+    "ex": "Most of the land here is used for agricultural purposes.",
+    "exvi": "Phần lớn đất ở đây được dùng cho mục đích nông nghiệp.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "competitor",
+    "r": 2213,
+    "pos": "noun",
+    "vi": "đối thủ cạnh tranh; người dự thi",
+    "ipa": "/kəmˈpet.ɪ.tə/",
+    "ex": "Our prices are lower than our competitors'.",
+    "exvi": "Giá của chúng tôi thấp hơn giá của các đối thủ cạnh tranh.",
+    "forms": [
+      "competitors"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "alcohol",
+    "r": 2214,
+    "pos": "noun",
+    "vi": "rượu; đồ uống có cồn; cồn",
+    "ipa": "/ˈæl.kə.hɒl/",
+    "ex": "You shouldn't drink alcohol if you're driving.",
+    "exvi": "Bạn không nên uống rượu nếu đang lái xe.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "festival",
+    "r": 2215,
+    "pos": "noun",
+    "vi": "lễ hội; liên hoan",
+    "ipa": "/ˈfes.tɪ.vəl/",
+    "ex": "We went to a music festival last summer.",
+    "exvi": "Mùa hè năm ngoái chúng tôi đã đi một lễ hội âm nhạc.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "vegetable",
+    "r": 2216,
+    "pos": "noun",
+    "vi": "rau; rau củ",
+    "ipa": "/ˈvedʒ.tə.bəl/",
+    "ex": "You should eat more fruit and vegetables.",
+    "exvi": "Bạn nên ăn nhiều trái cây và rau củ hơn.",
+    "forms": [
+      "vegetables"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "van",
+    "r": 2217,
+    "pos": "noun",
+    "vi": "xe tải nhỏ; xe van",
+    "ipa": "/væn/",
+    "ex": "We hired a van to move our furniture.",
+    "exvi": "Chúng tôi thuê một chiếc xe tải nhỏ để chuyển đồ đạc.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "confident",
+    "r": 2218,
+    "pos": "adjective",
+    "vi": "tự tin; tin chắc",
+    "ipa": "/ˈkɒn.fɪ.dənt/",
+    "ex": "I'm confident that we will win the game.",
+    "exvi": "Tôi tin chắc rằng chúng ta sẽ thắng trận.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "planet",
+    "r": 2219,
+    "pos": "noun",
+    "vi": "hành tinh; trái đất",
+    "ipa": "/ˈplæn.ɪt/",
+    "ex": "Mars is sometimes called the red planet.",
+    "exvi": "Sao Hỏa đôi khi được gọi là hành tinh đỏ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "curve",
+    "r": 2220,
+    "pos": "noun, verb",
+    "vi": "đường cong; khúc quanh; uốn cong",
+    "ipa": "/kɜːv/",
+    "ex": "The road follows the curve of the river.",
+    "exvi": "Con đường chạy theo khúc quanh của dòng sông.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "knee",
+    "r": 2221,
+    "pos": "noun",
+    "vi": "đầu gối",
+    "ipa": "/niː/",
+    "ex": "I hurt my knee playing football.",
+    "exvi": "Tôi bị đau đầu gối khi chơi bóng đá.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "overcome",
+    "r": 2222,
+    "pos": "verb",
+    "vi": "vượt qua; khắc phục; chế ngự",
+    "ipa": "/ˌəʊ.vəˈkʌm/",
+    "ex": "She overcame her fear of flying.",
+    "exvi": "Cô ấy đã vượt qua nỗi sợ đi máy bay.",
+    "forms": [
+      "overcame"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "web",
+    "r": 2223,
+    "pos": "noun",
+    "vi": "mạng internet (the Web); mạng nhện; mạng lưới",
+    "ipa": "/web/",
+    "ex": "You can find this information on the web.",
+    "exvi": "Bạn có thể tìm thấy thông tin này trên mạng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "depth",
+    "r": 2224,
+    "pos": "noun",
+    "vi": "độ sâu; chiều sâu; mức độ sâu sắc",
+    "ipa": "/depθ/",
+    "ex": "The lake has a depth of about ten metres.",
+    "exvi": "Cái hồ có độ sâu khoảng mười mét.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "entrance",
+    "r": 2225,
+    "pos": "noun",
+    "vi": "lối vào; cổng vào; sự đi vào",
+    "ipa": "/ˈen.trəns/",
+    "ex": "I'll meet you at the main entrance.",
+    "exvi": "Tôi sẽ gặp bạn ở lối vào chính.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "log",
+    "r": 2226,
+    "pos": "noun, verb",
+    "vi": "khúc gỗ; nhật ký; ghi lại, đăng nhập (log in)",
+    "ipa": "/lɒɡ/",
+    "ex": "He put another log on the fire.",
+    "exvi": "Anh ấy cho thêm một khúc gỗ vào đống lửa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "giant",
+    "r": 2227,
+    "pos": "noun, adjective",
+    "vi": "người khổng lồ; công ty lớn; khổng lồ",
+    "ipa": "/ˈdʒaɪ.ənt/",
+    "ex": "A giant wave hit the boat.",
+    "exvi": "Một con sóng khổng lồ đánh vào con thuyền.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "god",
+    "r": 2228,
+    "pos": "noun",
+    "vi": "Chúa, Thượng đế (God); thần",
+    "ipa": "/ɡɒd/",
+    "ex": "Many people pray to God every day.",
+    "exvi": "Nhiều người cầu nguyện Chúa mỗi ngày.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "portion",
+    "r": 2229,
+    "pos": "noun",
+    "vi": "phần; khẩu phần (thức ăn)",
+    "ipa": "/ˈpɔː.ʃən/",
+    "ex": "The portions at this restaurant are very large.",
+    "exvi": "Khẩu phần ăn ở nhà hàng này rất lớn.",
+    "forms": [
+      "portions"
+    ],
+    "awl": 9
+  },
+  {
+    "w": "substance",
+    "r": 2230,
+    "pos": "noun",
+    "vi": "chất; thực chất, nội dung",
+    "ipa": "/ˈsʌb.stəns/",
+    "ex": "Scientists found a harmful substance in the river water.",
+    "exvi": "Các nhà khoa học đã tìm thấy một chất độc hại trong nước sông.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "extensive",
+    "r": 2231,
+    "pos": "adjective",
+    "vi": "rộng lớn; sâu rộng; bao quát",
+    "ipa": "/ɪkˈsten.sɪv/",
+    "ex": "The hotel has extensive gardens with a large pool.",
+    "exvi": "Khách sạn có những khu vườn rộng lớn với một hồ bơi lớn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "interpret",
+    "r": 2232,
+    "pos": "verb",
+    "vi": "hiểu, giải thích; phiên dịch (nói)",
+    "ipa": "/ɪnˈtɜː.prɪt/",
+    "ex": "How do you interpret this poem?",
+    "exvi": "Bạn hiểu bài thơ này như thế nào?",
+    "forms": [],
+    "awl": 1
+  },
+  {
+    "w": "independence",
+    "r": 2233,
+    "pos": "noun",
+    "vi": "sự độc lập; nền độc lập",
+    "ipa": "/ˌɪn.dɪˈpen.dəns/",
+    "ex": "Moving out gave me a sense of independence.",
+    "exvi": "Việc ra ở riêng mang lại cho tôi cảm giác độc lập.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "sugar",
+    "r": 2234,
+    "pos": "noun",
+    "vi": "đường",
+    "ipa": "/ˈʃʊɡ.ə/",
+    "ex": "Do you take sugar in your coffee?",
+    "exvi": "Bạn có cho đường vào cà phê không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "inner",
+    "r": 2235,
+    "pos": "adjective",
+    "vi": "bên trong; nội tâm",
+    "ipa": "/ˈɪn.ə/",
+    "ex": "They live in the inner city.",
+    "exvi": "Họ sống ở khu nội thành.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "harm",
+    "r": 2236,
+    "pos": "noun, verb",
+    "vi": "sự tổn hại; làm hại",
+    "ipa": "/hɑːm/",
+    "ex": "A little coffee won't do you any harm.",
+    "exvi": "Một chút cà phê sẽ không gây hại gì cho bạn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "consult",
+    "r": 2237,
+    "pos": "verb",
+    "vi": "hỏi ý kiến; tham khảo; tra cứu",
+    "ipa": "/kənˈsʌlt/",
+    "ex": "You should consult a doctor if the pain continues.",
+    "exvi": "Bạn nên hỏi ý kiến bác sĩ nếu cơn đau tiếp tục.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "pink",
+    "r": 2238,
+    "pos": "adjective, noun",
+    "vi": "màu hồng",
+    "ipa": "/pɪŋk/",
+    "ex": "She was wearing a pink dress.",
+    "exvi": "Cô ấy đang mặc một chiếc váy màu hồng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "shadow",
+    "r": 2239,
+    "pos": "noun",
+    "vi": "cái bóng; bóng tối, chỗ râm",
+    "ipa": "/ˈʃæd.əʊ/",
+    "ex": "The tree cast a long shadow on the grass.",
+    "exvi": "Cái cây đổ một bóng dài trên bãi cỏ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "strip",
+    "r": 2240,
+    "pos": "noun, verb",
+    "vi": "dải, mảnh; cởi (quần áo); tước bỏ",
+    "ipa": "/strɪp/",
+    "ex": "Cut the paper into thin strips.",
+    "exvi": "Hãy cắt tờ giấy thành những dải mỏng.",
+    "forms": [
+      "strips"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "smooth",
+    "r": 2241,
+    "pos": "adjective, verb",
+    "vi": "nhẵn, mịn; trôi chảy, suôn sẻ; làm phẳng",
+    "ipa": "/smuːð/",
+    "ex": "Her skin is soft and smooth.",
+    "exvi": "Da cô ấy mềm và mịn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "intervention",
+    "r": 2242,
+    "pos": "noun",
+    "vi": "sự can thiệp",
+    "ipa": "/ˌɪn.təˈven.ʃən/",
+    "ex": "Without quick medical intervention, he could have died.",
+    "exvi": "Nếu không có sự can thiệp y tế kịp thời, anh ấy có thể đã chết.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "impress",
+    "r": 2243,
+    "pos": "verb",
+    "vi": "gây ấn tượng; làm cảm phục",
+    "ipa": "/ɪmˈpres/",
+    "ex": "He tried to impress her with his cooking.",
+    "exvi": "Anh ấy cố gây ấn tượng với cô ấy bằng tài nấu ăn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "exam",
+    "r": 2244,
+    "pos": "noun",
+    "vi": "kỳ thi; bài thi",
+    "ipa": "/ɪɡˈzæm/",
+    "ex": "I have an English exam tomorrow.",
+    "exvi": "Ngày mai tôi có bài thi tiếng Anh.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "vice",
+    "r": 2245,
+    "pos": "noun, adjective",
+    "vi": "phó (vice president); thói xấu, tật xấu",
+    "ipa": "/vaɪs/",
+    "ex": "She was elected vice president of the club.",
+    "exvi": "Cô ấy được bầu làm phó chủ tịch câu lạc bộ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "radical",
+    "r": 2246,
+    "pos": "adjective, noun",
+    "vi": "căn bản, triệt để; cấp tiến; người cấp tiến",
+    "ipa": "/ˈræd.ɪ.kəl/",
+    "ex": "The new manager made radical changes to the company.",
+    "exvi": "Người quản lý mới đã thực hiện những thay đổi căn bản trong công ty.",
+    "forms": [],
+    "awl": 8
+  },
+  {
+    "w": "similarly",
+    "r": 2247,
+    "pos": "adverb",
+    "vi": "tương tự; cũng vậy",
+    "ipa": "/ˈsɪm.ɪ.lə.li/",
+    "ex": "The two girls were dressed similarly.",
+    "exvi": "Hai cô gái ăn mặc giống nhau.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "behave",
+    "r": 2248,
+    "pos": "verb",
+    "vi": "cư xử; hành xử; ngoan",
+    "ipa": "/bɪˈheɪv/",
+    "ex": "The children behaved very well at the party.",
+    "exvi": "Bọn trẻ cư xử rất ngoan ở bữa tiệc.",
+    "forms": [
+      "behaved"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "loud",
+    "r": 2249,
+    "pos": "adjective, adverb",
+    "vi": "to, ồn ào; lòe loẹt",
+    "ipa": "/laʊd/",
+    "ex": "The music is too loud, please turn it down.",
+    "exvi": "Nhạc to quá, làm ơn vặn nhỏ lại.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "dimension",
+    "r": 2250,
+    "pos": "noun",
+    "vi": "kích thước; chiều; khía cạnh",
+    "ipa": "/ˌdaɪˈmen.ʃən/",
+    "ex": "Please measure the dimensions of the room.",
+    "exvi": "Hãy đo kích thước của căn phòng.",
+    "forms": [
+      "dimensions"
+    ],
+    "awl": 4
+  },
+  {
+    "w": "subsequent",
+    "r": 2251,
+    "pos": "adjective",
+    "vi": "sau đó; tiếp theo",
+    "ipa": "/ˈsʌb.sɪ.kwənt/",
+    "ex": "The first test was easy, but subsequent tests were harder.",
+    "exvi": "Bài kiểm tra đầu dễ, nhưng các bài sau đó khó hơn.",
+    "forms": [],
+    "awl": 4
+  },
+  {
+    "w": "infection",
+    "r": 2252,
+    "pos": "noun",
+    "vi": "sự nhiễm trùng; bệnh nhiễm trùng",
+    "ipa": "/ɪnˈfek.ʃən/",
+    "ex": "The doctor gave me medicine for an ear infection.",
+    "exvi": "Bác sĩ cho tôi thuốc trị viêm tai.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "jacket",
+    "r": 2253,
+    "pos": "noun",
+    "vi": "áo khoác; áo jacket",
+    "ipa": "/ˈdʒæk.ɪt/",
+    "ex": "Take a jacket, it might be cold tonight.",
+    "exvi": "Mang theo áo khoác nhé, tối nay có thể lạnh đấy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "efficiency",
+    "r": 2254,
+    "pos": "noun",
+    "vi": "hiệu quả; năng suất; hiệu suất",
+    "ipa": "/ɪˈfɪʃ.ən.si/",
+    "ex": "New machines have improved the efficiency of the factory.",
+    "exvi": "Máy móc mới đã nâng cao hiệu suất của nhà máy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "dirty",
+    "r": 2255,
+    "pos": "adjective",
+    "vi": "bẩn; dơ; bất lương",
+    "ipa": "/ˈdɜː.ti/",
+    "ex": "Your shoes are dirty, take them off.",
+    "exvi": "Giày của bạn bẩn rồi, cởi ra đi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "statistic",
+    "r": 2256,
+    "pos": "noun",
+    "vi": "số liệu thống kê; thống kê học (statistics)",
+    "ipa": "/stəˈtɪs.tɪk/",
+    "ex": "The statistics show that crime has fallen this year.",
+    "exvi": "Số liệu thống kê cho thấy tội phạm đã giảm trong năm nay.",
+    "forms": [
+      "statistics"
+    ],
+    "awl": 4
+  },
+  {
+    "w": "regularly",
+    "r": 2257,
+    "pos": "adverb",
+    "vi": "thường xuyên; đều đặn",
+    "ipa": "/ˈreɡ.jə.lə.li/",
+    "ex": "You should exercise regularly to stay healthy.",
+    "exvi": "Bạn nên tập thể dục thường xuyên để giữ sức khỏe.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "resort",
+    "r": 2258,
+    "pos": "noun, verb",
+    "vi": "khu nghỉ dưỡng; phương sách cuối cùng; phải dùng đến",
+    "ipa": "/rɪˈzɔːt/",
+    "ex": "We spent a week at a beach resort in Thailand.",
+    "exvi": "Chúng tôi đã ở một tuần tại một khu nghỉ dưỡng ven biển ở Thái Lan.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "iron",
+    "r": 2259,
+    "pos": "noun, verb",
+    "vi": "sắt; bàn là; là (ủi) quần áo",
+    "ipa": "/aɪən/",
+    "ex": "I need to iron my shirt before the interview.",
+    "exvi": "Tôi cần là áo sơ mi trước buổi phỏng vấn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "broadcast",
+    "r": 2260,
+    "pos": "verb, noun",
+    "vi": "phát sóng; truyền hình; chương trình phát sóng",
+    "ipa": "/ˈbrɔːd.kɑːst/",
+    "ex": "The match will be broadcast live on TV.",
+    "exvi": "Trận đấu sẽ được truyền hình trực tiếp trên TV.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "membership",
+    "r": 2261,
+    "pos": "noun",
+    "vi": "tư cách hội viên; số hội viên; phí hội viên",
+    "ipa": "/ˈmem.bə.ʃɪp/",
+    "ex": "How much does gym membership cost?",
+    "exvi": "Phí hội viên phòng gym là bao nhiêu?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "bread",
+    "r": 2262,
+    "pos": "noun",
+    "vi": "bánh mì",
+    "ipa": "/bred/",
+    "ex": "Could you buy a loaf of bread on your way home?",
+    "exvi": "Bạn có thể mua một ổ bánh mì trên đường về nhà không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "blind",
+    "r": 2263,
+    "pos": "adjective, noun",
+    "vi": "mù; mù quáng; rèm cửa",
+    "ipa": "/blaɪnd/",
+    "ex": "The old dog is almost blind now.",
+    "exvi": "Con chó già giờ gần như bị mù.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "pure",
+    "r": 2264,
+    "pos": "adjective",
+    "vi": "nguyên chất; trong lành, tinh khiết; hoàn toàn",
+    "ipa": "/pjʊə/",
+    "ex": "This shirt is made of pure cotton.",
+    "exvi": "Chiếc áo này làm bằng cotton nguyên chất.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "bloody",
+    "r": 2265,
+    "pos": "adjective, adverb",
+    "vi": "đẫm máu; (Anh, thông tục) chết tiệt, cực kỳ",
+    "ipa": "/ˈblʌd.i/",
+    "ex": "It was a long and bloody war.",
+    "exvi": "Đó là một cuộc chiến dài và đẫm máu.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "ally",
+    "r": 2266,
+    "pos": "noun, verb",
+    "vi": "đồng minh; liên minh",
+    "ipa": "/ˈæl.aɪ/",
+    "ex": "The two countries have been close allies for years.",
+    "exvi": "Hai nước đã là đồng minh thân cận trong nhiều năm.",
+    "forms": [
+      "allies"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "quantity",
+    "r": 2267,
+    "pos": "noun",
+    "vi": "số lượng; lượng",
+    "ipa": "/ˈkwɒn.tə.ti/",
+    "ex": "The police found a large quantity of drugs in the car.",
+    "exvi": "Cảnh sát tìm thấy một lượng lớn ma túy trong xe.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "bend",
+    "r": 2268,
+    "pos": "verb, noun",
+    "vi": "cúi xuống; uốn cong; khúc cua",
+    "ipa": "/bend/",
+    "ex": "He bent down to pick up the coin.",
+    "exvi": "Anh ấy cúi xuống nhặt đồng xu.",
+    "forms": [
+      "bent"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "mature",
+    "r": 2269,
+    "pos": "adjective, verb",
+    "vi": "trưởng thành, chín chắn; chín (quả); trưởng thành lên",
+    "ipa": "/məˈtʃʊə/",
+    "ex": "She is very mature for her age.",
+    "exvi": "Cô ấy rất chín chắn so với tuổi.",
+    "forms": [],
+    "awl": 9
+  },
+  {
+    "w": "briefly",
+    "r": 2270,
+    "pos": "adverb",
+    "vi": "ngắn gọn; trong chốc lát",
+    "ipa": "/ˈbriːf.li/",
+    "ex": "Let me briefly explain the plan.",
+    "exvi": "Để tôi giải thích ngắn gọn về kế hoạch.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "alarm",
+    "r": 2271,
+    "pos": "noun, verb",
+    "vi": "chuông báo động; đồng hồ báo thức; làm lo sợ",
+    "ipa": "/əˈlɑːm/",
+    "ex": "I set my alarm for six o'clock.",
+    "exvi": "Tôi đặt báo thức lúc sáu giờ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "disturb",
+    "r": 2272,
+    "pos": "verb",
+    "vi": "làm phiền; quấy rầy; làm lo lắng",
+    "ipa": "/dɪˈstɜːb/",
+    "ex": "Please don't disturb me while I'm working.",
+    "exvi": "Làm ơn đừng làm phiền tôi khi tôi đang làm việc.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "sustain",
+    "r": 2273,
+    "pos": "verb",
+    "vi": "duy trì; chống đỡ; chịu (thiệt hại, thương tích)",
+    "ipa": "/səˈsteɪn/",
+    "ex": "It's hard to sustain a high level of energy all day.",
+    "exvi": "Thật khó để duy trì năng lượng cao cả ngày.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "flood",
+    "r": 2274,
+    "pos": "noun, verb",
+    "vi": "lũ lụt; làm ngập; tràn ngập",
+    "ipa": "/flʌd/",
+    "ex": "The flood destroyed hundreds of homes.",
+    "exvi": "Trận lũ đã phá hủy hàng trăm ngôi nhà.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "poverty",
+    "r": 2275,
+    "pos": "noun",
+    "vi": "sự nghèo đói; cảnh nghèo",
+    "ipa": "/ˈpɒv.ə.ti/",
+    "ex": "Many children around the world live in poverty.",
+    "exvi": "Nhiều trẻ em trên thế giới sống trong cảnh nghèo đói.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "crazy",
+    "r": 2276,
+    "pos": "adjective",
+    "vi": "điên rồ; phát cuồng, mê mẩn",
+    "ipa": "/ˈkreɪ.zi/",
+    "ex": "My brother is crazy about football.",
+    "exvi": "Anh trai tôi mê bóng đá như điên.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "cite",
+    "r": 2277,
+    "pos": "verb",
+    "vi": "trích dẫn; viện dẫn, nêu ra",
+    "ipa": "/saɪt/",
+    "ex": "You must cite all your sources in the essay.",
+    "exvi": "Bạn phải trích dẫn tất cả nguồn tài liệu trong bài luận.",
+    "forms": [],
+    "awl": 6
+  },
+  {
+    "w": "newly",
+    "r": 2278,
+    "pos": "adverb",
+    "vi": "mới (vừa mới)",
+    "ipa": "/ˈnjuː.li/",
+    "ex": "The newly built hospital opened last week.",
+    "exvi": "Bệnh viện mới xây đã khai trương tuần trước.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "parallel",
+    "r": 2279,
+    "pos": "adjective, noun",
+    "vi": "song song; tương đồng; điểm tương đồng",
+    "ipa": "/ˈpær.ə.lel/",
+    "ex": "The road runs parallel to the river.",
+    "exvi": "Con đường chạy song song với dòng sông.",
+    "forms": [],
+    "awl": 4
+  },
+  {
+    "w": "gender",
+    "r": 2280,
+    "pos": "noun",
+    "vi": "giới tính; giống (ngữ pháp)",
+    "ipa": "/ˈdʒen.də/",
+    "ex": "Jobs should be open to everyone, whatever their gender.",
+    "exvi": "Công việc nên mở cho mọi người, bất kể giới tính.",
+    "forms": [],
+    "awl": 6
+  },
+  {
+    "w": "sponsor",
+    "r": 2281,
+    "pos": "noun, verb",
+    "vi": "nhà tài trợ; tài trợ; bảo trợ",
+    "ipa": "/ˈspɒn.sə/",
+    "ex": "A local bank sponsored the football team.",
+    "exvi": "Một ngân hàng địa phương đã tài trợ cho đội bóng.",
+    "forms": [
+      "sponsored"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "boot",
+    "r": 2282,
+    "pos": "noun, verb",
+    "vi": "ủng, bốt; cốp xe (Anh); khởi động (máy tính)",
+    "ipa": "/buːt/",
+    "ex": "Put your bags in the boot of the car.",
+    "exvi": "Hãy để túi của bạn vào cốp xe.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "accurate",
+    "r": 2283,
+    "pos": "adjective",
+    "vi": "chính xác; đúng",
+    "ipa": "/ˈæk.jə.rət/",
+    "ex": "The weather forecast was surprisingly accurate.",
+    "exvi": "Dự báo thời tiết chính xác đến bất ngờ.",
+    "forms": [],
+    "awl": 6
+  },
+  {
+    "w": "dealer",
+    "r": 2284,
+    "pos": "noun",
+    "vi": "người buôn bán; đại lý",
+    "ipa": "/ˈdiː.lə/",
+    "ex": "He bought his car from a local dealer.",
+    "exvi": "Anh ấy mua xe từ một đại lý địa phương.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "button",
+    "r": 2285,
+    "pos": "noun",
+    "vi": "cúc áo; nút bấm",
+    "ipa": "/ˈbʌt.ən/",
+    "ex": "Press this button to start the machine.",
+    "exvi": "Nhấn nút này để khởi động máy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "burden",
+    "r": 2286,
+    "pos": "noun",
+    "vi": "gánh nặng",
+    "ipa": "/ˈbɜː.dən/",
+    "ex": "I don't want to be a burden to my children.",
+    "exvi": "Tôi không muốn trở thành gánh nặng cho con cái.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "desert",
+    "r": 2287,
+    "pos": "noun, verb",
+    "vi": "sa mạc; bỏ rơi, rời bỏ",
+    "ipa": "/ˈdez.ət/",
+    "ex": "It hardly ever rains in the desert.",
+    "exvi": "Ở sa mạc hầu như không bao giờ có mưa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "mate",
+    "r": 2288,
+    "pos": "noun, verb",
+    "vi": "bạn (Anh, thông tục); bạn đời, con đực/cái; giao phối",
+    "ipa": "/meɪt/",
+    "ex": "I'm going out with my mates tonight.",
+    "exvi": "Tối nay tôi đi chơi với mấy đứa bạn.",
+    "forms": [
+      "mates"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "occasionally",
+    "r": 2289,
+    "pos": "adverb",
+    "vi": "thỉnh thoảng; đôi khi",
+    "ipa": "/əˈkeɪ.ʒən.əl.i/",
+    "ex": "We occasionally eat out at the weekend.",
+    "exvi": "Thỉnh thoảng chúng tôi đi ăn ngoài vào cuối tuần.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "shareholder",
+    "r": 2290,
+    "pos": "noun",
+    "vi": "cổ đông",
+    "ipa": "/ˈʃeəˌhəʊl.də/",
+    "ex": "The shareholders will meet to discuss the company's future.",
+    "exvi": "Các cổ đông sẽ họp để bàn về tương lai của công ty.",
+    "forms": [
+      "shareholders"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "bowl",
+    "r": 2291,
+    "pos": "noun",
+    "vi": "cái bát, tô; bát (đầy)",
+    "ipa": "/bəʊl/",
+    "ex": "I have a bowl of cereal for breakfast.",
+    "exvi": "Tôi ăn một bát ngũ cốc vào bữa sáng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "discovery",
+    "r": 2292,
+    "pos": "noun",
+    "vi": "sự khám phá; phát hiện",
+    "ipa": "/dɪˈskʌv.ər.i/",
+    "ex": "The discovery of oil changed the country completely.",
+    "exvi": "Việc phát hiện ra dầu mỏ đã thay đổi đất nước hoàn toàn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "resistance",
+    "r": 2293,
+    "pos": "noun",
+    "vi": "sự chống cự, kháng cự; sự phản đối; sức đề kháng",
+    "ipa": "/rɪˈzɪs.təns/",
+    "ex": "There was strong resistance to the new law.",
+    "exvi": "Có sự phản đối mạnh mẽ đối với luật mới.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "bath",
+    "r": 2294,
+    "pos": "noun",
+    "vi": "bồn tắm; sự tắm (bồn)",
+    "ipa": "/bɑːθ/",
+    "ex": "I like to have a hot bath after a long day.",
+    "exvi": "Tôi thích tắm nước nóng sau một ngày dài.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "frequency",
+    "r": 2295,
+    "pos": "noun",
+    "vi": "tần suất; tần số",
+    "ipa": "/ˈfriː.kwən.si/",
+    "ex": "The frequency of buses increases during rush hour.",
+    "exvi": "Tần suất xe buýt tăng lên vào giờ cao điểm.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "criticize",
+    "r": 2296,
+    "pos": "verb",
+    "vi": "chỉ trích; phê bình",
+    "ipa": "/ˈkrɪt.ɪ.saɪz/",
+    "ex": "The minister was criticized for his decision.",
+    "exvi": "Bộ trưởng đã bị chỉ trích vì quyết định của mình.",
+    "forms": [
+      "criticized"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "tap",
+    "r": 2297,
+    "pos": "noun, verb",
+    "vi": "vòi nước (Anh); gõ nhẹ, vỗ nhẹ; chạm (màn hình)",
+    "ipa": "/tæp/",
+    "ex": "Don't leave the tap running while you brush your teeth.",
+    "exvi": "Đừng để vòi nước chảy khi bạn đánh răng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "philosophy",
+    "r": 2298,
+    "pos": "noun",
+    "vi": "triết học; triết lý; quan điểm sống",
+    "ipa": "/fɪˈlɒs.ə.fi/",
+    "ex": "He studied philosophy at university in Paris.",
+    "exvi": "Anh ấy học triết học ở một trường đại học tại Paris.",
+    "forms": [],
+    "awl": 3
+  },
+  {
+    "w": "lip",
+    "r": 2299,
+    "pos": "noun",
+    "vi": "môi; miệng, mép (cốc)",
+    "ipa": "/lɪp/",
+    "ex": "She bit her lip to stop herself from laughing.",
+    "exvi": "Cô ấy cắn môi để khỏi bật cười.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "attribute",
+    "r": 2300,
+    "pos": "verb, noun",
+    "vi": "cho là do; quy cho; thuộc tính, phẩm chất",
+    "ipa": "/əˈtrɪb.juːt/",
+    "ex": "She attributes her success to hard work.",
+    "exvi": "Cô ấy cho rằng thành công của mình là nhờ làm việc chăm chỉ.",
+    "forms": [
+      "attributes"
+    ],
+    "awl": 4
+  },
+  {
+    "w": "apologize",
+    "r": 2301,
+    "pos": "verb",
+    "vi": "xin lỗi",
+    "ipa": "/əˈpɒl.ə.dʒaɪz/",
+    "ex": "I apologize for being late to the meeting.",
+    "exvi": "Tôi xin lỗi vì đến họp muộn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "approval",
+    "r": 2302,
+    "pos": "noun",
+    "vi": "sự chấp thuận, phê duyệt; sự tán thành",
+    "ipa": "/əˈpruː.vəl/",
+    "ex": "The plan needs approval from the manager.",
+    "exvi": "Kế hoạch cần được quản lý phê duyệt.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "grab",
+    "r": 2303,
+    "pos": "verb",
+    "vi": "chộp, túm lấy; tranh thủ (ăn, uống)",
+    "ipa": "/ɡræb/",
+    "ex": "Let's grab something to eat before the film.",
+    "exvi": "Hãy tranh thủ ăn chút gì trước khi xem phim.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "entitle",
+    "r": 2304,
+    "pos": "verb",
+    "vi": "cho quyền; đặt tên (sách, bài)",
+    "ipa": "/ɪnˈtaɪ.təl/",
+    "ex": "This ticket entitles you to free entry to the museum.",
+    "exvi": "Vé này cho bạn quyền vào cửa bảo tàng miễn phí.",
+    "forms": [
+      "entitles"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "lend",
+    "r": 2305,
+    "pos": "verb",
+    "vi": "cho mượn; cho vay",
+    "ipa": "/lend/",
+    "ex": "Can you lend me your pen for a minute?",
+    "exvi": "Bạn có thể cho tôi mượn bút một lát không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "involvement",
+    "r": 2306,
+    "pos": "noun",
+    "vi": "sự tham gia; sự liên quan, dính líu",
+    "ipa": "/ɪnˈvɒlv.mənt/",
+    "ex": "Parents' involvement in school life helps children learn.",
+    "exvi": "Sự tham gia của phụ huynh vào hoạt động ở trường giúp trẻ học tốt hơn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "exposure",
+    "r": 2307,
+    "pos": "noun",
+    "vi": "sự tiếp xúc; sự phơi bày; sự xuất hiện trên truyền thông",
+    "ipa": "/ɪkˈspəʊ.ʒə/",
+    "ex": "Too much exposure to the sun can damage your skin.",
+    "exvi": "Tiếp xúc quá nhiều với ánh nắng có thể làm hại da.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "conventional",
+    "r": 2308,
+    "pos": "adjective",
+    "vi": "thông thường; truyền thống; theo lối cũ",
+    "ipa": "/kənˈven.ʃən.əl/",
+    "ex": "Electric cars are cheaper to run than conventional cars.",
+    "exvi": "Xe điện có chi phí vận hành rẻ hơn xe thông thường.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "digital",
+    "r": 2309,
+    "pos": "adjective",
+    "vi": "kỹ thuật số; số",
+    "ipa": "/ˈdɪdʒ.ɪ.təl/",
+    "ex": "I bought a new digital camera.",
+    "exvi": "Tôi đã mua một chiếc máy ảnh kỹ thuật số mới.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "translate",
+    "r": 2310,
+    "pos": "verb",
+    "vi": "dịch; chuyển thành",
+    "ipa": "/trænzˈleɪt/",
+    "ex": "Can you translate this letter into English?",
+    "exvi": "Bạn có thể dịch lá thư này sang tiếng Anh không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "edit",
+    "r": 2311,
+    "pos": "verb, noun",
+    "vi": "biên tập; chỉnh sửa",
+    "ipa": "/ˈed.ɪt/",
+    "ex": "I need to edit my essay before I send it.",
+    "exvi": "Tôi cần chỉnh sửa bài luận trước khi gửi đi.",
+    "forms": [],
+    "awl": 6
+  },
+  {
+    "w": "formation",
+    "r": 2312,
+    "pos": "noun",
+    "vi": "sự hình thành; đội hình; sự thành lập",
+    "ipa": "/fɔːˈmeɪ.ʃən/",
+    "ex": "The film explains the formation of the planets.",
+    "exvi": "Bộ phim giải thích sự hình thành của các hành tinh.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "deposit",
+    "r": 2313,
+    "pos": "noun, verb",
+    "vi": "tiền đặt cọc; tiền gửi; gửi (tiền), đặt",
+    "ipa": "/dɪˈpɒz.ɪt/",
+    "ex": "We paid a deposit of two hundred pounds on the flat.",
+    "exvi": "Chúng tôi đã đặt cọc hai trăm bảng cho căn hộ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "pleasant",
+    "r": 2314,
+    "pos": "adjective",
+    "vi": "dễ chịu; thú vị; dễ mến",
+    "ipa": "/ˈplez.ənt/",
+    "ex": "We had a pleasant evening with our friends.",
+    "exvi": "Chúng tôi đã có một buổi tối dễ chịu bên bạn bè.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "overseas",
+    "r": 2315,
+    "pos": "adjective, adverb",
+    "vi": "(ở) nước ngoài; hải ngoại",
+    "ipa": "/ˌəʊ.vəˈsiːz/",
+    "ex": "Many students go overseas to study.",
+    "exvi": "Nhiều sinh viên ra nước ngoài du học.",
+    "forms": [],
+    "awl": 6
+  },
+  {
+    "w": "advocate",
+    "r": 2316,
+    "pos": "noun, verb",
+    "vi": "người ủng hộ; luật sư; ủng hộ, tán thành",
+    "ipa": "/ˈæd.və.keɪt/",
+    "ex": "She is a strong advocate of women's rights.",
+    "exvi": "Bà ấy là người ủng hộ mạnh mẽ quyền của phụ nữ.",
+    "forms": [],
+    "awl": 7
+  },
+  {
+    "w": "establishment",
+    "r": 2317,
+    "pos": "noun",
+    "vi": "cơ sở (kinh doanh); sự thành lập; giới quyền lực",
+    "ipa": "/ɪˈstæb.lɪʃ.mənt/",
+    "ex": "The restaurant is a family establishment.",
+    "exvi": "Nhà hàng là một cơ sở kinh doanh gia đình.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "summary",
+    "r": 2318,
+    "pos": "noun",
+    "vi": "bản tóm tắt",
+    "ipa": "/ˈsʌm.ər.i/",
+    "ex": "Write a short summary of the article.",
+    "exvi": "Hãy viết một bản tóm tắt ngắn về bài báo.",
+    "forms": [],
+    "awl": 4
+  },
+  {
+    "w": "rough",
+    "r": 2319,
+    "pos": "adjective",
+    "vi": "thô ráp, gồ ghề; đại khái; khó khăn",
+    "ipa": "/rʌf/",
+    "ex": "I can give you a rough idea of the cost.",
+    "exvi": "Tôi có thể cho bạn ý niệm đại khái về chi phí.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "pen",
+    "r": 2320,
+    "pos": "noun",
+    "vi": "bút; bút mực",
+    "ipa": "/pen/",
+    "ex": "Can I borrow your pen to sign this form?",
+    "exvi": "Tôi có thể mượn bút của bạn để ký tờ đơn này không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "recovery",
+    "r": 2321,
+    "pos": "noun",
+    "vi": "sự hồi phục; sự phục hồi; sự tìm lại được",
+    "ipa": "/rɪˈkʌv.ər.i/",
+    "ex": "We all wish you a quick recovery.",
+    "exvi": "Tất cả chúng tôi chúc bạn mau chóng hồi phục.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "seal",
+    "r": 2322,
+    "pos": "verb, noun",
+    "vi": "niêm phong, dán kín; con hải cẩu; con dấu",
+    "ipa": "/siːl/",
+    "ex": "She sealed the envelope and posted it.",
+    "exvi": "Cô ấy dán kín phong bì rồi gửi đi.",
+    "forms": [
+      "sealed"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "tube",
+    "r": 2323,
+    "pos": "noun",
+    "vi": "ống; tuýp; tàu điện ngầm London (the Tube)",
+    "ipa": "/tʃuːb/",
+    "ex": "I usually take the tube to work.",
+    "exvi": "Tôi thường đi tàu điện ngầm đi làm.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "tower",
+    "r": 2324,
+    "pos": "noun",
+    "vi": "tháp; tòa tháp",
+    "ipa": "/taʊə/",
+    "ex": "You can see the whole city from the top of the tower.",
+    "exvi": "Bạn có thể nhìn thấy toàn bộ thành phố từ đỉnh tháp.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "characterize",
+    "r": 2325,
+    "pos": "verb",
+    "vi": "là đặc điểm của; mô tả đặc điểm",
+    "ipa": "/ˈkær.ək.tər.aɪz/",
+    "ex": "The region is characterized by hot, dry summers.",
+    "exvi": "Vùng này có đặc điểm là mùa hè nóng và khô.",
+    "forms": [
+      "characterized"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "specify",
+    "r": 2326,
+    "pos": "verb",
+    "vi": "nêu rõ; chỉ rõ; định rõ",
+    "ipa": "/ˈspes.ɪ.faɪ/",
+    "ex": "Please specify the colour you want.",
+    "exvi": "Vui lòng nêu rõ màu bạn muốn.",
+    "forms": [],
+    "awl": 3
+  },
+  {
+    "w": "exact",
+    "r": 2327,
+    "pos": "adjective",
+    "vi": "chính xác; đúng",
+    "ipa": "/ɪɡˈzækt/",
+    "ex": "What is the exact time of your flight?",
+    "exvi": "Giờ bay chính xác của bạn là mấy giờ?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "spin",
+    "r": 2328,
+    "pos": "verb, noun",
+    "vi": "quay, xoay tròn; vắt (máy giặt); vòng quay",
+    "ipa": "/spɪn/",
+    "ex": "The wheel was spinning very fast.",
+    "exvi": "Bánh xe đang quay rất nhanh.",
+    "forms": [
+      "spinning"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "operator",
+    "r": 2329,
+    "pos": "noun",
+    "vi": "người vận hành; nhà khai thác (dịch vụ); tổng đài viên",
+    "ipa": "/ˈɒp.ər.eɪ.tə/",
+    "ex": "Ask the operator to put you through to the hotel.",
+    "exvi": "Hãy nhờ tổng đài viên nối máy cho bạn tới khách sạn.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "infant",
+    "r": 2330,
+    "pos": "noun",
+    "vi": "trẻ sơ sinh; trẻ nhỏ",
+    "ipa": "/ˈɪn.fənt/",
+    "ex": "The nurse carefully picked up the infant.",
+    "exvi": "Cô y tá cẩn thận bế đứa trẻ sơ sinh lên.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "dig",
+    "r": 2331,
+    "pos": "verb",
+    "vi": "đào; bới",
+    "ipa": "/dɪɡ/",
+    "ex": "The dog dug a hole in the garden.",
+    "exvi": "Con chó đã đào một cái hố trong vườn.",
+    "forms": [
+      "dug"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "drag",
+    "r": 2332,
+    "pos": "verb",
+    "vi": "kéo lê; lê bước; kéo dài lê thê",
+    "ipa": "/dræɡ/",
+    "ex": "He dragged the heavy box across the floor.",
+    "exvi": "Anh ấy kéo lê chiếc hộp nặng qua sàn nhà.",
+    "forms": [
+      "dragged"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "mount",
+    "r": 2333,
+    "pos": "verb, noun",
+    "vi": "tăng lên; tổ chức, tiến hành; gắn, lắp",
+    "ipa": "/maʊnt/",
+    "ex": "Pressure is mounting on the government to act.",
+    "exvi": "Áp lực đang tăng lên buộc chính phủ phải hành động.",
+    "forms": [
+      "mounting"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "wrap",
+    "r": 2334,
+    "pos": "verb",
+    "vi": "gói, bọc; quấn",
+    "ipa": "/ræp/",
+    "ex": "I need to wrap this present for my sister.",
+    "exvi": "Tôi cần gói món quà này cho em gái.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "anticipate",
+    "r": 2335,
+    "pos": "verb",
+    "vi": "dự đoán, lường trước; mong đợi",
+    "ipa": "/ænˈtɪs.ɪ.peɪt/",
+    "ex": "We don't anticipate any problems with the new system.",
+    "exvi": "Chúng tôi không lường trước có vấn đề gì với hệ thống mới.",
+    "forms": [],
+    "awl": 9
+  },
+  {
+    "w": "dependent",
+    "r": 2336,
+    "pos": "adjective",
+    "vi": "phụ thuộc; lệ thuộc",
+    "ipa": "/dɪˈpen.dənt/",
+    "ex": "She is still financially dependent on her parents.",
+    "exvi": "Cô ấy vẫn phụ thuộc vào bố mẹ về tài chính.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "specialize",
+    "r": 2337,
+    "pos": "verb",
+    "vi": "chuyên về; chuyên môn hóa",
+    "ipa": "/ˈspeʃ.əl.aɪz/",
+    "ex": "This shop specializes in Italian food.",
+    "exvi": "Cửa hàng này chuyên về đồ ăn Ý.",
+    "forms": [
+      "specializes"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "angle",
+    "r": 2338,
+    "pos": "noun",
+    "vi": "góc; góc độ, khía cạnh",
+    "ipa": "/ˈæŋ.ɡəl/",
+    "ex": "Let's look at the problem from a different angle.",
+    "exvi": "Hãy nhìn vấn đề từ một góc độ khác.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "chicken",
+    "r": 2339,
+    "pos": "noun",
+    "vi": "con gà; thịt gà",
+    "ipa": "/ˈtʃɪk.ɪn/",
+    "ex": "We had roast chicken for dinner.",
+    "exvi": "Chúng tôi ăn gà quay vào bữa tối.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "anxiety",
+    "r": 2340,
+    "pos": "noun",
+    "vi": "sự lo âu; mối lo lắng",
+    "ipa": "/æŋˈzaɪ.ə.ti/",
+    "ex": "Many students feel anxiety before exams.",
+    "exvi": "Nhiều học sinh cảm thấy lo âu trước kỳ thi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "virus",
+    "r": 2341,
+    "pos": "noun",
+    "vi": "vi rút",
+    "ipa": "/ˈvaɪə.rəs/",
+    "ex": "My computer has a virus and keeps crashing.",
+    "exvi": "Máy tính của tôi bị nhiễm vi rút và liên tục bị treo.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "precisely",
+    "r": 2342,
+    "pos": "adverb",
+    "vi": "chính xác; đúng (như vậy)",
+    "ipa": "/prɪˈsaɪs.li/",
+    "ex": "The train left at precisely ten o'clock.",
+    "exvi": "Tàu rời đi đúng mười giờ.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "rival",
+    "r": 2343,
+    "pos": "noun, adjective, verb",
+    "vi": "đối thủ; cạnh tranh; sánh ngang",
+    "ipa": "/ˈraɪ.vəl/",
+    "ex": "The two teams have been rivals for many years.",
+    "exvi": "Hai đội đã là đối thủ của nhau trong nhiều năm.",
+    "forms": [
+      "rivals"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "offense",
+    "r": 2344,
+    "pos": "noun",
+    "vi": "hành vi phạm tội (Anh Mỹ, Anh Anh viết offence); sự xúc phạm",
+    "ipa": "/əˈfens/",
+    "ex": "Driving without a licence is a serious offense.",
+    "exvi": "Lái xe không có bằng là một hành vi phạm tội nghiêm trọng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "detect",
+    "r": 2345,
+    "pos": "verb",
+    "vi": "phát hiện; dò ra; nhận thấy",
+    "ipa": "/dɪˈtekt/",
+    "ex": "The test can detect the disease at an early stage.",
+    "exvi": "Xét nghiệm có thể phát hiện căn bệnh ở giai đoạn sớm.",
+    "forms": [],
+    "awl": 8
+  },
+  {
+    "w": "teenager",
+    "r": 2346,
+    "pos": "noun",
+    "vi": "thiếu niên (13–19 tuổi)",
+    "ipa": "/ˈtiːnˌeɪ.dʒə/",
+    "ex": "The film is popular with teenagers.",
+    "exvi": "Bộ phim được giới thiếu niên yêu thích.",
+    "forms": [
+      "teenagers"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "admire",
+    "r": 2347,
+    "pos": "verb",
+    "vi": "ngưỡng mộ; khâm phục; chiêm ngưỡng",
+    "ipa": "/ədˈmaɪə/",
+    "ex": "I really admire her courage and her honesty.",
+    "exvi": "Tôi thực sự khâm phục lòng dũng cảm và sự trung thực của cô ấy.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "moderate",
+    "r": 2348,
+    "pos": "adjective, verb",
+    "vi": "vừa phải; ôn hòa; điều tiết",
+    "ipa": "/ˈmɒd.ər.ət/",
+    "ex": "Cook the soup over a moderate heat.",
+    "exvi": "Nấu súp trên lửa vừa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "surgery",
+    "r": 2349,
+    "pos": "noun",
+    "vi": "phẫu thuật; phòng khám (Anh)",
+    "ipa": "/ˈsɜː.dʒər.i/",
+    "ex": "She needs surgery on her knee.",
+    "exvi": "Cô ấy cần phẫu thuật đầu gối.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "musician",
+    "r": 2350,
+    "pos": "noun",
+    "vi": "nhạc sĩ; nhạc công",
+    "ipa": "/mjuːˈzɪʃ.ən/",
+    "ex": "He is a talented musician who plays the piano.",
+    "exvi": "Anh ấy là một nhạc công tài năng chơi piano.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "significance",
+    "r": 2351,
+    "pos": "noun",
+    "vi": "tầm quan trọng; ý nghĩa",
+    "ipa": "/sɪɡˈnɪf.ɪ.kəns/",
+    "ex": "Do you understand the significance of this discovery?",
+    "exvi": "Bạn có hiểu tầm quan trọng của phát hiện này không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "shower",
+    "r": 2352,
+    "pos": "noun, verb",
+    "vi": "vòi hoa sen; sự tắm vòi sen; mưa rào",
+    "ipa": "/ʃaʊə/",
+    "ex": "I have a shower every morning.",
+    "exvi": "Sáng nào tôi cũng tắm vòi sen.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "illegal",
+    "r": 2353,
+    "pos": "adjective",
+    "vi": "bất hợp pháp; trái luật",
+    "ipa": "/ɪˈliː.ɡəl/",
+    "ex": "It is illegal to sell alcohol to children.",
+    "exvi": "Bán rượu cho trẻ em là bất hợp pháp.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "charity",
+    "r": 2354,
+    "pos": "noun",
+    "vi": "tổ chức từ thiện; hoạt động từ thiện",
+    "ipa": "/ˈtʃær.ə.ti/",
+    "ex": "She gives money to charity every month.",
+    "exvi": "Cô ấy quyên góp tiền cho từ thiện mỗi tháng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "universal",
+    "r": 2355,
+    "pos": "adjective",
+    "vi": "phổ quát; chung, toàn thể; toàn cầu",
+    "ipa": "/ˌjuː.nɪˈvɜː.səl/",
+    "ex": "Many people believe that music is a universal language.",
+    "exvi": "Nhiều người tin rằng âm nhạc là một ngôn ngữ chung của nhân loại.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "cigarette",
+    "r": 2356,
+    "pos": "noun",
+    "vi": "điếu thuốc lá",
+    "ipa": "/ˌsɪɡ.ərˈet/",
+    "ex": "He stopped smoking cigarettes last year.",
+    "exvi": "Anh ấy đã bỏ hút thuốc lá từ năm ngoái.",
+    "forms": [
+      "cigarettes"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "constitute",
+    "r": 2357,
+    "pos": "verb",
+    "vi": "cấu thành; tạo thành; được coi là",
+    "ipa": "/ˈkɒn.stɪ.tʃuːt/",
+    "ex": "Women constitute more than half of the workforce.",
+    "exvi": "Phụ nữ chiếm hơn một nửa lực lượng lao động.",
+    "forms": [],
+    "awl": 1
+  },
+  {
+    "w": "adequate",
+    "r": 2358,
+    "pos": "adjective",
+    "vi": "đủ; thỏa đáng",
+    "ipa": "/ˈæd.ə.kwət/",
+    "ex": "Make sure you get adequate sleep before the exam.",
+    "exvi": "Hãy đảm bảo ngủ đủ giấc trước kỳ thi.",
+    "forms": [],
+    "awl": 4
+  },
+  {
+    "w": "consultant",
+    "r": 2359,
+    "pos": "noun",
+    "vi": "chuyên gia tư vấn; bác sĩ chuyên khoa (Anh)",
+    "ipa": "/kənˈsʌl.tənt/",
+    "ex": "The company hired a consultant to improve sales.",
+    "exvi": "Công ty thuê một chuyên gia tư vấn để tăng doanh số.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "historian",
+    "r": 2360,
+    "pos": "noun",
+    "vi": "nhà sử học",
+    "ipa": "/hɪˈstɔː.ri.ən/",
+    "ex": "Historians still disagree about the causes of the war.",
+    "exvi": "Các nhà sử học vẫn bất đồng về nguyên nhân của cuộc chiến.",
+    "forms": [
+      "historians"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "cousin",
+    "r": 2361,
+    "pos": "noun",
+    "vi": "anh chị em họ",
+    "ipa": "/ˈkʌz.ən/",
+    "ex": "My cousin is coming to stay with us next week.",
+    "exvi": "Tuần sau em họ tôi sẽ đến ở với chúng tôi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "visual",
+    "r": 2362,
+    "pos": "adjective",
+    "vi": "(thuộc) thị giác; trực quan",
+    "ipa": "/ˈvɪʒ.u.əl/",
+    "ex": "The teacher uses a lot of visual aids in class.",
+    "exvi": "Giáo viên dùng nhiều đồ dùng trực quan trong lớp.",
+    "forms": [],
+    "awl": 8
+  },
+  {
+    "w": "stupid",
+    "r": 2363,
+    "pos": "adjective",
+    "vi": "ngu ngốc; ngớ ngẩn",
+    "ipa": "/ˈstʃuː.pɪd/",
+    "ex": "It was stupid of me to forget my keys.",
+    "exvi": "Tôi thật ngớ ngẩn khi quên chìa khóa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "keen",
+    "r": 2364,
+    "pos": "adjective",
+    "vi": "hăng hái, ham thích; sắc bén, nhạy",
+    "ipa": "/kiːn/",
+    "ex": "She is very keen on tennis.",
+    "exvi": "Cô ấy rất mê quần vợt.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "ethnic",
+    "r": 2365,
+    "pos": "adjective",
+    "vi": "(thuộc) dân tộc; sắc tộc",
+    "ipa": "/ˈeθ.nɪk/",
+    "ex": "Vietnam has fifty four ethnic groups.",
+    "exvi": "Việt Nam có năm mươi tư dân tộc.",
+    "forms": [],
+    "awl": 4
+  },
+  {
+    "w": "twin",
+    "r": 2366,
+    "pos": "noun, adjective",
+    "vi": "anh chị em sinh đôi; sinh đôi; đôi (giống nhau)",
+    "ipa": "/twɪn/",
+    "ex": "My sister and I are twins.",
+    "exvi": "Chị tôi và tôi là chị em sinh đôi.",
+    "forms": [
+      "twins"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "clinical",
+    "r": 2367,
+    "pos": "adjective",
+    "vi": "(thuộc) lâm sàng; lạnh lùng, vô cảm",
+    "ipa": "/ˈklɪn.ɪ.kəl/",
+    "ex": "The new drug is still in clinical trials.",
+    "exvi": "Loại thuốc mới vẫn đang trong giai đoạn thử nghiệm lâm sàng.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "eastern",
+    "r": 2368,
+    "pos": "adjective",
+    "vi": "(thuộc) phía đông; (thuộc) phương Đông",
+    "ipa": "/ˈiː.stən/",
+    "ex": "They live in the eastern part of the city.",
+    "exvi": "Họ sống ở phía đông thành phố.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "forecast",
+    "r": 2369,
+    "pos": "noun, verb",
+    "vi": "dự báo; sự dự đoán",
+    "ipa": "/ˈfɔː.kɑːst/",
+    "ex": "The weather forecast says it will rain tomorrow.",
+    "exvi": "Dự báo thời tiết nói rằng ngày mai trời sẽ mưa.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "segment",
+    "r": 2370,
+    "pos": "noun",
+    "vi": "phần, đoạn; múi (cam); phân khúc",
+    "ipa": "/ˈseɡ.mənt/",
+    "ex": "Young people are an important segment of the market.",
+    "exvi": "Người trẻ là một phân khúc quan trọng của thị trường.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "custom",
+    "r": 2371,
+    "pos": "noun",
+    "vi": "phong tục; tập quán; thói quen",
+    "ipa": "/ˈkʌs.təm/",
+    "ex": "It is a custom here to give money to children at New Year.",
+    "exvi": "Ở đây có phong tục lì xì cho trẻ em vào dịp năm mới.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "adapt",
+    "r": 2372,
+    "pos": "verb",
+    "vi": "thích nghi; điều chỉnh; chuyển thể",
+    "ipa": "/əˈdæpt/",
+    "ex": "Animals must adapt to changes in their environment.",
+    "exvi": "Động vật phải thích nghi với những thay đổi của môi trường.",
+    "forms": [],
+    "awl": 7
+  },
+  {
+    "w": "sand",
+    "r": 2373,
+    "pos": "noun",
+    "vi": "cát",
+    "ipa": "/sænd/",
+    "ex": "The children built castles in the sand.",
+    "exvi": "Bọn trẻ xây lâu đài trên cát.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "cap",
+    "r": 2374,
+    "pos": "noun, verb",
+    "vi": "mũ lưỡi trai; nắp; giới hạn mức trần",
+    "ipa": "/kæp/",
+    "ex": "He was wearing a baseball cap.",
+    "exvi": "Anh ấy đang đội một chiếc mũ lưỡi trai.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "prompt",
+    "r": 2375,
+    "pos": "verb, adjective",
+    "vi": "thúc đẩy, khiến cho; nhanh chóng, kịp thời",
+    "ipa": "/prɒmpt/",
+    "ex": "The accident prompted the city to build a new bridge.",
+    "exvi": "Vụ tai nạn đã khiến thành phố xây một cây cầu mới.",
+    "forms": [
+      "prompted"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "charm",
+    "r": 2376,
+    "pos": "noun, verb",
+    "vi": "sự quyến rũ; nét duyên; làm say mê",
+    "ipa": "/tʃɑːm/",
+    "ex": "The old town has a lot of charm.",
+    "exvi": "Khu phố cổ có rất nhiều nét duyên.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "react",
+    "r": 2377,
+    "pos": "verb",
+    "vi": "phản ứng",
+    "ipa": "/riˈækt/",
+    "ex": "How did your parents react to the news?",
+    "exvi": "Bố mẹ bạn phản ứng thế nào với tin đó?",
+    "forms": [],
+    "awl": 3
+  },
+  {
+    "w": "lecture",
+    "r": 2378,
+    "pos": "noun, verb",
+    "vi": "bài giảng; buổi thuyết trình; lên lớp, giảng giải",
+    "ipa": "/ˈlek.tʃə/",
+    "ex": "I have a lecture at nine tomorrow morning.",
+    "exvi": "Sáng mai tôi có một buổi giảng lúc chín giờ.",
+    "forms": [],
+    "awl": 6
+  },
+  {
+    "w": "venture",
+    "r": 2379,
+    "pos": "noun, verb",
+    "vi": "dự án kinh doanh mạo hiểm; liều, mạo hiểm",
+    "ipa": "/ˈven.tʃə/",
+    "ex": "Their new business venture was very successful.",
+    "exvi": "Dự án kinh doanh mới của họ rất thành công.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "compound",
+    "r": 2380,
+    "pos": "noun, adjective, verb",
+    "vi": "hợp chất; khu nhà có rào; từ ghép",
+    "ipa": "/ˈkɒm.paʊnd/",
+    "ex": "Water is a compound of hydrogen and oxygen.",
+    "exvi": "Nước là một hợp chất của hydro và oxy.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "rescue",
+    "r": 2381,
+    "pos": "verb, noun",
+    "vi": "giải cứu; cứu hộ; sự cứu nguy",
+    "ipa": "/ˈres.kjuː/",
+    "ex": "Firefighters rescued a man from the burning house.",
+    "exvi": "Lính cứu hỏa đã cứu một người đàn ông khỏi ngôi nhà đang cháy.",
+    "forms": [
+      "rescued"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "mess",
+    "r": 2382,
+    "pos": "noun, verb",
+    "vi": "sự bừa bộn; tình trạng rối ren; làm rối, làm hỏng",
+    "ipa": "/mes/",
+    "ex": "Your room is a mess, please tidy it.",
+    "exvi": "Phòng của con bừa bộn quá, dọn đi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "preference",
+    "r": 2383,
+    "pos": "noun",
+    "vi": "sự ưa thích hơn; sở thích; sự ưu tiên",
+    "ipa": "/ˈpref.ər.əns/",
+    "ex": "Do you have a preference for tea or coffee?",
+    "exvi": "Bạn thích trà hay cà phê hơn?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "comprehensive",
+    "r": 2384,
+    "pos": "adjective",
+    "vi": "toàn diện; bao quát; đầy đủ",
+    "ipa": "/ˌkɒm.prɪˈhen.sɪv/",
+    "ex": "The book gives a comprehensive guide to the city.",
+    "exvi": "Cuốn sách là một cẩm nang toàn diện về thành phố.",
+    "forms": [],
+    "awl": 7
+  },
+  {
+    "w": "incentive",
+    "r": 2385,
+    "pos": "noun",
+    "vi": "sự khuyến khích; động lực; ưu đãi",
+    "ipa": "/ɪnˈsen.tɪv/",
+    "ex": "The bonus gives workers an incentive to work harder.",
+    "exvi": "Tiền thưởng tạo động lực cho công nhân làm việc chăm hơn.",
+    "forms": [],
+    "awl": 6
+  },
+  {
+    "w": "league",
+    "r": 2386,
+    "pos": "noun",
+    "vi": "giải đấu; liên đoàn; đẳng cấp",
+    "ipa": "/liːɡ/",
+    "ex": "Our team is at the top of the league.",
+    "exvi": "Đội của chúng tôi đang đứng đầu giải đấu.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "dialog",
+    "r": 2387,
+    "pos": "noun",
+    "vi": "cuộc đối thoại; hội thoại; hộp thoại (máy tính)",
+    "ipa": "/ˈdaɪ.ə.lɒɡ/",
+    "ex": "Listen to the dialog and answer the questions.",
+    "exvi": "Hãy nghe đoạn hội thoại và trả lời câu hỏi.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "cream",
+    "r": 2388,
+    "pos": "noun, adjective",
+    "vi": "kem (sữa); kem bôi; màu kem",
+    "ipa": "/kriːm/",
+    "ex": "Would you like cream with your strawberries?",
+    "exvi": "Bạn có muốn ăn dâu tây với kem sữa không?",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "rapid",
+    "r": 2389,
+    "pos": "adjective",
+    "vi": "nhanh chóng; mau lẹ",
+    "ipa": "/ˈræp.ɪd/",
+    "ex": "The city has seen rapid growth in recent years.",
+    "exvi": "Thành phố đã phát triển nhanh chóng trong những năm gần đây.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "cancel",
+    "r": 2390,
+    "pos": "verb",
+    "vi": "hủy bỏ",
+    "ipa": "/ˈkæn.səl/",
+    "ex": "Our flight was cancelled because of the snow.",
+    "exvi": "Chuyến bay của chúng tôi bị hủy vì tuyết.",
+    "forms": [
+      "cancelled"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "regret",
+    "r": 2391,
+    "pos": "verb, noun",
+    "vi": "hối tiếc; lấy làm tiếc; sự hối tiếc",
+    "ipa": "/rɪˈɡret/",
+    "ex": "I regret not studying harder at school.",
+    "exvi": "Tôi hối tiếc vì đã không học chăm hơn ở trường.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "dismiss",
+    "r": 2392,
+    "pos": "verb",
+    "vi": "gạt bỏ, bác bỏ; sa thải; cho về",
+    "ipa": "/dɪˈsmɪs/",
+    "ex": "He dismissed the idea as a waste of time.",
+    "exvi": "Anh ấy gạt bỏ ý tưởng đó vì cho là tốn thời gian.",
+    "forms": [
+      "dismissed"
+    ],
+    "awl": 0
+  },
+  {
+    "w": "margin",
+    "r": 2393,
+    "pos": "noun",
+    "vi": "lề (giấy); khoảng cách, chênh lệch; biên lợi nhuận",
+    "ipa": "/ˈmɑː.dʒɪn/",
+    "ex": "The teacher wrote comments in the margin.",
+    "exvi": "Giáo viên viết nhận xét ở lề giấy.",
+    "forms": [],
+    "awl": 5
+  },
+  {
+    "w": "beneath",
+    "r": 2394,
+    "pos": "preposition, adverb",
+    "vi": "bên dưới; thấp kém hơn, không xứng",
+    "ipa": "/bɪˈniːθ/",
+    "ex": "They found a box hidden beneath the floor.",
+    "exvi": "Họ tìm thấy một chiếc hộp được giấu bên dưới sàn nhà.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "opponent",
+    "r": 2395,
+    "pos": "noun",
+    "vi": "đối thủ; người phản đối",
+    "ipa": "/əˈpəʊ.nənt/",
+    "ex": "She beat her opponent in the final.",
+    "exvi": "Cô ấy đã đánh bại đối thủ trong trận chung kết.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "resist",
+    "r": 2396,
+    "pos": "verb",
+    "vi": "cưỡng lại; chống lại; kháng cự",
+    "ipa": "/rɪˈzɪst/",
+    "ex": "I couldn't resist eating another piece of cake.",
+    "exvi": "Tôi không cưỡng lại được việc ăn thêm một miếng bánh.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "capability",
+    "r": 2397,
+    "pos": "noun",
+    "vi": "khả năng; năng lực",
+    "ipa": "/ˌkeɪ.pəˈbɪl.ə.ti/",
+    "ex": "The new phone has the capability to take amazing photos.",
+    "exvi": "Chiếc điện thoại mới có khả năng chụp những bức ảnh tuyệt vời.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "absolute",
+    "r": 2398,
+    "pos": "adjective",
+    "vi": "tuyệt đối; hoàn toàn",
+    "ipa": "/ˈæb.sə.luːt/",
+    "ex": "I have absolute trust in my doctor.",
+    "exvi": "Tôi tin tưởng tuyệt đối vào bác sĩ của mình.",
+    "forms": [],
+    "awl": 0
+  },
+  {
+    "w": "correspond",
+    "r": 2399,
+    "pos": "verb",
+    "vi": "tương ứng; phù hợp; trao đổi thư từ",
+    "ipa": "/ˌkɒr.ɪˈspɒnd/",
+    "ex": "The two numbers on the receipt don't correspond.",
+    "exvi": "Hai con số trên hóa đơn không khớp với nhau.",
+    "forms": [],
+    "awl": 3
+  },
+  {
+    "w": "stroke",
+    "r": 2400,
+    "pos": "noun, verb",
+    "vi": "đột quỵ; cú đánh, nét (bút); vuốt ve",
+    "ipa": "/strəʊk/",
+    "ex": "My grandfather had a stroke last year.",
+    "exvi": "Ông tôi bị đột quỵ năm ngoái.",
+    "forms": [],
+    "awl": 0
+  }
+]

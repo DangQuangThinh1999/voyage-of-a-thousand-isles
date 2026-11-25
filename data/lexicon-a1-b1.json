@@ -1,0 +1,2623 @@
+{
+  "hello": {
+    "level": "A1",
+    "pos": "interjection",
+    "ipa": "/həˈləʊ/",
+    "syn": [
+      "hi"
+    ],
+    "ant": [
+      "goodbye"
+    ],
+    "para": [
+      "Hello, my name is Lan.",
+      "Hi, my name is Lan."
+    ],
+    "vi_note": ""
+  },
+  "goodbye": {
+    "level": "A1",
+    "pos": "interjection",
+    "ipa": "/ˌɡʊdˈbaɪ/",
+    "syn": [
+      "bye",
+      "see you"
+    ],
+    "ant": [
+      "hello"
+    ],
+    "para": [
+      "She said goodbye and left.",
+      "She said bye and left."
+    ],
+    "vi_note": ""
+  },
+  "thank you": {
+    "level": "A1",
+    "pos": "phrase",
+    "ipa": "/ˈθæŋk juː/",
+    "syn": [
+      "thanks"
+    ],
+    "ant": [],
+    "para": [
+      "Thank you for your help.",
+      "Thanks for your help."
+    ],
+    "vi_note": ""
+  },
+  "sorry": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/ˈsɒr.i/",
+    "syn": [
+      "apologetic"
+    ],
+    "ant": [],
+    "para": [
+      "I am sorry I am late.",
+      "I apologise for being late."
+    ],
+    "vi_note": "Dùng để xin lỗi hoặc bày tỏ sự cảm thông."
+  },
+  "yes": {
+    "level": "A1",
+    "pos": "adverb",
+    "ipa": "/jes/",
+    "syn": [
+      "yeah",
+      "sure"
+    ],
+    "ant": [
+      "no"
+    ],
+    "para": [],
+    "vi_note": ""
+  },
+  "no": {
+    "level": "A1",
+    "pos": "adverb",
+    "ipa": "/nəʊ/",
+    "syn": [],
+    "ant": [
+      "yes"
+    ],
+    "para": [],
+    "vi_note": ""
+  },
+  "please": {
+    "level": "A1",
+    "pos": "adverb",
+    "ipa": "/pliːz/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "Please close the door.",
+      "Could you close the door?"
+    ],
+    "vi_note": "Thêm vào câu yêu cầu cho lịch sự."
+  },
+  "good morning": {
+    "level": "A1",
+    "pos": "phrase",
+    "ipa": "/ɡʊd ˈmɔː.nɪŋ/",
+    "syn": [
+      "morning",
+      "hello"
+    ],
+    "ant": [
+      "good night"
+    ],
+    "para": [
+      "Good morning, teacher.",
+      "Hello, teacher."
+    ],
+    "vi_note": "Dùng trước buổi trưa."
+  },
+  "name": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/neɪm/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "What is your name?",
+      "What are you called?"
+    ],
+    "vi_note": ""
+  },
+  "I": {
+    "level": "A1",
+    "pos": "pronoun",
+    "ipa": "/aɪ/",
+    "syn": [],
+    "ant": [],
+    "para": [],
+    "vi_note": "Luôn viết hoa."
+  },
+  "you": {
+    "level": "A1",
+    "pos": "pronoun",
+    "ipa": "/juː/",
+    "syn": [],
+    "ant": [],
+    "para": [],
+    "vi_note": "Dùng cho cả số ít và số nhiều."
+  },
+  "man": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/mæn/",
+    "syn": [
+      "guy",
+      "gentleman"
+    ],
+    "ant": [
+      "woman"
+    ],
+    "para": [
+      "That man is my uncle.",
+      "That guy is my uncle."
+    ],
+    "vi_note": "Số nhiều: men."
+  },
+  "woman": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈwʊm.ən/",
+    "syn": [
+      "lady"
+    ],
+    "ant": [
+      "man"
+    ],
+    "para": [
+      "The woman is a nurse.",
+      "The lady is a nurse."
+    ],
+    "vi_note": "Số nhiều: women /ˈwɪm.ɪn/."
+  },
+  "student": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈstjuː.dənt/",
+    "syn": [
+      "pupil",
+      "learner"
+    ],
+    "ant": [
+      "teacher"
+    ],
+    "para": [
+      "I am a student at this school.",
+      "I am a pupil at this school."
+    ],
+    "vi_note": ""
+  },
+  "teacher": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈtiː.tʃər/",
+    "syn": [
+      "tutor",
+      "instructor"
+    ],
+    "ant": [
+      "student"
+    ],
+    "para": [
+      "The teacher helps us every day.",
+      "The instructor helps us every day."
+    ],
+    "vi_note": ""
+  },
+  "doctor": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈdɒk.tər/",
+    "syn": [
+      "physician",
+      "GP"
+    ],
+    "ant": [],
+    "para": [
+      "The doctor is very busy.",
+      "The physician is very busy."
+    ],
+    "vi_note": ""
+  },
+  "one": {
+    "level": "A1",
+    "pos": "number",
+    "ipa": "/wʌn/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I need one ticket.",
+      "I need a single ticket."
+    ],
+    "vi_note": ""
+  },
+  "two": {
+    "level": "A1",
+    "pos": "number",
+    "ipa": "/tuː/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I have two hands.",
+      "I have a pair of hands."
+    ],
+    "vi_note": ""
+  },
+  "three": {
+    "level": "A1",
+    "pos": "number",
+    "ipa": "/θriː/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I have three cats.",
+      "I have two cats and one more."
+    ],
+    "vi_note": ""
+  },
+  "four": {
+    "level": "A1",
+    "pos": "number",
+    "ipa": "/fɔːr/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "A car has four wheels.",
+      "A car has two pairs of wheels."
+    ],
+    "vi_note": ""
+  },
+  "five": {
+    "level": "A1",
+    "pos": "number",
+    "ipa": "/faɪv/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I work five days a week.",
+      "I work from Monday to Friday."
+    ],
+    "vi_note": ""
+  },
+  "six": {
+    "level": "A1",
+    "pos": "number",
+    "ipa": "/sɪks/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I bought six eggs.",
+      "I bought half a dozen eggs."
+    ],
+    "vi_note": ""
+  },
+  "seven": {
+    "level": "A1",
+    "pos": "number",
+    "ipa": "/ˈsev.ən/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "There are seven days in a week.",
+      "A week goes from Monday to Sunday."
+    ],
+    "vi_note": ""
+  },
+  "eight": {
+    "level": "A1",
+    "pos": "number",
+    "ipa": "/eɪt/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I sleep eight hours a night.",
+      "I sleep from eleven at night to seven in the morning."
+    ],
+    "vi_note": ""
+  },
+  "nine": {
+    "level": "A1",
+    "pos": "number",
+    "ipa": "/naɪn/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "My son is nine years old.",
+      "My son will be ten next year."
+    ],
+    "vi_note": ""
+  },
+  "ten": {
+    "level": "A1",
+    "pos": "number",
+    "ipa": "/ten/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I have ten fingers.",
+      "I have five fingers on each hand."
+    ],
+    "vi_note": ""
+  },
+  "mother": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈmʌð.ər/",
+    "syn": [
+      "mum",
+      "mom"
+    ],
+    "ant": [
+      "father"
+    ],
+    "para": [
+      "My mother cooks dinner.",
+      "My mum cooks dinner."
+    ],
+    "vi_note": ""
+  },
+  "father": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈfɑː.ðər/",
+    "syn": [
+      "dad"
+    ],
+    "ant": [
+      "mother"
+    ],
+    "para": [
+      "My father is very tall.",
+      "My dad is very tall."
+    ],
+    "vi_note": ""
+  },
+  "brother": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈbrʌð.ər/",
+    "syn": [
+      "sibling"
+    ],
+    "ant": [
+      "sister"
+    ],
+    "para": [
+      "I have one brother.",
+      "I have one male sibling."
+    ],
+    "vi_note": "Anh trai: older brother; em trai: younger brother."
+  },
+  "sister": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈsɪs.tər/",
+    "syn": [
+      "sibling"
+    ],
+    "ant": [
+      "brother"
+    ],
+    "para": [
+      "Lan is my sister.",
+      "Lan is also the daughter of my parents."
+    ],
+    "vi_note": "Chị gái: older sister; em gái: younger sister."
+  },
+  "baby": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈbeɪ.bi/",
+    "syn": [
+      "infant",
+      "newborn"
+    ],
+    "ant": [
+      "adult"
+    ],
+    "para": [
+      "The baby is sleeping.",
+      "The infant is sleeping."
+    ],
+    "vi_note": ""
+  },
+  "grandmother": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈɡræn.mʌð.ər/",
+    "syn": [
+      "grandma",
+      "granny"
+    ],
+    "ant": [
+      "grandfather"
+    ],
+    "para": [
+      "My grandmother lives with us.",
+      "My grandma lives with us."
+    ],
+    "vi_note": ""
+  },
+  "grandfather": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈɡræn.fɑː.ðər/",
+    "syn": [
+      "grandpa",
+      "granddad"
+    ],
+    "ant": [
+      "grandmother"
+    ],
+    "para": [
+      "My grandfather likes tea.",
+      "My grandpa likes tea."
+    ],
+    "vi_note": ""
+  },
+  "family": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈfæm.əl.i/",
+    "syn": [
+      "relatives",
+      "household"
+    ],
+    "ant": [],
+    "para": [
+      "My family is very big.",
+      "I have a lot of relatives."
+    ],
+    "vi_note": ""
+  },
+  "red": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/red/",
+    "syn": [
+      "scarlet",
+      "crimson"
+    ],
+    "ant": [],
+    "para": [
+      "Her dress is red.",
+      "Her dress is scarlet."
+    ],
+    "vi_note": ""
+  },
+  "blue": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/bluː/",
+    "syn": [
+      "navy"
+    ],
+    "ant": [],
+    "para": [
+      "The sky is blue.",
+      "The sky is the colour of the sea."
+    ],
+    "vi_note": ""
+  },
+  "green": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/ɡriːn/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "The leaves are green.",
+      "The leaves are the colour of grass."
+    ],
+    "vi_note": ""
+  },
+  "yellow": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/ˈjel.əʊ/",
+    "syn": [
+      "golden"
+    ],
+    "ant": [],
+    "para": [
+      "The banana is yellow.",
+      "The banana is the colour of the sun."
+    ],
+    "vi_note": ""
+  },
+  "black": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/blæk/",
+    "syn": [
+      "dark"
+    ],
+    "ant": [
+      "white"
+    ],
+    "para": [
+      "My cat is black.",
+      "My cat is very dark in colour."
+    ],
+    "vi_note": ""
+  },
+  "white": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/waɪt/",
+    "syn": [
+      "pale"
+    ],
+    "ant": [
+      "black"
+    ],
+    "para": [
+      "The snow is white.",
+      "The snow is the colour of milk."
+    ],
+    "vi_note": ""
+  },
+  "book": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/bʊk/",
+    "syn": [
+      "novel"
+    ],
+    "ant": [],
+    "para": [
+      "I read a book every week.",
+      "I read a novel every week."
+    ],
+    "vi_note": ""
+  },
+  "pen": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/pen/",
+    "syn": [
+      "biro"
+    ],
+    "ant": [],
+    "para": [
+      "Can I borrow your pen?",
+      "Can I use your biro for a moment?"
+    ],
+    "vi_note": ""
+  },
+  "rice": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/raɪs/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "We eat rice every day.",
+      "We have a bowl of steamed grains every day."
+    ],
+    "vi_note": "Cơm (đã nấu) và gạo đều là rice."
+  },
+  "bread": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/bred/",
+    "syn": [
+      "loaf"
+    ],
+    "ant": [],
+    "para": [
+      "I buy bread every morning.",
+      "I buy a loaf every morning."
+    ],
+    "vi_note": "Danh từ không đếm được: a loaf of bread."
+  },
+  "egg": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/eɡ/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "This egg is from our chicken.",
+      "Our chicken laid this."
+    ],
+    "vi_note": ""
+  },
+  "chicken": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈtʃɪk.ɪn/",
+    "syn": [
+      "poultry"
+    ],
+    "ant": [],
+    "para": [
+      "I like chicken soup.",
+      "I like soup made with poultry."
+    ],
+    "vi_note": ""
+  },
+  "apple": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈæp.əl/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I eat an apple every day.",
+      "I eat this round fruit every day."
+    ],
+    "vi_note": ""
+  },
+  "water": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈwɔː.tər/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "You should drink more water.",
+      "You should drink more fluids."
+    ],
+    "vi_note": ""
+  },
+  "milk": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/mɪlk/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I put milk in my coffee.",
+      "I add dairy to my coffee."
+    ],
+    "vi_note": ""
+  },
+  "coffee": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈkɒf.i/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I drink coffee in the morning.",
+      "I have an espresso in the morning."
+    ],
+    "vi_note": ""
+  },
+  "wake up": {
+    "level": "A1",
+    "pos": "phrasal verb",
+    "ipa": "/weɪk ʌp/",
+    "syn": [
+      "get up",
+      "awaken"
+    ],
+    "ant": [
+      "fall asleep"
+    ],
+    "para": [
+      "I wake up at six.",
+      "I get up at six."
+    ],
+    "vi_note": ""
+  },
+  "eat": {
+    "level": "A1",
+    "pos": "verb",
+    "ipa": "/iːt/",
+    "syn": [
+      "have",
+      "consume"
+    ],
+    "ant": [],
+    "para": [
+      "I eat rice every day.",
+      "I have rice for every meal."
+    ],
+    "vi_note": "Quá khứ: ate."
+  },
+  "drink": {
+    "level": "A1",
+    "pos": "verb",
+    "ipa": "/drɪŋk/",
+    "syn": [
+      "have",
+      "sip"
+    ],
+    "ant": [],
+    "para": [
+      "I drink tea in the morning.",
+      "I have tea in the morning."
+    ],
+    "vi_note": "Quá khứ: drank."
+  },
+  "sleep": {
+    "level": "A1",
+    "pos": "verb",
+    "ipa": "/sliːp/",
+    "syn": [
+      "rest",
+      "nap"
+    ],
+    "ant": [
+      "wake"
+    ],
+    "para": [
+      "I sleep eight hours a night.",
+      "I rest for eight hours at night."
+    ],
+    "vi_note": "Quá khứ: slept."
+  },
+  "go": {
+    "level": "A1",
+    "pos": "verb",
+    "ipa": "/ɡəʊ/",
+    "syn": [
+      "travel",
+      "move"
+    ],
+    "ant": [
+      "come",
+      "stay"
+    ],
+    "para": [
+      "I go to school by bus.",
+      "I travel to school by bus."
+    ],
+    "vi_note": "Quá khứ: went."
+  },
+  "work": {
+    "level": "A1",
+    "pos": "verb",
+    "ipa": "/wɜːk/",
+    "syn": [
+      "have a job",
+      "labour"
+    ],
+    "ant": [
+      "rest"
+    ],
+    "para": [
+      "My father works in a bank.",
+      "My father has a job in a bank."
+    ],
+    "vi_note": ""
+  },
+  "study": {
+    "level": "A1",
+    "pos": "verb",
+    "ipa": "/ˈstʌd.i/",
+    "syn": [
+      "learn",
+      "revise"
+    ],
+    "ant": [],
+    "para": [
+      "I study English every day.",
+      "I learn English every day."
+    ],
+    "vi_note": ""
+  },
+  "read": {
+    "level": "A1",
+    "pos": "verb",
+    "ipa": "/riːd/",
+    "syn": [
+      "look through"
+    ],
+    "ant": [],
+    "para": [
+      "I read the news every morning.",
+      "I look at the news every morning."
+    ],
+    "vi_note": "Quá khứ viết giống nhưng đọc /red/."
+  },
+  "house": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/haʊs/",
+    "syn": [
+      "home"
+    ],
+    "ant": [],
+    "para": [
+      "My house is near the river.",
+      "My home is near the river."
+    ],
+    "vi_note": ""
+  },
+  "kitchen": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈkɪtʃ.ɪn/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "Mum is cooking in the kitchen.",
+      "Mum is cooking in the room where we make food."
+    ],
+    "vi_note": ""
+  },
+  "bed": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/bed/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I go to bed at ten.",
+      "I go to sleep at ten."
+    ],
+    "vi_note": ""
+  },
+  "chair": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/tʃeər/",
+    "syn": [
+      "seat",
+      "stool"
+    ],
+    "ant": [],
+    "para": [
+      "Please sit on this chair.",
+      "Please sit on this seat."
+    ],
+    "vi_note": ""
+  },
+  "door": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/dɔːr/",
+    "syn": [
+      "entrance"
+    ],
+    "ant": [],
+    "para": [
+      "Please open the door.",
+      "Please open the entrance."
+    ],
+    "vi_note": ""
+  },
+  "window": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈwɪn.dəʊ/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "Please open the window.",
+      "Please let some fresh air into the room."
+    ],
+    "vi_note": ""
+  },
+  "TV": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˌtiːˈviː/",
+    "syn": [
+      "television",
+      "telly"
+    ],
+    "ant": [],
+    "para": [
+      "We watch TV after dinner.",
+      "We watch television after dinner."
+    ],
+    "vi_note": ""
+  },
+  "phone": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/fəʊn/",
+    "syn": [
+      "mobile",
+      "telephone"
+    ],
+    "ant": [],
+    "para": [
+      "Call me on my phone.",
+      "Call me on my mobile."
+    ],
+    "vi_note": ""
+  },
+  "today": {
+    "level": "A1",
+    "pos": "adverb",
+    "ipa": "/təˈdeɪ/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "It is my birthday today.",
+      "This is my birthday."
+    ],
+    "vi_note": ""
+  },
+  "tomorrow": {
+    "level": "A1",
+    "pos": "adverb",
+    "ipa": "/təˈmɒr.əʊ/",
+    "syn": [],
+    "ant": [
+      "yesterday"
+    ],
+    "para": [
+      "See you tomorrow.",
+      "See you the next day."
+    ],
+    "vi_note": ""
+  },
+  "yesterday": {
+    "level": "A1",
+    "pos": "adverb",
+    "ipa": "/ˈjes.tə.deɪ/",
+    "syn": [],
+    "ant": [
+      "tomorrow"
+    ],
+    "para": [
+      "I was sick yesterday.",
+      "I was sick the day before today."
+    ],
+    "vi_note": ""
+  },
+  "morning": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈmɔː.nɪŋ/",
+    "syn": [],
+    "ant": [
+      "evening"
+    ],
+    "para": [
+      "I go running in the morning.",
+      "I go running early in the day."
+    ],
+    "vi_note": ""
+  },
+  "night": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/naɪt/",
+    "syn": [
+      "evening"
+    ],
+    "ant": [
+      "day"
+    ],
+    "para": [
+      "I sleep at night.",
+      "I sleep when it is dark."
+    ],
+    "vi_note": ""
+  },
+  "week": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/wiːk/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I go swimming once a week.",
+      "I go swimming every seven days."
+    ],
+    "vi_note": ""
+  },
+  "Monday": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈmʌn.deɪ/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "School starts on Monday.",
+      "School starts on the first day of the working week."
+    ],
+    "vi_note": "Thứ trong tuần luôn viết hoa."
+  },
+  "Sunday": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈsʌn.deɪ/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "We rest on Sunday.",
+      "We rest on the last day of the weekend."
+    ],
+    "vi_note": "Thứ trong tuần luôn viết hoa."
+  },
+  "sun": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/sʌn/",
+    "syn": [],
+    "ant": [
+      "moon"
+    ],
+    "para": [
+      "The sun is very bright today.",
+      "It is very bright outside today."
+    ],
+    "vi_note": ""
+  },
+  "rain": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/reɪn/",
+    "syn": [
+      "shower",
+      "drizzle"
+    ],
+    "ant": [],
+    "para": [
+      "There will be rain tomorrow.",
+      "There will be showers tomorrow."
+    ],
+    "vi_note": ""
+  },
+  "wind": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/wɪnd/",
+    "syn": [
+      "breeze",
+      "gale"
+    ],
+    "ant": [],
+    "para": [
+      "The wind is very strong today.",
+      "The breeze is very strong today."
+    ],
+    "vi_note": ""
+  },
+  "cloud": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/klaʊd/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "There is a big cloud in the sky.",
+      "The sky is grey in one big area."
+    ],
+    "vi_note": ""
+  },
+  "snow": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/snəʊ/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "We have snow in winter here.",
+      "White flakes fall here in winter."
+    ],
+    "vi_note": ""
+  },
+  "hot": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/hɒt/",
+    "syn": [
+      "warm",
+      "boiling"
+    ],
+    "ant": [
+      "cold"
+    ],
+    "para": [
+      "It is very hot today.",
+      "It is boiling today."
+    ],
+    "vi_note": ""
+  },
+  "cold": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/kəʊld/",
+    "syn": [
+      "chilly",
+      "freezing"
+    ],
+    "ant": [
+      "hot"
+    ],
+    "para": [
+      "It is cold today.",
+      "It is chilly today."
+    ],
+    "vi_note": ""
+  },
+  "umbrella": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ʌmˈbrel.ə/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "Take an umbrella with you.",
+      "Take something to keep the rain off you."
+    ],
+    "vi_note": ""
+  },
+  "shop": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ʃɒp/",
+    "syn": [
+      "store"
+    ],
+    "ant": [],
+    "para": [
+      "The shop opens at nine.",
+      "The store opens at nine."
+    ],
+    "vi_note": ""
+  },
+  "money": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ˈmʌn.i/",
+    "syn": [
+      "cash"
+    ],
+    "ant": [],
+    "para": [
+      "I don't have much money.",
+      "I don't have much cash."
+    ],
+    "vi_note": ""
+  },
+  "buy": {
+    "level": "A1",
+    "pos": "verb",
+    "ipa": "/baɪ/",
+    "syn": [
+      "purchase",
+      "get"
+    ],
+    "ant": [
+      "sell"
+    ],
+    "para": [
+      "I want to buy a new bag.",
+      "I want to purchase a new bag."
+    ],
+    "vi_note": "Quá khứ: bought."
+  },
+  "price": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/praɪs/",
+    "syn": [
+      "cost"
+    ],
+    "ant": [],
+    "para": [
+      "The price is too high.",
+      "It costs too much."
+    ],
+    "vi_note": ""
+  },
+  "cheap": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/tʃiːp/",
+    "syn": [
+      "inexpensive",
+      "low-cost"
+    ],
+    "ant": [
+      "expensive"
+    ],
+    "para": [
+      "This shirt is cheap.",
+      "This shirt doesn't cost much."
+    ],
+    "vi_note": ""
+  },
+  "expensive": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/ɪkˈspen.sɪv/",
+    "syn": [
+      "costly",
+      "pricey"
+    ],
+    "ant": [
+      "cheap"
+    ],
+    "para": [
+      "This phone is expensive.",
+      "This phone is costly."
+    ],
+    "vi_note": ""
+  },
+  "shirt": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ʃɜːt/",
+    "syn": [
+      "top",
+      "blouse"
+    ],
+    "ant": [],
+    "para": [
+      "He is wearing a white shirt.",
+      "He is wearing a white top."
+    ],
+    "vi_note": ""
+  },
+  "shoes": {
+    "level": "A1",
+    "pos": "noun",
+    "ipa": "/ʃuːz/",
+    "syn": [
+      "footwear",
+      "trainers"
+    ],
+    "ant": [],
+    "para": [
+      "These shoes are new.",
+      "This footwear is new."
+    ],
+    "vi_note": "Số ít: shoe."
+  },
+  "happy": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/ˈhæp.i/",
+    "syn": [
+      "glad",
+      "pleased"
+    ],
+    "ant": [
+      "sad"
+    ],
+    "para": [
+      "I feel happy today.",
+      "I feel glad today."
+    ],
+    "vi_note": ""
+  },
+  "sad": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/sæd/",
+    "syn": [
+      "unhappy",
+      "upset"
+    ],
+    "ant": [
+      "happy"
+    ],
+    "para": [
+      "She is sad because her cat is lost.",
+      "She is unhappy because her cat is lost."
+    ],
+    "vi_note": ""
+  },
+  "tired": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/taɪəd/",
+    "syn": [
+      "sleepy",
+      "exhausted"
+    ],
+    "ant": [],
+    "para": [
+      "I am tired after work.",
+      "I am exhausted after work."
+    ],
+    "vi_note": ""
+  },
+  "angry": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/ˈæŋ.ɡri/",
+    "syn": [
+      "annoyed",
+      "cross"
+    ],
+    "ant": [
+      "calm"
+    ],
+    "para": [
+      "My dad is angry with me.",
+      "My dad is annoyed with me."
+    ],
+    "vi_note": ""
+  },
+  "hungry": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/ˈhʌŋ.ɡri/",
+    "syn": [
+      "starving"
+    ],
+    "ant": [
+      "full"
+    ],
+    "para": [
+      "I am very hungry.",
+      "I am starving."
+    ],
+    "vi_note": ""
+  },
+  "scared": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/skeəd/",
+    "syn": [
+      "afraid",
+      "frightened"
+    ],
+    "ant": [
+      "brave"
+    ],
+    "para": [
+      "The child is scared of dogs.",
+      "The child is afraid of dogs."
+    ],
+    "vi_note": ""
+  },
+  "bored": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/bɔːd/",
+    "syn": [
+      "uninterested"
+    ],
+    "ant": [
+      "interested"
+    ],
+    "para": [
+      "I am bored at home.",
+      "I have nothing fun to do at home."
+    ],
+    "vi_note": "Khác với boring (gây chán)."
+  },
+  "sick": {
+    "level": "A1",
+    "pos": "adjective",
+    "ipa": "/sɪk/",
+    "syn": [
+      "ill",
+      "unwell"
+    ],
+    "ant": [
+      "healthy",
+      "well"
+    ],
+    "para": [
+      "I am sick today.",
+      "I am ill today."
+    ],
+    "vi_note": ""
+  },
+  "airport": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈeə.pɔːt/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I will meet you at the airport.",
+      "I will meet you where the planes land."
+    ],
+    "vi_note": ""
+  },
+  "passport": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈpɑːs.pɔːt/",
+    "syn": [
+      "travel document"
+    ],
+    "ant": [],
+    "para": [
+      "Don't forget your passport.",
+      "Don't forget your travel document."
+    ],
+    "vi_note": ""
+  },
+  "suitcase": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈsuːt.keɪs/",
+    "syn": [
+      "luggage",
+      "case",
+      "bag"
+    ],
+    "ant": [],
+    "para": [
+      "My suitcase is very heavy.",
+      "My luggage is very heavy."
+    ],
+    "vi_note": ""
+  },
+  "journey": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈdʒɜː.ni/",
+    "syn": [
+      "trip",
+      "voyage"
+    ],
+    "ant": [],
+    "para": [
+      "The journey takes three hours.",
+      "The trip takes three hours."
+    ],
+    "vi_note": "Journey nhấn mạnh quãng đường di chuyển."
+  },
+  "platform": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈplæt.fɔːm/",
+    "syn": [
+      "track"
+    ],
+    "ant": [],
+    "para": [
+      "The train leaves from platform four.",
+      "The train departs from track four."
+    ],
+    "vi_note": ""
+  },
+  "arrive": {
+    "level": "A2",
+    "pos": "verb",
+    "ipa": "/əˈraɪv/",
+    "syn": [
+      "reach",
+      "get to",
+      "come"
+    ],
+    "ant": [
+      "leave",
+      "depart"
+    ],
+    "para": [
+      "The bus will arrive soon.",
+      "The bus will get here soon."
+    ],
+    "vi_note": "arrive at (nơi nhỏ), arrive in (thành phố, quốc gia)."
+  },
+  "delay": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/dɪˈleɪ/",
+    "syn": [
+      "wait",
+      "hold-up"
+    ],
+    "ant": [],
+    "para": [
+      "There is a delay because of the rain.",
+      "The rain is making us wait longer."
+    ],
+    "vi_note": ""
+  },
+  "hotel": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/həʊˈtel/",
+    "syn": [
+      "inn",
+      "hostel"
+    ],
+    "ant": [],
+    "para": [
+      "We stayed at a nice hotel.",
+      "We stayed at a nice inn."
+    ],
+    "vi_note": ""
+  },
+  "customer": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈkʌs.tə.mər/",
+    "syn": [
+      "client",
+      "shopper",
+      "buyer"
+    ],
+    "ant": [
+      "seller"
+    ],
+    "para": [
+      "The customer wants a refund.",
+      "The shopper wants a refund."
+    ],
+    "vi_note": ""
+  },
+  "receipt": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/rɪˈsiːt/",
+    "syn": [
+      "bill",
+      "proof of purchase"
+    ],
+    "ant": [],
+    "para": [
+      "Please keep your receipt.",
+      "Please keep your proof of purchase."
+    ],
+    "vi_note": "Chữ p không được phát âm."
+  },
+  "discount": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈdɪs.kaʊnt/",
+    "syn": [
+      "reduction",
+      "price cut"
+    ],
+    "ant": [],
+    "para": [
+      "Students get a discount.",
+      "Students pay a lower price."
+    ],
+    "vi_note": ""
+  },
+  "cash": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/kæʃ/",
+    "syn": [
+      "money",
+      "notes"
+    ],
+    "ant": [],
+    "para": [
+      "Can I pay in cash?",
+      "Can I pay with notes and coins?"
+    ],
+    "vi_note": ""
+  },
+  "credit card": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈkred.ɪt ˌkɑːd/",
+    "syn": [
+      "bank card",
+      "card"
+    ],
+    "ant": [],
+    "para": [
+      "I paid by credit card.",
+      "I paid with my bank card."
+    ],
+    "vi_note": ""
+  },
+  "size": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/saɪz/",
+    "syn": [
+      "dimension"
+    ],
+    "ant": [],
+    "para": [
+      "What size are your shoes?",
+      "How big are your shoes?"
+    ],
+    "vi_note": ""
+  },
+  "sale": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/seɪl/",
+    "syn": [
+      "discount",
+      "offer"
+    ],
+    "ant": [],
+    "para": [
+      "The shop is having a sale.",
+      "The shop is selling things at lower prices."
+    ],
+    "vi_note": "on sale = đang được bán / giảm giá."
+  },
+  "spend": {
+    "level": "A2",
+    "pos": "verb",
+    "ipa": "/spend/",
+    "syn": [
+      "pay out",
+      "use"
+    ],
+    "ant": [
+      "save",
+      "earn"
+    ],
+    "para": [
+      "I spend too much money on clothes.",
+      "I pay too much for clothes."
+    ],
+    "vi_note": "Quá khứ: spent."
+  },
+  "headache": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈhed.eɪk/",
+    "syn": [
+      "migraine"
+    ],
+    "ant": [],
+    "para": [
+      "I have a terrible headache.",
+      "My head hurts a lot."
+    ],
+    "vi_note": ""
+  },
+  "medicine": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈmed.ɪ.sən/",
+    "syn": [
+      "medication",
+      "drug"
+    ],
+    "ant": [],
+    "para": [
+      "Take this medicine twice a day.",
+      "Take this medication twice a day."
+    ],
+    "vi_note": ""
+  },
+  "fever": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈfiː.vər/",
+    "syn": [
+      "high temperature"
+    ],
+    "ant": [],
+    "para": [
+      "The child has a fever.",
+      "The child has a high temperature."
+    ],
+    "vi_note": ""
+  },
+  "pharmacy": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈfɑː.mə.si/",
+    "syn": [
+      "chemist's",
+      "drugstore"
+    ],
+    "ant": [],
+    "para": [
+      "You can buy medicine at the pharmacy.",
+      "You can buy medicine at the chemist's."
+    ],
+    "vi_note": ""
+  },
+  "rest": {
+    "level": "A2",
+    "pos": "verb",
+    "ipa": "/rest/",
+    "syn": [
+      "relax",
+      "take a break"
+    ],
+    "ant": [
+      "work"
+    ],
+    "para": [
+      "You should rest at home.",
+      "You should relax at home."
+    ],
+    "vi_note": ""
+  },
+  "healthy": {
+    "level": "A2",
+    "pos": "adjective",
+    "ipa": "/ˈhel.θi/",
+    "syn": [
+      "fit",
+      "well",
+      "nutritious"
+    ],
+    "ant": [
+      "unhealthy"
+    ],
+    "para": [
+      "Fruit is a healthy snack.",
+      "Fruit is a nutritious snack."
+    ],
+    "vi_note": ""
+  },
+  "stomach": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈstʌm.ək/",
+    "syn": [
+      "belly",
+      "tummy"
+    ],
+    "ant": [],
+    "para": [
+      "My stomach hurts.",
+      "My tummy hurts."
+    ],
+    "vi_note": ""
+  },
+  "appointment": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/əˈpɔɪnt.mənt/",
+    "syn": [
+      "meeting",
+      "booking"
+    ],
+    "ant": [],
+    "para": [
+      "I have an appointment with the doctor at three.",
+      "I am seeing the doctor at three."
+    ],
+    "vi_note": ""
+  },
+  "hobby": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈhɒb.i/",
+    "syn": [
+      "pastime",
+      "interest"
+    ],
+    "ant": [],
+    "para": [
+      "My hobby is reading.",
+      "In my free time, I like reading."
+    ],
+    "vi_note": ""
+  },
+  "guitar": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ɡɪˈtɑːr/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "He plays the guitar.",
+      "He plays a stringed instrument."
+    ],
+    "vi_note": ""
+  },
+  "swimming": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈswɪm.ɪŋ/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I go swimming every weekend.",
+      "I swim every weekend."
+    ],
+    "vi_note": ""
+  },
+  "painting": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈpeɪn.tɪŋ/",
+    "syn": [
+      "picture",
+      "artwork"
+    ],
+    "ant": [],
+    "para": [
+      "This painting is beautiful.",
+      "This picture is beautiful."
+    ],
+    "vi_note": ""
+  },
+  "camping": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈkæm.pɪŋ/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "We go camping in summer.",
+      "We sleep in a tent outdoors in summer."
+    ],
+    "vi_note": ""
+  },
+  "collect": {
+    "level": "A2",
+    "pos": "verb",
+    "ipa": "/kəˈlekt/",
+    "syn": [
+      "gather",
+      "save"
+    ],
+    "ant": [
+      "throw away"
+    ],
+    "para": [
+      "I collect old stamps.",
+      "I gather old stamps as a hobby."
+    ],
+    "vi_note": ""
+  },
+  "chess": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/tʃes/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "Do you play chess?",
+      "Do you play the board game with kings and queens?"
+    ],
+    "vi_note": ""
+  },
+  "member": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈmem.bər/",
+    "syn": [
+      "participant"
+    ],
+    "ant": [],
+    "para": [
+      "She is a member of the club.",
+      "She belongs to the club."
+    ],
+    "vi_note": ""
+  },
+  "nurse": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/nɜːs/",
+    "syn": [
+      "carer"
+    ],
+    "ant": [],
+    "para": [
+      "The nurse is very kind.",
+      "The person who cares for the patients is very kind."
+    ],
+    "vi_note": ""
+  },
+  "waiter": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈweɪ.tər/",
+    "syn": [
+      "server"
+    ],
+    "ant": [],
+    "para": [
+      "The waiter brought our food.",
+      "The server brought our food."
+    ],
+    "vi_note": "Nữ phục vụ: waitress."
+  },
+  "engineer": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˌen.dʒɪˈnɪər/",
+    "syn": [
+      "technician"
+    ],
+    "ant": [],
+    "para": [
+      "My brother is an engineer.",
+      "My brother designs machines for a living."
+    ],
+    "vi_note": ""
+  },
+  "manager": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈmæn.ɪ.dʒər/",
+    "syn": [
+      "boss",
+      "supervisor",
+      "director"
+    ],
+    "ant": [
+      "employee"
+    ],
+    "para": [
+      "I want to speak to the manager.",
+      "I want to speak to the boss."
+    ],
+    "vi_note": ""
+  },
+  "bank": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/bæŋk/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I keep my money in the bank.",
+      "I keep my savings in a financial institution."
+    ],
+    "vi_note": ""
+  },
+  "post office": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈpəʊst ˌɒf.ɪs/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I sent a letter at the post office.",
+      "I sent a letter from the place that handles mail."
+    ],
+    "vi_note": ""
+  },
+  "library": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈlaɪ.brər.i/",
+    "syn": [],
+    "ant": [],
+    "para": [
+      "I borrow books from the library.",
+      "I borrow books from a public reading room."
+    ],
+    "vi_note": "Khác với bookshop (hiệu sách)."
+  },
+  "factory": {
+    "level": "A2",
+    "pos": "noun",
+    "ipa": "/ˈfæk.tər.i/",
+    "syn": [
+      "plant",
+      "works"
+    ],
+    "ant": [],
+    "para": [
+      "My uncle works at a car factory.",
+      "My uncle works at a car plant."
+    ],
+    "vi_note": ""
+  },
+  "deadline": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˈded.laɪn/",
+    "syn": [
+      "due date",
+      "time limit"
+    ],
+    "ant": [],
+    "para": [
+      "The deadline for the essay is Friday.",
+      "The essay is due on Friday."
+    ],
+    "vi_note": ""
+  },
+  "colleague": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˈkɒl.iːɡ/",
+    "syn": [
+      "co-worker",
+      "workmate"
+    ],
+    "ant": [],
+    "para": [
+      "My colleague helped me with the report.",
+      "My workmate helped me with the report."
+    ],
+    "vi_note": ""
+  },
+  "salary": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˈsæl.ər.i/",
+    "syn": [
+      "wage",
+      "pay",
+      "income"
+    ],
+    "ant": [],
+    "para": [
+      "Her salary is quite high.",
+      "She is paid quite well."
+    ],
+    "vi_note": "Salary thường trả theo tháng/năm; wage theo giờ/tuần."
+  },
+  "experience": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ɪkˈspɪə.ri.əns/",
+    "syn": [
+      "background",
+      "knowledge"
+    ],
+    "ant": [
+      "inexperience"
+    ],
+    "para": [
+      "She has a lot of experience in teaching.",
+      "She has taught for many years."
+    ],
+    "vi_note": ""
+  },
+  "qualification": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˌkwɒl.ɪ.fɪˈkeɪ.ʃən/",
+    "syn": [
+      "certificate",
+      "degree",
+      "diploma"
+    ],
+    "ant": [],
+    "para": [
+      "You need a teaching qualification for this job.",
+      "You need a teaching certificate for this job."
+    ],
+    "vi_note": ""
+  },
+  "skill": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/skɪl/",
+    "syn": [
+      "ability",
+      "talent"
+    ],
+    "ant": [],
+    "para": [
+      "Communication is an important skill.",
+      "Communication is an important ability."
+    ],
+    "vi_note": ""
+  },
+  "improve": {
+    "level": "B1",
+    "pos": "verb",
+    "ipa": "/ɪmˈpruːv/",
+    "syn": [
+      "get better",
+      "develop",
+      "enhance"
+    ],
+    "ant": [
+      "worsen"
+    ],
+    "para": [
+      "I want to improve my English.",
+      "I want to get better at English."
+    ],
+    "vi_note": ""
+  },
+  "career": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/kəˈrɪər/",
+    "syn": [
+      "profession",
+      "occupation"
+    ],
+    "ant": [],
+    "para": [
+      "She has a successful career in law.",
+      "She is very successful as a lawyer."
+    ],
+    "vi_note": ""
+  },
+  "device": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/dɪˈvaɪs/",
+    "syn": [
+      "gadget",
+      "machine"
+    ],
+    "ant": [],
+    "para": [
+      "This device can measure your heart rate.",
+      "This gadget can measure your heart rate."
+    ],
+    "vi_note": ""
+  },
+  "download": {
+    "level": "B1",
+    "pos": "verb",
+    "ipa": "/ˌdaʊnˈləʊd/",
+    "syn": [],
+    "ant": [
+      "upload"
+    ],
+    "para": [
+      "You can download the app for free.",
+      "You can get the app on your phone for free."
+    ],
+    "vi_note": ""
+  },
+  "communicate": {
+    "level": "B1",
+    "pos": "verb",
+    "ipa": "/kəˈmjuː.nɪ.keɪt/",
+    "syn": [
+      "talk",
+      "contact",
+      "interact"
+    ],
+    "ant": [],
+    "para": [
+      "We communicate by email.",
+      "We contact each other by email."
+    ],
+    "vi_note": ""
+  },
+  "password": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˈpɑːs.wɜːd/",
+    "syn": [
+      "passcode",
+      "PIN"
+    ],
+    "ant": [],
+    "para": [
+      "Never share your password.",
+      "Never tell anyone your secret login code."
+    ],
+    "vi_note": ""
+  },
+  "convenient": {
+    "level": "B1",
+    "pos": "adjective",
+    "ipa": "/kənˈviː.ni.ənt/",
+    "syn": [
+      "handy",
+      "practical"
+    ],
+    "ant": [
+      "inconvenient"
+    ],
+    "para": [
+      "The shop is in a convenient location.",
+      "The shop is in a handy location."
+    ],
+    "vi_note": ""
+  },
+  "addicted": {
+    "level": "B1",
+    "pos": "adjective",
+    "ipa": "/əˈdɪk.tɪd/",
+    "syn": [
+      "hooked",
+      "dependent"
+    ],
+    "ant": [],
+    "para": [
+      "Many teenagers are addicted to their phones.",
+      "Many teenagers are hooked on their phones."
+    ],
+    "vi_note": "addicted to + danh từ / V-ing."
+  },
+  "software": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˈsɒft.weər/",
+    "syn": [
+      "program",
+      "application"
+    ],
+    "ant": [
+      "hardware"
+    ],
+    "para": [
+      "This software is easy to use.",
+      "This program is easy to use."
+    ],
+    "vi_note": "Danh từ không đếm được."
+  },
+  "social media": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˌsəʊ.ʃəl ˈmiː.di.ə/",
+    "syn": [
+      "social networks"
+    ],
+    "ant": [],
+    "para": [
+      "Young people spend hours on social media.",
+      "Young people spend hours on social networks."
+    ],
+    "vi_note": ""
+  },
+  "pollution": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/pəˈluː.ʃən/",
+    "syn": [
+      "contamination"
+    ],
+    "ant": [],
+    "para": [
+      "Air pollution is a serious problem in big cities.",
+      "Dirty air is a serious problem in big cities."
+    ],
+    "vi_note": ""
+  },
+  "recycle": {
+    "level": "B1",
+    "pos": "verb",
+    "ipa": "/ˌriːˈsaɪ.kəl/",
+    "syn": [
+      "reuse",
+      "reprocess"
+    ],
+    "ant": [
+      "throw away"
+    ],
+    "para": [
+      "We should recycle plastic bottles.",
+      "We should turn plastic bottles into new products."
+    ],
+    "vi_note": ""
+  },
+  "protect": {
+    "level": "B1",
+    "pos": "verb",
+    "ipa": "/prəˈtekt/",
+    "syn": [
+      "defend",
+      "guard",
+      "preserve"
+    ],
+    "ant": [
+      "harm",
+      "damage"
+    ],
+    "para": [
+      "We must protect the forests.",
+      "We must preserve the forests."
+    ],
+    "vi_note": "protect sb/sth from sth."
+  },
+  "climate": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˈklaɪ.mət/",
+    "syn": [
+      "weather"
+    ],
+    "ant": [],
+    "para": [
+      "The climate here is hot and dry.",
+      "The weather here is usually hot and dry."
+    ],
+    "vi_note": "Climate là khí hậu lâu dài, weather là thời tiết hằng ngày."
+  },
+  "harmful": {
+    "level": "B1",
+    "pos": "adjective",
+    "ipa": "/ˈhɑːm.fəl/",
+    "syn": [
+      "damaging",
+      "dangerous"
+    ],
+    "ant": [
+      "harmless",
+      "beneficial"
+    ],
+    "para": [
+      "Smoking is harmful to your health.",
+      "Smoking damages your health."
+    ],
+    "vi_note": ""
+  },
+  "waste": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/weɪst/",
+    "syn": [
+      "rubbish",
+      "garbage"
+    ],
+    "ant": [],
+    "para": [
+      "We produce too much waste.",
+      "We produce too much rubbish."
+    ],
+    "vi_note": "Cũng là động từ: waste time/money (lãng phí)."
+  },
+  "energy": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˈen.ə.dʒi/",
+    "syn": [
+      "power"
+    ],
+    "ant": [],
+    "para": [
+      "Solar energy is clean.",
+      "Solar power is clean."
+    ],
+    "vi_note": ""
+  },
+  "endangered": {
+    "level": "B1",
+    "pos": "adjective",
+    "ipa": "/ɪnˈdeɪn.dʒəd/",
+    "syn": [
+      "at risk",
+      "threatened"
+    ],
+    "ant": [],
+    "para": [
+      "Tigers are an endangered species.",
+      "Tigers are a species at risk of extinction."
+    ],
+    "vi_note": ""
+  },
+  "advertisement": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ədˈvɜː.tɪs.mənt/",
+    "syn": [
+      "advert",
+      "ad",
+      "commercial"
+    ],
+    "ant": [],
+    "para": [
+      "I saw an advertisement for a new phone.",
+      "I saw an advert for a new phone."
+    ],
+    "vi_note": ""
+  },
+  "audience": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˈɔː.di.əns/",
+    "syn": [
+      "viewers",
+      "spectators",
+      "crowd"
+    ],
+    "ant": [],
+    "para": [
+      "The audience clapped loudly.",
+      "The crowd clapped loudly."
+    ],
+    "vi_note": ""
+  },
+  "celebrity": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/səˈleb.rə.ti/",
+    "syn": [
+      "star",
+      "famous person"
+    ],
+    "ant": [],
+    "para": [
+      "She became a celebrity after the show.",
+      "She became famous after the show."
+    ],
+    "vi_note": ""
+  },
+  "documentary": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˌdɒk.jəˈmen.tər.i/",
+    "syn": [
+      "factual film"
+    ],
+    "ant": [],
+    "para": [
+      "We watched a documentary about whales.",
+      "We watched a factual film about whales."
+    ],
+    "vi_note": ""
+  },
+  "entertaining": {
+    "level": "B1",
+    "pos": "adjective",
+    "ipa": "/ˌen.təˈteɪ.nɪŋ/",
+    "syn": [
+      "enjoyable",
+      "amusing",
+      "fun"
+    ],
+    "ant": [
+      "boring",
+      "dull"
+    ],
+    "para": [
+      "The show was very entertaining.",
+      "The show was very enjoyable."
+    ],
+    "vi_note": ""
+  },
+  "journalist": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˈdʒɜː.nə.lɪst/",
+    "syn": [
+      "reporter",
+      "correspondent"
+    ],
+    "ant": [],
+    "para": [
+      "The journalist asked many questions.",
+      "The reporter asked many questions."
+    ],
+    "vi_note": ""
+  },
+  "influence": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˈɪn.flu.əns/",
+    "syn": [
+      "effect",
+      "impact"
+    ],
+    "ant": [],
+    "para": [
+      "Parents have a strong influence on children.",
+      "Parents have a strong effect on children."
+    ],
+    "vi_note": "have an influence on sb/sth."
+  },
+  "disadvantage": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˌdɪs.ədˈvɑːn.tɪdʒ/",
+    "syn": [
+      "drawback",
+      "downside"
+    ],
+    "ant": [
+      "advantage"
+    ],
+    "para": [
+      "One disadvantage of city life is the noise.",
+      "One drawback of city life is the noise."
+    ],
+    "vi_note": ""
+  },
+  "community": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/kəˈmjuː.nə.ti/",
+    "syn": [
+      "neighbourhood",
+      "society"
+    ],
+    "ant": [],
+    "para": [
+      "Our community is very friendly.",
+      "Our neighbourhood is very friendly."
+    ],
+    "vi_note": ""
+  },
+  "elderly": {
+    "level": "B1",
+    "pos": "adjective",
+    "ipa": "/ˈel.dəl.i/",
+    "syn": [
+      "old",
+      "aged",
+      "senior"
+    ],
+    "ant": [
+      "young"
+    ],
+    "para": [
+      "We help elderly people in our area.",
+      "We help older people in our area."
+    ],
+    "vi_note": "Cách nói lịch sự hơn old."
+  },
+  "generation": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˌdʒen.əˈreɪ.ʃən/",
+    "syn": [
+      "age group"
+    ],
+    "ant": [],
+    "para": [
+      "The younger generation uses technology a lot.",
+      "Young people today use technology a lot."
+    ],
+    "vi_note": ""
+  },
+  "population": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˌpɒp.jəˈleɪ.ʃən/",
+    "syn": [
+      "inhabitants",
+      "residents"
+    ],
+    "ant": [],
+    "para": [
+      "The population of the city is growing.",
+      "The number of people living in the city is growing."
+    ],
+    "vi_note": ""
+  },
+  "crime": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/kraɪm/",
+    "syn": [
+      "offence",
+      "wrongdoing"
+    ],
+    "ant": [],
+    "para": [
+      "Crime is a problem in big cities.",
+      "Illegal activity is a problem in big cities."
+    ],
+    "vi_note": ""
+  },
+  "volunteer": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ˌvɒl.ənˈtɪər/",
+    "syn": [
+      "helper",
+      "unpaid worker"
+    ],
+    "ant": [],
+    "para": [
+      "She works as a volunteer at the hospital.",
+      "She helps at the hospital without pay."
+    ],
+    "vi_note": ""
+  },
+  "responsibility": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/rɪˌspɒn.səˈbɪl.ə.ti/",
+    "syn": [
+      "duty",
+      "obligation"
+    ],
+    "ant": [],
+    "para": [
+      "It is your responsibility to lock the door.",
+      "It is your duty to lock the door."
+    ],
+    "vi_note": ""
+  },
+  "advantage": {
+    "level": "B1",
+    "pos": "noun",
+    "ipa": "/ədˈvɑːn.tɪdʒ/",
+    "syn": [
+      "benefit",
+      "plus"
+    ],
+    "ant": [
+      "disadvantage"
+    ],
+    "para": [
+      "One advantage of living here is the beach.",
+      "One benefit of living here is the beach."
+    ],
+    "vi_note": ""
+  }
+}

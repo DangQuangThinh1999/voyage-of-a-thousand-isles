@@ -1,0 +1,3875 @@
+{
+  "accent": "British English (RP / modern Standard Southern British)",
+  "sounds": [
+    {
+      "ipa": "iː",
+      "type": "vowel-long",
+      "name_vi": "i dài",
+      "examples": [
+        [
+          "see",
+          "/siː/"
+        ],
+        [
+          "green",
+          "/ɡriːn/"
+        ],
+        [
+          "sheep",
+          "/ʃiːp/"
+        ]
+      ],
+      "how_vi": "Kéo căng môi sang hai bên như đang cười, lưỡi nâng cao về phía trước, giữ âm dài và căng.",
+      "mistake_vi": "Đọc ngắn như /ɪ/ nên \"sheep\" nghe thành \"ship\"; hoặc bỏ phụ âm cuối (green thành \"gri\").",
+      "vi_like": "gần giống \"i\" tiếng Việt nhưng kéo dài gấp đôi"
+    },
+    {
+      "ipa": "ɪ",
+      "type": "vowel-short",
+      "name_vi": "i ngắn",
+      "examples": [
+        [
+          "sit",
+          "/sɪt/"
+        ],
+        [
+          "ship",
+          "/ʃɪp/"
+        ],
+        [
+          "big",
+          "/bɪɡ/"
+        ]
+      ],
+      "how_vi": "Môi thả lỏng, hơi mở, lưỡi thấp hơn /iː/ một chút. Âm ngắn, dứt khoát, hơi ngả về \"ê\".",
+      "mistake_vi": "Đọc thành \"i\" căng và dài nên \"ship\" nghe thành \"sheep\", \"live\" thành \"leave\".",
+      "vi_like": "giữa \"i\" và \"ê\" tiếng Việt, đọc rất ngắn"
+    },
+    {
+      "ipa": "e",
+      "type": "vowel-short",
+      "name_vi": "e ngắn",
+      "examples": [
+        [
+          "bed",
+          "/bed/"
+        ],
+        [
+          "pen",
+          "/pen/"
+        ],
+        [
+          "red",
+          "/red/"
+        ]
+      ],
+      "how_vi": "Miệng mở vừa, môi hơi kéo ngang, lưỡi ở giữa phía trước. Âm ngắn.",
+      "mistake_vi": "Lẫn với /æ/ (bed và bad nghe giống nhau) hoặc kéo thành /eɪ/ (\"let\" thành \"late\").",
+      "vi_like": "gần giống \"e\" tiếng Việt nhưng miệng mở ít hơn, gần \"ê\""
+    },
+    {
+      "ipa": "æ",
+      "type": "vowel-short",
+      "name_vi": "a bẹt",
+      "examples": [
+        [
+          "cat",
+          "/kæt/"
+        ],
+        [
+          "bad",
+          "/bæd/"
+        ],
+        [
+          "man",
+          "/mæn/"
+        ]
+      ],
+      "how_vi": "Há miệng rộng, hạ hàm dưới, kéo môi sang ngang, lưỡi thấp và đẩy ra trước. Âm giữa \"a\" và \"e\".",
+      "mistake_vi": "Đọc thành \"e\" (bad thành bed) hoặc thành \"a\" Việt; nhiều người cũng nuốt phụ âm cuối (cat thành \"ca\").",
+      "vi_like": "giữa \"a\" và \"e\" tiếng Việt, miệng mở to"
+    },
+    {
+      "ipa": "ʌ",
+      "type": "vowel-short",
+      "name_vi": "ă / â ngắn",
+      "examples": [
+        [
+          "cup",
+          "/kʌp/"
+        ],
+        [
+          "bus",
+          "/bʌs/"
+        ],
+        [
+          "love",
+          "/lʌv/"
+        ]
+      ],
+      "how_vi": "Miệng mở vừa, môi thả lỏng, lưỡi ở giữa. Âm ngắn, bật nhanh.",
+      "mistake_vi": "Lẫn với /æ/ (cut và cat) hoặc /ɒ/; đọc \"love\" thành \"lốp\" vì bỏ /v/.",
+      "vi_like": "gần giống \"ă\" hoặc \"â\" tiếng Việt"
+    },
+    {
+      "ipa": "ɑː",
+      "type": "vowel-long",
+      "name_vi": "a dài",
+      "examples": [
+        [
+          "car",
+          "/kɑː/"
+        ],
+        [
+          "father",
+          "/ˈfɑːðə/"
+        ],
+        [
+          "bath",
+          "/bɑːθ/"
+        ]
+      ],
+      "how_vi": "Há miệng rộng, lưỡi thấp và lùi về sau, giữ âm dài. Giọng Anh không đọc /r/ sau nguyên âm (car không có /r/).",
+      "mistake_vi": "Đọc ngắn như \"a\" Việt, hoặc thêm /r/ kiểu Mỹ; ở giọng Anh \"bath\", \"ask\", \"fast\" dùng /ɑː/ chứ không phải /æ/.",
+      "vi_like": "giống \"a\" tiếng Việt nhưng sâu hơn và kéo dài"
+    },
+    {
+      "ipa": "ɒ",
+      "type": "vowel-short",
+      "name_vi": "o ngắn",
+      "examples": [
+        [
+          "hot",
+          "/hɒt/"
+        ],
+        [
+          "dog",
+          "/dɒɡ/"
+        ],
+        [
+          "stop",
+          "/stɒp/"
+        ]
+      ],
+      "how_vi": "Miệng mở khá rộng, môi hơi tròn, lưỡi thấp phía sau. Âm ngắn.",
+      "mistake_vi": "Đọc thành \"ô\" hoặc kéo dài thành /ɔː/; bỏ âm cuối (stop thành \"sto\").",
+      "vi_like": "gần giống \"o\" tiếng Việt, đọc ngắn"
+    },
+    {
+      "ipa": "ɔː",
+      "type": "vowel-long",
+      "name_vi": "o dài",
+      "examples": [
+        [
+          "door",
+          "/dɔː/"
+        ],
+        [
+          "saw",
+          "/sɔː/"
+        ],
+        [
+          "walk",
+          "/wɔːk/"
+        ]
+      ],
+      "how_vi": "Môi tròn và hơi chu ra, lưỡi lùi về sau, giữ âm dài. Không có /r/ ở cuối trong giọng Anh.",
+      "mistake_vi": "Đọc ngắn như /ɒ/ (port thành pot) hoặc lẫn với /əʊ/ (law và low).",
+      "vi_like": "gần giống \"o\" tiếng Việt kéo dài, môi tròn hơn"
+    },
+    {
+      "ipa": "ʊ",
+      "type": "vowel-short",
+      "name_vi": "u ngắn",
+      "examples": [
+        [
+          "book",
+          "/bʊk/"
+        ],
+        [
+          "put",
+          "/pʊt/"
+        ],
+        [
+          "good",
+          "/ɡʊd/"
+        ]
+      ],
+      "how_vi": "Môi hơi tròn nhưng thả lỏng, lưỡi cao phía sau. Âm ngắn, không căng.",
+      "mistake_vi": "Đọc thành \"u\" dài nên \"full\" nghe như \"fool\"; bỏ âm cuối (book thành \"bu\").",
+      "vi_like": "giống \"u\" tiếng Việt nhưng ngắn và lỏng hơn"
+    },
+    {
+      "ipa": "uː",
+      "type": "vowel-long",
+      "name_vi": "u dài",
+      "examples": [
+        [
+          "blue",
+          "/bluː/"
+        ],
+        [
+          "food",
+          "/fuːd/"
+        ],
+        [
+          "moon",
+          "/muːn/"
+        ]
+      ],
+      "how_vi": "Chu tròn môi, lưỡi nâng cao phía sau, giữ âm dài.",
+      "mistake_vi": "Đọc ngắn thành /ʊ/ (pool thành pull) hoặc bỏ âm cuối (food thành \"fu\").",
+      "vi_like": "gần giống \"u\" tiếng Việt kéo dài"
+    },
+    {
+      "ipa": "ɜː",
+      "type": "vowel-long",
+      "name_vi": "ơ dài",
+      "examples": [
+        [
+          "bird",
+          "/bɜːd/"
+        ],
+        [
+          "work",
+          "/wɜːk/"
+        ],
+        [
+          "learn",
+          "/lɜːn/"
+        ]
+      ],
+      "how_vi": "Môi thả lỏng, hơi kéo ngang, lưỡi ở giữa miệng, giữ âm dài. Không cong lưỡi đọc /r/.",
+      "mistake_vi": "Đọc thành \"ơ\" ngắn, thêm /r/, hoặc lẫn với /ɑː/ (hurt và heart); hay bỏ âm cuối (work thành \"wơ\").",
+      "vi_like": "gần giống \"ơ\" tiếng Việt kéo dài"
+    },
+    {
+      "ipa": "ə",
+      "type": "vowel-short",
+      "name_vi": "schwa (ơ nhẹ)",
+      "examples": [
+        [
+          "about",
+          "/əˈbaʊt/"
+        ],
+        [
+          "teacher",
+          "/ˈtiːtʃə/"
+        ],
+        [
+          "banana",
+          "/bəˈnɑːnə/"
+        ]
+      ],
+      "how_vi": "Âm yếu nhất: miệng, môi, lưỡi đều thả lỏng ở vị trí trung tâm, đọc rất nhẹ và nhanh. Chỉ xuất hiện ở âm tiết không nhấn.",
+      "mistake_vi": "Đọc rõ mọi nguyên âm theo chữ viết (banana thành \"ba-na-na\" đều nhau), làm mất trọng âm và nhịp tiếng Anh.",
+      "vi_like": "giống \"ơ\" tiếng Việt nhưng rất nhẹ và ngắn"
+    },
+    {
+      "ipa": "eɪ",
+      "type": "diphthong",
+      "name_vi": "ây",
+      "examples": [
+        [
+          "day",
+          "/deɪ/"
+        ],
+        [
+          "cake",
+          "/keɪk/"
+        ],
+        [
+          "rain",
+          "/reɪn/"
+        ]
+      ],
+      "how_vi": "Bắt đầu từ /e/ rồi trượt nhẹ lên /ɪ/. Phần đầu mạnh, phần sau nhẹ.",
+      "mistake_vi": "Đọc thành \"ê\" đơn (late thành let) hoặc bỏ phụ âm cuối (cake thành \"kêi\").",
+      "vi_like": "gần giống \"ây\" tiếng Việt"
+    },
+    {
+      "ipa": "aɪ",
+      "type": "diphthong",
+      "name_vi": "ai",
+      "examples": [
+        [
+          "my",
+          "/maɪ/"
+        ],
+        [
+          "time",
+          "/taɪm/"
+        ],
+        [
+          "light",
+          "/laɪt/"
+        ]
+      ],
+      "how_vi": "Bắt đầu với miệng mở rộng như \"a\" rồi trượt lên /ɪ/.",
+      "mistake_vi": "Phát âm ổn nhưng hay bỏ âm cuối: light thành \"lai\", time thành \"tai\".",
+      "vi_like": "giống \"ai\" tiếng Việt"
+    },
+    {
+      "ipa": "ɔɪ",
+      "type": "diphthong",
+      "name_vi": "oi",
+      "examples": [
+        [
+          "boy",
+          "/bɔɪ/"
+        ],
+        [
+          "coin",
+          "/kɔɪn/"
+        ],
+        [
+          "noise",
+          "/nɔɪz/"
+        ]
+      ],
+      "how_vi": "Bắt đầu với môi tròn như /ɔː/ rồi trượt sang /ɪ/.",
+      "mistake_vi": "Thường đúng, nhưng hay bỏ âm cuối /z/ trong \"noise\" hoặc đọc thành /s/.",
+      "vi_like": "giống \"oi\" tiếng Việt"
+    },
+    {
+      "ipa": "əʊ",
+      "type": "diphthong",
+      "name_vi": "âu (giọng Anh)",
+      "examples": [
+        [
+          "go",
+          "/ɡəʊ/"
+        ],
+        [
+          "home",
+          "/həʊm/"
+        ],
+        [
+          "phone",
+          "/fəʊn/"
+        ]
+      ],
+      "how_vi": "Bắt đầu từ /ə/ (miệng thả lỏng) rồi tròn môi trượt sang /ʊ/. Giọng Anh không đọc thành \"ô\" đơn.",
+      "mistake_vi": "Đọc thành \"ô\" đơn (kiểu \"gô\", \"hôm\") hoặc lẫn với /ɔː/ (low và law).",
+      "vi_like": "gần giống \"âu\" tiếng Việt, đọc nhẹ phần đầu"
+    },
+    {
+      "ipa": "aʊ",
+      "type": "diphthong",
+      "name_vi": "ao",
+      "examples": [
+        [
+          "now",
+          "/naʊ/"
+        ],
+        [
+          "house",
+          "/haʊs/"
+        ],
+        [
+          "mouth",
+          "/maʊθ/"
+        ]
+      ],
+      "how_vi": "Bắt đầu với miệng mở rộng như \"a\" rồi tròn môi trượt lên /ʊ/.",
+      "mistake_vi": "Đọc tốt phần nguyên âm nhưng bỏ âm cuối: house thành \"hao\", mouth thành \"mao\".",
+      "vi_like": "giống \"ao\" tiếng Việt"
+    },
+    {
+      "ipa": "ɪə",
+      "type": "diphthong",
+      "name_vi": "ia",
+      "examples": [
+        [
+          "near",
+          "/nɪə/"
+        ],
+        [
+          "ear",
+          "/ɪə/"
+        ],
+        [
+          "idea",
+          "/aɪˈdɪə/"
+        ]
+      ],
+      "how_vi": "Bắt đầu từ /ɪ/ rồi trượt về /ə/ nhẹ. Không đọc /r/ ở cuối.",
+      "mistake_vi": "Thêm /r/ kiểu Mỹ hoặc đọc thành \"i\" dài, mất phần /ə/.",
+      "vi_like": "gần giống \"ia\" tiếng Việt (như trong \"kia\")"
+    },
+    {
+      "ipa": "eə",
+      "type": "diphthong",
+      "name_vi": "e-ơ",
+      "examples": [
+        [
+          "hair",
+          "/heə/"
+        ],
+        [
+          "care",
+          "/keə/"
+        ],
+        [
+          "where",
+          "/weə/"
+        ]
+      ],
+      "how_vi": "Bắt đầu từ /e/ rồi trượt về /ə/. Giọng Anh hiện đại thường đọc thành /ɛː/ kéo dài. Không đọc /r/.",
+      "mistake_vi": "Thêm /r/ hoặc đọc thành \"e\" ngắn; lẫn với /ɪə/ (hair và here).",
+      "vi_like": "gần giống \"e\" kéo dài rồi chuyển nhẹ sang \"ơ\""
+    },
+    {
+      "ipa": "ʊə",
+      "type": "diphthong",
+      "name_vi": "ua",
+      "examples": [
+        [
+          "pure",
+          "/pjʊə/"
+        ],
+        [
+          "tour",
+          "/tʊə/"
+        ],
+        [
+          "cure",
+          "/kjʊə/"
+        ]
+      ],
+      "how_vi": "Bắt đầu từ /ʊ/ rồi trượt về /ə/. Trong giọng Anh hiện đại, nhiều từ có âm này được đọc thành /ɔː/ (sure, tour).",
+      "mistake_vi": "Đọc thành \"u\" đơn hoặc thêm /r/ ở cuối.",
+      "vi_like": "gần giống \"ua\" tiếng Việt (như trong \"mua\")"
+    },
+    {
+      "ipa": "p",
+      "type": "consonant-voiceless",
+      "name_vi": "p (bật hơi)",
+      "examples": [
+        [
+          "pen",
+          "/pen/"
+        ],
+        [
+          "happy",
+          "/ˈhæpi/"
+        ],
+        [
+          "stop",
+          "/stɒp/"
+        ]
+      ],
+      "how_vi": "Mím hai môi rồi bật mạnh, có luồng hơi đi ra (đặt tờ giấy trước miệng sẽ thấy giấy rung). Không rung dây thanh.",
+      "mistake_vi": "Đọc không bật hơi nên nghe như /b/; ở cuối từ thường nuốt mất (stop thành \"sto\").",
+      "vi_like": "giống \"p\" trong \"pin\" nhưng bật hơi mạnh hơn"
+    },
+    {
+      "ipa": "b",
+      "type": "consonant-voiced",
+      "name_vi": "b",
+      "examples": [
+        [
+          "bag",
+          "/bæɡ/"
+        ],
+        [
+          "rabbit",
+          "/ˈræbɪt/"
+        ],
+        [
+          "job",
+          "/dʒɒb/"
+        ]
+      ],
+      "how_vi": "Mím hai môi rồi bật ra, có rung dây thanh, không có luồng hơi mạnh.",
+      "mistake_vi": "Ở cuối từ bị bỏ hoặc đọc thành /p/ (job thành \"jóp\"); lẫn /v/ với /b/ (very thành \"berry\").",
+      "vi_like": "giống \"b\" tiếng Việt"
+    },
+    {
+      "ipa": "t",
+      "type": "consonant-voiceless",
+      "name_vi": "t (bật hơi)",
+      "examples": [
+        [
+          "tea",
+          "/tiː/"
+        ],
+        [
+          "water",
+          "/ˈwɔːtə/"
+        ],
+        [
+          "cat",
+          "/kæt/"
+        ]
+      ],
+      "how_vi": "Đầu lưỡi chạm lợi trên (sau răng cửa), bật ra kèm luồng hơi. Không rung dây thanh.",
+      "mistake_vi": "Đọc như \"t\" Việt không bật hơi nên nghe thành /d/; bỏ /t/ cuối từ và trong đuôi -ed (walked).",
+      "vi_like": "giống \"th\" tiếng Việt (như \"thơ\") hơn là \"t\""
+    },
+    {
+      "ipa": "d",
+      "type": "consonant-voiced",
+      "name_vi": "d",
+      "examples": [
+        [
+          "day",
+          "/deɪ/"
+        ],
+        [
+          "ladder",
+          "/ˈlædə/"
+        ],
+        [
+          "bed",
+          "/bed/"
+        ]
+      ],
+      "how_vi": "Đầu lưỡi chạm lợi trên rồi bật ra, có rung dây thanh. Khác \"d\" tiếng Việt (đọc như \"đ\").",
+      "mistake_vi": "Đọc /d/ thành \"z\" (theo chữ d Bắc), hoặc bỏ /d/ cuối từ (bed thành \"be\", played thành \"play\").",
+      "vi_like": "giống \"đ\" tiếng Việt"
+    },
+    {
+      "ipa": "k",
+      "type": "consonant-voiceless",
+      "name_vi": "k (bật hơi)",
+      "examples": [
+        [
+          "key",
+          "/kiː/"
+        ],
+        [
+          "school",
+          "/skuːl/"
+        ],
+        [
+          "book",
+          "/bʊk/"
+        ]
+      ],
+      "how_vi": "Cuống lưỡi chạm ngạc mềm rồi bật ra, có luồng hơi (trừ sau /s/ như \"school\"). Không rung dây thanh.",
+      "mistake_vi": "Bỏ /k/ cuối (book thành \"bu\") hoặc nuốt hẳn trong cụm như \"asked\", \"desks\".",
+      "vi_like": "giống \"kh\" nhẹ hoặc \"c/k\" tiếng Việt bật hơi"
+    },
+    {
+      "ipa": "ɡ",
+      "type": "consonant-voiced",
+      "name_vi": "g",
+      "examples": [
+        [
+          "go",
+          "/ɡəʊ/"
+        ],
+        [
+          "bigger",
+          "/ˈbɪɡə/"
+        ],
+        [
+          "dog",
+          "/dɒɡ/"
+        ]
+      ],
+      "how_vi": "Cuống lưỡi chạm ngạc mềm rồi bật ra, có rung dây thanh.",
+      "mistake_vi": "Ở cuối từ đọc thành /k/ hoặc bỏ hẳn (dog thành \"đóc\", bag thành \"back\").",
+      "vi_like": "giống \"g\" trong \"gà\""
+    },
+    {
+      "ipa": "f",
+      "type": "consonant-voiceless",
+      "name_vi": "f",
+      "examples": [
+        [
+          "fish",
+          "/fɪʃ/"
+        ],
+        [
+          "coffee",
+          "/ˈkɒfi/"
+        ],
+        [
+          "laugh",
+          "/lɑːf/"
+        ]
+      ],
+      "how_vi": "Răng trên chạm nhẹ môi dưới, thổi hơi qua khe. Không rung dây thanh.",
+      "mistake_vi": "Đọc thành /p/ (coffee thành \"copy\") hoặc bỏ /f/ cuối (laugh thành \"la\").",
+      "vi_like": "giống \"ph\" tiếng Việt"
+    },
+    {
+      "ipa": "v",
+      "type": "consonant-voiced",
+      "name_vi": "v",
+      "examples": [
+        [
+          "van",
+          "/væn/"
+        ],
+        [
+          "river",
+          "/ˈrɪvə/"
+        ],
+        [
+          "five",
+          "/faɪv/"
+        ]
+      ],
+      "how_vi": "Răng trên chạm nhẹ môi dưới như /f/ nhưng rung dây thanh (đặt tay vào cổ thấy rung).",
+      "mistake_vi": "Đọc thành /b/ hoặc /w/ (very thành \"berry\", vest thành \"west\"); ở cuối từ bị bỏ (five thành \"fai\").",
+      "vi_like": "giống \"v\" tiếng Việt"
+    },
+    {
+      "ipa": "θ",
+      "type": "consonant-voiceless",
+      "name_vi": "th vô thanh",
+      "examples": [
+        [
+          "think",
+          "/θɪŋk/"
+        ],
+        [
+          "birthday",
+          "/ˈbɜːθdeɪ/"
+        ],
+        [
+          "mouth",
+          "/maʊθ/"
+        ]
+      ],
+      "how_vi": "Đặt đầu lưỡi giữa hai hàm răng (hơi thè ra), thổi hơi qua khe lưỡi và răng. Không rung dây thanh.",
+      "mistake_vi": "Đọc thành \"th\" Việt /tʰ/, /t/ hoặc /s/ (think thành \"tink\" hay \"sink\"); ở cuối từ bị bỏ (mouth thành \"mao\").",
+      "vi_like": ""
+    },
+    {
+      "ipa": "ð",
+      "type": "consonant-voiced",
+      "name_vi": "th hữu thanh",
+      "examples": [
+        [
+          "this",
+          "/ðɪs/"
+        ],
+        [
+          "mother",
+          "/ˈmʌðə/"
+        ],
+        [
+          "breathe",
+          "/briːð/"
+        ]
+      ],
+      "how_vi": "Đầu lưỡi giữa hai hàm răng như /θ/ nhưng rung dây thanh.",
+      "mistake_vi": "Đọc thành \"đ\" hoặc \"d\", \"z\" (this thành \"đít\", they thành \"dây\"). Sai rất phổ biến vì the, this, that gặp liên tục.",
+      "vi_like": ""
+    },
+    {
+      "ipa": "s",
+      "type": "consonant-voiceless",
+      "name_vi": "s",
+      "examples": [
+        [
+          "sun",
+          "/sʌn/"
+        ],
+        [
+          "city",
+          "/ˈsɪti/"
+        ],
+        [
+          "bus",
+          "/bʌs/"
+        ]
+      ],
+      "how_vi": "Đầu lưỡi gần lợi trên, răng gần khép, thổi hơi tạo tiếng xì. Không rung dây thanh.",
+      "mistake_vi": "Lẫn với /ʃ/ (see và she, đặc biệt người miền Bắc); bỏ /s/ cuối từ và đuôi số nhiều (books thành \"book\").",
+      "vi_like": "giống \"x\" tiếng Việt"
+    },
+    {
+      "ipa": "z",
+      "type": "consonant-voiced",
+      "name_vi": "z",
+      "examples": [
+        [
+          "zoo",
+          "/zuː/"
+        ],
+        [
+          "busy",
+          "/ˈbɪzi/"
+        ],
+        [
+          "dogs",
+          "/dɒɡz/"
+        ]
+      ],
+      "how_vi": "Vị trí như /s/ nhưng rung dây thanh, tạo tiếng vo ve như ong.",
+      "mistake_vi": "Ở cuối từ đọc thành /s/ hoặc bỏ hẳn (dogs thành \"dóc\", prize thành \"price\"); đuôi -s sau âm hữu thanh phải là /z/.",
+      "vi_like": "giống \"d/gi\" giọng Bắc (như \"da\", \"gì\")"
+    },
+    {
+      "ipa": "ʃ",
+      "type": "consonant-voiceless",
+      "name_vi": "sh",
+      "examples": [
+        [
+          "she",
+          "/ʃiː/"
+        ],
+        [
+          "station",
+          "/ˈsteɪʃn/"
+        ],
+        [
+          "fish",
+          "/fɪʃ/"
+        ]
+      ],
+      "how_vi": "Môi chu tròn ra trước, lưỡi lùi lại sau lợi, thổi hơi mạnh tạo tiếng \"suỵt\". Không rung dây thanh.",
+      "mistake_vi": "Đọc thành /s/ (she thành \"see\", ship thành \"sip\"); bỏ /ʃ/ cuối (fish thành \"fi\").",
+      "vi_like": "gần giống \"s\" giọng miền Nam (như \"sông\") nhưng chu môi hơn"
+    },
+    {
+      "ipa": "ʒ",
+      "type": "consonant-voiced",
+      "name_vi": "zh",
+      "examples": [
+        [
+          "measure",
+          "/ˈmeʒə/"
+        ],
+        [
+          "television",
+          "/ˈtelɪvɪʒn/"
+        ],
+        [
+          "usually",
+          "/ˈjuːʒuəli/"
+        ]
+      ],
+      "how_vi": "Vị trí như /ʃ/ (chu môi, lưỡi lùi) nhưng rung dây thanh.",
+      "mistake_vi": "Đọc thành /z/ hoặc /ʃ/ hay /dʒ/ (usually thành \"du-du-a-ly\", television thành \"ti-vi-dân\").",
+      "vi_like": "gần giống \"r\" giọng miền Nam (như \"rồi\") đọc mềm"
+    },
+    {
+      "ipa": "h",
+      "type": "consonant-voiceless",
+      "name_vi": "h",
+      "examples": [
+        [
+          "hat",
+          "/hæt/"
+        ],
+        [
+          "house",
+          "/haʊs/"
+        ],
+        [
+          "behind",
+          "/bɪˈhaɪnd/"
+        ]
+      ],
+      "how_vi": "Thở hơi nhẹ ra từ cổ họng, miệng mở sẵn theo nguyên âm sau.",
+      "mistake_vi": "Đọc quá mạnh như \"kh\" hoặc bỏ /h/; lưu ý \"hour\", \"honest\" không đọc /h/.",
+      "vi_like": "giống \"h\" tiếng Việt"
+    },
+    {
+      "ipa": "tʃ",
+      "type": "consonant-voiceless",
+      "name_vi": "ch",
+      "examples": [
+        [
+          "chair",
+          "/tʃeə/"
+        ],
+        [
+          "teacher",
+          "/ˈtiːtʃə/"
+        ],
+        [
+          "watch",
+          "/wɒtʃ/"
+        ]
+      ],
+      "how_vi": "Đầu lưỡi chạm lợi trên rồi bật ra thành /ʃ/, môi chu ra. Không rung dây thanh.",
+      "mistake_vi": "Đọc thành \"ch\" Việt (không chu môi), lẫn với /ʃ/ (chair và share); ở cuối từ bị bỏ (watch thành \"wo\").",
+      "vi_like": "gần giống \"ch\" tiếng Việt nhưng chu môi và bật hơi hơn"
+    },
+    {
+      "ipa": "dʒ",
+      "type": "consonant-voiced",
+      "name_vi": "j",
+      "examples": [
+        [
+          "job",
+          "/dʒɒb/"
+        ],
+        [
+          "orange",
+          "/ˈɒrɪndʒ/"
+        ],
+        [
+          "bridge",
+          "/brɪdʒ/"
+        ]
+      ],
+      "how_vi": "Như /tʃ/ nhưng rung dây thanh: lưỡi chạm lợi trên rồi nhả ra thành /ʒ/, môi chu.",
+      "mistake_vi": "Đọc thành \"z\" hoặc \"gi\" Bắc (job thành \"zóp\"); bỏ âm cuối (orange thành \"o-renh\").",
+      "vi_like": ""
+    },
+    {
+      "ipa": "m",
+      "type": "consonant-voiced",
+      "name_vi": "m",
+      "examples": [
+        [
+          "man",
+          "/mæn/"
+        ],
+        [
+          "summer",
+          "/ˈsʌmə/"
+        ],
+        [
+          "name",
+          "/neɪm/"
+        ]
+      ],
+      "how_vi": "Mím hai môi, hơi đi qua mũi, rung dây thanh.",
+      "mistake_vi": "Ít sai ở đầu từ; ở cuối từ đôi khi đọc yếu hoặc nuốt.",
+      "vi_like": "giống \"m\" tiếng Việt"
+    },
+    {
+      "ipa": "n",
+      "type": "consonant-voiced",
+      "name_vi": "n",
+      "examples": [
+        [
+          "no",
+          "/nəʊ/"
+        ],
+        [
+          "dinner",
+          "/ˈdɪnə/"
+        ],
+        [
+          "sun",
+          "/sʌn/"
+        ]
+      ],
+      "how_vi": "Đầu lưỡi chạm lợi trên, hơi đi qua mũi, rung dây thanh.",
+      "mistake_vi": "Lẫn /n/ với /l/ (đặc biệt một số vùng miền Bắc: night thành \"light\"); /n/ cuối lẫn với /ŋ/ (thin và thing).",
+      "vi_like": "giống \"n\" tiếng Việt"
+    },
+    {
+      "ipa": "ŋ",
+      "type": "consonant-voiced",
+      "name_vi": "ng",
+      "examples": [
+        [
+          "sing",
+          "/sɪŋ/"
+        ],
+        [
+          "long",
+          "/lɒŋ/"
+        ],
+        [
+          "thinking",
+          "/ˈθɪŋkɪŋ/"
+        ]
+      ],
+      "how_vi": "Cuống lưỡi chạm ngạc mềm, hơi đi qua mũi. Giọng Anh không bật thêm /ɡ/ sau \"ng\".",
+      "mistake_vi": "Đọc thành /n/ hoặc thêm /ɡ/ thừa (singing thành \"sing-ging\"); \"-ing\" hay bị đọc thành \"-in\".",
+      "vi_like": "giống \"ng\" tiếng Việt"
+    },
+    {
+      "ipa": "l",
+      "type": "consonant-voiced",
+      "name_vi": "l",
+      "examples": [
+        [
+          "leg",
+          "/leɡ/"
+        ],
+        [
+          "yellow",
+          "/ˈjeləʊ/"
+        ],
+        [
+          "ball",
+          "/bɔːl/"
+        ]
+      ],
+      "how_vi": "Đầu lưỡi chạm lợi trên, hơi đi qua hai bên lưỡi. Ở cuối từ (dark L) lưỡi giữ ở lợi, cuống lưỡi nâng lên.",
+      "mistake_vi": "Bỏ /l/ cuối hoặc đọc thành /n/, /w/ (ball thành \"bo\", mile thành \"mine\"); lẫn /l/ với /n/ và /r/.",
+      "vi_like": "giống \"l\" tiếng Việt ở đầu từ; tiếng Việt không có /l/ cuối"
+    },
+    {
+      "ipa": "r",
+      "type": "consonant-voiced",
+      "name_vi": "r",
+      "examples": [
+        [
+          "red",
+          "/red/"
+        ],
+        [
+          "sorry",
+          "/ˈsɒri/"
+        ],
+        [
+          "very",
+          "/ˈveri/"
+        ]
+      ],
+      "how_vi": "Cong nhẹ đầu lưỡi về phía sau nhưng không chạm vòm miệng, môi hơi tròn. Giọng Anh chỉ đọc /r/ trước nguyên âm.",
+      "mistake_vi": "Đọc thành /z/ (rice thành \"zai\") hoặc /l/ (right thành \"light\"), hoặc rung lưỡi; thêm /r/ ở cuối từ như \"car\", \"door\".",
+      "vi_like": "gần giống \"r\" giọng miền Nam nhưng không rung lưỡi"
+    },
+    {
+      "ipa": "w",
+      "type": "consonant-voiced",
+      "name_vi": "w",
+      "examples": [
+        [
+          "we",
+          "/wiː/"
+        ],
+        [
+          "window",
+          "/ˈwɪndəʊ/"
+        ],
+        [
+          "quick",
+          "/kwɪk/"
+        ]
+      ],
+      "how_vi": "Chu tròn môi như nói \"u\" rồi mở ra nhanh sang nguyên âm sau. Răng không chạm môi.",
+      "mistake_vi": "Lẫn với /v/ (west và vest, wine và vine) vì để răng chạm môi.",
+      "vi_like": "giống \"u/o\" trong \"oa\", \"uê\" (như \"hoa\", \"quê\")"
+    },
+    {
+      "ipa": "j",
+      "type": "consonant-voiced",
+      "name_vi": "y",
+      "examples": [
+        [
+          "yes",
+          "/jes/"
+        ],
+        [
+          "you",
+          "/juː/"
+        ],
+        [
+          "music",
+          "/ˈmjuːzɪk/"
+        ]
+      ],
+      "how_vi": "Lưỡi nâng cao gần ngạc cứng như chuẩn bị nói \"i\", rồi trượt nhanh sang nguyên âm sau.",
+      "mistake_vi": "Đọc thành \"z\" hay \"d\" giọng Bắc (yes thành \"zét\"); bỏ /j/ trong \"music\", \"new\" (giọng Anh: /njuː/).",
+      "vi_like": "giống \"d/gi\" giọng Nam (như \"da\", \"gì\")"
+    }
+  ],
+  "homophones": [
+    {
+      "words": [
+        [
+          "four",
+          "/fɔː/",
+          "số bốn"
+        ],
+        [
+          "for",
+          "/fɔː/",
+          "cho, dành cho"
+        ],
+        [
+          "fore",
+          "/fɔː/",
+          "phía trước, nổi bật"
+        ]
+      ],
+      "cloze": [
+        [
+          "I have ___ brothers and one sister.",
+          "four"
+        ],
+        [
+          "This gift is ___ you.",
+          "for"
+        ],
+        [
+          "Her talent came to the ___ during the competition.",
+          "fore"
+        ]
+      ],
+      "note_vi": "Khi đọc nhẹ trong câu, \"for\" thường là /fə/."
+    },
+    {
+      "words": [
+        [
+          "two",
+          "/tuː/",
+          "số hai"
+        ],
+        [
+          "to",
+          "/tuː/",
+          "đến, tới"
+        ],
+        [
+          "too",
+          "/tuː/",
+          "cũng, quá"
+        ]
+      ],
+      "cloze": [
+        [
+          "She has ___ cats.",
+          "two"
+        ],
+        [
+          "We go ___ school by bus.",
+          "to"
+        ],
+        [
+          "This coffee is ___ hot to drink.",
+          "too"
+        ]
+      ],
+      "note_vi": "Khi đọc nhẹ, \"to\" thường là /tə/ trước phụ âm."
+    },
+    {
+      "words": [
+        [
+          "there",
+          "/ðeə/",
+          "ở đó, có"
+        ],
+        [
+          "their",
+          "/ðeə/",
+          "của họ"
+        ],
+        [
+          "they're",
+          "/ðeə/",
+          "họ là, họ đang"
+        ]
+      ],
+      "cloze": [
+        [
+          "Put the box over ___, next to the door.",
+          "there"
+        ],
+        [
+          "The children are doing ___ homework.",
+          "their"
+        ],
+        [
+          "___ coming to the party tonight.",
+          "they're"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "right",
+          "/raɪt/",
+          "đúng, bên phải"
+        ],
+        [
+          "write",
+          "/raɪt/",
+          "viết"
+        ],
+        [
+          "rite",
+          "/raɪt/",
+          "nghi lễ"
+        ]
+      ],
+      "cloze": [
+        [
+          "Turn ___ at the next corner.",
+          "right"
+        ],
+        [
+          "Please ___ your name on the paper.",
+          "write"
+        ],
+        [
+          "A wedding is an important ___ of passage.",
+          "rite"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "see",
+          "/siː/",
+          "nhìn thấy"
+        ],
+        [
+          "sea",
+          "/siː/",
+          "biển"
+        ]
+      ],
+      "cloze": [
+        [
+          "I can ___ the mountains from my window.",
+          "see"
+        ],
+        [
+          "We swam in the ___ on holiday.",
+          "sea"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "hear",
+          "/hɪə/",
+          "nghe"
+        ],
+        [
+          "here",
+          "/hɪə/",
+          "ở đây"
+        ]
+      ],
+      "cloze": [
+        [
+          "Can you ___ the music?",
+          "hear"
+        ],
+        [
+          "Come ___ and sit next to me.",
+          "here"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "know",
+          "/nəʊ/",
+          "biết"
+        ],
+        [
+          "no",
+          "/nəʊ/",
+          "không"
+        ]
+      ],
+      "cloze": [
+        [
+          "I don't ___ his phone number.",
+          "know"
+        ],
+        [
+          "There is ___ milk in the fridge.",
+          "no"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "buy",
+          "/baɪ/",
+          "mua"
+        ],
+        [
+          "by",
+          "/baɪ/",
+          "bởi, bằng, cạnh"
+        ],
+        [
+          "bye",
+          "/baɪ/",
+          "tạm biệt"
+        ]
+      ],
+      "cloze": [
+        [
+          "I want to ___ a new phone.",
+          "buy"
+        ],
+        [
+          "She goes to work ___ train.",
+          "by"
+        ],
+        [
+          "She waved and said ___ to her friends.",
+          "bye"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "weather",
+          "/ˈweðə/",
+          "thời tiết"
+        ],
+        [
+          "whether",
+          "/ˈweðə/",
+          "liệu, dù"
+        ]
+      ],
+      "cloze": [
+        [
+          "The ___ is sunny today.",
+          "weather"
+        ],
+        [
+          "I don't know ___ he will come or not.",
+          "whether"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "piece",
+          "/piːs/",
+          "mẩu, miếng"
+        ],
+        [
+          "peace",
+          "/piːs/",
+          "hoà bình"
+        ]
+      ],
+      "cloze": [
+        [
+          "Can I have a ___ of cake?",
+          "piece"
+        ],
+        [
+          "Everyone wants to live in ___, not war.",
+          "peace"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "whole",
+          "/həʊl/",
+          "toàn bộ"
+        ],
+        [
+          "hole",
+          "/həʊl/",
+          "cái lỗ"
+        ]
+      ],
+      "cloze": [
+        [
+          "He ate the ___ pizza by himself.",
+          "whole"
+        ],
+        [
+          "There is a ___ in my sock.",
+          "hole"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "meet",
+          "/miːt/",
+          "gặp"
+        ],
+        [
+          "meat",
+          "/miːt/",
+          "thịt"
+        ]
+      ],
+      "cloze": [
+        [
+          "Let's ___ at the cafe at five.",
+          "meet"
+        ],
+        [
+          "She doesn't eat ___, only vegetables.",
+          "meat"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "weak",
+          "/wiːk/",
+          "yếu"
+        ],
+        [
+          "week",
+          "/wiːk/",
+          "tuần"
+        ]
+      ],
+      "cloze": [
+        [
+          "After being ill, he felt very ___.",
+          "weak"
+        ],
+        [
+          "There are seven days in a ___.",
+          "week"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "son",
+          "/sʌn/",
+          "con trai"
+        ],
+        [
+          "sun",
+          "/sʌn/",
+          "mặt trời"
+        ]
+      ],
+      "cloze": [
+        [
+          "Their ___ is ten years old.",
+          "son"
+        ],
+        [
+          "The ___ rises in the east.",
+          "sun"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "flour",
+          "/ˈflaʊə/",
+          "bột mì"
+        ],
+        [
+          "flower",
+          "/ˈflaʊə/",
+          "bông hoa"
+        ]
+      ],
+      "cloze": [
+        [
+          "You need ___ and eggs to make bread.",
+          "flour"
+        ],
+        [
+          "A rose is a beautiful ___.",
+          "flower"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "wait",
+          "/weɪt/",
+          "chờ đợi"
+        ],
+        [
+          "weight",
+          "/weɪt/",
+          "cân nặng"
+        ]
+      ],
+      "cloze": [
+        [
+          "Please ___ here until I come back.",
+          "wait"
+        ],
+        [
+          "He wants to lose some ___.",
+          "weight"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "mail",
+          "/meɪl/",
+          "thư từ"
+        ],
+        [
+          "male",
+          "/meɪl/",
+          "giống đực, nam"
+        ]
+      ],
+      "cloze": [
+        [
+          "Did we get any ___ this morning?",
+          "mail"
+        ],
+        [
+          "A ___ lion has a big mane.",
+          "male"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "sale",
+          "/seɪl/",
+          "việc bán, đợt giảm giá"
+        ],
+        [
+          "sail",
+          "/seɪl/",
+          "cánh buồm, đi thuyền buồm"
+        ]
+      ],
+      "cloze": [
+        [
+          "The shoes were cheap because they were on ___.",
+          "sale"
+        ],
+        [
+          "We learned to ___ a boat last summer.",
+          "sail"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "pair",
+          "/peə/",
+          "đôi, cặp"
+        ],
+        [
+          "pear",
+          "/peə/",
+          "quả lê"
+        ],
+        [
+          "pare",
+          "/peə/",
+          "gọt, cắt bớt"
+        ]
+      ],
+      "cloze": [
+        [
+          "I bought a new ___ of shoes.",
+          "pair"
+        ],
+        [
+          "She ate an apple and a ___.",
+          "pear"
+        ],
+        [
+          "Use a small knife to ___ the skin off the apple.",
+          "pare"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "wear",
+          "/weə/",
+          "mặc, đeo"
+        ],
+        [
+          "where",
+          "/weə/",
+          "ở đâu"
+        ]
+      ],
+      "cloze": [
+        [
+          "I ___ a uniform at school.",
+          "wear"
+        ],
+        [
+          "___ do you live?",
+          "where"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "would",
+          "/wʊd/",
+          "sẽ (điều kiện), muốn"
+        ],
+        [
+          "wood",
+          "/wʊd/",
+          "gỗ, rừng nhỏ"
+        ]
+      ],
+      "cloze": [
+        [
+          "___ you like a cup of tea?",
+          "would"
+        ],
+        [
+          "This table is made of ___.",
+          "wood"
+        ]
+      ],
+      "note_vi": "Khi đọc nhẹ, \"would\" thường là /wəd/ hoặc /d/."
+    },
+    {
+      "words": [
+        [
+          "which",
+          "/wɪtʃ/",
+          "cái nào"
+        ],
+        [
+          "witch",
+          "/wɪtʃ/",
+          "phù thuỷ"
+        ]
+      ],
+      "cloze": [
+        [
+          "___ colour do you like best?",
+          "which"
+        ],
+        [
+          "The ___ flew on her broom.",
+          "witch"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "knew",
+          "/njuː/",
+          "đã biết"
+        ],
+        [
+          "new",
+          "/njuː/",
+          "mới"
+        ]
+      ],
+      "cloze": [
+        [
+          "I ___ the answer, but I forgot it.",
+          "knew"
+        ],
+        [
+          "She has a ___ bike.",
+          "new"
+        ]
+      ],
+      "note_vi": "Giọng Anh giữ âm /j/: /njuː/, không phải /nuː/ như giọng Mỹ."
+    },
+    {
+      "words": [
+        [
+          "knight",
+          "/naɪt/",
+          "hiệp sĩ"
+        ],
+        [
+          "night",
+          "/naɪt/",
+          "ban đêm"
+        ]
+      ],
+      "cloze": [
+        [
+          "The ___ rode a white horse to the castle.",
+          "knight"
+        ],
+        [
+          "I sleep eight hours every ___.",
+          "night"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "plain",
+          "/pleɪn/",
+          "đơn giản, trơn; đồng bằng"
+        ],
+        [
+          "plane",
+          "/pleɪn/",
+          "máy bay"
+        ]
+      ],
+      "cloze": [
+        [
+          "She wore a ___ white shirt with no pattern.",
+          "plain"
+        ],
+        [
+          "The ___ landed at the airport.",
+          "plane"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "road",
+          "/rəʊd/",
+          "con đường"
+        ],
+        [
+          "rode",
+          "/rəʊd/",
+          "đã cưỡi, đã đi (xe)"
+        ],
+        [
+          "rowed",
+          "/rəʊd/",
+          "đã chèo thuyền"
+        ]
+      ],
+      "cloze": [
+        [
+          "Look both ways before you cross the ___.",
+          "road"
+        ],
+        [
+          "Yesterday he ___ his bike to school.",
+          "rode"
+        ],
+        [
+          "They ___ the boat across the lake.",
+          "rowed"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "steal",
+          "/stiːl/",
+          "ăn trộm"
+        ],
+        [
+          "steel",
+          "/stiːl/",
+          "thép"
+        ]
+      ],
+      "cloze": [
+        [
+          "It is wrong to ___ money.",
+          "steal"
+        ],
+        [
+          "The bridge is made of ___.",
+          "steel"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "tail",
+          "/teɪl/",
+          "cái đuôi"
+        ],
+        [
+          "tale",
+          "/teɪl/",
+          "câu chuyện"
+        ]
+      ],
+      "cloze": [
+        [
+          "The dog is wagging its ___.",
+          "tail"
+        ],
+        [
+          "My grandmother told me a fairy ___.",
+          "tale"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "waste",
+          "/weɪst/",
+          "lãng phí, rác thải"
+        ],
+        [
+          "waist",
+          "/weɪst/",
+          "vòng eo"
+        ]
+      ],
+      "cloze": [
+        [
+          "Don't ___ your time on games.",
+          "waste"
+        ],
+        [
+          "These trousers are too big around the ___.",
+          "waist"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "allowed",
+          "/əˈlaʊd/",
+          "được phép"
+        ],
+        [
+          "aloud",
+          "/əˈlaʊd/",
+          "thành tiếng, to"
+        ]
+      ],
+      "cloze": [
+        [
+          "Phones are not ___ in the exam room.",
+          "allowed"
+        ],
+        [
+          "The teacher read the story ___ to the class.",
+          "aloud"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "principal",
+          "/ˈprɪnsəpl/",
+          "hiệu trưởng; chính"
+        ],
+        [
+          "principle",
+          "/ˈprɪnsəpl/",
+          "nguyên tắc"
+        ]
+      ],
+      "cloze": [
+        [
+          "The school ___ gave a speech.",
+          "principal"
+        ],
+        [
+          "Honesty is an important ___ in my life.",
+          "principle"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "stationary",
+          "/ˈsteɪʃənri/",
+          "đứng yên"
+        ],
+        [
+          "stationery",
+          "/ˈsteɪʃənri/",
+          "văn phòng phẩm"
+        ]
+      ],
+      "cloze": [
+        [
+          "The car was ___ at the red light.",
+          "stationary"
+        ],
+        [
+          "Pens and paper are sold in the ___ shop.",
+          "stationery"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "compliment",
+          "/ˈkɒmplɪmənt/",
+          "lời khen"
+        ],
+        [
+          "complement",
+          "/ˈkɒmplɪmənt/",
+          "phần bổ sung"
+        ]
+      ],
+      "cloze": [
+        [
+          "She paid me a ___ on my new haircut.",
+          "compliment"
+        ],
+        [
+          "This sauce is a perfect ___ to the fish.",
+          "complement"
+        ]
+      ],
+      "note_vi": "Khi là động từ, cả hai đều đọc /ˈkɒmplɪment/."
+    },
+    {
+      "words": [
+        [
+          "cereal",
+          "/ˈsɪəriəl/",
+          "ngũ cốc"
+        ],
+        [
+          "serial",
+          "/ˈsɪəriəl/",
+          "nhiều kỳ, số sê-ri"
+        ]
+      ],
+      "cloze": [
+        [
+          "I eat ___ with milk for breakfast.",
+          "cereal"
+        ],
+        [
+          "Write down the ___ number of your laptop.",
+          "serial"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "blue",
+          "/bluː/",
+          "màu xanh dương"
+        ],
+        [
+          "blew",
+          "/bluː/",
+          "đã thổi"
+        ]
+      ],
+      "cloze": [
+        [
+          "The sky is ___ today.",
+          "blue"
+        ],
+        [
+          "The wind ___ my hat away.",
+          "blew"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "one",
+          "/wʌn/",
+          "số một"
+        ],
+        [
+          "won",
+          "/wʌn/",
+          "đã thắng"
+        ]
+      ],
+      "cloze": [
+        [
+          "I have only ___ pen.",
+          "one"
+        ],
+        [
+          "Our team ___ the match.",
+          "won"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "red",
+          "/red/",
+          "màu đỏ"
+        ],
+        [
+          "read",
+          "/red/",
+          "đã đọc (quá khứ)"
+        ]
+      ],
+      "cloze": [
+        [
+          "Strawberries are ___.",
+          "red"
+        ],
+        [
+          "I ___ that book last year.",
+          "read"
+        ]
+      ],
+      "note_vi": "\"read\" ở hiện tại đọc /riːd/, chỉ quá khứ mới là /red/."
+    },
+    {
+      "words": [
+        [
+          "hour",
+          "/ˈaʊə/",
+          "giờ (60 phút)"
+        ],
+        [
+          "our",
+          "/ˈaʊə/",
+          "của chúng tôi"
+        ]
+      ],
+      "cloze": [
+        [
+          "The film lasts one ___.",
+          "hour"
+        ],
+        [
+          "This is ___ new house.",
+          "our"
+        ]
+      ],
+      "note_vi": "\"our\" cũng có thể đọc /ɑː/ trong giọng Anh."
+    },
+    {
+      "words": [
+        [
+          "bear",
+          "/beə/",
+          "con gấu; chịu đựng"
+        ],
+        [
+          "bare",
+          "/beə/",
+          "trần, trống"
+        ]
+      ],
+      "cloze": [
+        [
+          "A brown ___ lives in the forest.",
+          "bear"
+        ],
+        [
+          "He walked on the beach with ___ feet.",
+          "bare"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "dear",
+          "/dɪə/",
+          "thân mến"
+        ],
+        [
+          "deer",
+          "/dɪə/",
+          "con hươu"
+        ]
+      ],
+      "cloze": [
+        [
+          "She started the letter with ___ Tom.",
+          "dear"
+        ],
+        [
+          "We saw a ___ running in the forest.",
+          "deer"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "made",
+          "/meɪd/",
+          "đã làm"
+        ],
+        [
+          "maid",
+          "/meɪd/",
+          "người giúp việc"
+        ]
+      ],
+      "cloze": [
+        [
+          "My mum ___ a cake for my birthday.",
+          "made"
+        ],
+        [
+          "The hotel ___ cleaned our room.",
+          "maid"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "brake",
+          "/breɪk/",
+          "phanh"
+        ],
+        [
+          "break",
+          "/breɪk/",
+          "làm vỡ, giờ nghỉ"
+        ]
+      ],
+      "cloze": [
+        [
+          "Press the ___ to stop the car.",
+          "brake"
+        ],
+        [
+          "Be careful, don't ___ the glass.",
+          "break"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "sent",
+          "/sent/",
+          "đã gửi"
+        ],
+        [
+          "scent",
+          "/sent/",
+          "mùi hương"
+        ],
+        [
+          "cent",
+          "/sent/",
+          "đồng xu (1/100 đô)"
+        ]
+      ],
+      "cloze": [
+        [
+          "I ___ you an email yesterday.",
+          "sent"
+        ],
+        [
+          "I love the ___ of these roses.",
+          "scent"
+        ],
+        [
+          "I didn't have a single ___ left in my pocket.",
+          "cent"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "sum",
+          "/sʌm/",
+          "tổng, khoản tiền"
+        ],
+        [
+          "some",
+          "/sʌm/",
+          "một vài, một ít"
+        ]
+      ],
+      "cloze": [
+        [
+          "He paid a large ___ of money for the car.",
+          "sum"
+        ],
+        [
+          "Would you like ___ water?",
+          "some"
+        ]
+      ],
+      "note_vi": "Khi đọc nhẹ, \"some\" thường là /səm/."
+    },
+    {
+      "words": [
+        [
+          "nose",
+          "/nəʊz/",
+          "cái mũi"
+        ],
+        [
+          "knows",
+          "/nəʊz/",
+          "biết (ngôi 3 số ít)"
+        ]
+      ],
+      "cloze": [
+        [
+          "I have a cold and my ___ is red.",
+          "nose"
+        ],
+        [
+          "She ___ the answer.",
+          "knows"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "pain",
+          "/peɪn/",
+          "cơn đau"
+        ],
+        [
+          "pane",
+          "/peɪn/",
+          "ô kính"
+        ]
+      ],
+      "cloze": [
+        [
+          "I have a ___ in my back.",
+          "pain"
+        ],
+        [
+          "The ball broke a ___ of glass in the window.",
+          "pane"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "rain",
+          "/reɪn/",
+          "mưa"
+        ],
+        [
+          "reign",
+          "/reɪn/",
+          "triều đại, trị vì"
+        ],
+        [
+          "rein",
+          "/reɪn/",
+          "dây cương"
+        ]
+      ],
+      "cloze": [
+        [
+          "Take an umbrella, it might ___.",
+          "rain"
+        ],
+        [
+          "The queen had a long ___.",
+          "reign"
+        ],
+        [
+          "Hold the ___ tightly when you ride the horse.",
+          "rein"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "heel",
+          "/hiːl/",
+          "gót chân, gót giày"
+        ],
+        [
+          "heal",
+          "/hiːl/",
+          "chữa lành, lành lại"
+        ]
+      ],
+      "cloze": [
+        [
+          "My new shoes hurt my ___.",
+          "heel"
+        ],
+        [
+          "The cut on my hand will ___ in a few days.",
+          "heal"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "hair",
+          "/heə/",
+          "tóc"
+        ],
+        [
+          "hare",
+          "/heə/",
+          "thỏ rừng"
+        ]
+      ],
+      "cloze": [
+        [
+          "She has long black ___.",
+          "hair"
+        ],
+        [
+          "A ___ is like a rabbit but bigger and faster.",
+          "hare"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "stair",
+          "/steə/",
+          "bậc cầu thang"
+        ],
+        [
+          "stare",
+          "/steə/",
+          "nhìn chằm chằm"
+        ]
+      ],
+      "cloze": [
+        [
+          "He sat on the bottom ___.",
+          "stair"
+        ],
+        [
+          "It's rude to ___ at people.",
+          "stare"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "root",
+          "/ruːt/",
+          "rễ cây"
+        ],
+        [
+          "route",
+          "/ruːt/",
+          "tuyến đường"
+        ]
+      ],
+      "cloze": [
+        [
+          "The tree has a very deep ___.",
+          "root"
+        ],
+        [
+          "Which bus ___ goes to the city centre?",
+          "route"
+        ]
+      ],
+      "note_vi": "Giọng Anh đọc \"route\" là /ruːt/; giọng Mỹ có thể đọc /raʊt/."
+    },
+    {
+      "words": [
+        [
+          "great",
+          "/ɡreɪt/",
+          "tuyệt vời, lớn"
+        ],
+        [
+          "grate",
+          "/ɡreɪt/",
+          "bào, nạo"
+        ]
+      ],
+      "cloze": [
+        [
+          "We had a ___ time at the party.",
+          "great"
+        ],
+        [
+          "___ some cheese on top of the pasta.",
+          "grate"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "threw",
+          "/θruː/",
+          "đã ném"
+        ],
+        [
+          "through",
+          "/θruː/",
+          "xuyên qua"
+        ]
+      ],
+      "cloze": [
+        [
+          "He ___ the ball to his friend.",
+          "threw"
+        ],
+        [
+          "The train went ___ a long tunnel.",
+          "through"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "saw",
+          "/sɔː/",
+          "đã thấy; cái cưa"
+        ],
+        [
+          "sore",
+          "/sɔː/",
+          "đau, nhức"
+        ],
+        [
+          "soar",
+          "/sɔː/",
+          "bay vút lên"
+        ]
+      ],
+      "cloze": [
+        [
+          "I ___ a good film last night.",
+          "saw"
+        ],
+        [
+          "I have a ___ throat.",
+          "sore"
+        ],
+        [
+          "Eagles ___ high above the mountains.",
+          "soar"
+        ]
+      ],
+      "note_vi": "Chỉ đồng âm trong giọng Anh (không đọc /r/ cuối)."
+    },
+    {
+      "words": [
+        [
+          "board",
+          "/bɔːd/",
+          "tấm bảng, lên (tàu, xe)"
+        ],
+        [
+          "bored",
+          "/bɔːd/",
+          "chán"
+        ]
+      ],
+      "cloze": [
+        [
+          "The teacher wrote on the ___.",
+          "board"
+        ],
+        [
+          "I was ___ because the film was too long.",
+          "bored"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "flew",
+          "/fluː/",
+          "đã bay"
+        ],
+        [
+          "flu",
+          "/fluː/",
+          "bệnh cúm"
+        ]
+      ],
+      "cloze": [
+        [
+          "We ___ to London last summer.",
+          "flew"
+        ],
+        [
+          "She stayed at home because she had the ___.",
+          "flu"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "missed",
+          "/mɪst/",
+          "đã lỡ, nhớ"
+        ],
+        [
+          "mist",
+          "/mɪst/",
+          "sương mù nhẹ"
+        ]
+      ],
+      "cloze": [
+        [
+          "I ___ the bus this morning.",
+          "missed"
+        ],
+        [
+          "There was a light ___ over the lake.",
+          "mist"
+        ]
+      ],
+      "note_vi": "Đuôi -ed sau /s/ đọc là /t/."
+    },
+    {
+      "words": [
+        [
+          "guessed",
+          "/ɡest/",
+          "đã đoán"
+        ],
+        [
+          "guest",
+          "/ɡest/",
+          "khách"
+        ]
+      ],
+      "cloze": [
+        [
+          "I ___ the right answer.",
+          "guessed"
+        ],
+        [
+          "We have a ___ staying with us this week.",
+          "guest"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "passed",
+          "/pɑːst/",
+          "đã vượt qua, đỗ"
+        ],
+        [
+          "past",
+          "/pɑːst/",
+          "quá khứ, qua"
+        ]
+      ],
+      "cloze": [
+        [
+          "She ___ her driving test.",
+          "passed"
+        ],
+        [
+          "It's ten ___ six.",
+          "past"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "not",
+          "/nɒt/",
+          "không"
+        ],
+        [
+          "knot",
+          "/nɒt/",
+          "nút thắt"
+        ]
+      ],
+      "cloze": [
+        [
+          "I am ___ hungry.",
+          "not"
+        ],
+        [
+          "He tied a ___ in the rope.",
+          "knot"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "die",
+          "/daɪ/",
+          "chết"
+        ],
+        [
+          "dye",
+          "/daɪ/",
+          "nhuộm"
+        ]
+      ],
+      "cloze": [
+        [
+          "Plants will ___ without water.",
+          "die"
+        ],
+        [
+          "She wants to ___ her hair red.",
+          "dye"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "high",
+          "/haɪ/",
+          "cao"
+        ],
+        [
+          "hi",
+          "/haɪ/",
+          "chào"
+        ]
+      ],
+      "cloze": [
+        [
+          "The mountain is very ___.",
+          "high"
+        ],
+        [
+          "She smiled and said ___ to me.",
+          "hi"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "eye",
+          "/aɪ/",
+          "con mắt"
+        ],
+        [
+          "I",
+          "/aɪ/",
+          "tôi"
+        ]
+      ],
+      "cloze": [
+        [
+          "I have something in my ___.",
+          "eye"
+        ],
+        [
+          "Yesterday ___ went to the cinema.",
+          "I"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "be",
+          "/biː/",
+          "thì, là"
+        ],
+        [
+          "bee",
+          "/biː/",
+          "con ong"
+        ]
+      ],
+      "cloze": [
+        [
+          "I want to ___ a doctor.",
+          "be"
+        ],
+        [
+          "A ___ makes honey.",
+          "bee"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "sell",
+          "/sel/",
+          "bán"
+        ],
+        [
+          "cell",
+          "/sel/",
+          "tế bào, phòng giam"
+        ]
+      ],
+      "cloze": [
+        [
+          "They ___ fruit at the market.",
+          "sell"
+        ],
+        [
+          "The prisoner stayed in a small ___.",
+          "cell"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "fair",
+          "/feə/",
+          "công bằng; hội chợ"
+        ],
+        [
+          "fare",
+          "/feə/",
+          "giá vé"
+        ]
+      ],
+      "cloze": [
+        [
+          "It's not ___ that he got more cake.",
+          "fair"
+        ],
+        [
+          "The bus ___ is two pounds.",
+          "fare"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "berry",
+          "/ˈberi/",
+          "quả mọng"
+        ],
+        [
+          "bury",
+          "/ˈberi/",
+          "chôn"
+        ]
+      ],
+      "cloze": [
+        [
+          "A strawberry is a kind of ___.",
+          "berry"
+        ],
+        [
+          "The dog likes to ___ bones in the garden.",
+          "bury"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "check",
+          "/tʃek/",
+          "kiểm tra"
+        ],
+        [
+          "cheque",
+          "/tʃek/",
+          "tờ séc (Anh)"
+        ]
+      ],
+      "cloze": [
+        [
+          "Please ___ your answers before you finish.",
+          "check"
+        ],
+        [
+          "He paid the bill by ___.",
+          "cheque"
+        ]
+      ],
+      "note_vi": "Cách viết \"cheque\" là tiếng Anh Anh."
+    },
+    {
+      "words": [
+        [
+          "sight",
+          "/saɪt/",
+          "thị lực, cảnh"
+        ],
+        [
+          "site",
+          "/saɪt/",
+          "địa điểm, trang web"
+        ]
+      ],
+      "cloze": [
+        [
+          "My grandfather has poor ___ and needs glasses.",
+          "sight"
+        ],
+        [
+          "Workers are building a hotel on this ___.",
+          "site"
+        ]
+      ]
+    },
+    {
+      "words": [
+        [
+          "wine",
+          "/waɪn/",
+          "rượu vang"
+        ],
+        [
+          "whine",
+          "/waɪn/",
+          "rên rỉ, than vãn"
+        ]
+      ],
+      "cloze": [
+        [
+          "They drank red ___ with dinner.",
+          "wine"
+        ],
+        [
+          "Dogs often ___ when they are hungry.",
+          "whine"
+        ]
+      ],
+      "note_vi": "Giọng Anh chuẩn không phân biệt /hw/ và /w/."
+    }
+  ],
+  "minimal_pairs": [
+    {
+      "a": [
+        "ship",
+        "/ʃɪp/",
+        "con tàu"
+      ],
+      "b": [
+        "sheep",
+        "/ʃiːp/",
+        "con cừu"
+      ],
+      "contrast": [
+        "ɪ",
+        "iː"
+      ],
+      "tip_vi": "/ɪ/ ngắn, môi thả lỏng; /iː/ dài, kéo môi như cười."
+    },
+    {
+      "a": [
+        "live",
+        "/lɪv/",
+        "sống"
+      ],
+      "b": [
+        "leave",
+        "/liːv/",
+        "rời đi"
+      ],
+      "contrast": [
+        "ɪ",
+        "iː"
+      ],
+      "tip_vi": "Kéo dài và căng môi ở \"leave\"; nhớ giữ /v/ cuối ở cả hai từ."
+    },
+    {
+      "a": [
+        "bit",
+        "/bɪt/",
+        "một chút"
+      ],
+      "b": [
+        "beat",
+        "/biːt/",
+        "đánh bại"
+      ],
+      "contrast": [
+        "ɪ",
+        "iː"
+      ],
+      "tip_vi": "Độ dài nguyên âm là chìa khoá; /t/ cuối phải dừng rõ."
+    },
+    {
+      "a": [
+        "fill",
+        "/fɪl/",
+        "làm đầy"
+      ],
+      "b": [
+        "feel",
+        "/fiːl/",
+        "cảm thấy"
+      ],
+      "contrast": [
+        "ɪ",
+        "iː"
+      ],
+      "tip_vi": "\"feel\" dài gần gấp đôi \"fill\"; đừng quên /l/ cuối."
+    },
+    {
+      "a": [
+        "bed",
+        "/bed/",
+        "cái giường"
+      ],
+      "b": [
+        "bad",
+        "/bæd/",
+        "tệ"
+      ],
+      "contrast": [
+        "e",
+        "æ"
+      ],
+      "tip_vi": "/æ/ há miệng rộng hơn hẳn, hạ hàm dưới xuống."
+    },
+    {
+      "a": [
+        "men",
+        "/men/",
+        "những người đàn ông"
+      ],
+      "b": [
+        "man",
+        "/mæn/",
+        "người đàn ông"
+      ],
+      "contrast": [
+        "e",
+        "æ"
+      ],
+      "tip_vi": "Soi gương: với \"man\" hàm dưới hạ thấp rõ rệt."
+    },
+    {
+      "a": [
+        "pen",
+        "/pen/",
+        "cái bút"
+      ],
+      "b": [
+        "pan",
+        "/pæn/",
+        "cái chảo"
+      ],
+      "contrast": [
+        "e",
+        "æ"
+      ],
+      "tip_vi": "/e/ gần \"e\" Việt; /æ/ là \"a\" pha \"e\", miệng mở to."
+    },
+    {
+      "a": [
+        "cat",
+        "/kæt/",
+        "con mèo"
+      ],
+      "b": [
+        "cut",
+        "/kʌt/",
+        "cắt"
+      ],
+      "contrast": [
+        "æ",
+        "ʌ"
+      ],
+      "tip_vi": "/æ/ kéo môi sang ngang; /ʌ/ môi thả lỏng như \"ă\"."
+    },
+    {
+      "a": [
+        "hat",
+        "/hæt/",
+        "cái mũ"
+      ],
+      "b": [
+        "hut",
+        "/hʌt/",
+        "túp lều"
+      ],
+      "contrast": [
+        "æ",
+        "ʌ"
+      ],
+      "tip_vi": "\"hut\" ngắn gọn như \"hắt\"; \"hat\" mở miệng rộng hơn."
+    },
+    {
+      "a": [
+        "shot",
+        "/ʃɒt/",
+        "phát bắn"
+      ],
+      "b": [
+        "short",
+        "/ʃɔːt/",
+        "ngắn"
+      ],
+      "contrast": [
+        "ɒ",
+        "ɔː"
+      ],
+      "tip_vi": "/ɔː/ dài và tròn môi hơn; giọng Anh không đọc /r/."
+    },
+    {
+      "a": [
+        "pot",
+        "/pɒt/",
+        "cái nồi"
+      ],
+      "b": [
+        "port",
+        "/pɔːt/",
+        "cảng"
+      ],
+      "contrast": [
+        "ɒ",
+        "ɔː"
+      ],
+      "tip_vi": "Kéo dài và chu môi ở \"port\"."
+    },
+    {
+      "a": [
+        "full",
+        "/fʊl/",
+        "đầy, no"
+      ],
+      "b": [
+        "fool",
+        "/fuːl/",
+        "kẻ ngốc"
+      ],
+      "contrast": [
+        "ʊ",
+        "uː"
+      ],
+      "tip_vi": "/ʊ/ ngắn, lỏng; /uː/ dài, chu môi."
+    },
+    {
+      "a": [
+        "pull",
+        "/pʊl/",
+        "kéo"
+      ],
+      "b": [
+        "pool",
+        "/puːl/",
+        "bể bơi"
+      ],
+      "contrast": [
+        "ʊ",
+        "uː"
+      ],
+      "tip_vi": "Độ dài là khác biệt chính; giữ /l/ cuối."
+    },
+    {
+      "a": [
+        "think",
+        "/θɪŋk/",
+        "nghĩ"
+      ],
+      "b": [
+        "sink",
+        "/sɪŋk/",
+        "bồn rửa"
+      ],
+      "contrast": [
+        "θ",
+        "s"
+      ],
+      "tip_vi": "Với /θ/ đầu lưỡi phải chạm giữa hai hàm răng."
+    },
+    {
+      "a": [
+        "thick",
+        "/θɪk/",
+        "dày"
+      ],
+      "b": [
+        "sick",
+        "/sɪk/",
+        "ốm"
+      ],
+      "contrast": [
+        "θ",
+        "s"
+      ],
+      "tip_vi": "Thè nhẹ lưỡi cho \"thick\"; \"sick\" lưỡi ở sau răng."
+    },
+    {
+      "a": [
+        "mouth",
+        "/maʊθ/",
+        "cái miệng"
+      ],
+      "b": [
+        "mouse",
+        "/maʊs/",
+        "con chuột"
+      ],
+      "contrast": [
+        "θ",
+        "s"
+      ],
+      "tip_vi": "Âm cuối khác nhau: kết thúc \"mouth\" bằng lưỡi giữa răng."
+    },
+    {
+      "a": [
+        "three",
+        "/θriː/",
+        "số ba"
+      ],
+      "b": [
+        "tree",
+        "/triː/",
+        "cái cây"
+      ],
+      "contrast": [
+        "θ",
+        "t"
+      ],
+      "tip_vi": "/θ/ là luồng hơi liên tục qua lưỡi và răng; /t/ là bật hơi."
+    },
+    {
+      "a": [
+        "thin",
+        "/θɪn/",
+        "mỏng, gầy"
+      ],
+      "b": [
+        "tin",
+        "/tɪn/",
+        "hộp thiếc"
+      ],
+      "contrast": [
+        "θ",
+        "t"
+      ],
+      "tip_vi": "Không đọc \"thin\" như chữ \"thin\" Việt; đặt lưỡi giữa răng."
+    },
+    {
+      "a": [
+        "they",
+        "/ðeɪ/",
+        "họ"
+      ],
+      "b": [
+        "day",
+        "/deɪ/",
+        "ngày"
+      ],
+      "contrast": [
+        "ð",
+        "d"
+      ],
+      "tip_vi": "/ð/ lưỡi giữa răng và rung cổ; /d/ lưỡi chạm lợi."
+    },
+    {
+      "a": [
+        "then",
+        "/ðen/",
+        "sau đó"
+      ],
+      "b": [
+        "den",
+        "/den/",
+        "hang ổ"
+      ],
+      "contrast": [
+        "ð",
+        "d"
+      ],
+      "tip_vi": "Đặt tay lên cổ: cả hai đều rung, nhưng vị trí lưỡi khác."
+    },
+    {
+      "a": [
+        "breathe",
+        "/briːð/",
+        "thở"
+      ],
+      "b": [
+        "breeze",
+        "/briːz/",
+        "làn gió nhẹ"
+      ],
+      "contrast": [
+        "ð",
+        "z"
+      ],
+      "tip_vi": "Kết thúc \"breathe\" với lưỡi giữa răng, không phải sau răng."
+    },
+    {
+      "a": [
+        "clothing",
+        "/ˈkləʊðɪŋ/",
+        "quần áo"
+      ],
+      "b": [
+        "closing",
+        "/ˈkləʊzɪŋ/",
+        "đang đóng"
+      ],
+      "contrast": [
+        "ð",
+        "z"
+      ],
+      "tip_vi": "Lưỡi chạm răng ở \"clothing\", lưỡi sau răng ở \"closing\"."
+    },
+    {
+      "a": [
+        "she",
+        "/ʃiː/",
+        "cô ấy"
+      ],
+      "b": [
+        "see",
+        "/siː/",
+        "nhìn thấy"
+      ],
+      "contrast": [
+        "ʃ",
+        "s"
+      ],
+      "tip_vi": "/ʃ/ chu môi, lưỡi lùi lại; /s/ kéo môi, lưỡi sau răng."
+    },
+    {
+      "a": [
+        "ship",
+        "/ʃɪp/",
+        "con tàu"
+      ],
+      "b": [
+        "sip",
+        "/sɪp/",
+        "nhấp một ngụm"
+      ],
+      "contrast": [
+        "ʃ",
+        "s"
+      ],
+      "tip_vi": "Chu môi tròn ra trước cho /ʃ/."
+    },
+    {
+      "a": [
+        "beige",
+        "/beɪʒ/",
+        "màu be"
+      ],
+      "b": [
+        "bays",
+        "/beɪz/",
+        "những vịnh"
+      ],
+      "contrast": [
+        "ʒ",
+        "z"
+      ],
+      "tip_vi": "/ʒ/ chu môi như /ʃ/ nhưng rung cổ; /z/ kéo môi."
+    },
+    {
+      "a": [
+        "chair",
+        "/tʃeə/",
+        "cái ghế"
+      ],
+      "b": [
+        "share",
+        "/ʃeə/",
+        "chia sẻ"
+      ],
+      "contrast": [
+        "tʃ",
+        "ʃ"
+      ],
+      "tip_vi": "/tʃ/ bắt đầu bằng lưỡi chạm lợi rồi bật; /ʃ/ là hơi liên tục."
+    },
+    {
+      "a": [
+        "watch",
+        "/wɒtʃ/",
+        "xem, đồng hồ"
+      ],
+      "b": [
+        "wash",
+        "/wɒʃ/",
+        "rửa"
+      ],
+      "contrast": [
+        "tʃ",
+        "ʃ"
+      ],
+      "tip_vi": "Kết thúc \"watch\" bằng một cú chặn rồi bật ngắn."
+    },
+    {
+      "a": [
+        "jest",
+        "/dʒest/",
+        "lời đùa"
+      ],
+      "b": [
+        "zest",
+        "/zest/",
+        "sự hăng hái"
+      ],
+      "contrast": [
+        "dʒ",
+        "z"
+      ],
+      "tip_vi": "/dʒ/ chu môi, lưỡi chạm lợi trước; không đọc \"j\" thành \"z\"."
+    },
+    {
+      "a": [
+        "jam",
+        "/dʒæm/",
+        "mứt"
+      ],
+      "b": [
+        "yam",
+        "/jæm/",
+        "củ khoai mỡ"
+      ],
+      "contrast": [
+        "dʒ",
+        "j"
+      ],
+      "tip_vi": "Không đọc \"j\" và \"y\" giống nhau thành \"d/z\"."
+    },
+    {
+      "a": [
+        "right",
+        "/raɪt/",
+        "đúng, bên phải"
+      ],
+      "b": [
+        "light",
+        "/laɪt/",
+        "ánh sáng"
+      ],
+      "contrast": [
+        "r",
+        "l"
+      ],
+      "tip_vi": "/r/ lưỡi cong, không chạm; /l/ đầu lưỡi chạm lợi trên."
+    },
+    {
+      "a": [
+        "rice",
+        "/raɪs/",
+        "gạo, cơm"
+      ],
+      "b": [
+        "lice",
+        "/laɪs/",
+        "chấy, rận"
+      ],
+      "contrast": [
+        "r",
+        "l"
+      ],
+      "tip_vi": "Tròn môi nhẹ khi bắt đầu /r/."
+    },
+    {
+      "a": [
+        "road",
+        "/rəʊd/",
+        "con đường"
+      ],
+      "b": [
+        "load",
+        "/ləʊd/",
+        "chất hàng"
+      ],
+      "contrast": [
+        "r",
+        "l"
+      ],
+      "tip_vi": "Lưỡi không chạm vào đâu khi đọc /r/."
+    },
+    {
+      "a": [
+        "rip",
+        "/rɪp/",
+        "xé"
+      ],
+      "b": [
+        "zip",
+        "/zɪp/",
+        "khoá kéo"
+      ],
+      "contrast": [
+        "r",
+        "z"
+      ],
+      "tip_vi": "Đừng đọc /r/ thành \"z\" kiểu chữ \"r\" giọng Bắc."
+    },
+    {
+      "a": [
+        "mile",
+        "/maɪl/",
+        "dặm"
+      ],
+      "b": [
+        "mine",
+        "/maɪn/",
+        "của tôi"
+      ],
+      "contrast": [
+        "l",
+        "n"
+      ],
+      "tip_vi": "/l/ cuối: lưỡi chạm lợi, hơi qua hai bên; /n/ hơi đi qua mũi."
+    },
+    {
+      "a": [
+        "coal",
+        "/kəʊl/",
+        "than đá"
+      ],
+      "b": [
+        "cone",
+        "/kəʊn/",
+        "hình nón"
+      ],
+      "contrast": [
+        "l",
+        "n"
+      ],
+      "tip_vi": "Đừng biến /l/ cuối thành /n/ hoặc bỏ mất."
+    },
+    {
+      "a": [
+        "night",
+        "/naɪt/",
+        "ban đêm"
+      ],
+      "b": [
+        "light",
+        "/laɪt/",
+        "ánh sáng"
+      ],
+      "contrast": [
+        "n",
+        "l"
+      ],
+      "tip_vi": "Bịt mũi: /n/ sẽ bị tắc, /l/ thì không."
+    },
+    {
+      "a": [
+        "vest",
+        "/vest/",
+        "áo gi lê"
+      ],
+      "b": [
+        "west",
+        "/west/",
+        "phía tây"
+      ],
+      "contrast": [
+        "v",
+        "w"
+      ],
+      "tip_vi": "/v/ răng trên chạm môi dưới; /w/ chu tròn môi, răng không chạm."
+    },
+    {
+      "a": [
+        "vine",
+        "/vaɪn/",
+        "cây nho"
+      ],
+      "b": [
+        "wine",
+        "/waɪn/",
+        "rượu vang"
+      ],
+      "contrast": [
+        "v",
+        "w"
+      ],
+      "tip_vi": "Cắn nhẹ môi dưới cho /v/."
+    },
+    {
+      "a": [
+        "very",
+        "/ˈveri/",
+        "rất"
+      ],
+      "b": [
+        "berry",
+        "/ˈberi/",
+        "quả mọng"
+      ],
+      "contrast": [
+        "v",
+        "b"
+      ],
+      "tip_vi": "/v/ là hơi liên tục qua răng và môi; /b/ mím hai môi rồi bật."
+    },
+    {
+      "a": [
+        "vote",
+        "/vəʊt/",
+        "bỏ phiếu"
+      ],
+      "b": [
+        "boat",
+        "/bəʊt/",
+        "con thuyền"
+      ],
+      "contrast": [
+        "v",
+        "b"
+      ],
+      "tip_vi": "Không mím môi khi đọc /v/."
+    },
+    {
+      "a": [
+        "fan",
+        "/fæn/",
+        "cái quạt"
+      ],
+      "b": [
+        "pan",
+        "/pæn/",
+        "cái chảo"
+      ],
+      "contrast": [
+        "f",
+        "p"
+      ],
+      "tip_vi": "/f/ thổi hơi qua răng và môi; /p/ mím môi rồi bật."
+    },
+    {
+      "a": [
+        "coffee",
+        "/ˈkɒfi/",
+        "cà phê"
+      ],
+      "b": [
+        "copy",
+        "/ˈkɒpi/",
+        "bản sao"
+      ],
+      "contrast": [
+        "f",
+        "p"
+      ],
+      "tip_vi": "Răng trên chạm môi dưới ở \"coffee\"."
+    },
+    {
+      "a": [
+        "bet",
+        "/bet/",
+        "cá cược"
+      ],
+      "b": [
+        "bed",
+        "/bed/",
+        "cái giường"
+      ],
+      "contrast": [
+        "t",
+        "d"
+      ],
+      "tip_vi": "Nguyên âm trước /d/ cuối dài hơn trước /t/; không bỏ âm cuối."
+    },
+    {
+      "a": [
+        "white",
+        "/waɪt/",
+        "màu trắng"
+      ],
+      "b": [
+        "wide",
+        "/waɪd/",
+        "rộng"
+      ],
+      "contrast": [
+        "t",
+        "d"
+      ],
+      "tip_vi": "\"wide\" có nguyên âm dài hơn và /d/ rung nhẹ."
+    },
+    {
+      "a": [
+        "price",
+        "/praɪs/",
+        "giá"
+      ],
+      "b": [
+        "prize",
+        "/praɪz/",
+        "giải thưởng"
+      ],
+      "contrast": [
+        "s",
+        "z"
+      ],
+      "tip_vi": "/z/ cuối rung cổ, nguyên âm trước nó dài hơn."
+    },
+    {
+      "a": [
+        "bus",
+        "/bʌs/",
+        "xe buýt"
+      ],
+      "b": [
+        "buzz",
+        "/bʌz/",
+        "tiếng vo ve"
+      ],
+      "contrast": [
+        "s",
+        "z"
+      ],
+      "tip_vi": "Kéo dài tiếng vo ve \"zzz\" ở cuối \"buzz\"."
+    },
+    {
+      "a": [
+        "back",
+        "/bæk/",
+        "phía sau"
+      ],
+      "b": [
+        "bag",
+        "/bæɡ/",
+        "cái túi"
+      ],
+      "contrast": [
+        "k",
+        "ɡ"
+      ],
+      "tip_vi": "Không bỏ phụ âm cuối; /ɡ/ làm nguyên âm trước nó dài hơn."
+    },
+    {
+      "a": [
+        "duck",
+        "/dʌk/",
+        "con vịt"
+      ],
+      "b": [
+        "dug",
+        "/dʌɡ/",
+        "đã đào"
+      ],
+      "contrast": [
+        "k",
+        "ɡ"
+      ],
+      "tip_vi": "Dừng rõ ở âm cuối, đừng nuốt."
+    },
+    {
+      "a": [
+        "sin",
+        "/sɪn/",
+        "tội lỗi"
+      ],
+      "b": [
+        "sing",
+        "/sɪŋ/",
+        "hát"
+      ],
+      "contrast": [
+        "n",
+        "ŋ"
+      ],
+      "tip_vi": "/n/ đầu lưỡi chạm lợi; /ŋ/ cuống lưỡi chạm ngạc mềm."
+    },
+    {
+      "a": [
+        "thin",
+        "/θɪn/",
+        "mỏng"
+      ],
+      "b": [
+        "thing",
+        "/θɪŋ/",
+        "đồ vật"
+      ],
+      "contrast": [
+        "n",
+        "ŋ"
+      ],
+      "tip_vi": "Kết thúc \"thing\" như \"ng\" Việt, không thêm /ɡ/."
+    },
+    {
+      "a": [
+        "heart",
+        "/hɑːt/",
+        "trái tim"
+      ],
+      "b": [
+        "hurt",
+        "/hɜːt/",
+        "làm đau"
+      ],
+      "contrast": [
+        "ɑː",
+        "ɜː"
+      ],
+      "tip_vi": "/ɑː/ há miệng rộng; /ɜː/ miệng mở vừa như \"ơ\"."
+    },
+    {
+      "a": [
+        "late",
+        "/leɪt/",
+        "muộn"
+      ],
+      "b": [
+        "let",
+        "/let/",
+        "để cho"
+      ],
+      "contrast": [
+        "eɪ",
+        "e"
+      ],
+      "tip_vi": "/eɪ/ trượt từ \"e\" sang \"i\"; /e/ chỉ là một âm."
+    },
+    {
+      "a": [
+        "wait",
+        "/weɪt/",
+        "chờ"
+      ],
+      "b": [
+        "wet",
+        "/wet/",
+        "ướt"
+      ],
+      "contrast": [
+        "eɪ",
+        "e"
+      ],
+      "tip_vi": "Nghe phần trượt \"ây\" ở \"wait\"."
+    },
+    {
+      "a": [
+        "low",
+        "/ləʊ/",
+        "thấp"
+      ],
+      "b": [
+        "law",
+        "/lɔː/",
+        "luật"
+      ],
+      "contrast": [
+        "əʊ",
+        "ɔː"
+      ],
+      "tip_vi": "/əʊ/ trượt từ \"ơ\" sang \"u\"; /ɔː/ giữ nguyên môi tròn."
+    },
+    {
+      "a": [
+        "coat",
+        "/kəʊt/",
+        "áo khoác"
+      ],
+      "b": [
+        "caught",
+        "/kɔːt/",
+        "đã bắt"
+      ],
+      "contrast": [
+        "əʊ",
+        "ɔː"
+      ],
+      "tip_vi": "Đừng đọc \"coat\" thành \"côốt\" đơn."
+    },
+    {
+      "a": [
+        "book",
+        "/bʊk/",
+        "quyển sách"
+      ],
+      "b": [
+        "books",
+        "/bʊks/",
+        "những quyển sách"
+      ],
+      "contrast": [
+        "∅",
+        "s"
+      ],
+      "tip_vi": "Sau âm vô thanh (/p t k f θ/) đuôi -s đọc /s/; đừng bỏ."
+    },
+    {
+      "a": [
+        "dog",
+        "/dɒɡ/",
+        "con chó"
+      ],
+      "b": [
+        "dogs",
+        "/dɒɡz/",
+        "những con chó"
+      ],
+      "contrast": [
+        "∅",
+        "z"
+      ],
+      "tip_vi": "Sau âm hữu thanh đuôi -s đọc /z/ và phải rung."
+    },
+    {
+      "a": [
+        "walk",
+        "/wɔːk/",
+        "đi bộ"
+      ],
+      "b": [
+        "walked",
+        "/wɔːkt/",
+        "đã đi bộ"
+      ],
+      "contrast": [
+        "∅",
+        "t"
+      ],
+      "tip_vi": "Sau âm vô thanh đuôi -ed đọc /t/, không thêm âm tiết."
+    },
+    {
+      "a": [
+        "play",
+        "/pleɪ/",
+        "chơi"
+      ],
+      "b": [
+        "played",
+        "/pleɪd/",
+        "đã chơi"
+      ],
+      "contrast": [
+        "∅",
+        "d"
+      ],
+      "tip_vi": "Sau âm hữu thanh đuôi -ed đọc /d/; không đọc \"plây-ét\"."
+    }
+  ],
+  "consonant_clusters": [
+    {
+      "word": "street",
+      "ipa": "/striːt/",
+      "tip_vi": "Ba phụ âm /s t r/ liền nhau ở đầu: không chèn nguyên âm thành \"sơ-tơ-rít\"; giữ /t/ cuối."
+    },
+    {
+      "word": "months",
+      "ipa": "/mʌnθs/",
+      "tip_vi": "Cuối từ có /nθs/: đặt lưỡi giữa răng cho /θ/ rồi kết thúc bằng /s/; đừng đọc thành \"mân\"."
+    },
+    {
+      "word": "asked",
+      "ipa": "/ɑːskt/",
+      "tip_vi": "Ba phụ âm cuối /s k t/; người Việt hay đọc thành \"át\" hoặc \"ást\". Đuôi -ed ở đây là /t/."
+    },
+    {
+      "word": "texts",
+      "ipa": "/teksts/",
+      "tip_vi": "Cụm cuối /ksts/ rất khó: tập chậm \"tek-st-s\"; không bỏ /t/ giữa hay /s/ cuối."
+    },
+    {
+      "word": "clothes",
+      "ipa": "/kləʊðz/",
+      "tip_vi": "Cụm cuối /ðz/; giọng Anh nói nhanh có thể đọc /kləʊz/. Đầu từ /kl/ không chèn \"cơ\"."
+    },
+    {
+      "word": "sixth",
+      "ipa": "/sɪksθ/",
+      "tip_vi": "Cuối từ /ksθ/: sau /s/ đưa ngay lưỡi ra giữa răng cho /θ/."
+    },
+    {
+      "word": "world",
+      "ipa": "/wɜːld/",
+      "tip_vi": "Cụm /ld/ cuối: giữ lưỡi ở lợi cho /l/ rồi bật nhẹ /d/; đừng đọc thành \"uơ\"."
+    },
+    {
+      "word": "strengths",
+      "ipa": "/streŋθs/",
+      "tip_vi": "Đầu /str/, cuối /ŋθs/: một trong những từ khó nhất; tập từng phần \"streng\" rồi \"ths\"."
+    },
+    {
+      "word": "twelfth",
+      "ipa": "/twelfθ/",
+      "tip_vi": "Cuối từ /lfθ/: /l/ rồi răng chạm môi cho /f/ rồi lưỡi ra giữa răng."
+    },
+    {
+      "word": "crisps",
+      "ipa": "/krɪsps/",
+      "tip_vi": "Cụm cuối /sps/: khép môi cho /p/ rồi bật /s/; \"crisps\" là khoai tây chiên lát (Anh)."
+    },
+    {
+      "word": "splash",
+      "ipa": "/splæʃ/",
+      "tip_vi": "Ba phụ âm đầu /s p l/ không có nguyên âm chen giữa; /p/ sau /s/ không bật hơi."
+    },
+    {
+      "word": "spring",
+      "ipa": "/sprɪŋ/",
+      "tip_vi": "Đầu /spr/: đừng đọc thành \"xơ-pơ-rinh\"; kết thúc /ŋ/ không thêm /ɡ/."
+    },
+    {
+      "word": "desks",
+      "ipa": "/desks/",
+      "tip_vi": "Cụm cuối /sks/: người Việt hay chỉ đọc \"đét\"; tập \"desk\" rồi thêm /s/."
+    },
+    {
+      "word": "helped",
+      "ipa": "/helpt/",
+      "tip_vi": "Cuối /lpt/: đuôi -ed là /t/, không đọc \"hen-pét\"."
+    },
+    {
+      "word": "friends",
+      "ipa": "/frendz/",
+      "tip_vi": "Cuối /ndz/: đuôi -s là /z/ vì /d/ hữu thanh; đừng đọc \"fren\"."
+    },
+    {
+      "word": "watched",
+      "ipa": "/wɒtʃt/",
+      "tip_vi": "Cuối /tʃt/: đuôi -ed là /t/, chỉ một âm tiết."
+    },
+    {
+      "word": "next",
+      "ipa": "/nekst/",
+      "tip_vi": "Cuối /kst/: đừng đọc \"néc\"; khi nói nhanh \"next day\" /t/ có thể nhẹ nhưng /ks/ vẫn rõ."
+    },
+    {
+      "word": "lengths",
+      "ipa": "/leŋθs/",
+      "tip_vi": "Cuối /ŋθs/: từ /ŋ/ đưa lưỡi ra giữa răng rồi /s/."
+    },
+    {
+      "word": "school",
+      "ipa": "/skuːl/",
+      "tip_vi": "Đầu /sk/: không đọc \"xờ-cun\"; /k/ sau /s/ không bật hơi; giữ /l/ cuối."
+    },
+    {
+      "word": "glimpsed",
+      "ipa": "/ɡlɪmpst/",
+      "tip_vi": "Cuối /mpst/: bốn phụ âm; đuôi -ed là /t/."
+    },
+    {
+      "word": "exactly",
+      "ipa": "/ɪɡˈzæktli/",
+      "tip_vi": "Giữa từ /ktl/: người Việt hay bỏ /t/ hoặc /k/; nhấn âm thứ hai."
+    },
+    {
+      "word": "fifths",
+      "ipa": "/fɪfθs/",
+      "tip_vi": "Cuối /fθs/: răng chạm môi, rồi lưỡi ra giữa răng, rồi /s/."
+    }
+  ]
+}

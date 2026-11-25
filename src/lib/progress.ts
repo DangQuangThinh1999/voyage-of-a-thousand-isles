@@ -1,0 +1,110 @@
+// Tiến độ học: lưu trong localStorage (khóa 'ht55.progress.v1'), gộp với bản trên mây.
+import { UNITS, WEEK_GOALS, type Unit } from '../data';
+import { addDays, dayKey, daysBetween } from './util';
+
+export const STORE = 'ht55.progress.v1';
+export const TOTAL_DAYS = 90;
+
+export type Kind = 'vocab' | 'listen' | 'speak' | 'read' | 'write';
+export type KindInfo = [kind: Kind, icon: string, name: string, desc: string];
+export const KINDS: KindInfo[] = [
+  ['vocab', '📚', 'Từ vựng', 'Học từ mới bằng hình + âm thanh'],
+  ['listen', '🎧', 'Nghe', 'Nghe chọn nghĩa, nghe chép câu'],
+  ['speak', '🗣️', 'Nói', 'Đọc to, máy chấm phát âm'],
+  ['read', '📖', 'Đọc', 'Đọc đoạn văn ngắn, trả lời câu hỏi'],
+  ['write', '✍️', 'Viết', 'Đánh vần, xếp câu, tự viết câu'],
+];
+export const SKILL_OF: Record<Kind, string> = { vocab: 'review', listen: 'listen', speak: 'speak', read: 'read', write: 'write' };
+export const PLAN_KEYS = ['listen', 'speak', 'read', 'write', 'review'];
+
+export interface Day { xp: number; sec: Record<string, number> }
+export interface SrsCard { b: number; due: string }
+export interface JournalEntry { id: number; d: string; u: string; t: string }
+export interface TestResult { best: number; passed: boolean; date?: string }
+export interface Settings { rate: number; voice: string; goalMin: number }
+export interface Progress {
+  v: 1; xp: number; streak: number; lastDay: string;
+  days: Record<string, Day>;
+  units: Record<string, Partial<Record<Kind, number>>>;
+  srs: Record<string, SrsCard>;
+  journal: JournalEntry[];
+  tests: Record<string, TestResult>;
+  settings: Settings; startDate: string; updated: number; seenIntro: boolean;
+}
+
+export const fresh = (): Progress => ({ v: 1, xp: 0, streak: 0, lastDay: '', days: {}, units: {}, srs: {}, journal: [], tests: {},
+  settings: { rate: 0.85, voice: '', goalMin: 210 }, startDate: dayKey(), updated: 0, seenIntro: false });
+
+export function load(): Progress {
+  try {
+    const o = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (o && o.v === 1) return { ...fresh(), ...o, settings: { ...fresh().settings, ...(o.settings || {}) } };
+  } catch { /* bộ nhớ trình duyệt bị chặn */ }
+  return fresh();
+}
+export function persist(P: Progress) {
+  try { localStorage.setItem(STORE, JSON.stringify(P)); } catch { /* bỏ qua */ }
+}
+
+export function today(P: Progress): Day {
+  const k = dayKey();
+  if (!P.days[k]) P.days[k] = { xp: 0, sec: {} };
+  return P.days[k];
+}
+export const streakNow = (P: Progress) => (P.lastDay === dayKey() || P.lastDay === addDays(dayKey(), -1) ? P.streak : 0);
+/** Cộng XP và cập nhật chuỗi ngày (chưa lưu) */
+export function addXPTo(P: Progress, n: number) {
+  const k = dayKey();
+  if (P.lastDay !== k) { P.streak = P.lastDay === addDays(k, -1) ? P.streak + 1 : 1; P.lastDay = k; }
+  P.xp += n; today(P).xp += n;
+}
+export const unitProg = (P: Progress, id: string) => P.units[id] || (P.units[id] = {});
+export const doneCount = (P: Progress, id: string) => KINDS.filter(([k]) => (P.units[id] || {})[k]).length;
+export const unlocked = (P: Progress, i: number) => i === 0 || doneCount(P, UNITS[i - 1].id) >= 3;
+export const minutesToday = (P: Progress) => Math.floor(Object.values(today(P).sec).reduce((a, b) => a + b, 0) / 60);
+export const dayNumber = (P: Progress) => Math.min(TOTAL_DAYS, daysBetween(P.startDate, dayKey()) + 1);
+export const weekUnits = (w: number) => UNITS.filter((u) => u.week === w);
+export const weekDone = (P: Progress, w: number) => { const us = weekUnits(w); return us.length > 0 && us.every((u) => doneCount(P, u.id) === 5); };
+
+// Trình độ ước tính = tuần cao nhất đã xong liên tục từ tuần 1
+export function levelNow(P: Progress): string {
+  let lv: string | null = null;
+  for (const w of Object.keys(WEEK_GOALS).map(Number).sort((a, b) => a - b)) {
+    if (weekDone(P, w)) lv = WEEK_GOALS[w].band; else break;
+  }
+  return lv || 'dưới 2.0';
+}
+
+export function nextTask(P: Progress): { u: Unit; k: KindInfo } | null {
+  for (let i = 0; i < UNITS.length; i++) {
+    if (!unlocked(P, i)) break;
+    const k = KINDS.find(([k]) => !(P.units[UNITS[i].id] || {})[k]);
+    if (k) return { u: UNITS[i], k };
+  }
+  return null;
+}
+
+// Gộp tiến độ trên mây với tiến độ trên máy (không mất bài nào đã làm)
+export function mergeProgress(P: Progress, r: Progress | null | undefined): Progress | null {
+  if (!r || r.v !== 1) return null;
+  const newer = (r.updated || 0) > (P.updated || 0) ? r : P, older = newer === r ? P : r;
+  const m: Progress = { ...fresh(), ...newer, settings: { ...fresh().settings, ...(newer.settings || {}) } };
+  m.xp = Math.max(P.xp || 0, r.xp || 0);
+  m.startDate = [P.startDate, r.startDate].filter(Boolean).sort()[0] || dayKey();
+  m.units = { ...(older.units || {}) };
+  for (const [id, v] of Object.entries(newer.units || {})) m.units[id] = { ...(m.units[id] || {}), ...v };
+  m.days = { ...(older.days || {}) };
+  for (const [k, d] of Object.entries(newer.days || {})) {
+    const o = m.days[k] || { xp: 0, sec: {} }, sec = { ...(o.sec || {}) };
+    for (const [s, v] of Object.entries(d.sec || {})) sec[s] = Math.max(sec[s] || 0, v);
+    m.days[k] = { xp: Math.max(o.xp || 0, d.xp || 0), sec };
+  }
+  m.tests = { ...(older.tests || {}) };
+  for (const [k, v] of Object.entries(newer.tests || {})) { const o = m.tests[k] || ({} as Partial<TestResult>); m.tests[k] = { ...v, best: Math.max(o.best || 0, v.best || 0), passed: !!(o.passed || v.passed) }; }
+  m.srs = { ...(older.srs || {}) };
+  for (const [w, v] of Object.entries(newer.srs || {})) if (!m.srs[w] || v.b >= m.srs[w].b) m.srs[w] = v;
+  const ids = new Set<number>(), j: JournalEntry[] = [];
+  for (const e of [...(newer.journal || []), ...(older.journal || [])]) if (!ids.has(e.id)) { ids.add(e.id); j.push(e); }
+  m.journal = j.sort((a, b) => b.id - a.id);
+  return m;
+}

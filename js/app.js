@@ -127,17 +127,78 @@ if (TTS) TTS.onvoiceschanged = () => { if (scr === 'settings') render(); };
 
 // ---------- nhận giọng nói (micro) ----------
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-function hear() {
-  return new Promise((res, rej) => {
+// Nghe liên tục cho tới khi bạn ngừng nói (im lặng ~2 giây) hoặc bấm dừng.
+// Đồng thời ghi âm để bạn nghe lại giọng mình, và đo âm lượng micro.
+let REC = null;
+function hear({ onText, onLevel, maxMs = 30000, silenceMs = 2000, startMs = 7000 } = {}) {
+  return new Promise(async (res, rej) => {
     if (TTS) TTS.cancel();
-    const r = new SR(); let got = false;
-    r.lang = 'en-US'; r.interimResults = false; r.maxAlternatives = 5;
-    r.onresult = (e) => { got = true; res([...e.results[0]].map((a) => a.transcript)); };
-    r.onerror = (e) => rej(e.error);
-    r.onend = () => { if (!got) rej('no-speech'); };
-    r.start();
+    let stream = null, media = null, chunks = [], actx = null, raf = 0;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      if (window.MediaRecorder) { media = new MediaRecorder(stream); media.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); }; media.start(); }
+      if (onLevel && (window.AudioContext || window.webkitAudioContext)) {
+        actx = new (window.AudioContext || window.webkitAudioContext)();
+        const an = actx.createAnalyser(); an.fftSize = 512; actx.createMediaStreamSource(stream).connect(an);
+        const buf = new Uint8Array(an.fftSize);
+        const loop = () => { an.getByteTimeDomainData(buf); let sum = 0; for (const v of buf) sum += (v - 128) ** 2; onLevel(Math.min(1, Math.sqrt(sum / buf.length) / 40)); raf = requestAnimationFrame(loop); };
+        loop();
+      }
+    } catch (e) {
+      if (e && e.name === 'NotAllowedError') { rej('not-allowed'); return; }
+      // không ghi âm được thì vẫn nhận giọng nói bình thường
+    }
+    const r = new SR();
+    let ended = false;
+    // Một số máy không báo 'onend' sau khi dừng: tự kết thúc sau 2,5 giây để không bị kẹt
+    const halt = () => { try { r.stop(); } catch (e) { /* đã dừng */ } setTimeout(() => { if (!ended) finish(); }, 2500); };
+    REC = { stop: halt };
+    r.lang = 'en-US'; r.continuous = true; r.interimResults = true; r.maxAlternatives = 3;
+    const finals = []; let interim = '', err = null, timer = null;
+    const stopIn = (ms) => { clearTimeout(timer); timer = setTimeout(halt, ms); };
+    const hard = setTimeout(halt, maxMs);
+    const text = () => finals.filter(Boolean).map((a) => a[0]).join(' ').replace(/\s+/g, ' ').trim();
+    r.onresult = (e) => {
+      interim = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const x = e.results[i];
+        if (x.isFinal) finals[i] = [...x].map((a) => a.transcript); else interim += x[0].transcript;
+      }
+      if (onText) onText((text() + ' ' + interim).trim());
+      stopIn(silenceMs);
+    };
+    r.onerror = (e) => { err = e.error; };
+    const finish = () => {
+      if (ended) return; ended = true;
+      try { r.abort(); } catch (e) { /* đã dừng */ }
+      clearTimeout(timer); clearTimeout(hard); cancelAnimationFrame(raf); REC = null;
+      if (actx) actx.close().catch(() => {});
+      const done = () => {
+        if (stream) stream.getTracks().forEach((t) => t.stop());
+        const audio = chunks.length ? URL.createObjectURL(new Blob(chunks, { type: chunks[0].type || 'audio/webm' })) : null;
+        const main = text() || interim.trim();
+        if (!main) { rej(err === 'not-allowed' ? 'not-allowed' : err && err !== 'no-speech' && err !== 'aborted' ? err : 'no-speech'); return; }
+        const segs = finals.filter(Boolean);
+        const alts = segs.length === 1 ? segs[0] : [main];
+        res({ alts, text: main, audio });
+      };
+      if (media && media.state !== 'inactive') { media.onstop = done; media.stop(); } else done();
+    };
+    r.onend = finish;
+    try { r.start(); } catch (e) { rej('start-failed'); return; }
+    stopIn(startMs); // chưa nói gì trong ~7 giây thì dừng
   });
 }
+const MIC_ERR = {
+  'not-allowed': 'Bạn chưa cho phép dùng micro. Bấm biểu tượng 🔒 bên trái thanh địa chỉ → Micro → Cho phép, rồi tải lại trang.',
+  'no-speech': 'Không nghe thấy gì. Hãy nói to, rõ hơn, hoặc vào ⚙️ Cài đặt → 🎤 Test micro để kiểm tra.',
+  'audio-capture': 'Không tìm thấy micro. Hãy cắm micro/tai nghe rồi thử lại.',
+  network: 'Lỗi mạng. Chấm giọng nói cần có Internet.',
+  'start-failed': 'Micro đang bận. Đợi 1 giây rồi bấm lại.',
+};
+const micErr = (e) => MIC_ERR[e] || 'Không nhận được giọng nói (' + e + ').';
+const setLevel = (v) => { const el = $('#mlevel'); if (el) el.style.width = Math.round(v * 100) + '%'; };
+const setLive = (t) => { const el = $('#mlive'); if (el) el.textContent = t || '…'; };
 
 // ---------- chấm câu ----------
 const NUM = { 0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten',
@@ -418,11 +479,12 @@ function go(s, a = null) {
 }
 function render() {
   renderHeader(); renderCrumbs(); renderSide();
-  const html = { home: homeView, unit: unitView, session: sessionView, review: reviewView, plan: planView, journal: journalView, settings: settingsView }[scr]();
+  const html = { mic: micView, home: homeView, unit: unitView, session: sessionView, review: reviewView, plan: planView, journal: journalView, settings: settingsView }[scr]();
   $('#main').innerHTML = html;
   document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === scr || (b.dataset.tab === 'home' && ['unit', 'session'].includes(scr))));
   $('.tabs').style.display = scr === 'session' ? 'none' : '';
   const inp = $('#main input[autofocus], #main textarea[autofocus]'); if (inp) inp.focus();
+  if (scr === 'mic') listDevices();
 }
 function renderCrumbs() {
   const parts = ['<button data-act="tab" data-tab="home">🏠 Học</button>'];
@@ -432,7 +494,7 @@ function renderCrumbs() {
   else if (u) {
     parts.push(weekCrumb(u.week), `<button data-act="unit" data-u="${u.id}">${u.emoji} ${esc(u.title)}</button>`);
     if (scr === 'session' && S) { const k = KINDS.find(([x]) => x === S.kind); parts.push(`<span>${k ? k[1] + ' ' + k[2] : '⚡ Kiểm tra'}</span>`); }
-  } else if (scr !== 'home') parts.push(`<span>${{ review: '🔁 Ôn từ', journal: '📝 Nhật ký', plan: '🗺️ Lộ trình', settings: '⚙️ Cài đặt' }[scr]}</span>`);
+  } else if (scr !== 'home') parts.push(`<span>${{ review: '🔁 Ôn từ', journal: '📝 Nhật ký', plan: '🗺️ Lộ trình', settings: '⚙️ Cài đặt', mic: '🎤 Test micro' }[scr]}</span>`);
   $('#crumbs').innerHTML = `<div class="path">${parts.join('<i>›</i>')}</div><span class="lv">🎯 Trình độ ~IELTS <b>${levelNow()}</b> → 5.5</span>`;
 }
 function renderSide() {
@@ -684,7 +746,7 @@ function sessionView() {
       body = `<p class="ask">${T ? 'Đọc to câu này (không có mẫu · phải đúng 100% số từ · tối đa 2 lần)' : 'Nghe mẫu rồi đọc to'}</p><div class="card center speakcard"><div class="en">${esc(st.en)}</div>
         ${T ? '' : `<div class="vi">${esc(st.vi)}</div><div class="row gap center">${sayBoth(st.en)}</div>`}</div>
         ${SR ? `<div class="center"><button class="mic ${ss.listening ? 'rec' : ''}" data-act="mic" data-t="${esc(st.en)}" ${ss.answered ? 'disabled' : ''}>🎤</button>
-          <p class="muted small">${ss.listening ? 'Đang nghe… hãy nói!' : 'Bấm micro rồi nói'}</p></div><div id="micres">${micResult()}</div>`
+          <p class="muted small">${ss.listening ? 'Đang nghe… bấm 🎤 lần nữa để dừng' : 'Bấm micro rồi nói cả câu'}</p></div><div id="micres">${micResult()}</div>`
     : `<p class="note">Trình duyệt này không hỗ trợ chấm giọng nói. Hãy mở bằng <b>Chrome</b> hoặc <b>Edge</b>. Tạm thời bạn đọc to theo mẫu rồi tự chấm.</p>`}`;
       if (!ss.answered) {
         foot = SR ? (ss.tries ? `<button class="btn ghost" data-act="skipSpeak">Bỏ qua</button>` : '')
@@ -752,23 +814,25 @@ function passageHTML(u, clickable) {
     ${(S && S.state.showVi) || (S && S.state.line === i) ? `<span class="muted">${esc(vi)}</span>` : ''}</p>`).join('')}</div>`;
 }
 function micResult() {
-  const r = S && S.state.result;
+  const ss = S && S.state, r = ss && ss.result;
+  if (ss && ss.listening) return `<div class="listening"><div class="meter"><i id="mlevel"></i></div><p id="mlive" class="live">Đang nghe… hãy nói. Nói xong im lặng 2 giây hoặc bấm 🎤 lần nữa để dừng.</p></div>`;
   if (!r) return '';
-  if (r.err) return `<p class="note">${esc(r.err)}</p>`;
+  if (r.err) return `<p class="note">${esc(r.err)} <button class="btn ghost sm" data-act="tab" data-tab="mic">🎤 Test micro</button></p>`;
   return `<div class="score"><div class="words-hit">${r.T.map((w, i) => `<span class="${r.hit[i] ? 'hit' : 'miss'}">${esc(w === 'i' ? 'I' : w)}</span>`).join(' ')}</div>
-    <div class="muted small">Máy nghe được: “${esc(r.heard)}” · ${Math.round(r.score * 100)}%</div></div>`;
+    <div class="muted small">Máy nghe được: “${esc(r.heard)}” · ${Math.round(r.score * 100)}%</div>
+    ${ss.audio ? `<div class="playback"><span class="small">▶️ Giọng bạn:</span><audio controls src="${ss.audio}"></audio></div>` : ''}</div>`;
 }
 async function doMic(target) {
   const ss = S.state; ss.listening = true; ss.result = null; render();
   try {
-    const heard = await hear();
+    const h = await hear({ onText: setLive, onLevel: setLevel });
     if (S.state !== ss || ss.answered) return;
-    ss.result = scoreSpeech(target, heard);
+    ss.result = { ...scoreSpeech(target, h.alts), heard: h.text };
+    ss.audio = h.audio;
     ss.scored = (ss.scored || 0) + 1;
   } catch (e) {
-    const m = { 'not-allowed': 'Bạn chưa cho phép dùng micro. Bấm biểu tượng 🔒 trên thanh địa chỉ để bật micro.', 'no-speech': 'Không nghe thấy gì. Hãy nói to và rõ hơn nhé.', network: 'Lỗi mạng. Chấm giọng nói cần có Internet.' };
     if (S.state !== ss || ss.answered) return;
-    ss.result = { err: m[e] || 'Không nhận được giọng nói (' + e + ').' };
+    ss.result = { err: micErr(e) };
   }
   ss.listening = false; ss.tries++;
   const st = step();
@@ -860,6 +924,47 @@ function planView() {
     </div>`;
 }
 
+// ---------- test micro ----------
+const MIC_SAMPLE = 'Hello, my name is Lan and I am learning English every day.';
+const MT = { busy: false, res: null };
+function micView() {
+  const r = MT.res;
+  return `<h2>🎤 Test micro</h2>
+    ${!SR ? '<p class="note">Trình duyệt này không hỗ trợ nhận giọng nói. Hãy mở bằng <b>Google Chrome</b> hoặc <b>Microsoft Edge</b> trên máy tính hoặc Android.</p>' : ''}
+    <div class="card">
+      <p>Bấm 🎤 rồi <b>đọc to cả câu</b> dưới đây. Chữ sẽ hiện ra ngay khi bạn nói, thanh màu cho biết micro có thu được tiếng không.</p>
+      <p class="en center">${esc(MIC_SAMPLE)} ${say(MIC_SAMPLE)}</p>
+      <div class="center"><button class="mic ${MT.busy ? 'rec' : ''}" data-act="micTest" ${SR ? '' : 'disabled'}>${MT.busy ? '⏹' : '🎤'}</button>
+        <p class="muted small">${MT.busy ? 'Đang nghe… nói xong im lặng 2 giây hoặc bấm ⏹' : 'Bấm để bắt đầu'}</p></div>
+      <div class="meter"><i id="mlevel"></i></div>
+      <p id="mlive" class="live">${MT.busy ? '…' : ''}</p>
+      ${r ? (r.err ? `<p class="note">${esc(r.err)}</p>` : `<div class="score">
+        <div class="words-hit">${r.T.map((w, i) => `<span class="${r.hit[i] ? 'hit' : 'miss'}">${esc(w === 'i' ? 'I' : w)}</span>`).join(' ')}</div>
+        <p>Máy nghe được <b>${r.n} từ</b>: “${esc(r.heard)}” · khớp ${Math.round(r.score * 100)}%</p>
+        <p class="${r.score >= 0.8 ? 'okc' : 'badc'}">${r.score >= 0.8 ? '✅ Micro hoạt động tốt!' : r.n <= 2 ? '⚠️ Máy chỉ nghe được rất ít từ. Xem cách sửa ở dưới.' : '⚠️ Micro có thu tiếng nhưng chưa rõ. Nói chậm và rõ hơn, hoặc đổi micro.'}</p>
+        ${r.audio ? `<div class="playback"><span class="small">▶️ Nghe lại giọng bạn:</span><audio controls src="${r.audio}"></audio></div>` : ''}
+      </div>`) : ''}
+    </div>
+    <div class="card"><h3>Micro trên máy</h3><div id="mdev" class="muted small">Đang kiểm tra…</div>
+      <p class="muted small">Nhận giọng nói dùng <b>micro mặc định</b> của trình duyệt. Nếu sai micro, mở <b>chrome://settings/content/microphone</b> (hoặc edge://settings/content/microphone) và chọn đúng micro.</p></div>
+    <div class="card"><h3>Máy chỉ nghe được 1–2 từ?</h3><ul class="tips">
+      <li>Nói <b>liền cả câu</b>, đừng ngắt quãng lâu giữa các từ. Nói xong mới im lặng.</li>
+      <li>Kiểm tra thanh màu: nói mà thanh không nhảy nghĩa là trình duyệt đang dùng <b>sai micro</b>.</li>
+      <li>Tắt các app khác đang dùng micro (Zoom, Meet, Teams…), rồi tải lại trang.</li>
+      <li>Dùng <b>Chrome hoặc Edge</b> và có Internet (máy chấm giọng nói chạy online).</li>
+      <li>Để micro cách miệng khoảng 1 gang tay, nói to hơn bình thường một chút.</li>
+    </ul></div>`;
+}
+async function listDevices() {
+  const el = $('#mdev'); if (!el || !navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) return;
+  try {
+    const ds = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === 'audioinput');
+    if (!ds.length) { el.textContent = 'Không tìm thấy micro nào.'; return; }
+    if (!ds[0].label) { el.textContent = `Có ${ds.length} micro. Bấm 🎤 và cho phép dùng micro để xem tên.`; return; }
+    el.innerHTML = '<ul>' + ds.filter((d) => d.deviceId !== 'communications').map((d) => `<li>${d.deviceId === 'default' ? '⭐ <b>Mặc định:</b> ' : ''}${esc(d.label.replace(/^Default - /, ''))}</li>`).join('') + '</ul>';
+  } catch (e) { el.textContent = 'Không đọc được danh sách micro.'; }
+}
+
 // ---------- cài đặt ----------
 function settingsView() {
   const u = Cloud.user, vs = englishVoices(), cur = pickVoice();
@@ -869,6 +974,7 @@ function settingsView() {
     : u ? `<p>Đã đăng nhập: <b>${esc(u.email || u.displayName || '')}</b>. Tiến độ tự lưu lên mây.</p><button class="btn ghost" data-act="logout">Đăng xuất</button>`
       : `<p>Đăng nhập Google để lưu tiến độ lên mây và học trên nhiều máy.</p><button class="btn" data-act="login">Đăng nhập Google</button>`}
     </div>
+    <div class="card"><h3>Micro</h3><p class="muted small">Kiểm tra micro, xem máy nghe được bao nhiêu từ và nghe lại giọng mình.</p><button class="btn" data-act="tab" data-tab="mic">🎤 Test micro</button></div>
     <div class="card"><h3>Giọng đọc</h3>
       ${vs.length ? `<select id="voice">${vs.map((v) => `<option ${cur && v.name === cur.name ? 'selected' : ''}>${esc(v.name)}</option>`).join('')}</select>`
     : '<p class="muted">Không tìm thấy giọng đọc tiếng Anh. Hãy dùng Chrome hoặc Edge.</p>'}
@@ -915,6 +1021,14 @@ const ACT = {
     }
     speak(d.t, d.slow === '1');
   },
+  micTest: () => {
+    if (MT.busy) { if (REC) REC.stop(); return; }
+    MT.busy = true; MT.res = null; render();
+    hear({ onText: setLive, onLevel: setLevel, silenceMs: 2500 })
+      .then((h) => { MT.res = { ...scoreSpeech(MIC_SAMPLE, h.alts), heard: h.text, audio: h.audio, n: h.text.split(/\s+/).filter(Boolean).length }; })
+      .catch((e) => { MT.res = { err: micErr(e) }; })
+      .finally(() => { MT.busy = false; if (scr === 'mic') render(); });
+  },
   beginTest: () => { S.intro = false; beginStep(); },
   week: (d) => { go('home'); const el = document.getElementById('wk-' + d.w); if (el) el.scrollIntoView({ block: 'start' }); },
   quit: () => { if (confirm('Thoát bài này? Kết quả phần này sẽ không được lưu.')) { const id = S.u.id; S = null; go('unit', id); } },
@@ -938,7 +1052,7 @@ const ACT = {
     answer(r !== 'bad', r === 'almost' ? 'Gần đúng! Chú ý chính tả:' : null);
   },
   overrule: () => { if (S.state.pushed) { S.steps.pop(); S.requeued.delete(S.steps.length); } if (!S.requeued.has(S.i)) S.ok++; nextStep(); },
-  mic: (d) => { if (S && !S.state.listening) doMic(d.t); },
+  mic: (d) => { if (!S) return; if (S.state.listening) { if (REC) REC.stop(); return; } doMic(d.t); },
   skipSpeak: () => answer(false, 'Bỏ qua, lần sau luyện thêm nhé.'),
   selfSpeak: (d) => answer(d.ok === '1'),
   toggleVi: () => { S.state.showVi = !S.state.showVi; render(); },

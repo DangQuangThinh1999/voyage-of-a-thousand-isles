@@ -1,5 +1,5 @@
 // Vercel Function: POST /api/check — chấm một câu tiếng Anh bằng Gemini (gói miễn phí của Google AI Studio).
-// Cần biến môi trường GEMINI_API_KEY trên Vercel. Có thể đổi model bằng GEMINI_MODEL (mặc định gemini-flash-latest).
+// Cần biến môi trường GEMINI_API_KEY trên Vercel. Có thể đổi model bằng GEMINI_MODEL (mặc định gemini-3.8-flash, có dự phòng).
 // Trả về JSON: status (correct | unnatural | context | incorrect), câu sửa, cách nói tự nhiên hơn, giải thích tiếng Việt.
 
 const SYSTEM = `Bạn là giáo viên tiếng Anh giỏi, chấm câu cho người Việt trình độ A1–B1 đang luyện IELTS.
@@ -52,7 +52,10 @@ export async function POST(req: Request): Promise<Response> {
   if (!sentence) return json({ error: 'empty' }, 400);
   const word = String(body.word || '').slice(0, 40), meaning = String(body.meaning || '').slice(0, 120), context = String(body.context || '').slice(0, 300);
   const user = `Câu của người học: "${sentence}"${word ? `\nTừ mục tiêu cần dùng: "${word}"${meaning ? ` (nghĩa: ${meaning})` : ''}` : ''}${context ? `\nNgữ cảnh / đề bài: ${context}` : ''}`;
-  const model = process.env.GEMINI_MODEL || 'gemini-flash-latest';
+  // Model quá tải / hết lượt thì thử model kế tiếp
+  const models = [...new Set([process.env.GEMINI_MODEL, 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-flash-latest'].filter(Boolean) as string[])];
+  let last = 0;
+  for (const model of models) {
   try {
     const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: 'POST',
@@ -63,12 +66,12 @@ export async function POST(req: Request): Promise<Response> {
         generationConfig: { temperature: 0.2, responseMimeType: 'application/json', responseSchema: SCHEMA },
       }),
     });
-    if (r.status === 429) return json({ error: 'quota' }, 429);
+    if (r.status === 429 || r.status === 503 || r.status === 500 || r.status === 404) { last = r.status; continue; }
     if (!r.ok) return json({ error: `gemini_${r.status}` }, 502);
     const d = await r.json() as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
     const text = d.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
-    return json(JSON.parse(text));
-  } catch {
-    return json({ error: 'failed' }, 502);
+    return json({ ...JSON.parse(text), model });
+  } catch { last = -1; }
   }
+  return json({ error: last === 429 ? 'quota' : 'busy' }, last === 429 ? 429 : 503);
 }

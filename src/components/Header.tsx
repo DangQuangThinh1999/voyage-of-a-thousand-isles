@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Cloud } from '../lib/cloud';
 import { minutesToday, streakNow } from '../lib/progress';
 import { go, withLeave, useApp } from '../state/store';
@@ -9,6 +10,12 @@ import { openSearch } from './SearchModal';
 export function Header() {
   const { P } = useApp();
   const u = Cloud.user;
+  // đo chiều cao header → biến CSS --toph, để thanh tiêu đề + tab của trang dính ngay bên dưới khi cuộn
+  useEffect(() => {
+    const el = document.querySelector<HTMLElement>('header.top'); if (!el) return;
+    const set = () => document.documentElement.style.setProperty('--toph', el.offsetHeight + 'px');
+    set(); const ro = new ResizeObserver(set); ro.observe(el); return () => ro.disconnect();
+  }, []);
   if (typeof document !== 'undefined') document.title = `Hải Trình ${P.settings.target} · Học tiếng Anh`;
   return (
     <header className="top">

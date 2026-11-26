@@ -303,8 +303,10 @@ export function Grammar() {
   const nm = (P.mist || []).filter((m) => m.ok < 3).length;
   return (
     <>
-      <h2>📐 Ngữ pháp</h2>
-      <Pills id="gram" value={tab} onChange={setTab} items={[['analyze', '🔍 Phân tích & sửa lỗi'], ['mist', `📒 Sổ lỗi sai${nm ? ` (${nm})` : ''}`], ['pos', '🧩 Từ loại'], ['lib', '📚 Thư viện ngữ pháp']]} />
+      <div className="pagehead">
+        <h2>📐 Ngữ pháp</h2>
+        <Pills id="gram" value={tab} onChange={setTab} items={[['analyze', '🔍 Phân tích & sửa lỗi'], ['mist', `📒 Sổ lỗi sai${nm ? ` (${nm})` : ''}`], ['pos', '🧩 Từ loại'], ['lib', '📚 Thư viện ngữ pháp']]} />
+      </div>
       {tab === 'analyze' && <Analyzer />}
       {tab === 'mist' && <Mistakes />}
       {tab === 'pos' && <PartsOfSpeech />}

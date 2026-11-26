@@ -226,8 +226,10 @@ export function Pron() {
   const [tab, setTab] = useRouteParam<'chart' | 'pairs' | 'read' | 'stress' | 'homo' | 'clusters'>('t', 'chart');
   return (
     <>
-      <h2>🔊 Phát âm IPA</h2>
-      <Pills id="pron" value={tab} onChange={setTab} items={[['chart', '🔤 Bảng IPA'], ['pairs', '👂 Cặp âm dễ nhầm'], ['read', '📖 Đọc phiên âm'], ['stress', '🎯 Trọng âm'], ['homo', '🔁 Từ đồng âm'], ['clusters', '🧩 Cụm phụ âm']]} />
+      <div className="pagehead">
+        <h2>🔊 Phát âm IPA</h2>
+        <Pills id="pron" value={tab} onChange={setTab} items={[['chart', '🔤 Bảng IPA'], ['pairs', '👂 Cặp âm dễ nhầm'], ['read', '📖 Đọc phiên âm'], ['stress', '🎯 Trọng âm'], ['homo', '🔁 Từ đồng âm'], ['clusters', '🧩 Cụm phụ âm']]} />
+      </div>
       {tab === 'read' ? <ReadIpa /> : tab === 'stress' ? <Stress /> : !d ? <Section><p className="muted">Đang tải dữ liệu phát âm…</p></Section>
         : tab === 'chart' ? <Chart d={d} /> : tab === 'pairs' ? <Pairs d={d} /> : tab === 'homo' ? <Homophones d={d} /> : <Clusters d={d} />}
     </>

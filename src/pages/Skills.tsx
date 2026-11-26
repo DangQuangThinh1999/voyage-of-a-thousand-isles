@@ -173,8 +173,10 @@ export function Skills() {
   };
   return (
     <>
-      <h2>🎯 Kỹ năng</h2>
-      <Pills id="skills" value={tab} onChange={setTab} items={[['weak', '📊 Kỹ năng yếu'], ['read', '📖 Đọc hiểu'], ['listen', '🎧 Nghe hiểu']]} />
+      <div className="pagehead">
+        <h2>🎯 Kỹ năng</h2>
+        <Pills id="skills" value={tab} onChange={setTab} items={[['weak', '📊 Kỹ năng yếu'], ['read', '📖 Đọc hiểu'], ['listen', '🎧 Nghe hiểu']]} />
+      </div>
       {tab === 'weak' && (
         <>
           <Section>

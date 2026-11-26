@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
+import { useRouteParam } from '../lib/route';
 import { AudioButton } from '../components/AudioButton';
 import { GrammarNotes, LessonBody } from '../components/GrammarNotes';
 import { Ipa } from '../components/Ipa';
@@ -31,7 +32,7 @@ function markLearned(name: string) {
 }
 
 /** Thư viện ngữ pháp: theo nhóm, có tiến độ */
-function Library({ initial }: { initial?: string | null }) {
+function Library({ initial, onOpen }: { initial?: string | null; onOpen?: (n: string) => void }) {
   const { P } = useApp();
   const [open, setOpen] = useState<string | null>(initial || null);
   useEffect(() => { if (initial) setTimeout(() => document.getElementById('ls-' + initial)?.scrollIntoView({ block: 'center' }), 300); }, [initial]);
@@ -50,7 +51,7 @@ function Library({ initial }: { initial?: string | null }) {
             <div className="mt-2 grid gap-2">
               {list.map((n) => (
                 <div key={n} id={'ls-' + n} className="lesson-row">
-                  <button className="lesson-h" onClick={() => setOpen(open === n ? null : n)}>
+                  <button className="lesson-h" onClick={() => { setOpen(open === n ? null : n); onOpen?.(open === n ? '' : n); }}>
                     <span>{P.gram && P.gram[n] ? '✅' : '📘'} {n}</span><span className="muted">{open === n ? '▲' : '▼'}</span>
                   </button>
                   <AnimatePresence>
@@ -262,7 +263,9 @@ function Mistakes() {
 /** Tab Ngữ pháp */
 export function Grammar() {
   const { P, arg } = useApp();
-  const [tab, setTab] = useState<'analyze' | 'mist' | 'pos' | 'lib'>(arg && LESSONS[arg] ? 'lib' : 'analyze');
+  const [tab, setTab] = useRouteParam<'analyze' | 'mist' | 'pos' | 'lib'>('t', 'analyze');
+  const [lesson, setLesson] = useRouteParam<string>('l', '');
+  useEffect(() => { if (arg && LESSONS[arg]) { setTab('lib'); setLesson(arg); app.arg = null; } }, [arg]); // eslint-disable-line react-hooks/exhaustive-deps
   const nm = (P.mist || []).filter((m) => m.ok < 3).length;
   return (
     <>
@@ -271,7 +274,7 @@ export function Grammar() {
       {tab === 'analyze' && <Analyzer />}
       {tab === 'mist' && <Mistakes />}
       {tab === 'pos' && <PartsOfSpeech />}
-      {tab === 'lib' && <Library initial={arg && LESSONS[arg] ? arg : null} />}
+      {tab === 'lib' && <Library initial={lesson && LESSONS[lesson] ? lesson : null} onOpen={setLesson} />}
     </>
   );
 }

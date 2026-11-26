@@ -42,7 +42,36 @@ export const app = {
 
 let version = 0;
 const subs = new Set<() => void>();
-export function emit() { version++; subs.forEach((f) => f()); }
+export function emit() { syncHash(); version++; subs.forEach((f) => f()); }
+
+// ---------- đường dẫn (URL): mỗi trang một địa chỉ, tải lại vẫn ở đúng chỗ, nút Quay lại hoạt động ----------
+const ROUTES: Screen[] = ['home', 'unit', 'words', 'review', 'grammar', 'speak', 'skills', 'journal', 'stats', 'plan', 'settings', 'mic'];
+function pathOf(): string {
+  // Đang làm bài (không khôi phục được khi tải lại) → địa chỉ của chủ đề đang học
+  if (app.scr === 'session') return app.S ? '#/unit/' + encodeURIComponent(app.S.u.id) : '#/home';
+  return '#/' + app.scr + (app.scr === 'unit' && app.arg ? '/' + encodeURIComponent(app.arg) : '');
+}
+function syncHash() {
+  if (typeof location === 'undefined') return;
+  const want = pathOf(), [cur] = location.hash.split('?');
+  if ((cur || '#/home') !== want) history.pushState(null, '', want);
+}
+/** Đọc địa chỉ hiện tại → trang. Trả về true nếu đổi trang */
+export function readHash(): boolean {
+  const m = location.hash.match(/^#\/([a-z]+)(?:\/([^?]*))?/);
+  const s = (m && ROUTES.includes(m[1] as Screen) ? m[1] : 'home') as Screen, a = m && m[2] ? decodeURIComponent(m[2]) : null;
+  if (app.scr === 'session' && app.S && s === 'unit' && a === app.S.u.id) return false;
+  if (s === app.scr && a === app.arg) return false;
+  app.scr = s; app.arg = s === 'unit' ? a : null; app.scrollReq = 'top';
+  return true;
+}
+/** Tham số con trong địa chỉ (phần sau dấu ?), ví dụ tab con: #/speak?t=ielts&p=2 */
+export function getParam(key: string): string | null { return new URLSearchParams(location.hash.split('?')[1] || '').get(key); }
+export function setParam(key: string, v: string | null) {
+  const [p, q = ''] = location.hash.split('?'), sp = new URLSearchParams(q);
+  if (v === null || v === '') sp.delete(key); else sp.set(key, v);
+  const qs = sp.toString(); history.replaceState(null, '', (p || '#/home') + (qs ? '?' + qs : ''));
+}
 const subscribe = (f: () => void) => { subs.add(f); return () => { subs.delete(f); }; };
 const getVersion = () => version;
 /** Dùng trong component: vẽ lại mỗi khi trạng thái app thay đổi */
@@ -95,6 +124,7 @@ export function toast(msg: string) {
 }
 
 // ---------- khởi động: đo thời gian học, giọng đọc, đồng bộ mây ----------
+if (typeof location !== 'undefined') readHash();
 let started = false;
 export function initApp() {
   if (started) return; started = true;
@@ -111,5 +141,7 @@ export function initApp() {
     emit();
   }, 15000);
   Cloud.init({ get: () => app.P, merge: mergeCloud, changed: () => emit() });
+  // Nút Quay lại / Tiến tới của trình duyệt
+  addEventListener('popstate', () => { if (app.scr === 'session' && app.S && !app.S.done && !leaveOk()) { syncHash(); return; } if (readHash()) { app.S = null; emit(); } });
   addEventListener('pagehide', () => { persist(app.P); Cloud.push(); });
 }

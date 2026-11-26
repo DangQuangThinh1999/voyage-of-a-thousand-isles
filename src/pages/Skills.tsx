@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useRouteNum, useRouteParam } from '../lib/route';
 import { Dropdown } from '../components/Dropdown';
 import { AudioButton } from '../components/AudioButton';
 import { TapText } from '../components/TapText';
@@ -161,10 +162,10 @@ const SETS = () => [
 /** Tab Kỹ năng: kỹ năng yếu + luyện Đọc + luyện Nghe */
 export function Skills() {
   const { P } = useApp();
-  const [tab, setTab] = useState<'weak' | 'read' | 'listen'>('weak');
+  const [tab, setTab] = useRouteParam<'weak' | 'read' | 'listen'>('t', 'weak');
   const sets = SETS();
   const [ai, setAi] = useState<GenItem | null>(null);
-  const [si, setSi] = useState(0);
+  const [si, setSi] = useRouteNum('s', 0);
   const st = skillStats(P), tried = st.filter((s) => s.n >= 5).sort((a, b) => a.acc - b.acc), weak = tried[0];
   const ACTION: Record<string, [string, () => void]> = {
     listen: ['Luyện nghe ngay', () => setTab('listen')], read: ['Luyện đọc ngay', () => setTab('read')],

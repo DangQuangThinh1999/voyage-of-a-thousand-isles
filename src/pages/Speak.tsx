@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRouteNum, useRouteParam } from '../lib/route';
 import { Dropdown } from '../components/Dropdown';
 import { AudioButton, SayBoth } from '../components/AudioButton';
 import { Ipa } from '../components/Ipa';
@@ -50,7 +51,7 @@ function Shadow({ s }: { s: Pair }) {
 }
 
 function Phrases() {
-  const [k, setK] = useState(0);
+  const [k, setK] = useRouteNum('k', 0);
   return (
     <>
       <div className="chips">{SITUATIONS.map(([ic, t], i) => <button key={t} className={i === k ? 'chip on' : 'chip'} onClick={() => setK(i)}>{ic} {t}</button>)}</div>
@@ -94,8 +95,8 @@ const TIPS: Record<Part, string> = {
 
 /** Luyện nói IELTS: trả lời tự do, máy chấm 3 tiêu chí + sửa lỗi */
 function IeltsSpeaking() {
-  const [part, setPart] = useState<Part>('1');
-  const [lv, setLv] = useState(0);
+  const [part, setPart] = useRouteParam<Part>('p', '1');
+  const [lv, setLv] = useRouteNum('lv', 0);
   const [qi, setQi] = useState(0);
   const [busy, setBusy] = useState(false);
   const [say, setSay] = useState<{ text: string; audio: string | null; sec: number } | null>(null);
@@ -186,7 +187,7 @@ function IeltsSpeaking() {
 
 /** Tab Giao tiếp: mẫu câu theo tình huống + luyện nói IELTS có chấm */
 export function Speak() {
-  const [tab, setTab] = useState<'phrases' | 'ielts'>('phrases');
+  const [tab, setTab] = useRouteParam<'phrases' | 'ielts'>('t', 'phrases');
   return (
     <>
       <h2>🗣️ Giao tiếp & Speaking</h2>

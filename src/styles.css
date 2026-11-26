@@ -628,3 +628,23 @@ main { max-width: 980px; overflow-x: clip; }
 .dlg h3 { margin: 4px 0 6px; font-size: 1.2rem; } .dlg p { margin: 0 0 18px; color: var(--muted); }
 .dlg-act { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .btn.danger { background: linear-gradient(90deg, #f43f5e, #e11d48); color: #fff; border: 0; }
+.vsec { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.vsec h4 { margin: 0 0 6px; font-size: .95rem; color: var(--pri); }
+.vsec ul { margin: 4px 0; padding-left: 20px; display: grid; gap: 3px; }
+.hl { background: var(--pri-soft); border-radius: 4px; padding: 0 4px; }
+.rule + .rule { margin-top: 8px; }
+.proof { padding: 8px 12px; border-radius: 10px; background: rgba(251, 113, 133, .1); border-left: 3px solid var(--bad); display: grid; gap: 4px; }
+.ftable { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.ftable th, .ftable td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.ftable th { color: var(--muted); font-weight: 700; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+.ftable tr.ok td { background: var(--good-soft); }
+.spell-hint { margin: 10px 0; padding: 10px 12px; border-radius: 14px; border: 1px dashed var(--pri); background: var(--pri-soft); display: grid; gap: 8px; }
+.sh-ipa { font-size: 1.25rem; font-weight: 700; text-align: center; letter-spacing: .02em; }
+.sh-words { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.sh-w { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 12px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); }
+.sh-ipa1 { font-weight: 700; color: var(--pri); }
+.ans-ipa { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 12px auto 0; padding: 10px 14px; border-radius: 14px; background: var(--pri-soft); border: 1px solid rgba(34, 211, 238, .35); font-size: 1.15rem; width: fit-content; max-width: 100%; }
+.ipa.inline { display: inline; margin: 0; font-size: 1.05rem; color: var(--pri); }
+/* nút trong popup luôn nằm gọn trong khung */
+.dlg-act > .btn { min-width: 0; width: 100%; margin: 0; padding-left: 10px; padding-right: 10px; }
+@media (max-width: 380px) { .dlg-act { grid-template-columns: 1fr; } }

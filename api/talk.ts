@@ -29,5 +29,5 @@ export async function POST(req: Request): Promise<Response> {
   const q = String(b.question || '').slice(0, 400), a = String(b.answer || '').slice(0, 2000);
   if (!q || !a.trim()) return json({ error: 'empty' }, 400);
   const user = `Trình độ: ${String(b.cefr || 'A2').slice(0, 4)}. IELTS Speaking Part ${String(b.part || '1').slice(0, 1)}.\nCâu hỏi: "${q}"\nNgười học trả lời (máy nghe được): "${a}"`;
-  return gemini(SYSTEM, user, SCHEMA, 0.5);
+  return gemini(SYSTEM, user, SCHEMA, 0.5, true);
 }

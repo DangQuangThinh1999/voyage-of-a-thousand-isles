@@ -14,14 +14,19 @@ export function guard(req: Request, perHour = 120): Response | null {
   return null;
 }
 
-export async function gemini(system: string, user: string, schema: unknown, temperature = 0.2): Promise<Response> {
+/** fast = ưu tiên model nhanh (bài chấm dài). Mỗi model chờ tối đa ~30 giây rồi chuyển model khác. */
+export async function gemini(system: string, user: string, schema: unknown, temperature = 0.2, fast = false): Promise<Response> {
   const key = process.env.GEMINI_API_KEY!;
-  const models = [...new Set([process.env.GEMINI_MODEL, 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-flash-latest'].filter(Boolean) as string[])];
+  const order = fast ? ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-3.5-flash'] : ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];
+  const models = [...new Set([process.env.GEMINI_MODEL, ...order, 'gemini-flash-latest'].filter(Boolean) as string[])];
+  const t0 = Date.now();
   let last = 0;
   for (const model of models) {
+    if (Date.now() - t0 > 100_000) break;
+    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 32_000);
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+        method: 'POST', signal: ctl.signal, headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: system }] },
           contents: [{ role: 'user', parts: [{ text: user }] }],
@@ -33,7 +38,7 @@ export async function gemini(system: string, user: string, schema: unknown, temp
       const d = await r.json() as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
       const text = d.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
       return json({ ...JSON.parse(text), model });
-    } catch { last = -1; }
+    } catch { last = -1; } finally { clearTimeout(timer); }
   }
   return json({ error: last === 429 ? 'quota' : 'busy' }, last === 429 ? 429 : 503);
 }

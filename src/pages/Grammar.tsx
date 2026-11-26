@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouteParam } from '../lib/route';
+import { FAMILY_HELP } from '../lib/familyHelp';
 import { AudioButton } from '../components/AudioButton';
 import { GrammarNotes, LessonBody } from '../components/GrammarNotes';
 import { Ipa } from '../components/Ipa';
@@ -205,6 +206,31 @@ function PosGuess() {
   );
 }
 
+/** Lời giải chi tiết + bằng chứng cho bài chọn dạng đúng của từ */
+function FamilyExplain({ it, pick }: { it: [string, string, string[], number, string]; pick: number }) {
+  const H = FAMILY_HELP[it[0]], right = it[2][it[3]], ok = pick === it[3], full = it[0].replace('____', right);
+  return (
+    <div className={`qexp ${ok ? 'ok' : 'bad'}`}>
+      <div className="qexp-h">{ok ? '✅ Đúng rồi!' : <>❌ Chưa đúng. Đáp án đúng là <b>{right}</b></>}</div>
+      <div className="qexp-full"><b>{full}</b> <AudioButton text={full} className="icon xs" /> <span className="muted">({it[1]})</span></div>
+      {!ok && H?.wrong[it[2][pick]] && (
+        <div className="proof"><b>🔎 Vì sao “{it[2][pick]}” sai?</b><p className="m-0">{H.wrong[it[2][pick]].why}</p>
+          <p className="m-0 small">📌 <b>Bằng chứng</b>, “{it[2][pick]}” đúng khi dùng như thế này: <b>{H.wrong[it[2][pick]].proof[0]}</b> <AudioButton text={H.wrong[it[2][pick]].proof[0]} className="icon xs" /> <span className="muted">{H.wrong[it[2][pick]].proof[1]}</span></p></div>
+      )}
+      {H ? <>
+        <div className="vsec"><h4>1. Phân tích câu</h4><ul>{H.analysis.map(([p, r]) => <li key={p}><b className="hl">{p}</b>: {r}</li>)}</ul></div>
+        <div className="vsec"><h4>2. So sánh các dạng từ</h4>
+          <table className="ftable"><thead><tr><th>Từ</th><th>Loại từ</th><th>Nghĩa</th></tr></thead>
+            <tbody>{H.forms.map(([w, p, v]) => <tr key={w} className={w === right ? 'ok' : ''}><td><b>{w}</b> <AudioButton text={w} className="icon xs" /></td><td>{p}</td><td>{v}</td></tr>)}</tbody></table></div>
+        <div className="vsec"><h4>3. Quy tắc cần nhớ</h4><div className="formula">📌 {H.rule}</div>
+          <ul>{H.examples.map(([en, vi]) => <li key={en}><b>{en}</b> <AudioButton text={en} className="icon xs" /> <span className="muted">({vi})</span></li>)}</ul></div>
+        <details className="vsec"><summary className="small">4. Vì sao các đáp án khác sai?</summary>
+          <ul className="small">{Object.entries(H.wrong).map(([w, x]) => <li key={w}><b>{w}</b>: {x.why}<br />→ Dùng đúng: <i>{x.proof[0]}</i> ({x.proof[1]})</li>)}</ul></details>
+      </> : <p className="m-0">{it[4]}</p>}
+    </div>
+  );
+}
+
 function FamilyQuiz() {
   const [order] = useState(() => shuffle(FAMILY));
   const [i, setI] = useState(0);
@@ -221,7 +247,8 @@ function FamilyQuiz() {
           return <button key={o} className={`opt en ${cls}`} disabled={pick !== null} onClick={() => { setPick(k); tallySkill(app.P, 'grammar', k === it[3]); save(); }}>{o}</button>;
         })}
       </div>
-      {pick !== null && <div className="foot"><span className={pick === it[3] ? 'okc' : 'badc'}>{it[4]}</span><button className="btn big" onClick={() => { setI(i + 1); setPick(null); }}>Câu tiếp →</button></div>}
+      {pick !== null && <FamilyExplain it={it} pick={pick} />}
+      {pick !== null && <div className="foot"><button className="btn ghost" onClick={() => setPick(null)}>🔁 Làm lại</button><button className="btn big" onClick={() => { setI(i + 1); setPick(null); }}>Câu tiếp →</button></div>}
     </Section>
   );
 }

@@ -39,5 +39,5 @@ export async function POST(req: Request): Promise<Response> {
 Từ vựng gợi ý: ${(Array.isArray(b.vocab) ? b.vocab : []).slice(0, 12).join(', ')}
 Thời gian nói: ${Math.round(Number(b.seconds) || 0)} giây.
 Bài nói (máy nghe được): "${text}"`;
-  return gemini(SYSTEM, user, SCHEMA, 0.2);
+  return gemini(SYSTEM, user, SCHEMA, 0.2, true);
 }

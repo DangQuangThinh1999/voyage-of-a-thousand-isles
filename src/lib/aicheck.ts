@@ -1,11 +1,14 @@
 // Chấm câu "hiểu ngữ cảnh": gọi /api/check (Gemini, miễn phí). Chưa cài khóa hoặc lỗi → dùng LanguageTool + luật.
 import { applyFixes, checkGrammar, softWarnings } from './sentence';
+import { LESSONS } from './grammarLessons';
 
 export type Verdict = 'correct' | 'unnatural' | 'context' | 'incorrect';
 export interface SmartCheck {
   status: Verdict; correction: string; better: string[]; explanation: string;
   errors: { wrong: string; right: string; why: string }[]; meaning: string; tip: string; usesWordCorrectly: boolean;
   source: 'ai' | 'lt' | 'offline';
+  analysis?: { part: string; role_vi: string }[]; fixes?: { en: string; vi: string }[];
+  rules?: { formula: string; examples: { en: string; vi: string }[] }[]; notes?: string[]; conclusion?: string; lessons?: string[];
 }
 export const VERDICT: Record<Verdict, [icon: string, label: string, cls: string]> = {
   correct: ['✅', 'Đúng và tự nhiên', 'v-ok'],
@@ -24,7 +27,7 @@ const KIND_WHY: Record<string, string> = {
 export async function smartCheck(sentence: string, opt: { word?: string; meaning?: string; context?: string } = {}): Promise<SmartCheck> {
   if (!aiOff) {
     try {
-      const r = await fetch('/api/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sentence, ...opt }) });
+      const r = await fetch('/api/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sentence, ...opt, lessons: Object.keys(LESSONS) }) });
       if (r.status === 503 || r.status === 404) aiOff = true;
       else if (r.ok) {
         const d = await r.json();

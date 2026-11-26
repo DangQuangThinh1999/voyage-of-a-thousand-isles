@@ -166,10 +166,10 @@ function WriteSentence() {
         {passed && <GrammarNotes en={text} title="Ngữ pháp trong câu bạn vừa viết" />}
       </Card>
       <div className="foot">
-        <button className="btn ghost big" data-act="know" disabled={!passed} title={passed ? '' : 'Đặt được câu đúng để mở khóa'} onClick={knowWord}>✓ Đã biết</button>
+        <button className="btn ghost big" data-act="know" title="Từ này bạn đã biết: bỏ qua, không cần đặt câu" onClick={knowWord}>✓ Đã biết</button>
         <button className="btn big" data-act="learn" disabled={!passed} title={passed ? '' : 'Đặt được câu đúng để mở khóa'} onClick={learnWord}>Học từ này →</button>
       </div>
-      {!passed && <p className="muted small center">🔒 Viết được một câu đạt (✅, 🟡 hoặc 🔵) để mở khóa hai nút trên.</p>}
+      {!passed && <p className="muted small center">🔒 <b>Học từ này</b> mở khóa khi bạn viết được một câu đạt (✅, 🟡 hoặc 🔵). Từ đã biết thì bấm <b>Đã biết</b> luôn.</p>}
     </>
   );
 }
@@ -211,9 +211,9 @@ function TypeRecall() {
       <div className="vi-prompt">{q.w.vi}</div>
       <div className="row gap center" style={{ margin: '10px 0' }}>
         <AudioButton text={q.w.w} className="btn ghost" label="🔊 Nghe" />
-        {!answered && <button className="btn ghost" onClick={() => setHint(true)}>💡 Gợi ý</button>}
+        {!answered && !hint && <button className="btn ghost" onClick={() => setHint(true)}>💡 Gợi ý (phiên âm)</button>}
       </div>
-      {hint && !answered && <p className="muted">Bắt đầu bằng <b>{q.w.w.slice(0, 2)}</b>…, có {q.w.w.length} chữ cái</p>}
+      {hint && !answered && <div className="spell-hint"><div className="sh-ipa">{q.w.ipa} <AudioButton text={q.w.w} className="icon xs" /> <AudioButton text={q.w.w} slow label="🐢" className="icon xs" /></div><p className="muted small m-0 center">{q.w.w.length} chữ cái · bắt đầu bằng “<b>{q.w.w.slice(0, 2)}</b>…” · {q.w.pos}</p></div>}
       <form onSubmit={(e) => { e.preventDefault(); checkTyped(text); }}>
         <input className="ans" autoComplete="off" autoCapitalize="off" spellCheck={false} placeholder="Gõ từ tiếng Anh…" disabled={answered}
           data-autofocus={answered ? undefined : '1'} value={text} onChange={(e) => setText(e.target.value)} />

@@ -9,10 +9,11 @@ import { openSearch } from './SearchModal';
 export function Header() {
   const { P } = useApp();
   const u = Cloud.user;
+  if (typeof document !== 'undefined') document.title = `Hải Trình ${P.settings.target} · Học tiếng Anh`;
   return (
     <header className="top">
       <div className="bar1">
-        <div className="brand">⛵ <b>Hải Trình 5.5</b></div>
+        <div className="brand">⛵ <b>Hải Trình {P.settings.target}</b></div>
         <div id="stats" className="stats">
           <span title="Chuỗi ngày học liên tiếp">🔥 {streakNow(P)}</span>
           <span title="Phút học hôm nay / mục tiêu">⏱️ {minutesToday(P)}/{P.settings.goalMin}′</span>

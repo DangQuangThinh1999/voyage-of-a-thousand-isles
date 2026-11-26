@@ -119,7 +119,13 @@ export function ChunkPractice() {
   if (!items || busy) return (
     <section className="card">
       <h3 className="m-0">🧩 Học từ vựng theo cụm</h3>
-      <p className="muted small">Học từ trong cả câu sẽ nhớ lâu hơn học từ rời. AI lấy {unit} <b>chân thật</b> từ tình huống thực tế trên thế giới (email, tin nhắn, biển báo, hội thoại, đề IELTS…) — số {unit} tuỳ theo, miễn <b>đủ hết từ cần học</b> gồm <b>từ mới</b> (tiếp theo trong kho) và từ đã học để ôn. <b>Vòng 1:</b> dịch Anh → Việt (hiểu nghĩa). <b>Vòng 2:</b> dịch Việt → Anh các {unit} <b>khác</b> dùng lại đúng những từ đó (tự viết được, không chép được vòng 1). Làm xong cả 2 vòng mới nộp, AI chấm <b>một lần</b>. Một {unit} <b>qua</b> khi cả 2 chiều đạt ≥ {PASS}/100 — khi đó từ mới trong {unit} được <b>cộng vào số từ đã học</b> (tính cho các mốc 100 từ).</p>
+      <p className="muted small m-0">Học từ trong cả câu sẽ nhớ lâu hơn học từ rời.</p>
+      <ol className="how-list">
+        <li><span>🌍</span><div><b>Câu chân thật</b><small>AI lấy câu từ tình huống thực tế: email, tin nhắn, biển báo, hội thoại, đề IELTS… Đủ hết từ cần học (từ mới + từ ôn).</small></div></li>
+        <li><span>🇬🇧→🇻🇳</span><div><b>Vòng 1: dịch Anh → Việt</b><small>Hiểu nghĩa của câu.</small></div></li>
+        <li><span>🇻🇳→🇬🇧</span><div><b>Vòng 2: dịch Việt → Anh</b><small>Câu khác hẳn vòng 1 nhưng dùng lại đúng những từ đó — tự viết được, không chép được.</small></div></li>
+        <li><span>✅</span><div><b>Nộp 1 lần, AI chấm</b><small>Câu <b>qua</b> khi cả 2 chiều ≥ {PASS}/100 → từ mới trong câu được cộng vào số từ đã học.</small></div></li>
+      </ol>
       <div className="row gap wrap"><Pills id="chunk-len" value={len} onChange={setLen} items={LENS} /></div>
       {busy ? <StepProgress steps={['Chọn từ mới + từ ôn', 'AI đặt câu theo ngữ cảnh', 'Sẵn sàng']} step={1} note="thường 5–15 giây" />
         : <button className="btn big" onClick={start}>▶ Bắt đầu</button>}

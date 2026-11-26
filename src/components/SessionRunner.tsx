@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { KINDS } from '../lib/progress';
-import { checkFix, checkType, nextStep, quit, step } from '../state/session';
+import { checkFix, checkType, nextStep, quit, retakeTest, step } from '../state/session';
 import { app, type Session } from '../state/store';
 import { ProgressBar } from './ProgressBar';
 import { STEP_VIEWS } from './steps';
@@ -18,6 +18,8 @@ export function SessionRunner({ S }: { S: Session }) {
       <div className="sess-top">
         <button className="icon" data-act="quit" onClick={quit}>✕</button>
         <ProgressBar pct={pct} />
+        {S.kind === 'test' && <button className="btn ghost sm" data-act="retake" title="Bỏ bài này, làm lại từ đầu với đề mới"
+          onClick={() => confirm(`Làm lại ${S.key && S.key[0] === 'w' ? 'kiểm tra tuần' : 'kiểm tra chủ đề'} từ đầu với đề mới?`) && retakeTest(S.key || '')}>🔁 Làm lại</button>}
         {S.kind === 'test' ? <Timer deadline={ss.deadline || 0} answered={ss.answered} /> : <span className="muted small">{kd}</span>}
       </div>
       <View key={S.i} S={S} st={st} />

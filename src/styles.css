@@ -727,3 +727,11 @@ main { max-width: 980px; overflow-x: clip; }
 .pagehead h2 { margin: 0 0 8px; }
 .pagehead .pills { margin-bottom: 8px; }
 @media (max-width: 640px) { .pagehead h2 { font-size: 1.15rem; margin-bottom: 6px; } .pagehead .pills { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; } .pagehead .pills button { white-space: nowrap; } }
+
+/* luyện 20 câu ngữ pháp */
+.drill { margin-top: 14px; padding: 14px; border-radius: 14px; border: 1px solid rgba(34,211,238,.35); background: var(--pri-soft); display: grid; gap: 8px; }
+.drill-q p { margin: 6px 0; font-size: 1.05rem; }
+.drill .strike-soft { text-decoration: underline wavy var(--bad); text-underline-offset: 4px; }
+.drill form .ans { min-width: 0; }
+.link-sent { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 6px; }
+.link-rules summary .muted { display: block; font-weight: 400; margin-top: 2px; }

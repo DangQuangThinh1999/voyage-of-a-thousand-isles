@@ -13,6 +13,7 @@ import { hear, micErr, micLive, speak, SR, stopListening } from '../lib/speech';
 import { scoreSpeech, type SpeechScore } from '../lib/text';
 import { pick1, shuffle } from '../lib/util';
 import { addXP, app, save } from '../state/store';
+import { LINK_RULES, LINK_SENTENCES } from '../data/linking';
 
 interface Sound { ipa: string; type: string; name_vi: string; examples: [string, string][]; how_vi: string; mistake_vi: string; vi_like: string }
 interface Pron {
@@ -221,16 +222,81 @@ function Clusters({ d }: { d: Pron }) {
 }
 
 /** Tab Phát âm */
+/** Nối âm: 8 quy tắc có ví dụ (phiên âm, cách đọc liền, nghe thường/chậm, tự nói), câu luyện đọc liền và câu đố nhận diện */
+function Linking() {
+  const [open, setOpen] = useState<string>(LINK_RULES[0].id);
+  return (
+    <>
+      <Section>
+        <h3 className="m-0">🔗 Nối âm (linking) — nói tự nhiên như người bản xứ</h3>
+        <p className="muted small">Người bản xứ không đọc tách từng từ mà nối các từ với nhau. Hiểu nối âm giúp bạn <b>nghe IELTS dễ hơn</b> và <b>nói trôi chảy hơn</b> (tiêu chí Pronunciation & Fluency). Dấu <b>‿</b> là chỗ nối; âm trong ngoặc như <b>(j) (w) (r)</b> là âm được chèn thêm; <b>(t)</b> là âm bị nuốt.</p>
+        <div className="link-rules">
+          {LINK_RULES.map((r) => (
+            <details key={r.id} className="gp" open={open === r.id} onToggle={(e) => { if ((e.target as HTMLDetailsElement).open) setOpen(r.id); }}>
+              <summary><b>{r.icon} {r.name}</b> <span className="muted small">{r.short}</span></summary>
+              <p>💬 {r.how}</p>
+              <p className="note">⚠️ {r.tip}</p>
+              {r.ex.map((x) => (
+                <div key={x.p} className="ex-row"><b className="text-lg">{x.p}</b> <span className="ipa inline">{x.ipa}</span> <span className="chip2">≈ {x.say}</span>
+                  <AudioButton text={x.p} className="icon xs" /> <AudioButton text={x.p} slow label="🐢" className="icon xs" /> <SayIt text={x.p} /></div>
+              ))}
+            </details>
+          ))}
+        </div>
+      </Section>
+      <Section>
+        <h3 className="m-0">🗣️ Luyện đọc câu liền mạch</h3>
+        <p className="muted small">Nghe câu, nhìn chỗ nối ‿, rồi bấm 🎤 nói lại cả câu một hơi, không ngắt giữa các từ.</p>
+        {LINK_SENTENCES.map((x) => (
+          <div key={x.s} className="ex-row link-sent">
+            <div className="w-full"><b className="text-lg">{x.marked}</b></div>
+            <span className="muted small">{x.vi}</span>
+            {x.rules.map((id) => { const r = LINK_RULES.find((y) => y.id === id)!; return <span key={id} className="chip2" title={r.short}>{r.icon} {r.name}</span>; })}
+            <AudioButton text={x.s} className="icon xs" /> <AudioButton text={x.s} slow label="🐢" className="icon xs" /> <SayIt text={x.s} />
+          </div>
+        ))}
+      </Section>
+      <LinkQuiz />
+    </>
+  );
+}
+
+/** Câu đố: cụm từ này nối âm theo quy tắc nào? */
+function LinkQuiz() {
+  const all = useMemo(() => LINK_RULES.flatMap((r) => r.ex.map((x) => ({ ...x, r: r.id }))), []);
+  const [n, setN] = useState(0), [pick, setPick] = useState<string | null>(null), [score, setScore] = useState([0, 0]);
+  const q = useMemo(() => all[Math.floor(Math.random() * all.length)], [n, all]); // eslint-disable-line react-hooks/exhaustive-deps
+  const opts = useMemo(() => shuffle([q.r, ...shuffle(LINK_RULES.map((r) => r.id).filter((id) => id !== q.r)).slice(0, 3)]), [q]);
+  const R = (id: string) => LINK_RULES.find((r) => r.id === id)!;
+  return (
+    <Section>
+      <div className="row between"><h3 className="m-0">🎯 Đố vui: nối âm kiểu gì?</h3><span className="muted small">Đúng {score[0]}/{score[1]}</span></div>
+      <p className="text-lg"><b>{q.p}</b> <AudioButton text={q.p} className="icon xs" /></p>
+      <div className="gq-opts">{opts.map((id) => {
+        const cls = pick === null ? '' : id === q.r ? 'right' : id === pick ? 'wrong' : 'dim';
+        return <button key={id} className={`opt sm ${cls}`} disabled={pick !== null} onClick={() => { setPick(id); setScore(([a, b]) => [a + (id === q.r ? 1 : 0), b + 1]); }}>{R(id).icon} {R(id).name}</button>;
+      })}</div>
+      {pick !== null && (
+        <div className={`qexp ${pick === q.r ? 'ok' : 'bad'}`}>
+          <div className="qexp-full"><b>{q.p}</b> <span className="ipa inline">{q.ipa}</span> <span className="chip2">≈ {q.say}</span></div>
+          <p className="m-0">{R(q.r).icon} <b>{R(q.r).name}</b>: {R(q.r).short}</p>
+          <button className="btn sm mt-2" onClick={() => { setPick(null); setN(n + 1); }}>Câu tiếp →</button>
+        </div>
+      )}
+    </Section>
+  );
+}
+
 export function Pron() {
   const d = usePron();
-  const [tab, setTab] = useRouteParam<'chart' | 'pairs' | 'read' | 'stress' | 'homo' | 'clusters'>('t', 'chart');
+  const [tab, setTab] = useRouteParam<'chart' | 'pairs' | 'read' | 'stress' | 'homo' | 'clusters' | 'link'>('t', 'chart');
   return (
     <>
       <div className="pagehead">
         <h2>🔊 Phát âm IPA</h2>
-        <Pills id="pron" value={tab} onChange={setTab} items={[['chart', '🔤 Bảng IPA'], ['pairs', '👂 Cặp âm dễ nhầm'], ['read', '📖 Đọc phiên âm'], ['stress', '🎯 Trọng âm'], ['homo', '🔁 Từ đồng âm'], ['clusters', '🧩 Cụm phụ âm']]} />
+        <Pills id="pron" value={tab} onChange={setTab} items={[['chart', '🔤 Bảng IPA'], ['pairs', '👂 Cặp âm dễ nhầm'], ['read', '📖 Đọc phiên âm'], ['stress', '🎯 Trọng âm'], ['homo', '🔁 Từ đồng âm'], ['clusters', '🧩 Cụm phụ âm'], ['link', '🔗 Nối âm']]} />
       </div>
-      {tab === 'read' ? <ReadIpa /> : tab === 'stress' ? <Stress /> : !d ? <Section><p className="muted">Đang tải dữ liệu phát âm…</p></Section>
+      {tab === 'link' ? <Linking /> : tab === 'read' ? <ReadIpa /> : tab === 'stress' ? <Stress /> : !d ? <Section><p className="muted">Đang tải dữ liệu phát âm…</p></Section>
         : tab === 'chart' ? <Chart d={d} /> : tab === 'pairs' ? <Pairs d={d} /> : tab === 'homo' ? <Homophones d={d} /> : <Clusters d={d} />}
     </>
   );

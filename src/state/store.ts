@@ -57,7 +57,7 @@ export const SLUG: Partial<Record<Screen, string>> = {
 export const SUB: Partial<Record<Screen, Record<string, [slug: string, label: string]>>> = {
   speak: { talk: ['noi-theo-chu-de', '🎤 Nói theo chủ đề'], phrases: ['mau-cau', '💬 Mẫu câu'], ielts: ['hoi-dap-giam-khao', '🧑‍🏫 Hỏi đáp giám khảo'] },
   grammar: { analyze: ['phan-tich-cau', '🔍 Phân tích câu'], mist: ['so-loi-sai', '📒 Sổ lỗi sai'], pos: ['tu-loai', '🧩 Từ loại'], lib: ['thu-vien', '📚 Thư viện'] },
-  ipa: { chart: ['bang-ipa', '🔤 Bảng IPA'], pairs: ['cap-am-de-nham', '👂 Cặp âm dễ nhầm'], read: ['doc-phien-am', '📖 Đọc phiên âm'], stress: ['trong-am', '🎯 Trọng âm'], homo: ['tu-dong-am', '🔁 Từ đồng âm'], clusters: ['cum-phu-am', '🧩 Cụm phụ âm'] },
+  ipa: { chart: ['bang-ipa', '🔤 Bảng IPA'], pairs: ['cap-am-de-nham', '👂 Cặp âm dễ nhầm'], read: ['doc-phien-am', '📖 Đọc phiên âm'], stress: ['trong-am', '🎯 Trọng âm'], homo: ['tu-dong-am', '🔁 Từ đồng âm'], clusters: ['cum-phu-am', '🧩 Cụm phụ âm'], link: ['noi-am', '🔗 Nối âm'] },
   skills: { weak: ['ky-nang-yeu', '📊 Kỹ năng yếu'], read: ['doc-hieu', '📖 Đọc hiểu'], listen: ['nghe-hieu', '🎧 Nghe hiểu'] },
 };
 /** Tab con mặc định của từng trang */

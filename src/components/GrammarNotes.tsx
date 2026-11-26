@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { explain, posWhy, type GrammarPoint } from '../lib/grammar';
 import { lessonFor, type Quiz } from '../lib/grammarLessons';
 import { AudioButton } from './AudioButton';
+import { Drill, hasDrill } from './Drill';
 
 /** Câu hỏi thử ngay sau mỗi điểm ngữ pháp */
 export function TryQuiz({ quiz, onRight }: { quiz: Quiz; onRight?: () => void }) {
@@ -52,8 +53,14 @@ export function LessonBody({ name, onRight }: { name: string; onRight?: () => vo
       </div>
       {L.note && <p className="note">⚠️ {L.note}</p>}
       {L.quiz && <TryQuiz quiz={L.quiz} onRight={onRight} />}
+      {hasDrill(name) && <DrillToggle name={name} />}
     </>
   );
+}
+
+function DrillToggle({ name }: { name: string }) {
+  const [open, setOpen] = useState(false);
+  return open ? <Drill name={name} /> : <button className="btn mt-2" onClick={() => setOpen(true)}>🏋️ Luyện 20 câu cho nhuần nhuyễn</button>;
 }
 
 /** Một điểm ngữ pháp: công thức → hiểu đơn giản → đúng/sai → lưu ý → thử ngay */

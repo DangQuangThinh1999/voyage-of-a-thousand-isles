@@ -229,7 +229,7 @@ function Speaking({ E, X }: { E: ExamState; X: ExamT }) {
   return (
     <section className="card">
       <h3 className="m-0">🗣️ Nói</h3>
-      <p className="muted small">Bấm 🎤 rồi nói; im lặng 3 giây sẽ tự dừng. Mỗi câu được <b>ghi âm tối đa {MAX_TRIES} lần</b> (lần sau thay lần trước), có thể sửa chữ nếu máy nghe nhầm.{!SR && ' Trình duyệt này không nhận giọng nói (dùng Chrome/Edge) — bạn có thể gõ câu trả lời.'}</p>
+      <p className="muted small">Nghe câu hỏi (🔊), rồi bấm <b>🎤 Ghi âm câu trả lời</b> và nói câu TRẢ LỜI của bạn bằng tiếng Anh (không phải đọc lại câu hỏi). Im lặng 3 giây sẽ tự dừng. Mỗi câu được <b>ghi âm tối đa {MAX_TRIES} lần</b>, lần sau thay lần trước. Bài được chấm theo mức IELTS của tuần.{!SR && ' Trình duyệt này không nhận giọng nói (dùng Chrome/Edge) — bạn có thể gõ câu trả lời.'}</p>
       {qs.map((_, i) => <SpeakQ key={i} E={E} i={i} part={vis[i][0]} q={vis[i][1]} vi={vis[i][2]} points={vis[i][0] === 'Part 2' ? X.speaking.part2.points : undefined} long={vis[i][0] === 'Part 2'} />)}
     </section>
   );
@@ -256,12 +256,12 @@ function SpeakQ({ E, i, part, q, vi, points, long }: { E: ExamState; i: number; 
       <div className="muted small">{vi}</div>
       {points && <ul className="small m-0">{points.map((p, j) => <li key={j}>{p}</li>)}</ul>}
       <div className="row gap wrap mt-1">
-        {SR && <button className={'btn sm ' + (busy ? 'rec' : '')} disabled={!busy && left <= 0} onClick={rec}>{busy ? '⏹ Dừng' : left > 0 ? `🎤 Ghi âm (còn ${left}/${MAX_TRIES})` : '🔒 Hết lượt ghi âm'}</button>}
+        {SR && <button className={'btn sm ' + (busy ? 'rec' : '')} disabled={!busy && left <= 0} onClick={rec}>{busy ? '⏹ Dừng' : left > 0 ? `🎤 Ghi âm câu trả lời (còn ${left}/${MAX_TRIES} lần)` : '🔒 Hết lượt ghi âm'}</button>}
         {busy && <span className="muted small">🔴 {live || 'Đang nghe…'}</span>}
       </div>
       {err && <div className="bad small">{err}</div>}
-      <textarea className="inp" rows={long ? 5 : 2} value={E.ans.speak[i] || ''} placeholder={SR ? 'Câu trả lời của bạn hiện ở đây (sửa được)…' : 'Gõ câu trả lời…'}
-        onChange={(e) => { E.ans.speak[i] = e.target.value; saveAns(); emit(); }} />
+      {SR ? <div className={'speak-out ' + (E.ans.speak[i] ? '' : 'empty')}>{E.ans.speak[i] ? <>🗣️ <b>Bạn đã nói:</b> {E.ans.speak[i]}</> : 'Chưa ghi âm — câu trả lời của bạn sẽ hiện ở đây sau khi nói.'}</div>
+        : <textarea className="inp" rows={long ? 5 : 2} value={E.ans.speak[i] || ''} placeholder="Trình duyệt không nhận giọng nói: gõ câu trả lời…" onChange={(e) => { E.ans.speak[i] = e.target.value; saveAns(); emit(); }} />}
     </div>
   );
 }
@@ -270,7 +270,8 @@ function SpeakQ({ E, i, part, q, vi, points, long }: { E: ExamState; i: number; 
 function Results({ E }: { E: ExamState }) {
   const X = E.exam as ExamT, R = E.result!, ai = R.ai;
   const back = () => (E.key[0] === 'w' ? goWeek(+E.key.slice(1)) : go('unit', E.key.slice(1)));
-  const B = ({ k, l }: { k: keyof typeof R.bands; l: string }) => <div className="bandbox"><small>{l}</small><b>{R.bands[k] || '—'}</b></div>;
+  const need = parseFloat(E.band) || 0;
+  const B = ({ k, l }: { k: keyof typeof R.bands; l: string }) => <div className={'bandbox ' + (R.bands[k] >= need ? 'pass' : 'fail')}><small>{l}</small><b>{R.bands[k] || '—'}</b><small>{R.bands[k] >= need ? `✅ đạt ${E.band}` : `❌ cần ${E.band}`}</small></div>;
   return (
     <div className="exam">
       <motion.section className={'card exam-res ' + (R.passed ? 'pass' : 'fail')} initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}>

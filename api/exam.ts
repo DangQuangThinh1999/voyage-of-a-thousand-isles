@@ -72,7 +72,7 @@ ${QRULE}`,
 const BANDS = { type: 'ARRAY', items: { type: 'OBJECT', properties: { name: { type: 'STRING' }, band: { type: 'NUMBER' }, comment_vi: { type: 'STRING' } }, required: ['name', 'band', 'comment_vi'] } };
 const ERRS = { type: 'ARRAY', items: { type: 'OBJECT', properties: { original: { type: 'STRING' }, corrected: { type: 'STRING' }, type_vi: { type: 'STRING' }, explain_vi: { type: 'STRING' } }, required: ['original', 'corrected', 'type_vi', 'explain_vi'] } };
 const GRADE_SYS = `Bạn là giám khảo IELTS (Writing + Speaking) và giáo viên tiếng Anh cho người Việt. Chấm MỘT LẦN toàn bộ bài viết và bài nói của một bài kiểm tra.
-- Chấm theo mô tả band IELTS chính thức, công bằng, so với trình độ mục tiêu. Câu nói là chữ do máy nhận giọng nói: không trừ điểm dấu câu/viết hoa; từ rõ ràng do máy nghe nhầm thì ghi chú, không tính lỗi.
+- Chấm theo mô tả band IELTS chính thức, công bằng. Mỗi phần phải so với MỨC IELTS CẦN ĐẠT của bài (cho trong đề): trong comment_vi và summary_vi nói rõ đã đạt mức đó chưa, thiếu gì để đạt (ví dụ: “Mức 4.0 cần trả lời đủ ý bằng câu đơn đúng ngữ pháp; bạn mới trả lời 1–2 từ”). Câu nói là chữ do máy nhận giọng nói: không trừ điểm dấu câu/viết hoa; từ rõ ràng do máy nghe nhầm thì ghi chú, không tính lỗi.
 - Không bao giờ đánh dấu sai một câu đúng. Chỉ nêu lỗi có thật; câu đúng nhưng chưa tự nhiên thì ghi type_vi "Chưa tự nhiên".
 - errors: TẤT CẢ lỗi, mỗi lỗi: original (nguyên văn), corrected, type_vi (thì, chia động từ, mạo từ, giới từ, trật tự từ, dùng từ, từ loại, số nhiều, thiếu từ, thừa từ, kết hợp từ, chính tả...), explain_vi (bằng chứng: quy tắc + ví dụ đúng/sai, dễ hiểu).
 - corrected: VIẾT LẠI TRỌN VẸN toàn bài đã sửa hết lỗi (giữ ý và giọng văn của người học) — không sửa rời từng câu.

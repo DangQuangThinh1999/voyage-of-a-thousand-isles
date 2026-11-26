@@ -751,3 +751,7 @@ main { max-width: 980px; overflow-x: clip; }
 .banklist { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
 .qv-sent { font-size: 1.45rem; font-weight: 800; line-height: 1.4; }
 .qv-sents { display: grid; gap: 6px; margin: 8px 0; } .qv-sents .qv-row { margin-top: 6px; cursor: default; }
+.speak-out { padding: 10px 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); line-height: 1.5; }
+.speak-out.empty { color: var(--muted); font-style: italic; }
+.bandbox.pass { border-color: var(--good); } .bandbox.fail { border-color: var(--bad); }
+.bandbox small + b + small { display: block; font-size: .7rem; margin-top: 2px; }

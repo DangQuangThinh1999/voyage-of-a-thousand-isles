@@ -9,8 +9,11 @@ import { loadLex, dictWords, lookup } from '../lib/lex';
 import { LESSONS } from '../lib/grammarLessons';
 import { applyFixes, checkGrammar, softWarnings, type GrammarIssue } from '../lib/sentence';
 import { shuffle } from '../lib/util';
+import { norm } from '../lib/text';
+import { smartCheck, type SmartCheck } from '../lib/aicheck';
+import { VerdictCard } from '../components/VerdictCard';
 import { app, emit, save, useApp } from '../state/store';
-import { tallySkill } from '../lib/progress';
+import { addMistake, tallySkill } from '../lib/progress';
 
 const GROUPS: [string, string, string[]][] = [
   ['⭐', 'Câu cơ bản', ['Động từ to be', 'There is / There are', 'Câu hỏi Yes/No', 'Câu hỏi có từ để hỏi', 'Câu phủ định với do/does/did', 'Câu phủ định', 'Câu mệnh lệnh / đề nghị']],
@@ -72,15 +75,18 @@ function Analyzer() {
   const [done, setDone] = useState('');
   const [busy, setBusy] = useState(false);
   const [issues, setIssues] = useState<GrammarIssue[] | null>(null);
+  const [smart, setSmart] = useState<SmartCheck | null>(null);
   const [, force] = useState(0);
   useEffect(() => { loadLex().then(() => force((n) => n + 1)); }, []);
   async function run() {
     const t = text.trim(); if (!t) return;
     setBusy(true); setDone(t);
-    try { setIssues(await checkGrammar(t)); } catch { setIssues(null); }
+    const [a, b] = await Promise.all([checkGrammar(t).catch(() => null), smartCheck(t)]);
+    setIssues(a); setSmart(b);
+    if (b.status === 'incorrect' && b.correction) { addMistake(app.P, t, b.correction, b.explanation); save(); }
     setBusy(false);
   }
-  const fixed = issues && issues.length ? applyFixes(done, issues) : '';
+  const fixed = smart && smart.correction && smart.status === 'incorrect' ? smart.correction : issues && issues.length ? applyFixes(done, issues) : '';
   const words = done.split(/\s+/).map((w) => w.replace(/^[^A-Za-z']+|[^A-Za-z']+$/g, '')).filter(Boolean);
   return (
     <>
@@ -94,8 +100,9 @@ function Analyzer() {
       </Section>
       {done && (
         <Section>
-          <h3 className="m-0">1. Lỗi sai</h3>
-          {issues === null ? <p className="muted">Không kết nối được máy chấm ngữ pháp, chỉ phân tích theo luật.</p>
+          <h3 className="m-0">1. Đánh giá câu</h3>
+          {smart && <VerdictCard r={smart} text={done} />}
+          {smart?.source === 'ai' ? null : issues === null ? <p className="muted">Không kết nối được máy chấm ngữ pháp, chỉ phân tích theo luật.</p>
             : issues.length === 0 ? <><p className="okc">✅ Đúng ngữ pháp, chính tả.</p>{softWarnings(done).map((w) => <p key={w} className="note small">⚠️ {w}</p>)}</>
               : <>
                 <ul className="checks">{issues.map((x, i) => <li key={i}>✗ {x.kind}: <b className="badc">“{x.bad}”</b>{x.fix.length ? <> → <b className="okc">{x.fix.join(' / ')}</b></> : null}<br /><span className="muted small">{x.msg}</span></li>)}</ul>
@@ -217,14 +224,51 @@ function FamilyQuiz() {
   );
 }
 
+/** Sổ lỗi sai: tự sửa lại câu từng viết sai, đúng 3 lần là đã thuộc */
+function Mistakes() {
+  const { P } = useApp();
+  const list = (P.mist || []).filter((m) => m.ok < 3), done = (P.mist || []).filter((m) => m.ok >= 3).length;
+  const [i, setI] = useState(0);
+  const [inp, setInp] = useState('');
+  const [res, setRes] = useState<null | boolean>(null);
+  if (!list.length) return <Section><h3 className="m-0">📒 Sổ lỗi sai</h3><p className="muted">Chưa có lỗi nào cần luyện{done ? ` (đã thuộc ${done} lỗi 🎉)` : ''}. Khi bạn viết câu sai ở phần Từ mới, lỗi sẽ được lưu ở đây để luyện lại.</p></Section>;
+  const m = list[i % list.length];
+  const check = () => {
+    const ok = norm(inp) === norm(m.right);
+    setRes(ok); tallySkill(app.P, 'write', ok);
+    const x = (app.P.mist || []).find((y) => y.id === m.id); if (x && ok) x.ok++;
+    save(); emit();
+  };
+  return (
+    <Section>
+      <div className="flex justify-between"><h3 className="m-0">📒 Sổ lỗi sai</h3><span className="muted small">Còn {list.length} lỗi · đã thuộc {done}</span></div>
+      <p className="muted small">Sửa lại câu bạn từng viết sai. Mỗi lỗi cần tự sửa đúng 3 lần (ở các ngày khác nhau càng tốt) mới tính là đã thuộc.</p>
+      <div className="verdict v-bad mt-2"><b>❌ Câu bạn từng viết:</b> <span className="strike2">{m.wrong}</span><div className="muted small mt-1">Gợi ý: {m.why || 'Xem lại ngữ pháp của câu.'}</div><div className="small mt-1">Đã sửa đúng {m.ok}/3 lần</div></div>
+      <form className="mt-2" onSubmit={(e) => { e.preventDefault(); if (res === null) check(); }}>
+        <input className="ans" placeholder="Gõ lại câu đúng…" value={inp} disabled={res !== null} onChange={(e) => setInp(e.target.value)} />
+        {res === null && <button className="btn mt-2" disabled={!inp.trim()}>Kiểm tra</button>}
+      </form>
+      {res !== null && (
+        <div className="foot">
+          <span className={res ? 'okc' : 'badc'}>{res ? '✅ Đúng rồi!' : '❌ Chưa đúng.'} Câu đúng: <b>{m.right}</b> <AudioButton text={m.right} className="icon xs" /></span>
+          <button className="btn big" onClick={() => { setI(i + 1); setInp(''); setRes(null); }}>Lỗi tiếp →</button>
+        </div>
+      )}
+    </Section>
+  );
+}
+
 /** Tab Ngữ pháp */
 export function Grammar() {
-  const [tab, setTab] = useState<'analyze' | 'pos' | 'lib'>('analyze');
+  const { P } = useApp();
+  const [tab, setTab] = useState<'analyze' | 'mist' | 'pos' | 'lib'>('analyze');
+  const nm = (P.mist || []).filter((m) => m.ok < 3).length;
   return (
     <>
       <h2>📐 Ngữ pháp</h2>
-      <Pills id="gram" value={tab} onChange={setTab} items={[['analyze', '🔍 Phân tích & sửa lỗi'], ['pos', '🧩 Từ loại'], ['lib', '📚 Thư viện ngữ pháp']]} />
+      <Pills id="gram" value={tab} onChange={setTab} items={[['analyze', '🔍 Phân tích & sửa lỗi'], ['mist', `📒 Sổ lỗi sai${nm ? ` (${nm})` : ''}`], ['pos', '🧩 Từ loại'], ['lib', '📚 Thư viện ngữ pháp']]} />
       {tab === 'analyze' && <Analyzer />}
+      {tab === 'mist' && <Mistakes />}
       {tab === 'pos' && <PartsOfSpeech />}
       {tab === 'lib' && <Library />}
     </>

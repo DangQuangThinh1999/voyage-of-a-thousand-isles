@@ -43,6 +43,8 @@ export interface Progress {
   sk?: Record<string, [number, number]>;
   /** ngữ pháp đã học (làm đúng câu thử) */
   gram?: Record<string, number>;
+  /** sổ lỗi sai: câu sai → câu đúng, số lần tự sửa đúng (đủ 3 lần là đã thuộc) */
+  mist?: { id: number; d: string; wrong: string; right: string; why: string; ok: number }[];
   /** các lần luyện nói / viết có chấm */
   coach?: { d: string; k: 'speak' | 'write'; band: number; words: number; err: number }[];
 }
@@ -105,6 +107,14 @@ export function tallySkill(P: Progress, skill: string, ok: boolean) {
   const sk = P.sk || (P.sk = {}), v = sk[skill] || (sk[skill] = [0, 0]);
   v[1]++; if (ok) v[0]++;
 }
+/** Lưu một lỗi sai vào sổ (bỏ qua nếu đã có câu sai giống hệt) */
+export function addMistake(P: Progress, wrong: string, right: string, why: string) {
+  if (!right || right.trim() === wrong.trim()) return;
+  const L = P.mist || (P.mist = []);
+  if (L.some((x) => x.wrong === wrong)) return;
+  L.unshift({ id: Date.now(), d: dayKey(), wrong, right, why, ok: 0 });
+  if (L.length > 300) L.length = 300;
+}
 export const unitProg = (P: Progress, id: string) => P.units[id] || (P.units[id] = {});
 export const doneCount = (P: Progress, id: string) => KINDS.filter(([k]) => (P.units[id] || {})[k]).length;
 export const unlocked = (P: Progress, i: number) => i === 0 || doneCount(P, UNITS[i - 1].id) >= 3;
@@ -145,6 +155,7 @@ export function mergeProgress(P: Progress, r: Progress | null | undefined): Prog
   m.vStart = [P.vStart, r.vStart].filter(Boolean).sort()[0];
   m.vs = { ...(older.vs || {}), ...(newer.vs || {}) };
   m.gram = { ...(older.gram || {}), ...(newer.gram || {}) };
+  { const byId = new Map<number, NonNullable<Progress['mist']>[number]>(); for (const x of [...(older.mist || []), ...(newer.mist || [])]) { const o = byId.get(x.id); if (!o || x.ok >= o.ok) byId.set(x.id, x); } m.mist = [...byId.values()].sort((a, b) => b.id - a.id).slice(0, 300); }
   m.sk = { ...(older.sk || {}) };
   for (const [k, v] of Object.entries(newer.sk || {})) { const o = m.sk[k] || [0, 0]; m.sk[k] = v[1] >= o[1] ? v : o; }
   m.coach = [...(newer.coach || []), ...(older.coach || [])].filter((c, i, a) => a.findIndex((x) => x.d === c.d && x.k === c.k && x.words === c.words) === i).slice(0, 60);

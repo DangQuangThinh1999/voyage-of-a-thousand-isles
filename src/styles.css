@@ -473,3 +473,12 @@ main { max-width: 980px; overflow-x: clip; }
 .voyage .route::-webkit-scrollbar-thumb, .chips::-webkit-scrollbar-thumb { background: rgba(34, 211, 238, .25); border: 0; }
 .voyage .route:hover::-webkit-scrollbar-thumb, .chips:hover::-webkit-scrollbar-thumb { background: var(--sb-thumb-hover); }
 .side { scrollbar-gutter: stable; }
+/* kết quả chấm câu 4 mức */
+.verdict { margin-top: 12px; border-radius: 14px; padding: 12px 14px; border: 1px solid var(--line); background: var(--card); }
+.verdict .v-head { font-size: 1.05rem; display: flex; align-items: center; gap: 6px; }
+.v-ok { border-color: var(--good); box-shadow: 0 0 14px rgba(52, 211, 153, .18); }
+.v-warn { border-color: #fbbf24; box-shadow: 0 0 14px rgba(251, 191, 36, .16); }
+.v-ctx { border-color: #60a5fa; box-shadow: 0 0 14px rgba(96, 165, 250, .16); }
+.v-bad { border-color: var(--bad); box-shadow: 0 0 14px rgba(251, 113, 133, .18); }
+.strike2 { text-decoration: line-through; text-decoration-color: var(--bad); }
+.better { padding: 4px 0 4px 10px; border-left: 3px solid #fbbf24; margin-top: 4px; }

@@ -772,3 +772,7 @@ main { max-width: 980px; overflow-x: clip; }
 @media (max-width: 520px) { .ms-sp { grid-template-columns: 1fr; } }
 .ms-task { display: grid; gap: 6px; padding: 10px 0; border-top: 1px dashed var(--line); }
 .ms-task .ans { width: 100%; box-sizing: border-box; }
+.chunk-dots { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+.chunk-dots button { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); color: var(--muted); font-weight: 700; }
+.chunk-dots button.done { border-color: var(--good); color: var(--good); }
+.chunk-dots button.on { background: var(--pri); color: var(--pri-ink); border-color: var(--pri); }

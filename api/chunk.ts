@@ -56,6 +56,20 @@ Từ mục tiêu: ${words.join(', ')}
 BẢN DỊCH CỦA NGƯỜI HỌC: """${s(b.answer, 800)}"""`;
     return gemini(GRADE_SYS, user, GRADE_SCHEMA, 0.2, true);
   }
+  if (b.part === 'gradeall') {
+    // Chấm MỘT LẦN cả lượt (tối đa 6 câu/đoạn) để không gọi AI liên tục
+    const dir = b.dir === 'en-vi' ? 'Anh → Việt' : 'Việt → Anh';
+    const items = (Array.isArray(b.items) ? b.items : []).slice(0, 6).map((x: { source?: string; reference?: string; answer?: string; words?: string[] }) =>
+      ({ source: s(x.source, 600), reference: s(x.reference, 600), words: (x.words || []).slice(0, 8).map((w) => s(w, 40)), answer: s(x.answer, 800) }));
+    const user = `Hướng dịch: ${dir}. Trình độ người học: CEFR ${cefr}.
+Chấm lần lượt ${items.length} bài dịch dưới đây. Trả results đúng thứ tự, đủ ${items.length} mục, mỗi mục theo đúng các trường yêu cầu. Bài trống: score 0, verdict "wrong".
+${items.map((x: { source: string; reference: string; words: string[]; answer: string }, i: number) => `--- Bài ${i + 1} ---
+Gốc: «${x.source}»
+Tham khảo: «${x.reference}»
+Từ mục tiêu: ${x.words.join(', ')}
+Người học: «${x.answer || '(bỏ trống)'}»`).join('\n')}`;
+    return gemini(GRADE_SYS, user, { type: 'OBJECT', properties: { results: { type: 'ARRAY', items: GRADE_SCHEMA } }, required: ['results'] }, 0.2, true, 45_000, 120_000);
+  }
   if (b.part === 'msgen') {
     // Kiểm tra MỐC 100 TỪ: 2 đoạn văn dùng các từ đã học + đề viết câu theo ngữ pháp
     const grammar = (Array.isArray(b.grammar) ? b.grammar : []).slice(0, 3).map((x: unknown) => s(x, 120));

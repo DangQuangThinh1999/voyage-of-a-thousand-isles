@@ -804,7 +804,8 @@ main { max-width: 980px; overflow-x: clip; }
 
 /* ===================== ĐIỆN THOẠI: header gọn, menu trượt, chữ dễ đọc ===================== */
 .m-only { display: none !important; }
-html, body { max-width: 100%; overflow-x: hidden; }
+/* clip (không phải hidden): chặn tràn ngang mà không biến body thành vùng cuộn riêng (giữ sự kiện cuộn + thanh dính) */
+html, body { max-width: 100%; overflow-x: clip; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .menu-btn { width: 38px; height: 38px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); display: inline-flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; padding: 0; }
 .menu-btn i { display: block; width: 16px; height: 2px; border-radius: 2px; background: var(--ink); }
@@ -856,7 +857,9 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   .qexp, .gq, .gp { font-size: .9rem; }
   .examdock { left: 10px; right: 10px; max-width: none; bottom: calc(66px + env(safe-area-inset-bottom)); padding: 8px 10px; }
   .examdock span b { font-size: .82rem; } .examdock span small { font-size: .7rem; }
-  #main { overflow-x: hidden; }
+  #main { overflow-x: clip; }
+  /* điện thoại: thanh tiêu đề + tab luôn có nền khi dính, không để chữ bên dưới lộ ra */
+  .pagehead { background: var(--bg); box-shadow: 0 6px 14px rgba(0,0,0,.25); margin: 0 -12px 12px; padding: 8px 12px 2px; }
 }
 @media (max-width: 360px) { .brand b { display: none; } }
 

@@ -22,23 +22,55 @@ export function pickVoice(name = getOpts().voice): SpeechSynthesisVoice | null {
   return vs.find((v) => v.name === name) || vs.find((v) => /en-US/i.test(v.lang) && /Google|Natural|Samantha|Aria|Jenny/i.test(v.name))
     || vs.find((v) => /en-US/i.test(v.lang)) || vs[0] || null;
 }
-// Điện thoại (iOS Safari, Chrome Android) chỉ cho phát giọng đọc sau khi người dùng chạm vào trang lần đầu,
-// và hay "nuốt" câu nếu gọi speak() ngay sau cancel(). Mở khóa bằng một câu rỗng ở lần chạm đầu tiên.
+// Điện thoại (iOS Safari, Chrome Android) chỉ cho phát âm thanh sau khi người dùng chạm vào trang lần đầu,
+// và hay "nuốt" câu nếu gọi speak() ngay sau cancel(). Mở khóa ở lần chạm đầu tiên.
+// Máy không có giọng đọc (trình duyệt trong Zalo/Messenger, Android thiếu giọng tiếng Anh): phát file mp3 từ /api/tts.
+const UA = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+/** Trình duyệt nhúng trong app (Zalo, Facebook, Messenger, Instagram, TikTok…) thường không có giọng đọc */
+export const IN_APP = /Zalo|FBAN|FBAV|FB_IAB|Messenger|Instagram|Line\/|TikTok|; wv\)/i.test(UA);
+let useAudio = !TTS || IN_APP;
+let player: HTMLAudioElement | null = null;
 let unlocked = false;
 function unlock() {
-  if (unlocked || !TTS) return;
+  if (unlocked) return;
   unlocked = true;
-  try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; TTS.speak(u); TTS.resume(); } catch { /* bỏ qua */ }
+  try { if (TTS && !useAudio) { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; TTS.speak(u); } } catch { /* bỏ qua */ }
+  // mở khóa phát âm thanh cho đường dự phòng
+  try { player = new Audio(); player.muted = true; player.play().catch(() => {}); player.pause(); player.muted = false; } catch { /* bỏ qua */ }
 }
-if (TTS && typeof document !== 'undefined') {
+if (typeof document !== 'undefined') {
   for (const ev of ['pointerdown', 'touchend', 'click', 'keydown']) document.addEventListener(ev, unlock, { capture: true, passive: true });
-  TTS.getVoices(); // nạp sẵn danh sách giọng (Chrome tải không đồng bộ)
+  if (TTS) TTS.getVoices(); // nạp sẵn danh sách giọng (Chrome tải không đồng bộ)
 }
-/** Chrome Android đôi khi bị “treo” ở trạng thái paused: gọi resume định kỳ khi đang đọc */
-let keepAlive: ReturnType<typeof setInterval> | undefined;
+/** Cắt câu dài thành đoạn ≤ 180 ký tự (giới hạn của máy chủ đọc) */
+function chunks(t: string): string[] {
+  const out: string[] = []; let cur = '';
+  for (const p of t.split(/(?<=[.!?;,])\s+/)) {
+    if ((cur + ' ' + p).trim().length > 180) { if (cur) out.push(cur); cur = p.length > 180 ? '' : p; if (p.length > 180) out.push(...(p.match(/.{1,180}(\s|$)/g) || [p])); }
+    else cur = (cur + ' ' + p).trim();
+  }
+  if (cur) out.push(cur);
+  return out;
+}
+let audioSeq = 0;
+/** Phát bằng file mp3 (dự phòng) */
+async function speakAudio(text: string, slow: boolean): Promise<void> {
+  const my = ++audioSeq;
+  if (!player) player = new Audio();
+  for (const c of chunks(text)) {
+    if (my !== audioSeq) return;
+    await new Promise<void>((res) => {
+      const a = player!;
+      a.onended = a.onerror = () => res();
+      a.src = `/api/tts?q=${encodeURIComponent(c)}${slow ? '&slow=1' : ''}`;
+      a.playbackRate = 1;
+      a.play().catch(() => res());
+    });
+  }
+}
 export function speak(text: string, slow = false): Promise<void> {
-  if (!TTS) return Promise.resolve();
   unlock();
+  if (useAudio || !TTS) return speakAudio(text, slow);
   const busy = TTS.speaking || TTS.pending;
   if (busy) TTS.cancel();
   return new Promise((res) => {
@@ -48,22 +80,26 @@ export function speak(text: string, slow = false): Promise<void> {
     u.lang = v ? v.lang : 'en-US';
     u.rate = slow ? 0.55 : o.fast ? Math.max(1, o.rate) : o.rate; // bài kiểm tra đọc nhanh hơn
     u.volume = 1;
-    let done = false;
-    const fin = () => { if (done) return; done = true; if (keepAlive) clearInterval(keepAlive); res(); };
-    u.onend = u.onerror = fin;
-    // phòng trường hợp trình duyệt không gọi onend (iOS): tự kết thúc sau thời gian ước tính
-    setTimeout(fin, 1500 + text.length * (slow ? 160 : 95));
+    let done = false, started = false;
+    const fin = () => { if (done) return; done = true; res(); };
+    u.onstart = () => { started = true; };
+    u.onend = fin;
+    u.onerror = (e) => {
+      // lỗi thật (không phải do mình hủy để đọc câu khác) → chuyển sang phát mp3
+      if (!started && e.error !== 'interrupted' && e.error !== 'canceled') { useAudio = true; done = true; speakAudio(text, slow).then(res); } else fin();
+    };
     const go = () => {
       TTS.speak(u);
-      if (TTS.paused) TTS.resume();
-      if (keepAlive) clearInterval(keepAlive);
-      keepAlive = setInterval(() => { if (!TTS.speaking) { clearInterval(keepAlive); return; } TTS.pause(); TTS.resume(); }, 10000);
+      // không bắt đầu đọc sau 1,8 giây → máy không có giọng / bị chặn: dùng mp3 từ giờ
+      setTimeout(() => { if (!started && !done) { TTS.cancel(); useAudio = true; done = true; speakAudio(text, slow).then(res); } }, 2500);
+      // phòng trường hợp trình duyệt không gọi onend (iOS): tự kết thúc sau thời gian ước tính
+      setTimeout(fin, 3000 + text.length * (slow ? 160 : 95));
     };
     // sau cancel() cần chờ một chút, nếu không Safari/Chrome mobile bỏ qua câu mới
     if (busy) setTimeout(go, 60); else go();
   });
 }
-export function stopSpeaking() { if (TTS) TTS.cancel(); }
+export function stopSpeaking() { if (TTS) TTS.cancel(); audioSeq++; if (player) { player.pause(); } }
 /** Gọi lại khi danh sách giọng đọc thay đổi */
 export function onVoicesChanged(fn: () => void) { if (TTS) TTS.onvoiceschanged = fn; }
 
@@ -80,7 +116,7 @@ export function stopListening() { if (REC) REC.stop(); }
 export function hear({ onText, onLevel, maxMs = 30000, silenceMs = 2000, startMs = 7000 }: HearOptions = {}): Promise<HeardResult> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (res, rej) => {
-    if (TTS) TTS.cancel();
+    stopSpeaking();
     let stream: MediaStream | null = null, media: MediaRecorder | null = null, actx: AudioContext | null = null, raf = 0;
     const chunks: Blob[] = [];
     try {

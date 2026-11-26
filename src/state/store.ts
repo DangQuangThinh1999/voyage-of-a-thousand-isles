@@ -60,12 +60,12 @@ export const SLUG: Partial<Record<Screen, string>> = {
 export const SUB: Partial<Record<Screen, Record<string, [slug: string, label: string]>>> = {
   words: { learn: ['hoc-tu', '📗 Học từ'], chunk: ['hoc-theo-cum', '🧩 Học theo cụm'], mile: ['moc-100-tu', '🏁 Mốc 100 từ'] },
   speak: { talk: ['noi-theo-chu-de', '🎤 Nói theo chủ đề'], phrases: ['mau-cau', '💬 Mẫu câu'], ielts: ['hoi-dap-giam-khao', '🧑‍🏫 Hỏi đáp giám khảo'] },
-  grammar: { analyze: ['phan-tich-cau', '🔍 Phân tích câu'], mist: ['so-loi-sai', '📒 Sổ lỗi sai'], pos: ['tu-loai', '🧩 Từ loại'], lib: ['thu-vien', '📚 Thư viện'] },
+  grammar: { lib: ['thu-vien', '📚 Thư viện'], analyze: ['phan-tich-cau', '🔍 Phân tích câu'], mist: ['so-loi-sai', '📒 Sổ lỗi sai'], pos: ['tu-loai', '🧩 Từ loại'] },
   ipa: { chart: ['bang-ipa', '🔤 Bảng IPA'], pairs: ['cap-am-de-nham', '👂 Cặp âm dễ nhầm'], read: ['doc-phien-am', '📖 Đọc phiên âm'], stress: ['trong-am', '🎯 Trọng âm'], homo: ['tu-dong-am', '🔁 Từ đồng âm'], clusters: ['cum-phu-am', '🧩 Cụm phụ âm'], link: ['noi-am', '🔗 Nối âm'] },
   skills: { weak: ['ky-nang-yeu', '📊 Kỹ năng yếu'], read: ['doc-hieu', '📖 Đọc hiểu'], listen: ['nghe-hieu', '🎧 Nghe hiểu'] },
 };
 /** Tab con mặc định của từng trang */
-export const DEFAULT_SUB: Partial<Record<Screen, string>> = { words: 'learn', speak: 'talk', grammar: 'analyze', skills: 'weak', ipa: 'chart' };
+export const DEFAULT_SUB: Partial<Record<Screen, string>> = { words: 'learn', speak: 'talk', grammar: 'lib', skills: 'weak', ipa: 'chart' };
 const BY_SLUG = Object.fromEntries(Object.entries(SLUG).map(([k, v]) => [v, k as Screen]));
 const unitWeek = (id: string) => UNITS.find((u) => u.id === id)?.week;
 /** Đường dẫn tầng trang (không gồm tab con) */

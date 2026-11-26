@@ -2,6 +2,7 @@ import { Dictate } from '../components/Dictate';
 import { useState } from 'react';
 import { ChunkPractice } from '../components/ChunkPractice';
 import { Milestones } from '../components/Milestone';
+import { PronTip } from '../components/PronTip';
 import { Pills } from '../components/ui';
 import { useRouteParam } from '../lib/route';
 import { Dropdown } from '../components/Dropdown';
@@ -56,6 +57,7 @@ function WordsHome() {
   return (
     <>
       {head}
+      {bankLearned(P) < 300 && <PronTip compact />}
       {msNext && <Card className="warnc"><p>🏁 Bạn đã học đủ <b>{msNext * 100}</b> từ — có <b>bài kiểm tra mốc {msNext}</b>: dịch đoạn văn bằng chính các từ đã học, viết lại từ và viết câu theo ngữ pháp.</p><button className="btn" onClick={() => setT('mile')}>▶ Làm bài mốc {msNext}</button></Card>}
       {W && W.phase === 'done' && (
         <Card className="center">

@@ -797,3 +797,6 @@ main { max-width: 980px; overflow-x: clip; }
 .home-btn { width: 36px; height: 36px; border-radius: 12px; border: 1px solid rgba(34,211,238,.45); background: rgba(34,211,238,.12); font-size: 1.1rem; display: grid; place-items: center; padding: 0; cursor: pointer; transition: transform .15s, background .15s; }
 .home-btn:hover { transform: translateY(-1px); background: rgba(34,211,238,.25); }
 .brand-link { border: 0; background: none; color: inherit; font: inherit; padding: 0; cursor: pointer; }
+.pron-tip { border-color: rgba(45,212,191,.5); background: linear-gradient(135deg, rgba(45,212,191,.10), rgba(34,211,238,.05)); display: grid; gap: 6px; }
+.pron-steps { margin: 4px 0 0; padding-left: 20px; display: grid; gap: 3px; }
+.pron-steps .linkish, .linkish { border: 0; background: none; color: var(--pri); padding: 0; cursor: pointer; font: inherit; }

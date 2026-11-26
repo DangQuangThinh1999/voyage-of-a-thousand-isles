@@ -10,6 +10,7 @@ import { dueWords } from '../lib/srs';
 import { startSession } from '../state/session';
 import { goWeek, tab, type Screen } from '../state/store';
 import { TryQuiz } from './GrammarNotes';
+import { PronTip } from './PronTip';
 import { Bar, Ring } from './ui';
 
 const TILES: [Screen, string, string, string, string][] = [
@@ -61,6 +62,7 @@ export function Dashboard({ P }: { P: Progress }) {
         ))}
       </div>
 
+      {bankLearned(P) < 300 && <PronTip />}
       <Voyage P={P} />
 
       {quizName && (

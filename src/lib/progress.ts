@@ -51,6 +51,8 @@ export interface Progress {
   exd?: string[];
   /** kiểm tra mốc 100 từ: điểm tốt nhất theo số mốc */
   ms?: Record<string, number>;
+  /** gợi ý đã tắt / trạng thái gợi ý (vd pron: 1 = không nhắc nữa) */
+  tips?: Record<string, number>;
   /** sổ lỗi sai: câu sai → câu đúng, số lần tự sửa đúng (đủ 3 lần là đã thuộc) */
   mist?: { id: number; d: string; wrong: string; right: string; why: string; ok: number }[];
   /** các lần luyện nói / viết có chấm */
@@ -178,6 +180,7 @@ export function mergeProgress(P: Progress, r: Progress | null | undefined): Prog
   m.gram = { ...(older.gram || {}), ...(newer.gram || {}) };
   m.ms = { ...(older.ms || {}) };
   for (const [k, v] of Object.entries(newer.ms || {})) m.ms[k] = Math.max(v, m.ms[k] || 0);
+  m.tips = { ...(older.tips || {}), ...(newer.tips || {}) };
   m.exd = [...new Set([...(older.exd || []), ...(newer.exd || [])])];
   m.drill = { ...(older.drill || {}) };
   for (const [k, v] of Object.entries(newer.drill || {})) m.drill[k] = Math.max(v, m.drill[k] || 0);

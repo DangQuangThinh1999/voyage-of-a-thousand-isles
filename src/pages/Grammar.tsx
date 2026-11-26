@@ -299,7 +299,7 @@ function Mistakes() {
 /** Tab Ngữ pháp */
 export function Grammar() {
   const { P, arg } = useApp();
-  const [tab, setTab] = useRouteParam<'analyze' | 'mist' | 'pos' | 'lib'>('t', 'analyze');
+  const [tab, setTab] = useRouteParam<'analyze' | 'mist' | 'pos' | 'lib'>('t', 'lib');
   const [lesson, setLesson] = useRouteParam<string>('l', '');
   useEffect(() => { if (arg && LESSONS[arg]) { setTab('lib'); setLesson(arg); app.arg = null; } }, [arg]); // eslint-disable-line react-hooks/exhaustive-deps
   const nm = (P.mist || []).filter((m) => m.ok < 3).length;
@@ -307,7 +307,7 @@ export function Grammar() {
     <>
       <div className="pagehead">
         <h2>📐 Ngữ pháp</h2>
-        <Pills id="gram" value={tab} onChange={setTab} items={[['analyze', '🔍 Phân tích & sửa lỗi'], ['mist', `📒 Sổ lỗi sai${nm ? ` (${nm})` : ''}`], ['pos', '🧩 Từ loại'], ['lib', '📚 Thư viện ngữ pháp']]} />
+        <Pills id="gram" value={tab} onChange={setTab} items={[['lib', '📚 Thư viện ngữ pháp'], ['analyze', '🔍 Phân tích & sửa lỗi'], ['mist', `📒 Sổ lỗi sai${nm ? ` (${nm})` : ''}`], ['pos', '🧩 Từ loại']]} />
       </div>
       {tab === 'analyze' && <Analyzer />}
       {tab === 'mist' && <Mistakes />}

@@ -609,3 +609,6 @@ main { max-width: 980px; overflow-x: clip; }
 .model { margin: 6px 0 12px; }
 .model-body { overflow: hidden; display: grid; gap: 8px; margin-top: 8px; padding: 12px; border-radius: 14px; border: 1px dashed rgba(167, 139, 250, .55); background: rgba(167, 139, 250, .07); }
 .model-text { white-space: pre-wrap; line-height: 1.7; }
+.examiner { border-color: rgba(52, 211, 153, .5) !important; }
+.ex-av { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 1.4rem; background: var(--good-soft); box-shadow: 0 0 14px rgba(52, 211, 153, .35); }
+.ex-say { font-size: 1.1rem; font-weight: 700; margin: 10px 0 6px; padding: 10px 14px; border-radius: 14px; background: var(--good-soft); border-left: 3px solid var(--good); }

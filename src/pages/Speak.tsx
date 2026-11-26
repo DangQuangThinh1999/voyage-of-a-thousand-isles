@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dropdown } from '../components/Dropdown';
 import { AudioButton, SayBoth } from '../components/AudioButton';
 import { Ipa } from '../components/Ipa';
@@ -13,7 +13,7 @@ import { BASIC_PART1, SITUATIONS } from '../data/speak';
 import { coachSpeaking, type CoachResult } from '../lib/coach';
 import { tallySkill } from '../lib/progress';
 import { applyFixes } from '../lib/sentence';
-import { hear, micErr, micLive, SR, stopListening } from '../lib/speech';
+import { hear, micErr, micLive, speak, SR, stopListening } from '../lib/speech';
 import { scoreSpeech, type SpeechScore } from '../lib/text';
 import { dayKey, pick1 } from '../lib/util';
 import { addXP, app, save } from '../state/store';
@@ -64,6 +64,21 @@ function Phrases() {
 }
 
 type Part = '1' | '2' | '3';
+interface Talk { echo: boolean; reply: string; feedback_vi: string; better: string; better_vi: string; errors: { wrong: string; right: string; why: string }[] }
+/** Người học chỉ đọc lại câu hỏi? (≥70% từ của câu trả lời nằm trong câu hỏi) */
+function isEcho(q: string, a: string) {
+  const w = (s: string) => s.toLowerCase().replace(/what's/g, 'what is').replace(/[^a-z' ]/g, ' ').split(/\s+/).filter(Boolean);
+  const Q = new Set(w(q)), A = w(a);
+  return A.length > 0 && A.filter((x) => Q.has(x)).length / A.length >= 0.7;
+}
+/** Hỏi giám khảo AI (Gemini). Không có mạng / chưa cài khóa → null */
+async function askExaminer(question: string, answer: string, cefr: string, part: string): Promise<Talk | null> {
+  if (!answer.trim()) return null;
+  try {
+    const r = await fetch('/api/talk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question, answer, cefr, part }) });
+    const d = await r.json(); return r.ok && d.reply ? d : null;
+  } catch { return null; }
+}
 function questionsFor(part: Part, lv: number): { q: string; vi: string; points?: string[] }[] {
   if (lv === 0) return part === '1' ? BASIC_PART1.map(([q, vi]) => ({ q, vi })) : questionsFor(part, 1);
   const L = LEVELS[lv - 1];
@@ -89,7 +104,13 @@ function IeltsSpeaking() {
   const [ai, setAi] = useState<GenItem | null>(null);
   const aiQs = ai ? (part === '1' ? ai.data.part1.map((x: { en: string; vi: string }) => ({ q: x.en, vi: x.vi })) : part === '2' ? [{ q: ai.data.part2.cue, vi: ai.data.part2.vi, points: ai.data.part2.points }] : ai.data.part3.map((x: { en: string; vi: string }) => ({ q: x.en, vi: x.vi }))) : null;
   const qs = aiQs && aiQs.length ? aiQs : questionsFor(part, lv), q = qs[qi % qs.length];
-  function reset() { setSay(null); setRep(null); setErr(''); }
+  const [talk, setTalk] = useState<Talk | null>(null);
+  const [talkBusy, setTalkBusy] = useState(false);
+  const cefr = ai ? ai.cefr : lv === 0 ? 'A1' : LEVELS[lv - 1].cefr;
+  function reset() { setSay(null); setRep(null); setErr(''); setTalk(null); }
+  // Giám khảo đọc câu hỏi khi chuyển câu
+  useEffect(() => { const t = setTimeout(() => speak(q.q), 400); return () => clearTimeout(t); }, [q.q]);
+  const next = () => { setQi(qi + 1); reset(); };
   async function record() {
     if (busy) { stopListening(); return; }
     reset(); setBusy(true); micLive.reset();
@@ -98,8 +119,12 @@ function IeltsSpeaking() {
       const h = await hear({ onText: micLive.setText, onLevel: micLive.setLevel, silenceMs: part === '2' ? 5000 : 3500, maxMs: part === '2' ? 130000 : 60000 });
       const sec = (Date.now() - t0) / 1000;
       setSay({ text: h.text, audio: h.audio, sec });
-      const r = await coachSpeaking(h.text, sec);
-      setRep(r);
+      const echo = isEcho(q.q, h.text);
+      setTalkBusy(true);
+      const [r, tk] = await Promise.all([coachSpeaking(h.text, sec), askExaminer(q.q, h.text, cefr, part)]);
+      setRep(r); setTalkBusy(false);
+      const t2: Talk = tk || (echo ? { echo: true, reply: 'You just repeated my question. Please answer it in your own words.', feedback_vi: 'Bạn đang đọc lại câu hỏi. Hãy trả lời bằng câu của bạn, ví dụ bắt đầu bằng “My name is…” hoặc “I think…”.', better: '', better_vi: '', errors: [] } : null as unknown as Talk);
+      if (t2) { setTalk(t2); speak(t2.reply); }
       tallySkill(app.P, 'speak', r.band >= parseFloat(app.P.settings.target || '5.5') - 1);
       (app.P.coach || (app.P.coach = [])).unshift({ d: dayKey(), k: 'speak', band: r.band, words: r.words, err: r.issues.length });
       addXP(3);
@@ -132,6 +157,19 @@ function IeltsSpeaking() {
         {busy && <div className="listening"><MicMeter /><LiveText placeholder="Đang nghe… cứ nói tự nhiên, im lặng vài giây là máy dừng." /></div>}
         {err && <p className="note">{err}</p>}
       </Section>
+      {(talk || talkBusy) && (
+        <Section className="examiner">
+          <div className="flex items-center gap-3"><span className="ex-av">🧑‍🏫</span><b>Giám khảo nói</b>{talk && <AudioButton text={talk.reply} className="icon xs" />}</div>
+          {talkBusy && !talk ? <><div className="shimmer" /><p className="muted small">Giám khảo đang nghe và trả lời…</p></> : talk && <>
+            <p className="ex-say">“{talk.reply}”</p>
+            {talk.echo && <p className="note">⚠️ Bạn đang <b>đọc lại câu hỏi</b>, chưa trả lời. Hãy trả lời bằng câu của bạn rồi bấm <b>🔁 Nói lại</b>.</p>}
+            <p>💬 {talk.feedback_vi}</p>
+            {talk.errors.length > 0 && <ul className="checks">{talk.errors.map((e, i) => <li key={i}><b className="badc strike2">{e.wrong}</b> → <b className="okc">{e.right}</b><div className="muted small">{e.why}</div></li>)}</ul>}
+            {talk.better && <div className="mt-2"><b>✨ Câu trả lời tốt hơn (dựa trên ý của bạn) — nghe rồi nói theo:</b><Shadow s={[talk.better, talk.better_vi]} /></div>}
+          </>}
+          <div className="row gap mt-3"><button className="btn" onClick={() => { reset(); record(); }}>🔁 Nói lại câu này</button><button className="btn ghost" onClick={next}>➡️ Câu tiếp</button></div>
+        </Section>
+      )}
       {say && (
         <Section>
           <h3 className="m-0">🗒️ Máy nghe được</h3>

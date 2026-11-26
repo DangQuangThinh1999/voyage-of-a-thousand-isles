@@ -37,5 +37,5 @@ export function LoginPrompt() {
 export function GuestChip() {
   useApp();
   if (!Cloud.configured || !Cloud.resolved || Cloud.user) return null;
-  return <button className="aichip warn" title="Chưa đăng nhập: đóng trang là mất tiến độ" onClick={() => login()}>💾 Chưa lưu · Đăng nhập</button>;
+  return <button className="aichip warn" title="Chưa đăng nhập: đóng trang là mất tiến độ" onClick={() => login()}>💾 <span className="d-only">Chưa lưu · </span>Đăng nhập</button>;
 }

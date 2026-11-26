@@ -887,3 +887,22 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .learn .gram > summary { font-size: .9rem; font-weight: 600; padding: 10px 12px; cursor: pointer; color: var(--pri); }
 .learn .gram b { font-weight: 600; }
 @media (max-width: 760px) { .lc-word { font-size: 2rem; } .lc-steps { font-size: .7rem; } .lc-ex { font-size: 1.02rem; } }
+
+/* Chống tràn ngang khi cỡ chữ hệ thống của điện thoại để lớn: mọi khối được co lại, hàng nút/hàng số tự xuống dòng */
+.card, .chunk > *, .lc-sec > *, .exam-qs > li, .ms > * { min-width: 0; }
+.chunk, .lc-sec { grid-template-columns: minmax(0, 1fr); }
+.chunk-src, .lc-ex, .exam-passage, .q { overflow-wrap: anywhere; }
+.chunk textarea, .chunk .ans, .card textarea { width: 100%; max-width: 100%; }
+.chunk .row.between { flex-wrap: wrap; }
+@media (max-width: 760px) {
+  .chunk-dots { gap: 4px; }
+  .chunk-dots button { width: 26px; height: 26px; font-size: .72rem; }
+  .chunk-dots button.gap { margin-left: 10px; }
+  .chunk .row.between > .btn { flex: 1 1 auto; }
+  img, video, svg { max-width: 100%; }
+}
+.bar1 > * { min-width: 0; }
+.brand { min-width: 0; flex: 1 1 auto; }
+.brand-link { min-width: 0; }
+.brand-link b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.stats { flex: 0 0 auto; }

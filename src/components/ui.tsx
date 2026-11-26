@@ -1,6 +1,6 @@
 // Khối giao diện dùng chung: vòng tiến độ, thanh tiến độ, thẻ có hiệu ứng, nút chọn mục, bảng chấm điểm IELTS.
 import { motion } from 'motion/react';
-import { useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { CoachResult } from '../lib/coach';
 
 /** Vòng tiến độ (SVG) có hiệu ứng chạy */
@@ -38,8 +38,14 @@ export function Section({ children, className = '', delay = 0 }: { children: Rea
 
 /** Nút chọn mục (dạng viên thuốc, có hiệu ứng trượt) */
 export function Pills<T extends string>({ value, items, onChange, id }: { value: T; items: [T, string][]; onChange: (v: T) => void; id: string }) {
+  const box = useRef<HTMLDivElement>(null);
+  // thanh tab vuốt ngang (điện thoại): tự cuộn để tab đang chọn hiện đầy đủ (không cuộn cả trang)
+  useEffect(() => {
+    const el = box.current, on = el?.querySelector<HTMLElement>('button.on');
+    if (el && on && el.scrollWidth > el.clientWidth) el.scrollTo({ left: on.offsetLeft - (el.clientWidth - on.offsetWidth) / 2, behavior: 'smooth' });
+  }, [value]);
   return (
-    <div className="pills">
+    <div className="pills" ref={box}>
       {items.map(([k, label]) => (
         <button key={k} className={k === value ? 'on' : ''} onClick={() => onChange(k)}>
           {k === value && <motion.span layoutId={`pill-${id}`} className="pill-bg" transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }} />}

@@ -456,3 +456,20 @@ main { max-width: 980px; overflow-x: clip; }
 .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 700px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .hero .btn.big { flex: 1 1 220px; }
+
+/* ===== Thanh cuộn đồng bộ: mảnh, bo tròn, nền trong suốt, màu theo giao diện ===== */
+:root { --sb-thumb: rgba(34, 211, 238, .35); --sb-thumb-hover: rgba(34, 211, 238, .75); }
+:root[data-theme="light"] { --sb-thumb: rgba(8, 145, 178, .3); --sb-thumb-hover: rgba(8, 145, 178, .65); }
+* { scrollbar-width: thin; scrollbar-color: var(--sb-thumb) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: var(--sb-thumb); border-radius: 99px; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-thumb:hover { background: var(--sb-thumb-hover); background-clip: padding-box; }
+*::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+*::-webkit-scrollbar-corner { background: transparent; }
+/* thanh cuộn ngang trong thẻ (bản đồ hải trình, mục chọn): mỏng hơn, chỉ hiện rõ khi rê chuột */
+.voyage .route, .chips { scrollbar-width: thin; padding-bottom: 10px; }
+.voyage .route::-webkit-scrollbar, .chips::-webkit-scrollbar { height: 6px; }
+.voyage .route::-webkit-scrollbar-thumb, .chips::-webkit-scrollbar-thumb { background: rgba(34, 211, 238, .25); border: 0; }
+.voyage .route:hover::-webkit-scrollbar-thumb, .chips:hover::-webkit-scrollbar-thumb { background: var(--sb-thumb-hover); }
+.side { scrollbar-gutter: stable; }

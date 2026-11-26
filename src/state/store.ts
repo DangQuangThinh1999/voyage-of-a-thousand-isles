@@ -4,7 +4,7 @@ import { useSyncExternalStore } from 'react';
 import type { Unit } from '../data';
 import { Cloud } from '../lib/cloud';
 import type { Step, Skill } from '../lib/exercises';
-import { addXPTo, fresh, load, mergeProgress, persist, today, type Kind, type Progress } from '../lib/progress';
+import { addXPTo, freshKeep, load, mergeProgress, persist, today, type Kind, type Progress } from '../lib/progress';
 import type { ReviewState } from '../lib/srs';
 import type { WordsState } from './words';
 import { configureSpeech, onVoicesChanged, stopSpeaking } from '../lib/speech';
@@ -60,7 +60,7 @@ export function mergeCloud(r: Progress) {
   if (!m) return;
   app.P = m; save();
 }
-export function resetProgress() { app.P = fresh(); save(); }
+export function resetProgress() { app.P = freshKeep(app.P, Date.now()); app.S = null; app.R = null; app.W = null; save(); }
 /** Hook tiến độ: P + các hàm lưu */
 export function useProgress() { const a = useApp(); return { P: a.P, save, addXP }; }
 

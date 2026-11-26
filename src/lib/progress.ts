@@ -37,15 +37,26 @@ export interface Progress {
   vStart?: string;
   /** câu người học tự viết cho từng từ (hiện lại khi ôn) */
   vs?: Record<string, string>;
+  /** thời điểm xóa tiến độ: dữ liệu cũ hơn mốc này (ở máy khác, trên mây) bị bỏ qua khi gộp */
+  resetAt?: number;
 }
 
 export const fresh = (): Progress => ({ v: 1, xp: 0, streak: 0, lastDay: '', days: {}, units: {}, srs: {}, journal: [], tests: {},
   settings: { rate: 0.85, voice: '', goalMin: 210, wpd: 30 }, startDate: dayKey(), updated: 0, seenIntro: false });
 
+/** Xóa tiến độ một lần cho mọi máy: 26/11/2026, các bài kiểm tra lúc app còn dang dở không tính */
+export const RESET_AT = 1795664612984;
+/** Tiến độ mới, chỉ giữ cài đặt (giọng đọc, tốc độ, mục tiêu) */
+export const freshKeep = (P: Progress, at: number): Progress => ({ ...fresh(), settings: { ...fresh().settings, ...(P.settings || {}) }, seenIntro: true, resetAt: at, updated: Date.now() });
+
 export function load(): Progress {
   try {
     const o = JSON.parse(localStorage.getItem(STORE) || 'null');
-    if (o && o.v === 1) return { ...fresh(), ...o, settings: { ...fresh().settings, ...(o.settings || {}) } };
+    if (o && o.v === 1) {
+      const P: Progress = { ...fresh(), ...o, settings: { ...fresh().settings, ...(o.settings || {}) } };
+      if ((P.resetAt || 0) < RESET_AT) { const n = freshKeep(P, RESET_AT); persist(n); return n; }
+      return P;
+    }
   } catch { /* bộ nhớ trình duyệt bị chặn */ }
   return fresh();
 }
@@ -110,12 +121,17 @@ export function nextTask(P: Progress): { u: Unit; k: KindInfo } | null {
 // Gộp tiến độ trên mây với tiến độ trên máy (không mất bài nào đã làm)
 export function mergeProgress(P: Progress, r: Progress | null | undefined): Progress | null {
   if (!r || r.v !== 1) return null;
+  // Bên nào cũ hơn lần xóa tiến độ gần nhất thì bỏ, không gộp
+  const rs = Math.max(P.resetAt || 0, r.resetAt || 0, RESET_AT);
+  if ((r.updated || 0) < rs) return null;
+  if ((P.updated || 0) < rs) return { ...fresh(), ...r, settings: { ...fresh().settings, ...(r.settings || {}) } };
   const newer = (r.updated || 0) > (P.updated || 0) ? r : P, older = newer === r ? P : r;
   const m: Progress = { ...fresh(), ...newer, settings: { ...fresh().settings, ...(newer.settings || {}) } };
   m.xp = Math.max(P.xp || 0, r.xp || 0);
   m.startDate = [P.startDate, r.startDate].filter(Boolean).sort()[0] || dayKey();
   m.vStart = [P.vStart, r.vStart].filter(Boolean).sort()[0];
   m.vs = { ...(older.vs || {}), ...(newer.vs || {}) };
+  m.resetAt = Math.max(P.resetAt || 0, r.resetAt || 0) || undefined;
   m.units = { ...(older.units || {}) };
   for (const [id, v] of Object.entries(newer.units || {})) m.units[id] = { ...(m.units[id] || {}), ...v };
   m.days = { ...(older.days || {}) };

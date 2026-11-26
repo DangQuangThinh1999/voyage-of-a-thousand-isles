@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { aiLeft, askAI, type AiTurn } from '../lib/ai';
 import { explain, posWhy, type GrammarPoint } from '../lib/grammar';
 import { lessonFor, type Quiz } from '../lib/grammarLessons';
 import { AudioButton } from './AudioButton';
-import { RichText } from './RichText';
 
 /** Câu hỏi thử ngay sau mỗi điểm ngữ pháp */
 function TryQuiz({ quiz }: { quiz: Quiz }) {
@@ -47,36 +45,27 @@ function Point({ p, open }: { p: GrammarPoint; open: boolean }) {
   );
 }
 
-/** Hỏi AI khi chưa hiểu: giải thích lại dễ hơn, hỏi tiếp được */
+/** Câu hỏi soạn sẵn, ngắn gọn, để dán vào AI miễn phí */
+export const aiPrompt = (en: string, topics: string) =>
+  `Giải thích NGẮN GỌN bằng tiếng Việt cho người mới học tiếng Anh (trình độ A1), tối đa 120 từ.
+Câu: "${en}"${topics ? `\nĐiểm ngữ pháp: ${topics}` : ''}
+Trả lời theo thứ tự: 1) Nghĩa câu. 2) Công thức. 3) Tại sao dùng như vậy (1–2 câu). 4) Một ví dụ Đúng và một ví dụ Sai.`;
+
+/** Chưa hiểu: mở AI miễn phí (Claude, ChatGPT, Gemini) với câu hỏi đã soạn sẵn */
 function AskAI({ en, topics }: { en: string; topics: string }) {
-  const [turns, setTurns] = useState<AiTurn[]>([]);
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState('');
-  const [q, setQ] = useState('');
-  async function ask(question: string) {
-    setBusy(true); setErr('');
-    try {
-      const text = await askAI(en, topics, question, turns);
-      setTurns((t) => [...t, { role: 'user', content: question || 'Giải thích dễ hiểu hơn giúp mình.' }, { role: 'assistant', content: text }]);
-      setQ('');
-    } catch (e) { setErr((e as Error).message); }
-    setBusy(false);
-  }
+  const [copied, setCopied] = useState(false);
+  const prompt = aiPrompt(en, topics), q = encodeURIComponent(prompt);
+  const copy = async () => { try { await navigator.clipboard.writeText(prompt); setCopied(true); } catch { window.prompt('Chép đoạn này:', prompt); } };
   return (
     <div className="ai">
-      {turns.length === 0
-        ? <button className="btn ghost sm" disabled={busy} onClick={() => ask('')}>{busy ? '🤖 AI đang viết…' : '🤖 Chưa hiểu? Hỏi AI giải thích'}</button>
-        : <>
-          {turns.map((t, i) => (t.role === 'assistant'
-            ? <div key={i} className="ai-a"><RichText text={t.content} /></div>
-            : i > 0 && <div key={i} className="ai-q">🙋 {t.content}</div>))}
-          <form className="row gap" onSubmit={(e) => { e.preventDefault(); if (q.trim()) ask(q.trim()); }}>
-            <input className="ans" placeholder="Hỏi tiếp, ví dụ: Sao không dùng will?" value={q} onChange={(e) => setQ(e.target.value)} disabled={busy} />
-            <button className="btn sm" disabled={busy || !q.trim()}>{busy ? '…' : 'Hỏi'}</button>
-          </form>
-        </>}
-      {err && <p className="badc small">{err}</p>}
-      <p className="muted small">AI có thể sai, hãy đối chiếu với phần giải thích ở trên. Còn {aiLeft()} lượt hỏi hôm nay.</p>
+      <b>🤖 Chưa hiểu? Hỏi AI miễn phí</b>
+      <div className="row gap">
+        <a className="btn ghost sm" href={`https://claude.ai/new?q=${q}`} target="_blank" rel="noreferrer">Claude</a>
+        <a className="btn ghost sm" href={`https://chatgpt.com/?q=${q}`} target="_blank" rel="noreferrer">ChatGPT</a>
+        <a className="btn ghost sm" href="https://gemini.google.com/app" target="_blank" rel="noreferrer" onClick={copy}>Gemini</a>
+        <button className="btn ghost sm" onClick={copy}>{copied ? '✓ Đã chép' : '📋 Chép câu hỏi'}</button>
+      </div>
+      <p className="muted small">Mở tab mới với câu hỏi đã soạn sẵn (dùng tài khoản miễn phí của bạn). Gemini: câu hỏi được chép sẵn, chỉ cần dán vào.</p>
     </div>
   );
 }

@@ -307,7 +307,4 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
 .gq-opts { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
 .opt.sm { min-height: 36px; padding: 6px 12px; font-size: .92rem; }
 .ai { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 8px; }
-.ai-a { background: var(--card); border: 1px solid var(--pri); border-radius: 10px; padding: 8px 12px; }
-.ai-q { font-weight: 600; }
-.rich p { margin: 4px 0; } .rich ul { margin: 4px 0; padding-left: 18px; }
 @media (max-width: 600px) { .okbad { grid-template-columns: 1fr; } }

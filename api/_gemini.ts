@@ -15,15 +15,15 @@ export function guard(req: Request, perHour = 120): Response | null {
 }
 
 /** fast = ưu tiên model nhanh (bài chấm dài). Mỗi model chờ tối đa ~30 giây rồi chuyển model khác. */
-export async function gemini(system: string, user: string, schema: unknown, temperature = 0.2, fast = false): Promise<Response> {
+export async function gemini(system: string, user: string, schema: unknown, temperature = 0.2, fast = false, perModelMs = 32_000, budgetMs = 100_000): Promise<Response> {
   const key = process.env.GEMINI_API_KEY!;
   const order = fast ? ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-3.5-flash'] : ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];
   const models = [...new Set([process.env.GEMINI_MODEL, ...order, 'gemini-flash-latest'].filter(Boolean) as string[])];
   const t0 = Date.now();
   let last = 0;
   for (const model of models) {
-    if (Date.now() - t0 > 100_000) break;
-    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 32_000);
+    if (Date.now() - t0 > budgetMs) break;
+    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), perModelMs);
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
         method: 'POST', signal: ctl.signal, headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },

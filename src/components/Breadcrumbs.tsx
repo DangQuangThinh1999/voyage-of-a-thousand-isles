@@ -4,7 +4,7 @@ import { roadmap } from '../lib/roadmap';
 import { KINDS, levelNow } from '../lib/progress';
 import { DEFAULT_SUB, getParam, go, goWeek, SUB, tab, useApp, withLeave } from '../state/store';
 
-const NAMES: Record<string, string> = { grammar: '📐 Ngữ pháp', speak: '🗣️ Giao tiếp', ipa: '🔊 Phát âm', skills: '🎯 Kỹ năng', stats: '🏆 Thành tựu', words: '📗 Từ mới', review: '🔁 Ôn từ', journal: '✍️ Viết', plan: '🗺️ Lộ trình', settings: '⚙️ Cài đặt', mic: '🎤 Test micro' };
+const NAMES: Record<string, string> = { grammar: '📐 Ngữ pháp', speak: '🗣️ Giao tiếp', ipa: '🔊 Phát âm', skills: '🎯 Kỹ năng', stats: '🏆 Thành tựu', words: '📗 Từ mới', review: '🔁 Ôn từ', journal: '✍️ Viết', plan: '🗺️ Lộ trình', settings: '⚙️ Cài đặt', mic: '🎤 Test micro', exam: '📝 Đề kiểm tra' };
 /** Đường dẫn: Học › Tuần › Bài › Phần, kèm trình độ ước tính */
 export function Breadcrumbs() {
   const { scr, arg, S, P } = useApp();
@@ -14,7 +14,10 @@ export function Breadcrumbs() {
   const weekCrumb = (w: number) => (
     <button key="w" data-act="week" data-w={w} onClick={() => withLeave(() => goWeek(w))}>Tuần {w} · 🎯 {WG[w].band}</button>
   );
-  if (scr === 'session' && S && S.kind === 'test' && S.key && S.key[0] === 'w') parts.push(weekCrumb(+S.key.slice(1)), <span key="t">⚡ Kiểm tra tuần</span>);
+  if (scr === 'exam' && arg) {
+    if (arg[0] === 'w') parts.push(weekCrumb(+arg.slice(1)), <span key="t">📝 Đề kiểm tra tuần</span>);
+    else { const x = unitById(arg.slice(1)); if (x) parts.push(weekCrumb(x.week), <button key="u" onClick={() => withLeave(() => go('unit', x.id))}>{x.emoji} {x.title}</button>, <span key="t">📝 Đề kiểm tra chủ đề</span>); }
+  } else if (scr === 'session' && S && S.kind === 'test' && S.key && S.key[0] === 'w') parts.push(weekCrumb(+S.key.slice(1)), <span key="t">⚡ Kiểm tra tuần</span>);
   else if (u) {
     parts.push(weekCrumb(u.week), <button key="u" data-act="unit" data-u={u.id} onClick={() => withLeave(() => go('unit', u.id))}>{u.emoji} {u.title}</button>);
     if (scr === 'session' && S) { const k = KINDS.find(([x]) => x === S.kind); parts.push(<span key="k">{k ? k[1] + ' ' + k[2] : '⚡ Kiểm tra chủ đề'}</span>); }

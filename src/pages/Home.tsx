@@ -8,17 +8,17 @@ import { motion } from 'motion/react';
 import { UnitCard } from '../components/UnitCard';
 import { vocabWeek, weekNow, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
 import { introOk } from '../state/actions';
-import { startQuickTest } from '../state/session';
+import { requestExam } from '../state/exam';
 import { tab, useApp } from '../state/store';
 
 function WeekBadge({ w, P }: { w: number; P: Progress }) {
   const WG = roadmap(P);
   const us = weekUnits(w);
   const t0 = (P.tests || {})['w' + w];
-  if (weekDone(P, w)) return <span className="row gap"><span className="okc small">✓ Đạt ~IELTS {WG[w].band}</span><button className="btn ghost sm" onClick={() => startQuickTest({ w })}>🔁 Làm lại kiểm tra tuần{t0 ? ` · ${t0.best}%` : ''}</button></span>;
+  if (weekDone(P, w)) return <span className="row gap"><span className="okc small">✓ Đạt ~IELTS {WG[w].band}</span><button className="btn ghost sm" onClick={() => requestExam('w' + w)}>🔁 Làm lại kiểm tra tuần{t0 ? ` · ${t0.best}%` : ''}</button></span>;
   if (!unlocked(P, UNITS.indexOf(us[0]))) return <span className="muted small">🔒</span>;
   const t = (P.tests || {})['w' + w];
-  return <button className="btn ghost sm" data-act="test" data-w={w} onClick={() => startQuickTest({ w })}>⚡ Kiểm tra tuần {w}{t ? ` · ${t.best}% · làm lại` : ''}</button>;
+  return <button className="btn ghost sm" data-act="test" data-w={w} onClick={() => requestExam('w' + w)}>⚡ Kiểm tra tuần {w}{t ? ` · ${t.best}% · làm lại` : ''}</button>;
 }
 
 /** Từ vựng rải đều của tuần w (7 × số từ/ngày) */

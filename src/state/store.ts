@@ -10,7 +10,7 @@ import type { WordsState } from './words';
 import { configureSpeech, onVoicesChanged, stopSpeaking } from '../lib/speech';
 import type { SpeechScore } from '../lib/text';
 
-export type Screen = 'home' | 'unit' | 'session' | 'words' | 'review' | 'grammar' | 'speak' | 'ipa' | 'skills' | 'journal' | 'stats' | 'plan' | 'settings' | 'mic';
+export type Screen = 'home' | 'unit' | 'session' | 'words' | 'review' | 'grammar' | 'speak' | 'ipa' | 'skills' | 'journal' | 'stats' | 'plan' | 'settings' | 'mic' | 'exam';
 
 export type MicResult = (SpeechScore & { err?: undefined }) | { err: string };
 export interface StepState {
@@ -51,7 +51,7 @@ export function emit() { syncHash(); version++; subs.forEach((f) => f()); }
 // Tải lại vẫn ở đúng chỗ, nút Quay lại / Tiến tới hoạt động. Tab con là tầng thứ 2, tham số khác ở sau dấu ?
 export const SLUG: Partial<Record<Screen, string>> = {
   words: 'tu-moi', review: 'on-tu', grammar: 'ngu-phap', speak: 'giao-tiep', ipa: 'phat-am', skills: 'ky-nang', journal: 'viet',
-  stats: 'thanh-tuu', plan: 'lo-trinh', settings: 'cai-dat', mic: 'test-micro',
+  stats: 'thanh-tuu', plan: 'lo-trinh', settings: 'cai-dat', mic: 'test-micro', exam: 'de-thi',
 };
 /** Tên tầng 2 (tab con) cho từng trang */
 export const SUB: Partial<Record<Screen, Record<string, [slug: string, label: string]>>> = {
@@ -69,6 +69,7 @@ function rootOf(): string {
   if (app.scr === 'session') return app.S ? `/tuan-${app.S.u.week}/${app.S.u.id}` : '/';
   if (app.scr === 'unit' && app.arg) return `/tuan-${unitWeek(app.arg) ?? 1}/${encodeURIComponent(app.arg)}`;
   if (app.scr === 'home') return app.arg ? `/tuan-${app.arg}` : '/';
+  if (app.scr === 'exam') return app.arg ? `/de-thi/${app.arg}` : '/de-thi';
   return '/' + (SLUG[app.scr] || '');
 }
 function syncHash() {
@@ -91,7 +92,7 @@ export function readHash(): boolean {
   let s: Screen = 'home', a: string | null = null;
   const wk = seg[0] && seg[0].match(/^tuan-(\d+)$/);
   if (wk) { if (seg[1] && UNITS.some((u) => u.id === seg[1])) { s = 'unit'; a = seg[1]; } else { a = wk[1]; } }
-  else if (seg[0] && BY_SLUG[seg[0]]) s = BY_SLUG[seg[0]];
+  else if (seg[0] && BY_SLUG[seg[0]]) { s = BY_SLUG[seg[0]]; if (s === 'exam' && seg[1]) a = seg[1]; }
   if (app.scr === 'session' && app.S && s === 'unit' && a === app.S.u.id) return false;
   if (s === app.scr && a === app.arg) return false;
   app.scr = s; app.arg = a;

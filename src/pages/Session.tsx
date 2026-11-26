@@ -3,7 +3,8 @@ import { Card } from '../components/Card';
 import { SessionRunner } from '../components/SessionRunner';
 import { PASS, SKILL_NAME, type ParaStep, type Skill } from '../lib/exercises';
 import { KINDS, nextTask } from '../lib/progress';
-import { beginTest, retakeTest, startQuickTest, startSession } from '../state/session';
+import { beginTest, retakeTest, startSession } from '../state/session';
+import { requestExam } from '../state/exam';
 import { go, tab, useApp, type Session as S } from '../state/store';
 
 function TestIntro({ S }: { S: S }) {
@@ -51,7 +52,7 @@ function TestDone({ S }: { S: S }) {
       <div className="row gap center">
         <button className="btn ghost" data-act="tab" data-tab="home" onClick={() => tab('home')}>← Trang chủ</button>
         <button className={d.passed ? 'btn ghost' : 'btn'} data-act="retake" onClick={() => retakeTest(key)}>🔁 Làm lại từ đầu</button>
-        {d.passed && hasNext && <button className="btn" data-act="test" data-w={next!} onClick={() => startQuickTest({ w: next! })}>⚡ Kiểm tra tuần {next} →</button>}
+        {d.passed && hasNext && <button className="btn" data-act="test" data-w={next!} onClick={() => requestExam('w' + next!)}>⚡ Kiểm tra tuần {next} →</button>}
         {!d.passed && <button className="btn" data-act="unit" data-u={S.u.id} onClick={() => go('unit', S.u.id)}>Học bài {S.u.title} →</button>}
       </div>
     </Card>

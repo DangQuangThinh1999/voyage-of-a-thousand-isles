@@ -673,3 +673,50 @@ main { max-width: 980px; overflow-x: clip; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .card.pending { opacity: .55; filter: saturate(.6); transition: opacity .2s; }
 .chip3.ok { background: var(--good-soft); color: var(--good); } .chip3.warn { background: rgba(251, 191, 36, .14); color: #fbbf24; }
+
+/* ---------- đề kiểm tra AI ---------- */
+.examdock { position: fixed; right: 14px; bottom: calc(78px + env(safe-area-inset-bottom)); z-index: 70; display: flex; align-items: center; gap: 10px; max-width: min(360px, calc(100vw - 28px));
+  padding: 10px 14px; border-radius: 14px; border: 1px solid rgba(34,211,238,.45); background: rgba(8,30,38,.92); color: #e5f7fb; text-align: left; overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 18px rgba(34,211,238,.25); backdrop-filter: blur(8px); }
+.examdock span b { display: block; font-size: .9rem; }
+.examdock span small { opacity: .75; font-size: .75rem; }
+.examdock i { position: absolute; left: 0; bottom: 0; height: 3px; background: linear-gradient(90deg,#22d3ee,#a78bfa); transition: width .6s; }
+@media (min-width: 900px) { .examdock { bottom: 20px; } }
+.exam-parts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.exam-parts .ok { color: var(--good); } .exam-parts .err { color: var(--bad); }
+.exam-tabs { display: flex; gap: 6px; overflow-x: auto; margin-top: 12px; padding-bottom: 2px; }
+.exam-tabs button { flex: 0 0 auto; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 12px; padding: 8px 12px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.exam-tabs button small { font-weight: 400; color: var(--muted); font-size: .72rem; }
+.exam-tabs button.on { border-color: var(--pri); background: var(--pri-soft); color: var(--pri); }
+.exam-foot { margin: 6px 0 12px; }
+.exam-passage { line-height: 1.75; padding: 12px 14px; background: var(--bg); border-radius: 12px; border: 1px solid var(--line); margin: 8px 0 4px; }
+.exam-qs { padding-left: 22px; margin: 12px 0 0; }
+.exam-qs > li { margin-bottom: 16px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); }
+.exam-qs > li.ok { border-color: var(--good); } .exam-qs > li.no { border-color: var(--bad); }
+.exam-qs .q { font-weight: 600; }
+.exam-qs .opts { display: grid; gap: 6px; margin-top: 8px; }
+.exam-qs .opt { text-align: left; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 10px; padding: 8px 12px; }
+.exam-qs .opt.sel { border-color: var(--pri); background: var(--pri-soft); font-weight: 600; }
+.exam-qs .opt.right { border-color: var(--good); background: var(--good-soft); }
+.exam-qs .opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.exam-qs .opt:disabled { opacity: 1; cursor: default; }
+.exam-qs .inp, .exam .inp { width: 100%; margin-top: 6px; box-sizing: border-box; }
+.exam-qs .exp { margin-top: 8px; padding: 8px 10px; border-radius: 10px; font-size: .9rem; line-height: 1.5; }
+.exam-qs .exp.good { background: var(--good-soft); } .exam-qs .exp.bad { background: var(--bad-soft); }
+.exam-qs .evi { margin: 4px 0; font-style: italic; }
+.exam .mono { font-family: ui-monospace, monospace; letter-spacing: 1px; }
+.exam-task { font-weight: 600; white-space: pre-wrap; }
+.exam-text { min-height: 200px; font: inherit; line-height: 1.6; }
+.speakq { border-top: 1px dashed var(--line); padding: 12px 0; display: grid; gap: 4px; }
+.speakq textarea { font: inherit; }
+.btn.rec { background: var(--bad); color: #fff; }
+.exam-res.pass { border-color: var(--good); box-shadow: 0 0 24px rgba(67,196,122,.2); }
+.exam-res.fail { border-color: #f59e0b; }
+.bigband { text-align: center; padding: 8px 16px; border-radius: 14px; background: linear-gradient(135deg,#22d3ee33,#a78bfa33); }
+.bigband small { display: block; color: var(--muted); font-size: .72rem; } .bigband b { font-size: 2rem; }
+.bands4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0 6px; }
+.bandbox { text-align: center; padding: 8px 4px; border-radius: 12px; background: var(--bg); border: 1px solid var(--line); }
+.bandbox small { display: block; color: var(--muted); font-size: .74rem; } .bandbox b { font-size: 1.3rem; }
+.pre { white-space: pre-wrap; line-height: 1.6; }
+.good-box { background: var(--good-soft); padding: 8px 10px; border-radius: 10px; }
+.bandlist, .errlist { padding-left: 20px; } .errlist li { margin-bottom: 10px; }

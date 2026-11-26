@@ -15,6 +15,9 @@ export function SpellStep(p: StepProps<StepOf<'spell'>>) {
   useEffect(() => { loadLex().then(() => force((n) => n + 1)); }, []);
   const words = en.split(' ');
   const blanks = words.map((w) => (show ? w[0] + ' ' : '') + w.split('').slice(show ? 1 : 0).map(() => '_').join(' ')).join('     ');
+  const letters = words.reduce((n, w) => n + w.replace(/[^a-z]/gi, '').length, 0);
+  /** Gợi ý tối thiểu (cả khi kiểm tra): âm đầu và âm cuối trong phiên âm của mỗi từ */
+  const edge = (w: string) => { const ipa = (wordIpa(w) || '').replace(/[ˈˌ.]/g, ''); if (!ipa) return ''; const ch = [...ipa]; return ch.length <= 2 ? `/${ipa}/` : `/${ch[0]}${ch[1] === 'ː' ? 'ː' : ''} … ${ch[ch.length - 1] === 'ː' ? ch[ch.length - 2] : ''}${ch[ch.length - 1]}/`; };
   return (
     <StepFrame {...p} foot={!ss.answered && <>
       {S.kind !== 'test' && !show && <button className="btn ghost" data-act="hint" onClick={() => setShow(true)}>💡 Gợi ý (phiên âm)</button>}
@@ -22,7 +25,8 @@ export function SpellStep(p: StepProps<StepOf<'spell'>>) {
     </>}>
       <p className="ask">Viết từ tiếng Anh{sameAs(en).length ? <span className="muted small"> (có {sameAs(en).length + 1} từ đúng, gõ 1 từ là được)</span> : null}</p>
       <div className="center">{!T && <div className="huge">{em}</div>}<div className="vi">{vi}</div>
-        {!T && <p className="hint">{blanks}</p>}
+        <p className="hint">{blanks}</p>
+        <p className="muted small m-0">🔢 {letters} chữ cái{words.length > 1 ? ` · ${words.length} từ (${words.map((w) => w.length).join(' + ')})` : ''} · 🔊 âm đầu/cuối: {words.map(edge).filter(Boolean).join('  ') || '—'}</p>
       </div>
       {!T && show && (
         <div className="spell-hint">

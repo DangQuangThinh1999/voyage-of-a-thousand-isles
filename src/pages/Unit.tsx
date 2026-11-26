@@ -4,7 +4,8 @@ import { GrammarNotes } from '../components/GrammarNotes';
 import { Ipa } from '../components/Ipa';
 import { Card } from '../components/Card';
 import { doneCount, KINDS } from '../lib/progress';
-import { startQuickTest, startSession } from '../state/session';
+import { startSession } from '../state/session';
+import { requestExam } from '../state/exam';
 import { tab, useApp } from '../state/store';
 
 export function Unit() {
@@ -17,7 +18,7 @@ export function Unit() {
       <div className="row gap"><h2>{u.emoji} {u.title} <small className="muted">· {u.vi}</small></h2></div>
       <div className="list">
         {doneCount(P, u.id) < 5 && (
-          <button className="item quick" data-act="test" data-u={u.id} onClick={() => startQuickTest({ u: u.id })}><span className="em">⚡</span><span className="t"><b>Kiểm tra nhanh CHỦ ĐỀ: {u.title}</b><small>Chỉ nội dung chủ đề này. Khó hơn bài học, có giới hạn thời gian, sai 1 câu là làm lại từ đầu. Đúng hết 100% mới qua.{P.tests && P.tests['u' + u.id] ? ` Kết quả tốt nhất: ${P.tests['u' + u.id].best}%${P.tests['u' + u.id].passed ? ' ✓ đã qua' : ''}` : ''}</small></span><span className="go">{P.tests && P.tests['u' + u.id] ? '🔁 Làm lại' : 'Làm'}</span></button>
+          <button className="item quick" data-act="test" data-u={u.id} onClick={() => requestExam('u' + u.id)}><span className="em">⚡</span><span className="t"><b>Kiểm tra nhanh CHỦ ĐỀ: {u.title}</b><small>🤖 AI soạn đề MỚI mỗi lần theo từ bạn đã học: Nghe · Đọc · Từ vựng & Ngữ pháp · Viết · Nói. Làm hết rồi nộp, chấm 1 lần, có đáp án + căn cứ + giải thích.{P.tests && P.tests['u' + u.id] ? ` Kết quả tốt nhất: ${P.tests['u' + u.id].best}%${P.tests['u' + u.id].passed ? ' ✓ đã qua' : ''}` : ''}</small></span><span className="go">{P.tests && P.tests['u' + u.id] ? '🔁 Làm lại' : 'Làm'}</span></button>
         )}
         {KINDS.map(([k, ic, name, desc]) => (
           <button key={k} className="item" data-act="start" data-u={u.id} data-k={k} onClick={() => startSession(u.id, k)}>

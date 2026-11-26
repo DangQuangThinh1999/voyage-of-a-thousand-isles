@@ -15,13 +15,18 @@ export function guard(req: Request, perHour = 120): Response | null {
 }
 
 /** fast = ưu tiên model nhanh (bài chấm dài). Mỗi model chờ tối đa ~30 giây rồi chuyển model khác. */
+/** model → thời điểm được thử lại (sau khi báo hết lượt / không tồn tại) */
+const COOL = new Map<string, number>();
+
 export async function gemini(system: string, user: string, schema: unknown, temperature = 0.2, fast = false, perModelMs = 32_000, budgetMs = 100_000): Promise<Response> {
   const key = process.env.GEMINI_API_KEY!;
   const order = fast ? ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-3.5-flash'] : ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];
   const models = [...new Set([process.env.GEMINI_MODEL, ...order, 'gemini-flash-latest'].filter(Boolean) as string[])];
   const t0 = Date.now();
   let last = 0;
-  for (const model of models) {
+  // bỏ qua model vừa báo hết lượt (đỡ tốn lượt lỗi 429 và chờ lâu); nếu tất cả đều đang nghỉ thì vẫn thử hết
+  const live = models.filter((m) => (COOL.get(m) || 0) < Date.now());
+  for (const model of live.length ? live : models) {
     if (Date.now() - t0 > budgetMs) break;
     const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), perModelMs);
     try {
@@ -33,7 +38,14 @@ export async function gemini(system: string, user: string, schema: unknown, temp
           generationConfig: { temperature, responseMimeType: 'application/json', responseSchema: schema },
         }),
       });
-      if ([404, 429, 500, 503].includes(r.status)) { last = r.status; continue; }
+      if (r.status === 429) {
+        const body = await r.text().catch(() => '');
+        // hết lượt theo NGÀY → nghỉ 1 giờ; hết lượt theo PHÚT → nghỉ 1 phút
+        COOL.set(model, Date.now() + (/PerDay|per day|daily/i.test(body) ? 3600_000 : 60_000));
+        last = 429; continue;
+      }
+      if (r.status === 404) COOL.set(model, Date.now() + 24 * 3600_000);
+      if ([404, 500, 503].includes(r.status)) { last = r.status; continue; }
       if (!r.ok) return json({ error: `gemini_${r.status}` }, 502);
       const d = await r.json() as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
       const text = d.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';

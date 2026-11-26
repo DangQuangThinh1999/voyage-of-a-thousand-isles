@@ -3,6 +3,7 @@ import { startChunkQueue } from './lib/chunkQueue';
 import { startAutoStock } from './state/exam';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { LoginPrompt } from './components/LoginPrompt';
+import { Drawer } from './components/Drawer';
 import { AnimatePresence, motion } from 'motion/react';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
@@ -53,6 +54,7 @@ export default function App() {
       <ConfirmDialog />
       <NickModal />
       <LoginPrompt />
+      <Drawer />
       <ExamDock />
     </>
   );

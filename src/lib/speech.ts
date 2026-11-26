@@ -113,67 +113,89 @@ export function stopListening() { if (REC) REC.stop(); }
 
 // Nghe liên tục cho tới khi bạn ngừng nói (im lặng ~2 giây) hoặc bấm dừng.
 // Đồng thời ghi âm để bạn nghe lại giọng mình, và đo âm lượng micro.
+/** Điện thoại: không mở micro thu âm song song (tranh micro với nhận giọng nói), nghe theo từng đoạn rồi nối lại */
+const MOBILE = /Android|iPhone|iPad|iPod|Mobile/i.test(UA);
 export function hear({ onText, onLevel, maxMs = 30000, silenceMs = 2000, startMs = 7000, lang = 'en-US' }: HearOptions = {}): Promise<HeardResult> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (res, rej) => {
     stopSpeaking();
     let stream: MediaStream | null = null, media: MediaRecorder | null = null, actx: AudioContext | null = null, raf = 0;
     const chunks: Blob[] = [];
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
-      if (window.MediaRecorder) { media = new MediaRecorder(stream); media.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); }; media.start(); }
-      const AC = window.AudioContext || W.webkitAudioContext;
-      if (onLevel && AC) {
-        actx = new AC();
-        const an = actx.createAnalyser(); an.fftSize = 512; actx.createMediaStreamSource(stream).connect(an);
-        const buf = new Uint8Array(an.fftSize);
-        const loop = () => { an.getByteTimeDomainData(buf); let sum = 0; for (const v of buf) sum += (v - 128) ** 2; onLevel(Math.min(1, Math.sqrt(sum / buf.length) / 40)); raf = requestAnimationFrame(loop); };
-        loop();
+    if (!MOBILE) {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+        if (window.MediaRecorder) { media = new MediaRecorder(stream); media.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); }; media.start(); }
+        const AC = window.AudioContext || W.webkitAudioContext;
+        if (onLevel && AC) {
+          actx = new AC();
+          const an = actx.createAnalyser(); an.fftSize = 512; actx.createMediaStreamSource(stream).connect(an);
+          const buf = new Uint8Array(an.fftSize);
+          const loop = () => { an.getByteTimeDomainData(buf); let sum = 0; for (const v of buf) sum += (v - 128) ** 2; onLevel(Math.min(1, Math.sqrt(sum / buf.length) / 40)); raf = requestAnimationFrame(loop); };
+          loop();
+        }
+      } catch (e) {
+        if (e && (e as DOMException).name === 'NotAllowedError') { rej('not-allowed'); return; }
+        // không ghi âm được thì vẫn nhận giọng nói bình thường
       }
-    } catch (e) {
-      if (e && (e as DOMException).name === 'NotAllowedError') { rej('not-allowed'); return; }
-      // không ghi âm được thì vẫn nhận giọng nói bình thường
     }
     if (!SR) { rej('start-failed'); return; }
-    const r = new SR();
-    let ended = false;
+    let r: AnyRecognition = null, ended = false, halting = false, heardAny = false;
+    const doneSegs: string[] = [];           // chữ của các đoạn nghe trước (điện thoại nghe từng đoạn)
+    let finals: string[][] = [], interim = '', err: string | null = null, timer: ReturnType<typeof setTimeout> | undefined;
+    const t0 = Date.now();
     // Một số máy không báo 'onend' sau khi dừng: tự kết thúc sau 2,5 giây để không bị kẹt
-    const halt = () => { try { r.stop(); } catch { /* đã dừng */ } setTimeout(() => { if (!ended) finish(); }, 2500); };
+    const halt = () => { halting = true; try { r && r.stop(); } catch { /* đã dừng */ } setTimeout(() => { if (!ended) finish(); }, 2500); };
     REC = { stop: halt };
-    r.lang = lang; r.continuous = true; r.interimResults = true; r.maxAlternatives = 3;
-    const finals: string[][] = []; let interim = '', err: string | null = null, timer: ReturnType<typeof setTimeout> | undefined;
     const stopIn = (ms: number) => { clearTimeout(timer); timer = setTimeout(halt, ms); };
     const hard = setTimeout(halt, maxMs);
-    const text = () => finals.filter(Boolean).map((a) => a[0]).join(' ').replace(/\s+/g, ' ').trim();
-    r.onresult = (e: AnyRecognition) => {
-      interim = '';
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        const x = e.results[i];
-        if (x.isFinal) finals[i] = [...x].map((a: { transcript: string }) => a.transcript); else interim += x[0].transcript;
-      }
-      if (onText) onText((text() + ' ' + interim).trim());
-      stopIn(silenceMs);
-    };
-    r.onerror = (e: { error: string }) => { err = e.error; };
+    const cur = () => finals.filter(Boolean).map((a) => a[0]).join(' ');
+    const text = () => [...doneSegs, cur()].join(' ').replace(/\s+/g, ' ').trim();
     const finish = () => {
       if (ended) return; ended = true;
-      try { r.abort(); } catch { /* đã dừng */ }
+      try { r && r.abort(); } catch { /* đã dừng */ }
       clearTimeout(timer); clearTimeout(hard); cancelAnimationFrame(raf); REC = null;
       if (actx) actx.close().catch(() => {});
       const done = () => {
         if (stream) stream.getTracks().forEach((t) => t.stop());
         const audio = chunks.length ? URL.createObjectURL(new Blob(chunks, { type: chunks[0].type || 'audio/webm' })) : null;
-        const main = text() || interim.trim();
-        if (!main) { rej(err === 'not-allowed' ? 'not-allowed' : err && err !== 'no-speech' && err !== 'aborted' ? err : 'no-speech'); return; }
+        const main = (text() + ' ' + interim).replace(/\s+/g, ' ').trim();
+        if (!main) { rej(err === 'not-allowed' || err === 'service-not-allowed' ? 'not-allowed' : err && err !== 'no-speech' && err !== 'aborted' ? err : 'no-speech'); return; }
         const segs = finals.filter(Boolean);
-        const alts = segs.length === 1 ? segs[0] : [main];
+        const alts = !doneSegs.length && segs.length === 1 ? segs[0] : [main];
         res({ alts, text: main, audio });
       };
       if (media && media.state !== 'inactive') { media.onstop = done; media.stop(); } else done();
     };
-    r.onend = finish;
-    try { r.start(); } catch { rej('start-failed'); return; }
+    const startSession = () => {
+      r = new SR();
+      r.lang = lang; r.continuous = !MOBILE; r.interimResults = true; r.maxAlternatives = 3;
+      r.onresult = (e: AnyRecognition) => {
+        interim = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          const x = e.results[i];
+          if (x.isFinal) finals[i] = [...x].map((a: { transcript: string }) => a.transcript); else interim += x[0].transcript;
+        }
+        heardAny = true;
+        if (onText) onText((text() + ' ' + interim).trim());
+        stopIn(silenceMs);
+      };
+      r.onerror = (e: { error: string }) => { err = e.error; if (e.error === 'not-allowed' || e.error === 'service-not-allowed') halt(); };
+      r.onend = () => {
+        // điện thoại: mỗi đoạn tự dừng → lưu chữ và nghe tiếp tới khi im lặng đủ lâu / hết giờ / bấm dừng
+        if (MOBILE && !halting && !ended && Date.now() - t0 < maxMs && err !== 'not-allowed' && err !== 'service-not-allowed') {
+          const c = cur(); if (c) doneSegs.push(c);
+          if (interim.trim() && !c) doneSegs.push(interim.trim());
+          finals = []; interim = '';
+          setTimeout(() => { if (!halting && !ended) { try { startSession(); } catch { finish(); } } }, 120);
+          return;
+        }
+        finish();
+      };
+      r.start();
+    };
+    try { startSession(); } catch { rej('start-failed'); return; }
     stopIn(startMs); // chưa nói gì trong ~7 giây thì dừng
+    void heardAny;
   });
 }
 

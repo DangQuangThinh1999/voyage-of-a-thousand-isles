@@ -39,6 +39,8 @@ export const app = {
   dlg: null as Dlg | null,
   /** hiện popup nhắc đăng nhập (khách); loginAsked = đã hiện trong lần mở trang này */
   loginAsk: false,
+  /** menu trượt (điện thoại) đang mở */
+  drawer: false,
   loginAsked: false,
   /** tăng khi cần vẽ lại trang từ đầu (về gốc trang) */
   nav: 0,

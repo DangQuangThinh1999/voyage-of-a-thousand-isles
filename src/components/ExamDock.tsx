@@ -1,14 +1,18 @@
 // Thanh nổi góc màn hình: AI đang soạn đề (đi trang khác vẫn thấy), hoặc đề hôm nay đã soạn xong chưa làm.
 import { motion, AnimatePresence } from 'motion/react';
+import { useState } from 'react';
 import { EXAMS, openExam } from '../state/exam';
 import { useApp } from '../state/store';
 
+let hidden = '';
 export function ExamDock() {
   const { scr } = useApp();
+  const [, force] = useState(0);
   if (scr === 'exam') return null;
   const gen = Object.values(EXAMS).find((e) => e.status === 'gen');
   const ready = Object.values(EXAMS).find((e) => e.status === 'ready' && !Object.keys(e.ans.q).length && !e.ans.writing);
   const E = gen || ready;
+  if (E && hidden === E.key + E.status) return null;
   return (
     <AnimatePresence>
       {E && (
@@ -17,6 +21,7 @@ export function ExamDock() {
             <span className="spin" /> <span><b>AI đang soạn {E.title.toLowerCase()}</b><small>{Object.values(E.parts).filter((x) => x === 'ok').length}/3 phần · bấm để xem</small></span>
             <i style={{ width: `${10 + Object.values(E.parts).filter((x) => x === 'ok').length * 30}%` }} />
           </> : <>📝 <span><b>Đề {E.title.toLowerCase()} sẵn sàng</b><small>Giữ tới hết hôm nay · bấm để làm</small></span></>}
+          <span className="dock-x" role="button" aria-label="Ẩn" onClick={(e) => { e.stopPropagation(); hidden = E.key + E.status; force((n) => n + 1); }}>✕</span>
         </motion.button>
       )}
     </AnimatePresence>

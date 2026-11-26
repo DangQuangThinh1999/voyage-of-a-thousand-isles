@@ -801,3 +801,61 @@ main { max-width: 980px; overflow-x: clip; }
 .pron-steps { margin: 4px 0 0; padding-left: 20px; display: grid; gap: 3px; }
 .pron-steps .linkish, .linkish { border: 0; background: none; color: var(--pri); padding: 0; cursor: pointer; font: inherit; }
 .brand-link { display: inline-flex; align-items: center; gap: 8px; } .brand-logo { width: 28px; height: 28px; border-radius: 8px; box-shadow: 0 0 10px rgba(37,99,235,.5); }
+
+/* ===================== ĐIỆN THOẠI: header gọn, menu trượt, chữ dễ đọc ===================== */
+.m-only { display: none !important; }
+html, body { max-width: 100%; overflow-x: hidden; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+.menu-btn { width: 38px; height: 38px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); display: inline-flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; padding: 0; }
+.menu-btn i { display: block; width: 16px; height: 2px; border-radius: 2px; background: var(--ink); }
+.dock-x { margin-left: 4px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: .75rem; background: rgba(255,255,255,.12); flex: 0 0 auto; }
+.drw-ov { position: fixed; inset: 0; z-index: 80; background: rgba(2,6,18,.55); backdrop-filter: blur(2px); }
+.drw { position: fixed; top: 0; bottom: 0; left: 0; z-index: 81; width: min(320px, 86vw); background: var(--card); border-right: 1px solid var(--line); padding: 16px 14px calc(16px + env(safe-area-inset-bottom)); overflow-y: auto; display: flex; flex-direction: column; gap: 12px; box-shadow: 10px 0 40px rgba(0,0,0,.4); }
+.drw-head { display: flex; align-items: center; gap: 10px; }
+.drw-av { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; flex: 0 0 auto; background: var(--bg); }
+.drw-av img { width: 100%; height: 100%; object-fit: cover; }
+.drw-x { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); }
+.drw-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.drw-stats span { display: flex; flex-direction: column; align-items: center; padding: 6px 2px; border-radius: 10px; background: var(--bg); font-size: .78rem; }
+.drw-stats b { font-size: .9rem; } .drw-stats small { color: var(--muted); font-size: .66rem; }
+.drw-search { text-align: left; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--muted); font-size: .9rem; }
+.drw-nav { display: grid; gap: 4px; }
+.drw-nav button { display: flex; align-items: center; gap: 12px; padding: 9px 10px; border: 0; border-radius: 12px; background: none; text-align: left; }
+.drw-nav button.on { background: var(--pri-soft); color: var(--pri); }
+.drw-nav .ic { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--bg); font-size: 1.05rem; flex: 0 0 auto; }
+.drw-nav b { display: block; font-size: .92rem; font-weight: 600; } .drw-nav small { color: var(--muted); font-size: .74rem; }
+.drw-foot { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
+.drw-foot button { padding: 10px 8px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); font-size: .82rem; }
+
+@media (max-width: 760px) {
+  .m-only { display: inline-flex !important; }
+  .tabs button.m-only { display: flex !important; }
+  .d-only { display: none !important; }
+  /* chữ dễ đọc, không to đều: thân chữ nhỏ hơn, phân cấp rõ, giảm chữ đậm, giảm độ chói */
+  body { font-size: 14.5px; line-height: 1.6; padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  :root[data-theme="dark"] { --ink: #d7e3e7; }
+  h2 { font-size: 1.12rem; } h3 { font-size: .98rem; }
+  .small { font-size: .8rem; }
+  .huge { font-size: 2.6rem; }
+  .en { font-size: 1.25rem; }
+  .bar1 { padding: 8px 12px; gap: 8px; }
+  .brand b { display: inline; font-size: .98rem; }
+  .brand-logo { width: 24px; height: 24px; }
+  .stats { gap: 6px; font-size: .8rem; flex-wrap: nowrap; }
+  .aichip { padding: 2px 8px; font-size: .75rem; }
+  .acct { width: 32px; height: 32px; }
+  .crumbs { font-size: .8rem; }
+  .card { padding: 13px; border-radius: 14px; }
+  .btn { padding: 9px 14px; font-size: .92rem; }
+  .btn.big { font-size: .98rem; padding: 11px 16px; }
+  .tabs button { padding: 6px 0 8px; font-size: .68rem; }
+  .tabs button span { font-size: 1.1rem; }
+  .tile2 .ic { font-size: 1.4rem; }
+  .ipa, .ipa.inline { font-size: .92em; }
+  .chunk-src { font-size: 1.02rem; }
+  .qexp, .gq, .gp { font-size: .9rem; }
+  .examdock { left: 10px; right: 10px; max-width: none; bottom: calc(66px + env(safe-area-inset-bottom)); padding: 8px 10px; }
+  .examdock span b { font-size: .82rem; } .examdock span small { font-size: .7rem; }
+  #main { overflow-x: hidden; }
+}
+@media (max-width: 360px) { .brand b { display: none; } }

@@ -7,6 +7,7 @@ import { Breadcrumbs } from './Breadcrumbs';
 import { setTheme } from '../state/actions';
 import { openSearch } from './SearchModal';
 import { GuestChip } from './LoginPrompt';
+import { openDrawer } from './Drawer';
 
 /** Đầu trang: tên app, chuỗi ngày, phút hôm nay, XP, tài khoản + thanh đường dẫn */
 export function Header() {
@@ -27,17 +28,18 @@ export function Header() {
     <header className="top">
       <div className="bar1">
         <div className="brand">
-          <button className="home-btn" title="Về trang chính (Dashboard)" aria-label="Về trang chính" onClick={() => withLeave(() => go('home'))}>🏠</button>
+          <button className="menu-btn m-only" aria-label="Mở menu" onClick={openDrawer}><i /><i /><i /></button>
+          <button className="home-btn d-only" title="Về trang chính (Dashboard)" aria-label="Về trang chính" onClick={() => withLeave(() => go('home'))}>🏠</button>
           <button className="brand-link" title="Về trang chính" onClick={() => withLeave(() => go('home'))}><img className="brand-logo" src="/icon-64.png" alt="" width="28" height="28" /> <b>Hải Trình {P.settings.target}</b></button>
         </div>
         <div id="stats" className="stats">
           <GuestChip />
           <AiChip />
-          <span title="Chuỗi ngày học liên tiếp">🔥 {streakNow(P)}</span>
-          <span title="Phút học hôm nay / mục tiêu">⏱️ {minutesToday(P)}/{P.settings.goalMin}′</span>
+          <span className="d-only" title="Chuỗi ngày học liên tiếp">🔥 {streakNow(P)}</span>
+          <span className="d-only" title="Phút học hôm nay / mục tiêu">⏱️ {minutesToday(P)}/{P.settings.goalMin}′</span>
           <button className="acct" title="Tìm kiếm (Ctrl+K)" onClick={openSearch}>🔍</button>
-          <span title="Điểm kinh nghiệm">⭐ {P.xp}</span>
-          <button className="acct" title="Đổi giao diện sáng / tối" onClick={() => setTheme(P.settings.theme === 'light' ? 'dark' : 'light')}>{P.settings.theme === 'light' ? '🌙' : '☀️'}</button>
+          <span className="d-only" title="Điểm kinh nghiệm">⭐ {P.xp}</span>
+          <button className="acct d-only" title="Đổi giao diện sáng / tối" onClick={() => setTheme(P.settings.theme === 'light' ? 'dark' : 'light')}>{P.settings.theme === 'light' ? '🌙' : '☀️'}</button>
           <button className="acct" data-act="settings" title={u ? u.email || '' : 'Cài đặt & đăng nhập'} onClick={() => withLeave(() => go('settings'))}>
             {u && u.photoURL ? <img src={u.photoURL} alt="" /> : '⚙️'}
           </button>

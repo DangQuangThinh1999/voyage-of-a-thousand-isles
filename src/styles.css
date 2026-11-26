@@ -735,3 +735,8 @@ main { max-width: 980px; overflow-x: clip; }
 .drill form .ans { min-width: 0; }
 .link-sent { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 6px; }
 .link-rules summary .muted { display: block; font-weight: 400; margin-top: 2px; }
+/* học theo cụm */
+.chunk { display: grid; gap: 10px; }
+.chunk-src { font-size: 1.2rem; font-weight: 700; line-height: 1.5; margin: 4px 0; padding: 12px 14px; border-radius: 12px; background: var(--pri-soft); border-left: 4px solid var(--pri); }
+.chunk-words { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chunk textarea { width: 100%; box-sizing: border-box; font: inherit; }

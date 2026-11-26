@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { ChunkPractice } from '../components/ChunkPractice';
+import { Pills } from '../components/ui';
+import { useRouteParam } from '../lib/route';
 import { Dropdown } from '../components/Dropdown';
 import { AudioButton, SayBoth } from '../components/AudioButton';
 import { Card } from '../components/Card';
@@ -25,17 +28,30 @@ const fmt = (n: number) => n.toLocaleString('vi-VN');
 
 /** Học từ mới mỗi ngày từ kho ~10.000 từ, rải đều theo số từ/ngày */
 export function Words() {
-  const { P, W } = useApp();
+  const { W } = useApp();
   if (W && W.phase === 'loading') return <Card className="center"><p className="muted">Đang tải từ vựng…</p></Card>;
   if (W && W.phase === 'learn') return <LearnCard />;
   if (W && W.phase === 'quiz') return <QuizCard />;
+  return <WordsHome />;
+}
+
+function WordsHome() {
+  const { P, W } = useApp();
+  const [t, setT] = useRouteParam<'learn' | 'chunk'>('t', 'learn');
+  const head = (
+    <div className="pagehead">
+      <h2>📗 Từ vựng</h2>
+      <Pills id="words" value={t} onChange={setT} items={[['learn', '📗 Học từ mới mỗi ngày'], ['chunk', '🧩 Học theo cụm (dịch câu/đoạn)']]} />
+    </div>
+  );
+  if (t === 'chunk') return <>{head}<ChunkPractice /></>;
 
   const wpd = P.settings.wpd, done = newWordsToday(P), left = leftToday(), learned = bankLearned(P);
   const next = MILESTONES.find(([, n]) => n > learned);
   const due = dueWords(P).length, wk = weekNow(P), wv = vocabWeek(P, wk), behind = vocabBehind(P);
   return (
     <>
-      <h2>📗 Từ mới mỗi ngày</h2>
+      {head}
       {W && W.phase === 'done' && (
         <Card className="center">
           <div className="huge">✅</div>

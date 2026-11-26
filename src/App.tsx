@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useLayoutEffect } from 'react';
 import { startChunkQueue } from './lib/chunkQueue';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { LoginPrompt } from './components/LoginPrompt';
 import { AnimatePresence, motion } from 'motion/react';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
@@ -50,6 +51,7 @@ export default function App() {
       <SearchModal />
       <ConfirmDialog />
       <NickModal />
+      <LoginPrompt />
       <ExamDock />
     </>
   );

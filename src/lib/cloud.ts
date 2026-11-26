@@ -11,6 +11,8 @@ interface Hooks { get: () => Progress; merge: (r: Progress) => void; changed: ()
 const C = CLOUD_CONFIG;
 const st: { ok: boolean; user: CloudUser | null; fb: any; timer: ReturnType<typeof setTimeout> | undefined; hooks: Hooks | null } =
   { ok: false, user: null, fb: null, timer: undefined, hooks: null };
+/** đã biết chắc trạng thái đăng nhập (Firebase trả lời) */
+let resolved = false;
 
 const FB = 'https://www.gstatic.com/firebasejs/10.12.2/';
 const load = (m: string): Promise<any> => import(/* @vite-ignore */ FB + m + '.js');
@@ -24,7 +26,7 @@ async function init(hooks: Hooks) {
     st.fb = { auth, fs, au: auth.getAuth(a), db: fs.getFirestore(a) };
     st.ok = true;
     auth.onAuthStateChanged(st.fb.au, async (u: CloudUser | null) => {
-      st.user = u;
+      st.user = u; resolved = true;
       if (u) await pull();
       hooks.changed();
     });
@@ -83,6 +85,8 @@ export const Cloud = {
   publishBoard, readBoard,
   init, signIn, signOut, schedulePush, push,
   get user() { return st.user; },
+  /** Firebase đã trả lời trạng thái đăng nhập (đã đăng nhập hoặc chắc chắn chưa) */
+  get resolved() { return resolved; },
   /** Vé đăng nhập (Firebase ID token) gửi kèm khi gọi AI để máy chủ đếm lượt theo người */
   async token(): Promise<string | null> { try { return st.ok && st.fb.au.currentUser ? await st.fb.au.currentUser.getIdToken() : null; } catch { return null; } },
   get configured() { return !!C.firebase; },

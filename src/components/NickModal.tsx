@@ -15,7 +15,7 @@ export function NickModal() {
   const [name, setName] = useState(() => (Cloud.user?.displayName || '').slice(0, 24));
   const [err, setErr] = useState('');
   openRename = () => { setName(P.nick || ''); setErr(''); setRename(true); };
-  const first = !P.nick && P.seenIntro;
+  const first = !P.nick && P.seenIntro && !app.loginAsk;
   const open = first || rename;
   const cost = renameCost(P), bal = balance(P);
   function submit() {

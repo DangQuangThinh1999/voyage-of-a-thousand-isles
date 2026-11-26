@@ -4,7 +4,7 @@ import { useSyncExternalStore } from 'react';
 import { UNITS, type Unit } from '../data';
 import { Cloud } from '../lib/cloud';
 import type { Step, Skill } from '../lib/exercises';
-import { addXPTo, freshKeep, load, mergeProgress, persist, today, type Kind, type Progress } from '../lib/progress';
+import { addXPTo, fresh, freshKeep, load, mergeProgress, persist, setGuest, today, type Kind, type Progress } from '../lib/progress';
 import type { ReviewState } from '../lib/srs';
 import type { WordsState } from './words';
 import { configureSpeech, onVoicesChanged, stopSpeaking } from '../lib/speech';
@@ -37,6 +37,9 @@ export const app = {
   curSkill: null as string | null,
   toast: { msg: '', show: false },
   dlg: null as Dlg | null,
+  /** hiện popup nhắc đăng nhập (khách); loginAsked = đã hiện trong lần mở trang này */
+  loginAsk: false,
+  loginAsked: false,
   /** tăng khi cần vẽ lại trang từ đầu (về gốc trang) */
   nav: 0,
   /** cuộn trang sau lần vẽ tiếp theo: 'top' hoặc id của phần tử */
@@ -204,7 +207,18 @@ export function initApp() {
     if ((d.sec[k] / 15) % 4 === 0) save();
     emit();
   }, 15000);
-  Cloud.init({ get: () => app.P, merge: mergeCloud, changed: () => emit() });
+  let wasUser = false;
+  Cloud.init({ get: () => app.P, merge: mergeCloud, changed: () => {
+    const u = !!Cloud.user;
+    if (Cloud.resolved && !u) {
+      // vừa đăng xuất → về tiến độ trống (dữ liệu vẫn an toàn trên mây); khách → chỉ giữ tới khi đóng trang
+      if (wasUser) app.P = { ...fresh(), settings: app.P.settings, seenIntro: true, resetAt: app.P.resetAt, updated: 0 };
+      setGuest(true); persist(app.P);
+      if (!app.loginAsked) app.loginAsk = true;
+    } else if (u) { setGuest(false); persist(app.P); app.loginAsk = false; }
+    wasUser = u;
+    emit();
+  } });
   // Nút Quay lại / Tiến tới của trình duyệt
   addEventListener('popstate', () => {
     if (inProgress()) {

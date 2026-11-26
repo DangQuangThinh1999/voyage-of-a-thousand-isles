@@ -6,6 +6,7 @@ import { go, withLeave, useApp } from '../state/store';
 import { Breadcrumbs } from './Breadcrumbs';
 import { setTheme } from '../state/actions';
 import { openSearch } from './SearchModal';
+import { GuestChip } from './LoginPrompt';
 
 /** Đầu trang: tên app, chuỗi ngày, phút hôm nay, XP, tài khoản + thanh đường dẫn */
 export function Header() {
@@ -27,6 +28,7 @@ export function Header() {
       <div className="bar1">
         <div className="brand">⛵ <b>Hải Trình {P.settings.target}</b></div>
         <div id="stats" className="stats">
+          <GuestChip />
           <AiChip />
           <span title="Chuỗi ngày học liên tiếp">🔥 {streakNow(P)}</span>
           <span title="Phút học hôm nay / mục tiêu">⏱️ {minutesToday(P)}/{P.settings.goalMin}′</span>
@@ -48,6 +50,7 @@ function AiChip() {
   const uid = Cloud.user?.uid;
   useEffect(() => { refreshQuota(); const t = setInterval(() => refreshQuota(), 5 * 60_000); return () => clearInterval(t); }, [uid]);
   if (!quota.on) return null;
+  if (!quota.login && !Cloud.user && Cloud.resolved) return null;
   if (!quota.login) return <button className="aichip warn" title="Đăng nhập để dùng AI" onClick={() => go('settings')}>🤖 Đăng nhập để dùng AI</button>;
   if (quota.admin) return <button className="aichip" title="Admin: lượt đã dùng hôm nay · bấm để mở trang Quản lý" onClick={() => go('admin')}>🤖 admin · {quota.used}</button>;
   const low = (quota.remaining ?? 0) <= 10;

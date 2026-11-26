@@ -65,9 +65,18 @@ export const RESET_AT = 1795664612984;
 /** Tiến độ mới, chỉ giữ cài đặt (giọng đọc, tốc độ, mục tiêu) */
 export const freshKeep = (P: Progress, at: number): Progress => ({ ...fresh(), settings: { ...fresh().settings, ...(P.settings || {}) }, seenIntro: true, resetAt: at, updated: Date.now() });
 
+// Chế độ KHÁCH (chưa đăng nhập): tiến độ chỉ giữ trong sessionStorage → đóng trang là mất.
+// Đã đăng nhập: lưu localStorage (bộ nhớ đệm) + lên mây.
+let guest = false;
+export const isGuest = () => guest;
+export function setGuest(on: boolean) { guest = on; }
+
 export function load(): Progress {
   try {
-    const o = JSON.parse(localStorage.getItem(STORE) || 'null');
+    let raw = localStorage.getItem(STORE);
+    // không có bản lưu của người đã đăng nhập trên máy → coi là khách ngay từ đầu (chờ Firebase xác nhận)
+    if (!raw) { guest = true; try { raw = sessionStorage.getItem(STORE); } catch { /* bỏ qua */ } }
+    const o = JSON.parse(raw || 'null');
     if (o && o.v === 1) {
       const P: Progress = { ...fresh(), ...o, settings: { ...fresh().settings, ...(o.settings || {}) } };
       if ((P.resetAt || 0) < RESET_AT) { const n = freshKeep(P, RESET_AT); persist(n); return n; }
@@ -77,7 +86,11 @@ export function load(): Progress {
   return fresh();
 }
 export function persist(P: Progress) {
-  try { localStorage.setItem(STORE, JSON.stringify(P)); } catch { /* bỏ qua */ }
+  const data = JSON.stringify(P);
+  try {
+    if (guest) { sessionStorage.setItem(STORE, data); localStorage.removeItem(STORE); }
+    else { localStorage.setItem(STORE, data); sessionStorage.removeItem(STORE); }
+  } catch { /* bỏ qua */ }
 }
 
 export function today(P: Progress): Day {

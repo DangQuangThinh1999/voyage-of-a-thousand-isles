@@ -1,12 +1,12 @@
 // Vercel Function: /api/admin — GET: lượt AI hôm nay của người đang đăng nhập (+ danh sách người học nếu là admin).
 // POST (chỉ admin): { action: 'limit', uid, limit } đổi hạn mức một người; { action: 'remove', uid } xoá người khỏi danh sách.
 import { json } from './_gemini.js';
-import { db, IDLE_DAYS, LIMIT, MAX_USERS, members, ptDay, quotaOn, TOTAL_FREE, usage, who } from './_quota.js';
+import { db, IDLE_DAYS, quotaReason, LIMIT, MAX_USERS, members, ptDay, quotaOn, TOTAL_FREE, usage, who } from './_quota.js';
 
 export async function GET(req: Request): Promise<Response> {
-  if (!quotaOn()) return json({ enabled: false });
+  if (!quotaOn()) return json({ enabled: false, reason: quotaReason, adminEmailSet: !!process.env.ADMIN_EMAIL });
   const u = await who(req);
-  if (!u) return json({ enabled: true, login: false });
+  if (!u) return json({ enabled: true, login: false, adminEmailSet: !!process.env.ADMIN_EMAIL });
   const me = await usage(u);
   if (!u.admin) return json({ enabled: true, login: true, ...me });
   const list = await members(), day = ptDay();

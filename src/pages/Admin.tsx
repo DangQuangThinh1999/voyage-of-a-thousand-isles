@@ -36,7 +36,17 @@ export function AiQuotaCard() {
 export function Admin() {
   useApp();
   const [d, setD] = useState<AdminData | null>(null), [err, setErr] = useState(''), [edit, setEdit] = useState<Record<string, string>>({});
-  const reload = () => load().then((x) => { if (x && 'users' in x) setD(x); else setErr(x && x.login ? 'Tài khoản này không phải admin.' : 'Cần đăng nhập bằng tài khoản admin (⚙️ Cài đặt), và máy chủ phải có FIREBASE_SERVICE_ACCOUNT + ADMIN_EMAIL.'); });
+  const reload = () => load().then((x) => {
+    if (x && 'users' in x) { setD(x); return; }
+    const y = x as (Me & { reason?: string; adminEmailSet?: boolean }) | null;
+    setErr(!y ? 'Không kết nối được máy chủ.'
+      : !y.enabled ? (y.reason === 'bad_json' ? '❌ Biến FIREBASE_SERVICE_ACCOUNT trên Vercel bị dán sai (không phải JSON hợp lệ). Mở file JSON tải từ Firebase, copy TOÀN BỘ từ { đến }, dán lại rồi Redeploy.'
+        : y.reason === 'init_failed' ? '❌ Khoá FIREBASE_SERVICE_ACCOUNT không dùng được (sai dự án hoặc đã bị xoá). Tạo khoá mới trong Firebase, dán lại rồi Redeploy.'
+        : '❌ Máy chủ CHƯA có biến FIREBASE_SERVICE_ACCOUNT. Trên Vercel: Settings → Environments → Production → thêm biến (nhớ bấm Save), rồi Deployments → ⋯ → Redeploy.')
+      : !y.adminEmailSet ? '❌ Máy chủ chưa có biến ADMIN_EMAIL (email Google của admin). Thêm trên Vercel rồi Redeploy.'
+      : !y.login ? '🔐 Hãy đăng nhập Google (⚙️ Cài đặt) bằng email admin.'
+      : `Tài khoản ${Cloud.user?.email || ''} không phải admin (khác ADMIN_EMAIL trên Vercel).`);
+  });
   useEffect(() => { reload(); }, [Cloud.user?.uid]); // eslint-disable-line react-hooks/exhaustive-deps
   const post = async (body: unknown) => {
     const r = await aiFetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });

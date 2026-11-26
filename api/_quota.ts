@@ -10,14 +10,18 @@ export const MAX_USERS = 9, LIMIT = 100, IDLE_DAYS = 3, TOTAL_FREE = 1040;
 const COL = 'quota';
 
 let ready: boolean | null = null;
+/** lý do chưa bật: missing (chưa có biến) | bad_json (dán sai) | init_failed */
+export let quotaReason = '';
 function init(): boolean {
   if (ready !== null) return ready;
   try {
     const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
-    if (!raw) return (ready = false);
-    if (!getApps().length) initializeApp({ credential: cert(JSON.parse(raw)) });
+    if (!raw) { quotaReason = 'missing'; return (ready = false); }
+    let sa: Record<string, string>;
+    try { sa = JSON.parse(raw.trim()); } catch { quotaReason = 'bad_json'; return (ready = false); }
+    if (!getApps().length) initializeApp({ credential: cert(sa) });
     return (ready = true);
-  } catch (e) { console.error('quota init', e); return (ready = false); }
+  } catch (e) { console.error('quota init', e); quotaReason = 'init_failed'; return (ready = false); }
 }
 export const quotaOn = () => init();
 export const db = () => getFirestore();

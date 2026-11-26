@@ -6,6 +6,7 @@ import { Tabs } from './components/Tabs';
 import { Toast } from './components/Toast';
 import { SearchModal } from './components/SearchModal';
 import { ConfirmDialog } from './components/ConfirmDialog';
+import { NickModal } from './components/NickModal';
 import { Home } from './pages/Home';
 import { Journal } from './pages/Journal';
 import { MicTest } from './pages/MicTest';
@@ -17,13 +18,14 @@ import { Unit } from './pages/Unit';
 import { Words } from './pages/Words';
 import { Grammar } from './pages/Grammar';
 import { Speak } from './pages/Speak';
+import { Pron } from './pages/Pron';
 import { Skills } from './pages/Skills';
 const Stats = lazy(() => import('./pages/Stats'));
 const StatsPage = () => <Suspense fallback={<p className="muted">Đang tải…</p>}><Stats /></Suspense>;
 import { app, useApp, type Screen } from './state/store';
 
 const PAGES: Record<Screen, () => JSX.Element | null> = {
-  home: Home, unit: Unit, session: Session, words: Words, grammar: Grammar, speak: Speak, skills: Skills, stats: StatsPage, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest,
+  home: Home, unit: Unit, session: Session, words: Words, grammar: Grammar, speak: Speak, ipa: Pron, skills: Skills, stats: StatsPage, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest,
 };
 
 export default function App() {
@@ -41,6 +43,7 @@ export default function App() {
       <Toast />
       <SearchModal />
       <ConfirmDialog />
+      <NickModal />
     </>
   );
 }

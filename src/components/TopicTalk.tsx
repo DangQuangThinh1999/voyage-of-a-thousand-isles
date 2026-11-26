@@ -13,6 +13,7 @@ import { dayKey } from '../lib/util';
 import { addXP, app, save, useApp } from '../state/store';
 import { AudioButton } from './AudioButton';
 import { Dropdown } from './Dropdown';
+import { StepProgress } from './Progress';
 import { LiveText, MicMeter, Playback } from './MicRecorder';
 import { Bar, CoachReport, Ring, Section } from './ui';
 
@@ -117,7 +118,7 @@ export function TopicTalk() {
             <Bar pct={(words / L.words) * 100} color={words >= L.words ? 'var(--good)' : 'var(--pri)'} h={6} />
             {audio && <Playback src={audio} label="▶️ Nghe lại giọng bạn:" />}
             <button className="btn big glow w-full mt-3" disabled={grading || words < 5} onClick={grade}>{grading ? '⏳ Đang chấm chi tiết… (20–40 giây)' : res || local ? '🔁 Chấm lại' : '🧑‍🏫 Chấm bài'}</button>
-            {grading && <div className="shimmer mt-2" />}
+            {grading && <div className="mt-2"><StepProgress steps={['Gửi bài nói', 'AI chấm 3 tiêu chí + từng lỗi', 'Tổng hợp bài sửa, bài mẫu']} step={1} note="Bài dài nên có thể mất 20–60 giây" /></div>}
           </div>
         )}
         {err && <p className="note small mt-2">{err}</p>}

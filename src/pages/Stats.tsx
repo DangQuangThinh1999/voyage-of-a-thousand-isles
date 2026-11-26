@@ -93,7 +93,7 @@ function Leaderboard({ P }: { P: Progress }) {
   useEffect(() => {
     (async () => {
       try {
-        if (u) await Cloud.publishBoard({ name: (u.displayName || 'Bạn học').slice(0, 40), photo: u.photoURL || '', words: bankLearned(P), xp: P.xp, band: levelNow(P), streak: streakNow(P) });
+        if (u) await Cloud.publishBoard({ name: (P.nick || u.displayName || 'Bạn học').slice(0, 24), photo: u.photoURL || '', words: bankLearned(P), xp: P.xp, band: levelNow(P), streak: streakNow(P) });
         setRows(await Cloud.readBoard());
       } catch (e) { setErr(String((e as Error).message || e)); }
     })();

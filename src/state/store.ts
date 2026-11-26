@@ -10,7 +10,7 @@ import type { WordsState } from './words';
 import { configureSpeech, onVoicesChanged, stopSpeaking } from '../lib/speech';
 import type { SpeechScore } from '../lib/text';
 
-export type Screen = 'home' | 'unit' | 'session' | 'words' | 'review' | 'grammar' | 'speak' | 'skills' | 'journal' | 'stats' | 'plan' | 'settings' | 'mic';
+export type Screen = 'home' | 'unit' | 'session' | 'words' | 'review' | 'grammar' | 'speak' | 'ipa' | 'skills' | 'journal' | 'stats' | 'plan' | 'settings' | 'mic';
 
 export type MicResult = (SpeechScore & { err?: undefined }) | { err: string };
 export interface StepState {
@@ -50,17 +50,18 @@ export function emit() { syncHash(); version++; subs.forEach((f) => f()); }
 // ---------- đường dẫn (URL) phân tầng giống breadcrumb: /tuan-1/hello, /giao-tiep/noi-theo-chu-de ----------
 // Tải lại vẫn ở đúng chỗ, nút Quay lại / Tiến tới hoạt động. Tab con là tầng thứ 2, tham số khác ở sau dấu ?
 export const SLUG: Partial<Record<Screen, string>> = {
-  words: 'tu-moi', review: 'on-tu', grammar: 'ngu-phap', speak: 'giao-tiep', skills: 'ky-nang', journal: 'viet',
+  words: 'tu-moi', review: 'on-tu', grammar: 'ngu-phap', speak: 'giao-tiep', ipa: 'phat-am', skills: 'ky-nang', journal: 'viet',
   stats: 'thanh-tuu', plan: 'lo-trinh', settings: 'cai-dat', mic: 'test-micro',
 };
 /** Tên tầng 2 (tab con) cho từng trang */
 export const SUB: Partial<Record<Screen, Record<string, [slug: string, label: string]>>> = {
   speak: { talk: ['noi-theo-chu-de', '🎤 Nói theo chủ đề'], phrases: ['mau-cau', '💬 Mẫu câu'], ielts: ['hoi-dap-giam-khao', '🧑‍🏫 Hỏi đáp giám khảo'] },
   grammar: { analyze: ['phan-tich-cau', '🔍 Phân tích câu'], mist: ['so-loi-sai', '📒 Sổ lỗi sai'], pos: ['tu-loai', '🧩 Từ loại'], lib: ['thu-vien', '📚 Thư viện'] },
+  ipa: { chart: ['bang-ipa', '🔤 Bảng IPA'], pairs: ['cap-am-de-nham', '👂 Cặp âm dễ nhầm'], read: ['doc-phien-am', '📖 Đọc phiên âm'], stress: ['trong-am', '🎯 Trọng âm'], homo: ['tu-dong-am', '🔁 Từ đồng âm'], clusters: ['cum-phu-am', '🧩 Cụm phụ âm'] },
   skills: { weak: ['ky-nang-yeu', '📊 Kỹ năng yếu'], read: ['doc-hieu', '📖 Đọc hiểu'], listen: ['nghe-hieu', '🎧 Nghe hiểu'] },
 };
 /** Tab con mặc định của từng trang */
-export const DEFAULT_SUB: Partial<Record<Screen, string>> = { speak: 'talk', grammar: 'analyze', skills: 'weak' };
+export const DEFAULT_SUB: Partial<Record<Screen, string>> = { speak: 'talk', grammar: 'analyze', skills: 'weak', ipa: 'chart' };
 const BY_SLUG = Object.fromEntries(Object.entries(SLUG).map(([k, v]) => [v, k as Screen]));
 const unitWeek = (id: string) => UNITS.find((u) => u.id === id)?.week;
 /** Đường dẫn tầng trang (không gồm tab con) */
@@ -145,7 +146,7 @@ export function go(s: Screen, a: string | null = null) {
   // Bấm lại trang đang mở (vd tầng cha trên breadcrumb) → về gốc trang đó, bỏ tab con
   if (s === app.scr && SUB[s] && typeof location !== 'undefined') { app.nav++; history.pushState(null, '', '/' + SLUG[s]); }
   app.scr = s; app.arg = a;
-  app.curSkill = s === 'review' || s === 'words' ? 'review' : s === 'journal' ? 'write' : s === 'speak' ? 'speak' : s === 'grammar' ? 'read' : s === 'skills' ? 'listen' : null;
+  app.curSkill = s === 'review' || s === 'words' ? 'review' : s === 'journal' ? 'write' : s === 'speak' || s === 'ipa' ? 'speak' : s === 'grammar' ? 'read' : s === 'skills' ? 'listen' : null;
   app.scrollReq = 'top';
   emit();
 }

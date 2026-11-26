@@ -4,7 +4,7 @@ import { roadmap } from '../lib/roadmap';
 import { KINDS, levelNow } from '../lib/progress';
 import { DEFAULT_SUB, getParam, go, goWeek, SUB, tab, useApp, withLeave } from '../state/store';
 
-const NAMES: Record<string, string> = { grammar: '📐 Ngữ pháp', speak: '🗣️ Giao tiếp', skills: '🎯 Kỹ năng', stats: '🏆 Thành tựu', words: '📗 Từ mới', review: '🔁 Ôn từ', journal: '✍️ Viết', plan: '🗺️ Lộ trình', settings: '⚙️ Cài đặt', mic: '🎤 Test micro' };
+const NAMES: Record<string, string> = { grammar: '📐 Ngữ pháp', speak: '🗣️ Giao tiếp', ipa: '🔊 Phát âm', skills: '🎯 Kỹ năng', stats: '🏆 Thành tựu', words: '📗 Từ mới', review: '🔁 Ôn từ', journal: '✍️ Viết', plan: '🗺️ Lộ trình', settings: '⚙️ Cài đặt', mic: '🎤 Test micro' };
 /** Đường dẫn: Học › Tuần › Bài › Phần, kèm trình độ ước tính */
 export function Breadcrumbs() {
   const { scr, arg, S, P } = useApp();

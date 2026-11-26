@@ -17,6 +17,7 @@ const TILES: [Screen, string, string, string, string][] = [
   ['review', '🔁', 'Ôn từ', 'Lặp lại ngắt quãng', 'from-sky-500 to-indigo-600'],
   ['grammar', '📐', 'Ngữ pháp', 'Phân tích & sửa lỗi', 'from-amber-400 to-orange-600'],
   ['speak', '🗣️', 'Giao tiếp', 'Luyện nói có chấm', 'from-emerald-400 to-teal-600'],
+  ['ipa', '🔊', 'Phát âm IPA', '44 âm, trọng âm, đọc phiên âm', 'from-teal-400 to-cyan-700'],
   ['skills', '🎧', 'Nghe & Đọc', 'Bài luyện có giải thích', 'from-violet-500 to-purple-700'],
   ['journal', '✍️', 'Viết', 'Chấm bài 4 tiêu chí', 'from-pink-500 to-rose-600'],
   ['stats', '🏆', 'Thành tựu', 'Cấp độ, huy hiệu, xếp hạng', 'from-yellow-400 to-amber-600'],
@@ -34,7 +35,7 @@ export function Dashboard({ P }: { P: Progress }) {
         <div className="relative flex flex-wrap items-center gap-4">
           <div className="avatar">{u && u.photoURL ? <img src={u.photoURL} alt="" /> : '⛵'}<span className="lvb">{L.lv}</span></div>
           <div className="flex-1 min-w-[180px]">
-            <div className="text-sm opacity-80">Chào mừng trở lại{u && u.displayName ? `, ${u.displayName.split(' ').slice(-1)[0]}` : ''}! · Ngày {dayNumber(P)}</div>
+            <div className="text-sm opacity-80">Chào mừng trở lại{P.nick ? `, ${P.nick}` : u && u.displayName ? `, ${u.displayName.split(' ').slice(-1)[0]}` : ''}! · Ngày {dayNumber(P)}</div>
             <div className="text-2xl font-black tracking-tight">{titleOf(L.lv)}</div>
             <div className="flex flex-wrap gap-2 mt-1 text-sm">
               <span className="chip2">🎯 IELTS {levelNow(P)} → {P.settings.target}</span><span className="chip2">⭐ {P.xp} XP</span><span className="chip2">🔥 {streakNow(P)} ngày</span><span className="chip2">📗 {bankLearned(P)} từ</span>

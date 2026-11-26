@@ -15,6 +15,7 @@ import { sameAs } from '../lib/lex';
 import { ruleChecks } from '../lib/sentence';
 import { smartCheck, type SmartCheck } from '../lib/aicheck';
 import { VerdictCard } from '../components/VerdictCard';
+import { StepProgress } from '../components/Progress';
 import { firstSense } from '../data/bank';
 import { addMistake, tallySkill } from '../lib/progress';
 import { checkTyped, GROUP, knowWord, saveSentence, leftToday, learnWord, nextWordQ, pickWordAnswer, quitWords, startWords } from '../state/words';
@@ -161,6 +162,8 @@ function WriteSentence() {
           {!passed && <button className="btn" type="submit" disabled={busy || !text.trim()} style={{ marginTop: 10 }}>{busy ? 'Đang chấm…' : tries ? '🔁 Kiểm tra lại' : 'Kiểm tra câu'}</button>}
         </form>
         {rules && !rulesOk && <ul className="checks mt-2">{rules.filter(([ok]) => !ok).map(([, m]) => <li key={m} className="badc">✗ {m}</li>)}</ul>}
+        {busy && <StepProgress steps={['Kiểm tra từ và luật câu', 'AI chấm ngữ pháp theo ngữ cảnh', 'Tổng hợp']} step={1} note="AI miễn phí có lúc mất 10–40 giây" />}
+        {!busy && res && res.r.source !== 'ai' && <p className="note small mt-2">⚠️ AI đang bận nên câu được chấm bằng máy chấm cơ bản, <b>có thể chưa chính xác hoàn toàn</b>.</p>}
         {res && <VerdictCard r={res.r} text={res.text} />}
         {res && !passed && res.text === text && <p className="note mt-2">✏️ Sửa lại câu trong ô ở trên (có thể dựa vào “Câu đúng”), rồi bấm <b>Kiểm tra lại</b>. Lỗi này đã được lưu vào <b>📒 Sổ lỗi sai</b> để luyện lại sau.</p>}
         {passed && <GrammarNotes en={text} title="Ngữ pháp trong câu bạn vừa viết" />}

@@ -1,4 +1,6 @@
 import { Card } from '../components/Card';
+import { startRename } from '../components/NickModal';
+import { balance, renameCost } from '../lib/nick';
 import { Dropdown } from '../components/Dropdown';
 import { TargetPicker } from '../components/TargetPicker';
 import { Cloud } from '../lib/cloud';
@@ -28,6 +30,10 @@ export function Settings() {
         <input id="rate" type="range" min="0.5" max="1.1" step="0.05" value={P.settings.rate} onChange={(e) => setRate(+e.target.value)} />
         <button className="btn ghost" data-act="say" onClick={() => say('Hello! How are you today?')}>🔊 Thử giọng</button>
       </Card>
+      <Card><h3>Tên hiển thị</h3>
+        <p>Tên trên bảng xếp hạng: <b>{P.nick || 'chưa đặt'}</b></p>
+        <p className="muted small">Điểm có thể dùng: <b>{balance(P).toLocaleString('vi-VN')}</b> · Đổi tên lần tới: <b>{renameCost(P).toLocaleString('vi-VN')} điểm</b> (gấp đôi sau mỗi lần đổi, không làm giảm XP và cấp độ).</p>
+        <button className="btn ghost" onClick={startRename}>✏️ Đổi tên</button></Card>
       <Card><h3>Mục tiêu IELTS</h3><TargetPicker /><p className="muted small">Đổi lúc nào cũng được. Mục tiêu hiện ở cột bên trái và đầu trang.</p></Card>
       <Card><h3>Mục tiêu mỗi ngày</h3>
         <Dropdown className="w-full" label="Mỗi ngày" value={P.settings.goalMin} onChange={setGoal} grid={3}

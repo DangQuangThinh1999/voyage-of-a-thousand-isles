@@ -14,6 +14,7 @@ import { shuffle } from '../lib/util';
 import { norm } from '../lib/text';
 import { smartCheck, type SmartCheck } from '../lib/aicheck';
 import { VerdictCard } from '../components/VerdictCard';
+import { StepProgress } from '../components/Progress';
 import { app, emit, save, useApp } from '../state/store';
 import { addMistake, tallySkill } from '../lib/progress';
 
@@ -79,13 +80,17 @@ function Analyzer() {
   const [busy, setBusy] = useState(false);
   const [issues, setIssues] = useState<GrammarIssue[] | null>(null);
   const [smart, setSmart] = useState<SmartCheck | null>(null);
+  const [step, setStep] = useState(0);
   const [, force] = useState(0);
   useEffect(() => { loadLex().then(() => force((n) => n + 1)); }, []);
   async function run() {
     const t = text.trim(); if (!t) return;
-    setBusy(true); setDone(t);
-    const [a, b] = await Promise.all([checkGrammar(t).catch(() => null), smartCheck(t)]);
-    setIssues(a); setSmart(b);
+    setBusy(true); setStep(0); setSmart(null); setIssues(null); setDone(t);
+    // Bước 1: máy chấm nhanh (LanguageTool) → kết quả sơ bộ; bước 2: AI theo ngữ cảnh; bước 3: tổng hợp
+    const a = await checkGrammar(t).catch(() => null);
+    setIssues(a); setStep(1);
+    const b = await smartCheck(t);
+    setStep(2); setSmart(b);
     if (b.status === 'incorrect' && b.correction) { addMistake(app.P, t, b.correction, b.explanation); save(); }
     setBusy(false);
   }
@@ -101,9 +106,11 @@ function Analyzer() {
           <button className="btn mt-2" disabled={busy || !text.trim()}>{busy ? 'Đang phân tích…' : 'Phân tích'}</button>
         </form>
       </Section>
+      {busy && <Section><StepProgress steps={['Kiểm tra chính tả, ngữ pháp', 'AI đánh giá theo ngữ cảnh', 'Tổng hợp kết quả']} step={step} note={step === 1 ? 'AI miễn phí có lúc mất 10–40 giây' : undefined} /></Section>}
       {done && (
-        <Section>
-          <h3 className="m-0">1. Đánh giá câu</h3>
+        <Section className={busy ? 'pending' : ''}>
+          <h3 className="m-0">1. Đánh giá câu {busy ? <span className="chip3">⏳ {step === 0 ? 'đang kiểm tra…' : 'kết quả sơ bộ, AI đang đánh giá lại'}</span> : smart?.source === 'ai' ? <span className="chip3 ok">✓ AI đã đánh giá</span> : smart ? <span className="chip3 warn">⚠️ AI bận: chỉ có kết quả máy chấm cơ bản</span> : null}</h3>
+          {!busy && smart && smart.source !== 'ai' && <p className="note small">AI đánh giá theo ngữ cảnh đang bận hoặc không kết nối được. Kết quả dưới đây chỉ từ máy chấm cơ bản (LanguageTool), <b>có thể chưa chính xác hoàn toàn</b>. Bấm <b>Phân tích</b> lại sau ít phút.</p>}
           {smart && <VerdictCard r={smart} text={done} />}
           {smart?.source === 'ai' ? null : issues === null ? <p className="muted">Không kết nối được máy chấm ngữ pháp, chỉ phân tích theo luật.</p>
             : issues.length === 0 ? <><p className="okc">✅ Đúng ngữ pháp, chính tả.</p>{softWarnings(done).map((w) => <p key={w} className="note small">⚠️ {w}</p>)}</>

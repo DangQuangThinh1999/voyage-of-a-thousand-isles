@@ -28,9 +28,10 @@ export async function smartCheck(sentence: string, opt: { word?: string; meaning
   if (!aiOff) {
     try {
       const r = await fetch('/api/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sentence, ...opt, lessons: Object.keys(LESSONS) }) });
-      if (r.status === 503 || r.status === 404) aiOff = true;
+      const d = await r.json().catch(() => ({}));
+      // Chỉ tắt AI cho cả phiên khi máy chủ chưa cài khóa; AI bận thì lần sau vẫn thử lại
+      if (r.status === 404 || d.error === 'not_configured') aiOff = true;
       else if (r.ok) {
-        const d = await r.json();
         if (d && d.status) return { better: [], errors: [], meaning: '', tip: '', correction: '', explanation: '', usesWordCorrectly: true, ...d, source: 'ai' };
       }
     } catch { /* dùng LanguageTool */ }

@@ -28,7 +28,7 @@ export function Header() {
       <div className="bar1">
         <div className="brand">
           <button className="home-btn" title="Về trang chính (Dashboard)" aria-label="Về trang chính" onClick={() => withLeave(() => go('home'))}>🏠</button>
-          <button className="brand-link" title="Về trang chính" onClick={() => withLeave(() => go('home'))}>⛵ <b>Hải Trình {P.settings.target}</b></button>
+          <button className="brand-link" title="Về trang chính" onClick={() => withLeave(() => go('home'))}><img className="brand-logo" src="/icon-64.png" alt="" width="28" height="28" /> <b>Hải Trình {P.settings.target}</b></button>
         </div>
         <div id="stats" className="stats">
           <GuestChip />

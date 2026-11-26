@@ -13,24 +13,27 @@ const st: { ok: boolean; user: CloudUser | null; fb: any; timer: ReturnType<type
   { ok: false, user: null, fb: null, timer: undefined, hooks: null };
 /** đã biết chắc trạng thái đăng nhập (Firebase trả lời) */
 let resolved = false;
+let resolveReady: () => void = () => {};
+/** Hoàn tất khi biết chắc trạng thái đăng nhập (hoặc Firebase không tải được) */
+const readyP = new Promise<void>((r) => { resolveReady = r; });
 
 const FB = 'https://www.gstatic.com/firebasejs/10.12.2/';
 const load = (m: string): Promise<any> => import(/* @vite-ignore */ FB + m + '.js');
 
 async function init(hooks: Hooks) {
   st.hooks = hooks;
-  if (!C.firebase) return;
+  if (!C.firebase) { resolveReady(); return; }
   try {
     const [app, auth, fs] = await Promise.all(['firebase-app', 'firebase-auth', 'firebase-firestore'].map(load));
     const a = app.initializeApp(C.firebase);
     st.fb = { auth, fs, au: auth.getAuth(a), db: fs.getFirestore(a) };
     st.ok = true;
     auth.onAuthStateChanged(st.fb.au, async (u: CloudUser | null) => {
-      st.user = u; resolved = true;
+      st.user = u; resolved = true; resolveReady();
       if (u) await pull();
       hooks.changed();
     });
-  } catch (e) { console.warn('Cloud init', e); }
+  } catch (e) { console.warn('Cloud init', e); resolveReady(); }
 }
 
 async function signIn() {
@@ -87,6 +90,8 @@ export const Cloud = {
   get user() { return st.user; },
   /** Firebase đã trả lời trạng thái đăng nhập (đã đăng nhập hoặc chắc chắn chưa) */
   get resolved() { return resolved; },
+  /** Chờ Firebase xác nhận đăng nhập (tối đa ms mili-giây) */
+  ready(ms = 8000): Promise<void> { return Promise.race([readyP, new Promise<void>((r) => setTimeout(r, ms))]); },
   /** Vé đăng nhập (Firebase ID token) gửi kèm khi gọi AI để máy chủ đếm lượt theo người */
   async token(): Promise<string | null> { try { return st.ok && st.fb.au.currentUser ? await st.fb.au.currentUser.getIdToken() : null; } catch { return null; } },
   get configured() { return !!C.firebase; },

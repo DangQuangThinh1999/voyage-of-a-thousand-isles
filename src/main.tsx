@@ -22,3 +22,7 @@ if (import.meta.env.DEV || import.meta.env.VITE_TEST_HOOK === '1') {
 }
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);
+
+// App đã vẽ xong → đẩy thanh tải lên 100% và ẩn màn hình chờ (giữ tối thiểu ~0,8 giây cho mượt)
+const W = window as unknown as { __splashDone?: () => void };
+requestAnimationFrame(() => setTimeout(() => W.__splashDone?.(), Math.max(0, 800 - performance.now())));

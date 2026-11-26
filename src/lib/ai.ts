@@ -5,12 +5,16 @@ import { emit, toast } from '../state/store';
 let lastWarn = 0;
 export async function aiFetch(url: string, init: RequestInit = {}): Promise<Response> {
   const headers = new Headers(init.headers || {});
+  // trang vừa mở: chờ Firebase xác nhận đăng nhập rồi mới gọi, tránh bị coi là chưa đăng nhập
+  if (!Cloud.resolved) await Cloud.ready();
   const t = await Cloud.token();
   if (t) headers.set('Authorization', 'Bearer ' + t);
   const r = await fetch(url, { ...init, headers });
   if ([401, 403, 429].includes(r.status)) {
     const d = await r.clone().json().catch(() => ({} as { error?: string; msg?: string }));
-    if (d.msg && ['login_required', 'daily_limit', 'full'].includes(d.error || '') && Date.now() - lastWarn > 4000) { lastWarn = Date.now(); toast((d.error === 'daily_limit' ? '⏳ ' : d.error === 'full' ? '👥 ' : '🔐 ') + d.msg); }
+    // chỉ nhắc đăng nhập khi thật sự chưa đăng nhập
+    const skip = d.error === 'login_required' && !!Cloud.user;
+    if (!skip && d.msg && ['login_required', 'daily_limit', 'full'].includes(d.error || '') && Date.now() - lastWarn > 4000) { lastWarn = Date.now(); toast((d.error === 'daily_limit' ? '⏳ ' : d.error === 'full' ? '👥 ' : '🔐 ') + d.msg); }
     if (d.error) aiLimit.last = d.error;
   }
   if (!url.startsWith('/api/admin')) refreshQuota(1500);

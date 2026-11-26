@@ -800,3 +800,4 @@ main { max-width: 980px; overflow-x: clip; }
 .pron-tip { border-color: rgba(45,212,191,.5); background: linear-gradient(135deg, rgba(45,212,191,.10), rgba(34,211,238,.05)); display: grid; gap: 6px; }
 .pron-steps { margin: 4px 0 0; padding-left: 20px; display: grid; gap: 3px; }
 .pron-steps .linkish, .linkish { border: 0; background: none; color: var(--pri); padding: 0; cursor: pointer; font: inherit; }
+.brand-link { display: inline-flex; align-items: center; gap: 8px; } .brand-logo { width: 28px; height: 28px; border-radius: 8px; box-shadow: 0 0 10px rgba(37,99,235,.5); }

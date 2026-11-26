@@ -3,14 +3,69 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Hải Trình 5.5 · Học tiếng Anh</title>
-  <meta name="description" content="Luyện Nghe, Nói, Đọc, Viết tiếng Anh từ mức mới bắt đầu, lộ trình 3 tháng lên IELTS 5.5.">
-  <meta name="theme-color" content="#0e7c86">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛵</text></svg>">
+  <title>Hải Trình 9.0 · Học IELTS</title>
+  <meta name="description" content="Hải Trình 9.0 — hành trình tới IELTS: từ vựng 10.000 từ có phiên âm, ngữ pháp, phát âm, Nghe, Nói, Đọc, Viết có AI chấm.">
+  <meta name="theme-color" content="#060d24">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/icon-64.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png">
+  <link rel="preload" as="image" href="/logo-256.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Màn hình chờ khi tải trang (hiện ngay, trước khi app chạy) */
+    #splash { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; overflow: hidden; font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #e8f4ff;
+      background: radial-gradient(ellipse at 50% 115%, #1d4ed8 0%, #0b1f5c 32%, #060d24 62%, #030712 100%); transition: opacity .45s ease, visibility .45s; }
+    #splash.out { opacity: 0; visibility: hidden; }
+    #splash .stars { position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 12% 20%, #fff8 50%, transparent), radial-gradient(1px 1px at 72% 14%, #fff9 50%, transparent), radial-gradient(1.5px 1.5px at 84% 46%, #fff7 50%, transparent), radial-gradient(1px 1px at 30% 70%, #fff6 50%, transparent), radial-gradient(1px 1px at 55% 35%, #fff5 50%, transparent), radial-gradient(1.5px 1.5px at 20% 88%, #fff6 50%, transparent), radial-gradient(1px 1px at 90% 80%, #fff7 50%, transparent);
+      animation: tw 4s ease-in-out infinite alternate; }
+    @keyframes tw { from { opacity: .5 } to { opacity: 1 } }
+    #splash .box { position: relative; width: min(440px, 88vw); text-align: center; }
+    #splash .logo { width: 132px; height: 132px; border-radius: 30px; box-shadow: 0 0 40px #2563ebaa, 0 0 90px #22d3ee55; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
+    #splash h1 { margin: 22px 0 6px; font-size: clamp(28px, 7vw, 40px); font-weight: 800; font-style: italic; letter-spacing: .5px; }
+    #splash h1 span { background: linear-gradient(90deg, #22d3ee, #60a5fa); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    #splash .tag { margin: 0 0 30px; font-size: 13px; letter-spacing: 4px; color: #7dd3fc; font-style: italic; }
+    #splash .row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; }
+    #splash .row b { color: #67e8f9; font-weight: 700; }
+    #splash .bar { height: 12px; border-radius: 99px; background: #0f1d3d; border: 1px solid #2563eb66; overflow: hidden; }
+    #splash .bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #0ea5e9, #22d3ee, #a5f3fc); box-shadow: 0 0 14px #22d3ee; transition: width .3s ease; }
+    #splash .sub { margin-top: 12px; font-size: 13px; color: #93a9d8; font-style: italic; }
+    #splash .dots { margin-top: 14px; display: flex; gap: 8px; justify-content: center; }
+    #splash .dots i { width: 8px; height: 8px; border-radius: 50%; background: #2563eb; animation: dot 1.2s infinite; }
+    #splash .dots i:nth-child(2) { animation-delay: .2s } #splash .dots i:nth-child(3) { animation-delay: .4s }
+    @keyframes dot { 0%, 100% { opacity: .35; transform: scale(.85) } 50% { opacity: 1; transform: scale(1.15); background: #22d3ee } }
+  </style>
 </head>
 <body>
+  <div id="splash" role="status" aria-live="polite">
+    <div class="stars"></div>
+    <div class="box">
+      <img class="logo" src="/logo-256.webp" alt="Hải Trình 9.0" width="132" height="132">
+      <h1>HẢI TRÌNH <span>9.0</span></h1>
+      <p class="tag">YOUR JOURNEY TO IELTS SUCCESS</p>
+      <div class="row"><span id="sp-msg">Đang khởi tạo hành trình…</span><b id="sp-pct">0%</b></div>
+      <div class="bar"><i id="sp-bar"></i></div>
+      <p class="sub">Preparing your learning experience…</p>
+      <div class="dots"><i></i><i></i><i></i></div>
+    </div>
+  </div>
+  <script>
+    // Thanh tiến trình màn hình chờ: chạy dần tới 92%, app tải xong sẽ đẩy lên 100% rồi ẩn đi
+    (function () {
+      var p = 0, bar = document.getElementById('sp-bar'), pct = document.getElementById('sp-pct'), msg = document.getElementById('sp-msg');
+      var M = ['Đang khởi tạo hành trình…', 'Đang tải kho 10.000 từ vựng…', 'Đang chuẩn bị bài học…', 'Sắp xong rồi…'];
+      function set(v) { p = v; bar.style.width = v + '%'; pct.textContent = Math.round(v) + '%'; msg.textContent = M[Math.min(M.length - 1, Math.floor(v / 26))]; }
+      var t = setInterval(function () { if (p < 92) set(p + Math.max(0.6, (92 - p) * 0.08)); }, 80);
+      window.__splashDone = function () {
+        clearInterval(t); set(100);
+        setTimeout(function () { var s = document.getElementById('splash'); if (s) { s.classList.add('out'); setTimeout(function () { s.remove(); }, 500); } }, 250);
+      };
+      // an toàn: tối đa 12 giây thì tự ẩn
+      setTimeout(function () { if (window.__splashDone) window.__splashDone(); }, 12000);
+    })();
+  </script>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

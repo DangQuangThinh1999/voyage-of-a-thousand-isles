@@ -14,7 +14,11 @@ export function Header() {
   useEffect(() => {
     const el = document.querySelector<HTMLElement>('header.top'); if (!el) return;
     const set = () => document.documentElement.style.setProperty('--toph', el.offsetHeight + 'px');
-    set(); const ro = new ResizeObserver(set); ro.observe(el); return () => ro.disconnect();
+    set(); const ro = new ResizeObserver(set); ro.observe(el);
+    // thanh tiêu đề + tab chỉ có nền khi đang dính trên đầu trang (lúc cuộn xuống), bình thường trong suốt
+    const stick = () => { const h = el.offsetHeight; document.querySelectorAll<HTMLElement>('.pagehead').forEach((p) => p.classList.toggle('stuck', scrollY > 4 && p.getBoundingClientRect().top <= h + 1)); };
+    addEventListener('scroll', stick, { passive: true }); stick();
+    return () => { ro.disconnect(); removeEventListener('scroll', stick); };
   }, []);
   if (typeof document !== 'undefined') document.title = `Hải Trình ${P.settings.target} · Học tiếng Anh`;
   return (

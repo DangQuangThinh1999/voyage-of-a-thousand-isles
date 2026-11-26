@@ -1,9 +1,10 @@
 // Bộ máy phiên làm bài: bắt đầu, chấm, xếp lại câu sai, kiểm tra nhanh có giờ, micro.
 import { unitById, type Unit } from '../data';
 import {
-  AUTO_PLAY, BUILD, GRADED, LIMITS, PASS, SKILL_OF_STEP, buildTest, paraChecks, passageText, type Step, type StepOf,
+  AUTO_PLAY, BUILD, GRADED, LIMITS, PASS, SKILL_OF_STEP, buildTest, buildVocabSteps, paraChecks, passageText, type Step, type StepOf,
 } from '../lib/exercises';
-import { KINDS, SKILL_OF, unitProg, weekUnits, type Kind } from '../lib/progress';
+import { bankRange } from '../data/bank';
+import { KINDS, SKILL_OF, unitProg, vocabWeekSize, weekUnits, type Kind } from '../lib/progress';
 import { addNewWords, promoteWords } from '../lib/srs';
 import { hear, micErr, micLive, speak, SR, stopListening } from '../lib/speech';
 import { checkTyped, norm, scoreSpeech, tokens } from '../lib/text';
@@ -21,14 +22,20 @@ export function startSession(uid: string, kind: Kind) {
   beginStep();
 }
 
-export function startTest(units: Unit[], key: string, title: string) {
-  app.S = { kind: 'test', intro: true, u: units[0], units, key, title, steps: buildTest(units), i: 0, ok: 0, graded: 0, state: newState(), requeued: new Set(), skill: {} };
+export function startTest(units: Unit[], key: string, title: string, vocab: Step[] = []) {
+  app.S = { kind: 'test', intro: true, u: units[0], units, key, title, steps: buildTest(units, vocab), i: 0, ok: 0, graded: 0, state: newState(), requeued: new Set(), skill: {} };
   app.scr = 'session'; app.scrollReq = 'top'; emit();
 }
 /** Bắt đầu kiểm tra nhanh theo tuần (w) hoặc theo bài (uid). Cần micro (Chrome/Edge). */
 export function startQuickTest({ w, u }: { w?: number | string; u?: string }) {
   if (!SR) { toast('Bài kiểm tra có phần Nói, cần mở bằng Chrome hoặc Edge và cho phép micro'); return; }
-  if (w) startTest(weekUnits(+w), 'w' + w, `Tuần ${w}`);
+  if (w) {
+    // Từ vựng của tuần trong kho từ (7 × số từ/ngày) + từ các tuần trước
+    const size = vocabWeekSize(app.P), n = +w;
+    Promise.all([bankRange((n - 1) * size, n * size), bankRange(0, (n - 1) * size)])
+      .then(([week, earlier]) => startTest(weekUnits(n), 'w' + n, `Tuần ${n}`, buildVocabSteps(week, earlier)))
+      .catch(() => startTest(weekUnits(n), 'w' + n, `Tuần ${n}`));
+  }
   else if (u) { const unit = unitById(u) as Unit; startTest([unit], 'u' + u, `bài ${unit.title}`); }
 }
 
@@ -38,6 +45,7 @@ const correctIdxOf = (st: Step): number | undefined => {
   switch (st.t) {
     case 'pickWord': case 'pickEn': return st.opts.indexOf(st.w);
     case 'pickSentence': return st.opts.indexOf(st.s);
+    case 'gap': return st.opts.indexOf(st.answer);
     case 'question': case 'lquestion': return st.q[3];
     default: return undefined;
   }
@@ -84,6 +92,7 @@ export function answer(correct: boolean, fb?: string | null) {
   switch (st.t) {
     case 'pickEn': case 'spell': say = st.w[0]; break;
     case 'type': case 'build': case 'dictation': case 'pickSentence': case 'fix': say = st.s[0]; break;
+    case 'gap': say = st.s[0].replace('_____', st.answer); break;
   }
   if (say) speak(say);
 }

@@ -15,6 +15,7 @@ function TestIntro({ S }: { S: S }) {
       <p><b>{S.steps.length} câu</b>, đủ 4 kỹ năng. Bài kiểm tra <b>khó hơn bài học thường</b>:</p>
       <ul className="rules">
         <li>⏱ Mỗi câu có giới hạn thời gian. Hết giờ tính là sai.</li>
+        {S.key && S.key[0] === 'w' && <li>📗 Có thêm câu hỏi về <b>từ vựng của tuần</b> trong kho từ (nghe, chọn từ, điền từ vào câu, tự gõ từ) và từ của các tuần trước.</li>}
         <li>🎧 Mỗi bài nghe chỉ được nghe <b>tối đa 2 lần</b>, giọng đọc nhanh, không có nút đọc chậm.</li>
         <li>🚫 Không gợi ý, không dịch tiếng Việt, không có hình minh họa. Chọn nghĩa có 6 đáp án.</li>
         <li>✍️ Nghe chép và tự viết câu phải <b>gõ cả câu</b>, đúng chữ hoa và dấu câu. Sai 1 chữ cái là sai.</li>

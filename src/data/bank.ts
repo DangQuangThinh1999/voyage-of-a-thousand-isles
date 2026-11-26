@@ -53,3 +53,15 @@ export async function nextBankWords(skip: (w: string) => boolean, n: number, don
 
 /** Nghĩa đầu tiên (ngắn) để làm đáp án trắc nghiệm */
 export const firstSense = (vi: string) => vi.split(';')[0].trim();
+
+/** Các từ ở vị trí [from, to) trong kho (theo thứ tự học, từ thông dụng trước) */
+export async function bankRange(from: number, to: number): Promise<BankWord[]> {
+  const out: BankWord[] = [];
+  let pos = 0;
+  for (const { f, n } of BANK_FILES) {
+    if (pos + n > from) out.push(...(await loadBankFile(f)).slice(Math.max(0, from - pos), to - pos));
+    pos += n;
+    if (pos >= to) break;
+  }
+  return out;
+}

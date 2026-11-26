@@ -1,5 +1,6 @@
 // Tạo bài tập cho từng phần, bài kiểm tra nhanh, chấm đoạn văn.
 import { JOURNAL_PROMPTS, type Pair, type Question, type Unit, type Word } from '../data';
+import { firstSense, type BankWord } from '../data/bank';
 import type { Kind } from './progress';
 import { norm, tokens } from './text';
 import { pick1, sample, shuffle } from './util';
@@ -19,6 +20,7 @@ export type Step = Base & (
   | { t: 'lquestion'; q: Question; u: Unit }
   | { t: 'passage' }
   | { t: 'question'; q: Question }
+  | { t: 'gap'; s: Pair; answer: string; opts: string[] }
   | ParaStep
 );
 export interface ParaStep { t: 'para'; u: Unit; units: Unit[]; vocab: string[]; minWords: number; minVocab: number; minSents: number; prompt: string }
@@ -99,17 +101,17 @@ export const BUILD: Record<Kind, (u: Unit) => Step[]> = {
 // ---------- kiểm tra nhanh: biết rồi thì qua luôn ----------
 export const PASS = 1; // phải đúng hết mới qua
 // Giới hạn thời gian mỗi câu trong bài kiểm tra (giây)
-export const LIMITS: Partial<Record<StepType, number>> = { pickWord: 15, pickEn: 15, pickSentence: 20, dictation: 60, lquestion: 60, question: 40, spell: 25, build: 45, type: 60, fix: 40, speak: 45, para: 900 };
+export const LIMITS: Partial<Record<StepType, number>> = { pickWord: 15, pickEn: 15, gap: 30, pickSentence: 20, dictation: 60, lquestion: 60, question: 40, spell: 25, build: 45, type: 60, fix: 40, speak: 45, para: 900 };
 export const AUTO_PLAY = new Set<StepType>(['pickWord', 'pickSentence', 'dictation', 'lquestion']);
-export const GRADED = new Set<StepType>(['pickWord', 'pickEn', 'pickSentence', 'dictation', 'build', 'type', 'spell', 'speak', 'question', 'para', 'fix', 'lquestion']);
+export const GRADED = new Set<StepType>(['gap', 'pickWord', 'pickEn', 'pickSentence', 'dictation', 'build', 'type', 'spell', 'speak', 'question', 'para', 'fix', 'lquestion']);
 export type Skill = 'listen' | 'read' | 'write' | 'speak';
-export const SKILL_OF_STEP: Partial<Record<StepType, Skill>> = { pickWord: 'listen', pickSentence: 'listen', dictation: 'listen', pickEn: 'read', question: 'read', spell: 'write', build: 'write', type: 'write', para: 'write', fix: 'write', lquestion: 'listen', speak: 'speak' };
+export const SKILL_OF_STEP: Partial<Record<StepType, Skill>> = { gap: 'read', pickWord: 'listen', pickSentence: 'listen', dictation: 'listen', pickEn: 'read', question: 'read', spell: 'write', build: 'write', type: 'write', para: 'write', fix: 'write', lquestion: 'listen', speak: 'speak' };
 export const SKILL_NAME: Record<Skill, string> = { listen: '🎧 Nghe', read: '📖 Đọc', write: '✍️ Viết', speak: '🗣️ Nói' };
 
 const MK_spell = (u: Unit): Step => ({ t: 'spell', w: sample(u.words, 1)[0] });
 
 // Đủ 4 kỹ năng. 1 bài: 14 câu. 1 tuần: 21 câu. Thứ tự: câu lẻ → nghe đoạn văn → nói → viết đoạn văn.
-export function buildTest(units: Unit[]): Step[] {
+export function buildTest(units: Unit[], vocabSteps: Step[] = []): Step[] {
   const one = units.length === 1, lu = pick1(units), allW = units.flatMap((u) => u.words);
   const steps: Step[] = [], speaks: Step[] = [];
   let lsteps: Step[] = [];
@@ -140,7 +142,52 @@ export function buildTest(units: Unit[]): Step[] {
   const idea = (JOURNAL_PROMPTS[pu.id] || '').replace(/\s*Viết \d+ câu\.?/g, '').replace(/^Viết \d+ câu/, 'Viết').trim();
   const para: ParaStep = { t: 'para', u: pu, units, vocab, minWords, minVocab: one ? 5 : 8, minSents: one ? 5 : 6,
     prompt: `Viết đoạn văn ít nhất ${minWords} từ về chủ đề ${pu.emoji} ${pu.vi}.${idea ? ' Gợi ý: ' + idea : ''}` };
-  return [...shuffle(steps), ...lsteps, ...speaks, para];
+  return [...shuffle([...steps, ...vocabSteps]), ...lsteps, ...speaks, para];
+}
+
+// ---------- từ vựng của tuần (kho từ) trong bài kiểm tra tuần ----------
+const asWord = (b: BankWord): Word => [b.w, firstSense(b.vi), ''];
+const pos0 = (b: BankWord) => b.pos.split(',')[0].trim();
+/** Câu ví dụ có chỗ trống thay cho từ (hoặc dạng của nó) */
+function blankOut(b: BankWord): { s: string; got: string } | null {
+  for (const f of [...b.forms, b.w].sort((x, y) => y.length - x.length)) {
+    const re = new RegExp(`\\b${f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    const m = b.ex.match(re);
+    if (m) return { s: b.ex.replace(re, '_____'), got: m[0] };
+  }
+  return null;
+}
+/** Đáp án nhiễu khó: cùng từ loại, độ thông dụng gần nhau */
+function near(pool: BankWord[], b: BankWord, n: number, samePos = false): BankWord[] {
+  const cand = pool.filter((x) => x.w !== b.w && firstSense(x.vi) !== firstSense(b.vi) && (!samePos || pos0(x) === pos0(b)));
+  const list = cand.length >= n ? cand : pool.filter((x) => x.w !== b.w);
+  return sample([...list].sort((x, y) => Math.abs(x.r - b.r) - Math.abs(y.r - b.r)).slice(0, n * 4), n);
+}
+/** 12 câu: nghe chọn nghĩa, chọn từ, điền từ vào câu, tự gõ từ, nghe chép câu; 2 câu ôn từ các tuần trước */
+export function buildVocabSteps(week: BankWord[], earlier: BankWord[]): Step[] {
+  if (week.length < 12) return [];
+  const pool = shuffle(week), take = (k: number) => pool.splice(0, k);
+  const six = (b: BankWord, from: BankWord[]) => { const w = asWord(b); return shuffle([w, ...near(from, b, 5).map(asWord)]).map((x) => (x[0] === w[0] ? w : x)); };
+  const pickWord = (b: BankWord, from: BankWord[]): Step => { const opts = six(b, from); return { t: 'pickWord', w: opts.find((x) => x[0] === b.w)!, opts }; };
+  const pickEn = (b: BankWord, from: BankWord[]): Step => { const opts = six(b, from); return { t: 'pickEn', w: opts.find((x) => x[0] === b.w)!, opts }; };
+  const gap = (b: BankWord, from: BankWord[]): Step | null => {
+    // Chỉ dùng câu có đúng dạng gốc của từ, để các lựa chọn cùng dạng (không lộ đáp án vì đuôi -ed, -s…)
+    const x = blankOut(b); if (!x || x.got.toLowerCase() !== b.w.toLowerCase()) return null;
+    // Chỗ trống ở đầu câu: viết hoa mọi lựa chọn để không lộ đáp án
+    const cap = /^[A-Z]/.test(x.got) ? (w: string) => w[0].toUpperCase() + w.slice(1) : (w: string) => w;
+    return { t: 'gap', s: [x.s, b.exvi], answer: x.got, opts: shuffle([x.got, ...near(from, b, 3, true).map((o) => cap(o.w))]) };
+  };
+  const steps: (Step | null)[] = [
+    ...take(2).map((b) => pickWord(b, week)),
+    ...take(2).map((b) => pickEn(b, week)),
+    ...take(3).map((b) => gap(b, week) || pickEn(b, week)),
+    ...take(2).map((b): Step => ({ t: 'spell', w: asWord(b) })),
+  ];
+  const d = take(1)[0], others = week.filter((x) => x !== d).flatMap((x) => tokens(x.ex));
+  steps.push({ t: 'dictation', s: [d.ex, d.exvi], bank: shuffle([...tokens(d.ex), ...sample(others, 4)]) });
+  if (earlier.length >= 12) { const [a, b] = sample(earlier, 2); steps.push(gap(a, earlier) || pickEn(a, earlier), pickWord(b, earlier)); }
+  else steps.push(...take(2).map((b) => gap(b, week) || pickEn(b, week)));
+  return steps.filter((x): x is Step => !!x);
 }
 
 // Chấm đoạn văn bằng luật (máy chưa chấm được ngữ pháp như giáo viên, nhưng bắt được các lỗi hay gặp)

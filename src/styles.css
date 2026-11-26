@@ -282,3 +282,4 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
 .vrow { display: inline-block; margin-top: 6px; border: 1px solid var(--line); background: var(--card); border-radius: 99px; padding: 3px 12px; font-size: .85rem; color: var(--ink); }
 .vrow.now { border-color: var(--pri); background: var(--pri-soft); }
 .vrow.okc { border-color: var(--good); }
+.gap-s { font-size: 1.15rem; font-weight: 600; line-height: 1.5; margin: 8px 0; }

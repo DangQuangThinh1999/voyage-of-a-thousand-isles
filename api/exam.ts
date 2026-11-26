@@ -93,10 +93,11 @@ const COUNTRIES = ['the UK', 'Australia', 'Canada', 'the USA', 'New Zealand', 'I
 const s = (x: unknown, n: number) => String(x ?? '').slice(0, n);
 
 export async function POST(req: Request): Promise<Response> {
-  const bad = await guard(req, 60); if (bad) return bad;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let b: any;
   try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
+  // 1 đề = 1 lượt: chỉ phần đầu (lr) tính lượt, 2 phần sau (vg, ws) không tính; chấm bài (grade) tính 1 lượt
+  const bad = await guard(req, 60, b && (b.part === 'vg' || b.part === 'ws') ? 0 : 1); if (bad) return bad;
   const cefr = s(b.cefr || 'A2', 4), band = s(b.band || '4.0', 4), target = s(b.target || '', 4), now = s(b.now || '', 12);
   const level = `Trình độ cần kiểm tra: CEFR ${cefr}, IELTS ${band}${target ? ` (mục tiêu cuối: IELTS ${target})` : ''}${now ? `. Trình độ hiện tại của người học: ${now}` : ''}.`;
 

@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import { Bar } from '../components/ui';
 import { aiFetch } from '../lib/ai';
 import { Cloud } from '../lib/cloud';
-import { askConfirm, go, toast, useApp } from '../state/store';
+import { askConfirm, go, toast, useApp, app } from '../state/store';
+import { baseOf, generateToPool, staticIds } from '../state/exam';
+import { roadmap } from '../lib/roadmap';
 
 interface Me { enabled: boolean; login?: boolean; admin?: boolean; used?: number; limit?: number | null; remaining?: number | null; member?: boolean }
 interface U { uid: string; email: string; name: string; used: number; limit: number; last: string; joined: string; total: number }
@@ -27,7 +29,7 @@ export function AiQuotaCard() {
         : <>
           <p className="small">Còn <b>{me.remaining}</b>/{me.limit} lượt · lượt mới lúc 15 giờ (giờ Việt Nam). Đề có sẵn và bài luyện ngữ pháp không tốn lượt.</p>
           <Bar pct={((me.used || 0) / Math.max(1, me.limit || 1)) * 100} h={8} color={(me.remaining || 0) > 20 ? 'var(--pri)' : 'var(--bad)'} />
-          <p className="muted small m-0">Mỗi việc tốn: đề AI mới 4 lượt · học theo cụm 2 · mốc 100 từ 2 · kiểm tra 1 câu tự viết 1 · 3 ngày không dùng sẽ bị xoá khỏi danh sách để nhường chỗ.</p>
+          <p className="muted small m-0">Mỗi việc tốn: tạo 1 đề AI 1 lượt + chấm bài 1 lượt · học theo cụm 2 · mốc 100 từ 2 · kiểm tra 1 câu tự viết 1 · 3 ngày không dùng sẽ bị xoá khỏi danh sách để nhường chỗ.</p>
         </>}
     </section>
   );
@@ -67,6 +69,7 @@ export function Admin() {
         <Bar pct={(d.usedAll / d.totalFree) * 100} h={8} color={d.usedAll / d.totalFree > 0.8 ? 'var(--bad)' : 'var(--pri)'} />
         <p className="muted small m-0">Tổng miễn phí ≈ {d.totalFree} lượt/ngày (Flash 2×20 + Flash Lite 2×500). Ngày {d.day} theo giờ Google (đặt lại lúc 15 giờ VN). Admin hôm nay đã dùng {d.used} lượt. Người {d.idleDays} ngày không dùng tự bị xoá, lượt dồn về admin.</p>
       </section>
+      <ExamStock />
       <section className="card">
         <h3 className="m-0">👥 Người học</h3>
         {!d.users.length && <p className="muted small">Chưa có ai. Người đăng nhập và dùng AI lần đầu sẽ tự vào danh sách (tối đa {d.max}).</p>}
@@ -86,3 +89,54 @@ export function Admin() {
     </>
   );
 }
+
+/** Kho đề: mỗi nhóm (tuần 1–12, các mức band sau đó) có bao nhiêu đề; admin soạn thêm cho đủ (mỗi đề 1 lượt của admin) */
+function ExamStock() {
+  const P = app.P;
+  const RM = roadmap(P), groups: { base: string; key: string; label: string }[] = [];
+  for (const w of Object.keys(RM).map(Number)) {
+    const key = 'w' + w, base = baseOf(key);
+    if (base && !groups.some((g) => g.base === base)) groups.push({ base, key, label: w <= 12 ? `Tuần ${w}` : `Band ${RM[w].band} (từ tuần ${w})` });
+  }
+  const [count, setCount] = useState<Record<string, number>>({}), [busy, setBusy] = useState(''), [stop, setStop] = useState(false), [need, setNeed] = useState(3);
+  const cap = (g: { key: string }) => staticIds(g.key).length + 3; // kho chung giữ tối đa 3 đề mỗi nhóm
+  const refresh = () => fetch('/api/bank?base=all').then((r) => r.json()).then((d) => setCount(d.count || {})).catch(() => {});
+  useEffect(() => { refresh(); }, []);
+  const total = (g: { base: string; key: string }) => staticIds(g.key).length + (count[g.base] || 0);
+  const one = async (g: { base: string; key: string; label: string }) => {
+    setBusy(g.label + ': đang soạn…');
+    const id = await generateToPool(g.key, (n) => setBusy(`${g.label}: phần ${n}/3…`));
+    if (!id) toast('⚠️ ' + g.label + ': AI bận, chưa soạn được');
+    await refresh(); return !!id;
+  };
+  const fill = async () => {
+    setStop(false);
+    for (const g of groups) {
+      while (total(g) < Math.min(need, cap(g))) {
+        if (stopRef.v) { setBusy(''); stopRef.v = false; return; }
+        const ok = await one(g); if (!ok) { setBusy(''); return; }
+        count[g.base] = (count[g.base] || 0) + 1;
+        await new Promise((r) => setTimeout(r, 20000)); // nghỉ giữa các đề để không vượt giới hạn/phút
+      }
+    }
+    setBusy(''); toast('✅ Mọi nhóm đã đủ ' + need + ' đề');
+  };
+  return (
+    <section className="card">
+      <h3 className="m-0">📚 Kho đề có sẵn</h3>
+      <p className="muted small">Đề soạn sẵn trong app + đề trong kho chung (đề AI ai làm cũng được lưu lại). Người học luôn được giữ sẵn ≥ 1 đề chưa làm: khi mở đề cuối, app tự soạn đề tiếp theo. Kho chung giữ <b>tối đa 3 đề mỗi nhóm</b> (đề mới thay đề cũ nhất) để database không quá tải. Bấm dưới đây để soạn trước cho mọi tuần (mỗi đề tốn 1 lượt của admin).</p>
+      <div className="row gap wrap">
+        <span className="small">Mỗi nhóm ít nhất</span><input className="ans adm-num" type="number" min={1} max={10} value={need} onChange={(e) => setNeed(Math.max(1, Math.min(6, +e.target.value || 3)))} /><span className="small">đề</span>
+        {busy ? <button className="btn ghost" onClick={() => { stopRef.v = true; setStop(true); }}>{stop ? 'Đang dừng…' : '⏹ Dừng'}</button>
+          : <button className="btn" onClick={fill}>🤖 Soạn cho đủ mọi nhóm</button>}
+        {busy && <span className="small"><span className="spin" /> {busy}</span>}
+      </div>
+      <div className="stock">{groups.map((g) => { const t = total(g); return (
+        <div key={g.base} className={'stock-i ' + (t >= need ? 'ok' : 'low')}>
+          <b>{g.label}</b><span>{t} đề</span>
+          <button className="btn ghost sm" disabled={!!busy} onClick={() => one(g).then(() => setBusy(''))}>+1</button>
+        </div>); })}</div>
+    </section>
+  );
+}
+const stopRef = { v: false };

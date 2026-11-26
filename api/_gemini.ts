@@ -7,7 +7,7 @@ import { quotaOn, take, who } from './_quota.js';
 const hits = new Map<string, { n: number; t: number }>();
 /** Chặn gọi từ trang lạ, giới hạn lượt theo IP, và (nếu đã cấu hình) bắt đăng nhập + trừ lượt AI theo người.
  *  Trả Response lỗi, hoặc null nếu hợp lệ. */
-export async function guard(req: Request, perHour = 120): Promise<Response | null> {
+export async function guard(req: Request, perHour = 120, cost = 1): Promise<Response | null> {
   const origin = req.headers.get('origin') || '';
   if (origin && !/^https:\/\/[a-z0-9-]+\.vercel\.app$|^http:\/\/localhost(:\d+)?$/.test(origin)) return json({ error: 'forbidden' }, 403);
   if (!process.env.GEMINI_API_KEY) return json({ error: 'not_configured' }, 503);
@@ -17,7 +17,7 @@ export async function guard(req: Request, perHour = 120): Promise<Response | nul
   if (quotaOn()) {
     const u = await who(req);
     if (!u) return json({ error: 'login_required', msg: 'Đăng nhập Google (⚙️ Cài đặt) để dùng các phần chấm/soạn bằng AI.' }, 401);
-    try { const r = await take(u); if (r) return json({ error: r.error, msg: r.msg }, r.status); }
+    try { const r = cost > 0 ? await take(u) : null; if (r) return json({ error: r.error, msg: r.msg }, r.status); }
     catch (e) { console.error('quota', e); /* lỗi đếm lượt: vẫn cho dùng */ }
   }
   return null;

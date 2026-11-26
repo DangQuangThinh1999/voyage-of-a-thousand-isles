@@ -10,6 +10,7 @@ import { norm } from '../lib/text';
 import { dayKey, sample } from '../lib/util';
 import { stopSpeaking } from '../lib/speech';
 import { addXP, app, askConfirm, emit, go, save, toast } from './store';
+import { Cloud } from '../lib/cloud';
 
 export interface ExamQ { type: 'mcq' | 'tfng' | 'type'; q: string; q_vi: string; options: string[]; answer: number; answer_text: string; ipa: string; evidence: string; why_vi: string }
 export interface Line { en: string; vi: string }
@@ -91,38 +92,101 @@ async function post(body: unknown) {
   return d;
 }
 
-// ---------- đề có sẵn: 3 đề mỗi tuần (tuần 1–12 theo tuần, các tuần sau theo mức band) ----------
+// ---------- đề có sẵn: (1) đề soạn sẵn trong app (data/exams), (2) KHO ĐỀ CHUNG trên máy chủ (đề AI ai soạn cũng lưu cho mọi người) ----------
 const BANK = import.meta.glob<{ default: { id: string; cefr: string; band: string; exam: Exam } }>('../../data/exams/*.json');
-/** id 3 đề có sẵn của một bài kiểm tra tuần (chỉ những đề đã có file) */
-export function bankIds(key: string): string[] {
-  if (key[0] !== 'w') return [];
+/** Nhóm đề: tuần 1–12 theo tuần (w03), các tuần sau theo band (b6.5), chủ đề theo id bài (u…) */
+export function baseOf(key: string): string {
+  if (key[0] === 'u') return 'u' + key.slice(1).toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40);
   const n = +key.slice(1), g = roadmap(app.P)[n];
-  const base = n <= 12 ? `w${String(n).padStart(2, '0')}` : g ? `b${g.band}` : '';
-  return [1, 2, 3].map((k) => `${base}-${k}`).filter((id) => BANK[`../../data/exams/${id}.json`]);
+  return n <= 12 ? `w${String(n).padStart(2, '0')}` : g ? `b${parseFloat(g.band).toFixed(1)}` : '';
 }
+/** id đề soạn sẵn trong app của một bài kiểm tra */
+export function staticIds(key: string): string[] {
+  const base = baseOf(key);
+  return base[0] === 'u' ? [] : [1, 2, 3].map((k) => `${base}-${k}`).filter((id) => BANK[`../../data/exams/${id}.json`]);
+}
+const pool: Record<string, { at: number; ids: string[] }> = {};
+/** id đề trong kho chung (dạng "db:<id>"), có bộ nhớ đệm 3 phút */
+export async function poolIds(key: string, force = false): Promise<string[]> {
+  const base = baseOf(key), c = pool[base];
+  if (c && !force && Date.now() - c.at < 180_000) return c.ids;
+  try {
+    const r = await fetch('/api/bank?base=' + encodeURIComponent(base)), d = await r.json();
+    const ids = (d.items || []).map((x: { id: string }) => 'db:' + x.id);
+    pool[base] = { at: Date.now(), ids }; return ids;
+  } catch { return c?.ids || []; }
+}
+/** Tất cả đề có sẵn của bài kiểm tra (soạn sẵn + kho chung) */
+export async function bankIdsAll(key: string, force = false) { return [...staticIds(key), ...(await poolIds(key, force))]; }
+export const bankIds = staticIds;
 export const bankDone = (id: string) => (app.P.exd || []).includes(id);
-/** Mở một đề có sẵn (đề chưa làm đầu tiên, hoặc đề sid chỉ định để làm lại) */
+/** Mở một đề có sẵn (đề soạn sẵn hoặc trong kho chung) */
 export async function openBankExam(key: string, sid: string) {
-  const ids = bankIds(key), m = await BANK[`../../data/exams/${sid}.json`]();
-  const ctx = await contextOf(key), X = JSON.parse(JSON.stringify(m.default.exam)) as Exam;
+  let m: { cefr: string; band: string; exam: Exam };
+  try {
+    if (sid.startsWith('db:')) { const r = await fetch('/api/bank?id=' + encodeURIComponent(sid.slice(3))); if (!r.ok) throw new Error(); m = await r.json(); }
+    else m = (await BANK[`../../data/exams/${sid}.json`]()).default;
+  } catch { toast('⚠️ Không tải được đề này, thử đề khác'); return; }
+  const ids = await bankIdsAll(key), ctx = await contextOf(key), X = JSON.parse(JSON.stringify(m.exam)) as Exam;
   validate(X);
-  EXAMS[key] = { key, title: ctx.title, day: dayKey(), cefr: m.default.cefr, band: m.default.band, status: 'ready', src: 'bank', sid, idx: ids.indexOf(sid) + 1,
+  EXAMS[key] = { key, title: ctx.title, day: dayKey(), cefr: m.cefr || ctx.cefr, band: m.band || ctx.band, status: 'ready', src: 'bank', sid, idx: ids.indexOf(sid) + 1,
     parts: { lr: 'ok', vg: 'ok', ws: 'ok' }, started: Date.now(), exam: X, ans: { q: {}, writing: '', speak: {}, tries: {}, plays: 0 } };
   persistExams(); openExam(key); emit();
+  setTimeout(() => prefetchNext(key, sid), 5000);
 }
 
-/** Bấm Kiểm tra tuần / chủ đề: có đề hôm nay chưa làm → mở luôn; còn đề có sẵn chưa làm → mở đề đó; hết → AI soạn đề mới */
-export function requestExam(key: string, fresh = false) {
+/** Bấm Kiểm tra: đề hôm nay chưa làm → mở; còn đề có sẵn chưa làm (soạn sẵn → kho chung) → mở; hết → AI soạn đề mới (rồi lưu vào kho chung) */
+export async function requestExam(key: string, fresh = false) {
   const E = EXAMS[key];
   if (E && E.status === 'gen') { toast('Đề đang được soạn, chờ chút nhé…'); return; }
   if (E && E.status === 'ready' && !fresh) { openExam(key); return; }
-  const next = bankIds(key).find((id) => !bankDone(id));
+  const st = staticIds(key).find((id) => !bankDone(id));
+  if (st) { openBankExam(key, st); return; }
+  toast('📚 Đang tìm đề có sẵn trong kho…');
+  const next = (await poolIds(key, true)).find((id) => !bankDone(id));
   if (next) { openBankExam(key, next); return; }
   generate(key);
 }
 /** Bỏ qua đề có sẵn, soạn ngay đề mới bằng AI */
 export function aiExam(key: string) { delete EXAMS[key]; generate(key); }
 export function openExam(key: string) { go('exam', key); }
+
+/** Lưu đề vào kho chung để người khác làm được. Trả về id "db:…" hoặc null */
+async function saveToPool(key: string, X: Exam, cefr: string, band: string): Promise<string | null> {
+  try {
+    const r = await aiFetch('/api/bank', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ base: baseOf(key), cefr, band, exam: X }) });
+    const d = await r.json(); if (!r.ok || !d.id) return null;
+    delete pool[baseOf(key)]; return 'db:' + d.id;
+  } catch { return null; }
+}
+
+/** Soạn ngầm 1 đề vào kho chung (không mở ra), dùng để luôn có đề sẵn cho lần sau / admin soạn trước */
+export async function generateToPool(key: string, onPart?: (n: number) => void): Promise<string | null> {
+  const ctx = await contextOf(key);
+  const base = { cefr: ctx.cefr, band: ctx.band, target: app.P.settings.target, now: levelNow(app.P), topics: ctx.topics, words: ctx.words };
+  const X: Partial<Exam> = {};
+  let n = 0;
+  for (const part of ['lr', 'vg', 'ws'] as const) {
+    let d;
+    try { d = await post({ ...base, part }); } catch { try { await new Promise((r) => setTimeout(r, 4000)); d = await post({ ...base, part }); } catch { return null; } }
+    if (part === 'lr') { X.listening = d.listening; X.reading = d.reading; } else if (part === 'vg') X.vocab = { questions: d.questions }; else { X.writing = d.writing; X.speaking = d.speaking; }
+    onPart?.(++n);
+  }
+  validate(X as Exam);
+  return saveToPool(key, X as Exam, ctx.cefr, ctx.band);
+}
+let prefetching = false;
+/** Luôn giữ sẵn ≥ 1 đề chưa làm cho mỗi bài kiểm tra: khi người học mở đề có sẵn CUỐI CÙNG (vd đã làm đề 1, 2 → mở đề 3),
+ *  app soạn ngầm đề tiếp theo (đề 4) vào kho chung để lần sau có ngay, không phải làm lại đề cũ. */
+export async function prefetchNext(key: string, current?: string) {
+  if (prefetching || !Cloud.user) return;
+  const left = (await bankIdsAll(key, true)).filter((id) => !bankDone(id) && id !== current);
+  if (left.length) return;
+  prefetching = true;
+  const id = await generateToPool(key).catch(() => null);
+  prefetching = false;
+  if (id) toast('📚 Đã chuẩn bị sẵn đề tiếp theo cho lần sau');
+}
 
 async function generate(key: string) {
   const ctx = await contextOf(key);
@@ -146,6 +210,8 @@ async function generate(key: string) {
   if (!hasAll(E)) { E.status = 'error'; emit(); persistExams(); toast('⚠️ Chưa soạn được đề: ' + (E.err || 'lỗi')); return; }
   validate(E.exam as Exam);
   E.status = 'ready'; E.err = undefined; emit(); persistExams();
+  // lưu vào kho chung để người khác cũng làm được; đánh dấu id để không gặp lại
+  saveToPool(key, E.exam as Exam, E.cefr, E.band).then((id) => { if (id && EXAMS[key] === E) { E.sid = id; persistExams(); } setTimeout(() => prefetchNext(key, id || undefined), 20000); });
   if (app.scr === 'exam' && app.arg === key) return;
   askConfirm({ icon: '📝', title: `Đề ${ctx.title.toLowerCase()} đã soạn xong!`, msg: 'Đề gồm Nghe · Đọc · Từ vựng & Ngữ pháp · Viết · Nói, có sẵn đáp án và giải thích (chỉ hiện sau khi nộp). Nếu chưa làm, đề được giữ tới hết hôm nay.', ok: 'Vào làm bài', cancel: 'Để sau' })
     .then((ok) => { if (ok) openExam(key); });
@@ -228,6 +294,7 @@ function record(E: ExamState) {
   (['listening', 'reading'] as const).forEach((sec) => X[sec].questions.forEach((q, i) => tallySkill(P, sec === 'listening' ? 'listen' : 'read', isRight(q, E.ans.q[qid(sec, i)]))));
   tallySkill(P, 'write', R.bands.writing >= parseFloat(E.band)); tallySkill(P, 'speak', R.bands.speaking >= parseFloat(E.band));
   save();
+  setTimeout(() => prefetchNext(E.key, E.sid), 3000);
   addXP(20 + R.score.listening[0] * 2 + R.score.reading[0] * 2 + R.score.vocab[0] * 2 + (R.passed ? 50 : 0));
 }
 

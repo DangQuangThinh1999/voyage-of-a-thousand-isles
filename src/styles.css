@@ -787,3 +787,6 @@ main { max-width: 980px; overflow-x: clip; }
 .login-dlg { text-align: center; max-width: 440px; }
 .login-perks { text-align: left; margin: 8px auto 14px; display: grid; gap: 4px; padding-left: 18px; }
 .center-row { justify-content: center; }
+.stock { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin-top: 10px; }
+.stock-i { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); font-size: .88rem; }
+.stock-i b { flex: 1; } .stock-i.ok { border-color: var(--good); } .stock-i.low { border-color: #f59e0b; }

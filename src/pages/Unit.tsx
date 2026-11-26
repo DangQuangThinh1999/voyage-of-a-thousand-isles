@@ -1,5 +1,6 @@
 import { JOURNAL_PROMPTS, unitById } from '../data';
 import { AudioButton } from '../components/AudioButton';
+import { GrammarNotes } from '../components/GrammarNotes';
 import { Card } from '../components/Card';
 import { doneCount, KINDS } from '../lib/progress';
 import { startQuickTest, startSession } from '../state/session';
@@ -31,7 +32,7 @@ export function Unit() {
       ))}</tbody></table></Card>
       <h3>Câu mẫu</h3>
       <Card>{u.sentences.map(([en, vi]) => (
-        <div key={en} className="sent"><AudioButton text={en} className="icon sm" /><div><b>{en}</b><div className="muted">{vi}</div></div></div>
+        <div key={en} className="sent"><AudioButton text={en} className="icon sm" /><div><b>{en}</b><div className="muted">{vi}</div><GrammarNotes en={en} /></div></div>
       ))}</Card>
     </>
   );

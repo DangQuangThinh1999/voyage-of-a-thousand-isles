@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { AudioButton, SayBoth } from '../components/AudioButton';
 import { Card } from '../components/Card';
 import { ChoiceList } from '../components/ChoiceList';
+import { GrammarNotes } from '../components/GrammarNotes';
+import { Synonyms } from '../components/Synonyms';
 import { ProgressBar } from '../components/ProgressBar';
 import { BANK_TOTAL, MILESTONES } from '../data/bank';
 import { bankLearned, newWordsToday, vocabBehind, vocabWeek, weekNow } from '../lib/progress';
@@ -105,9 +107,11 @@ function LearnCard() {
         <div className="muted">{w.ipa} · <i>{w.pos}</i>{w.awl ? <> · <span className="band">học thuật</span></> : null}</div>
         <div className="row gap center"><SayBoth text={w.w} /></div>
         <div className="vi" style={{ marginTop: 10 }}>{w.vi}</div>
+        <Synonyms w={w.w} />
         <hr />
         <p className="ex"><b>{w.ex}</b> <AudioButton text={w.ex} /> <AudioButton text={w.ex} slow label="🐢" title="Đọc chậm" /></p>
         <p className="muted">{w.exvi}</p>
+        <GrammarNotes en={w.ex} pos={w.pos} open />
         <p className="tip small">🗣️ Đọc to từ và câu ví dụ 3 lần, rồi tự viết một câu về bạn có dùng từ <b>{w.w}</b>.</p>
       </Card>
       <WriteSentence key={w.w} />
@@ -146,6 +150,7 @@ function WriteSentence() {
             {res.ok
               ? <p className="okc">✅ Câu đúng! {res.offline ? '(Không kết nối được máy chấm ngữ pháp, mới chấm theo luật của app.)' : ''} <AudioButton text={text} /></p>
               : <p className="badc">Chưa đạt, sửa lại nhé:</p>}
+            {res.ok && <GrammarNotes en={text} open title="Ngữ pháp trong câu bạn vừa viết" />}
             <ul className="checks">
               {res.checks.filter(([ok]) => !ok).map(([, m]) => <li key={m} className="badc">✗ {m}</li>)}
               {res.issues.map((x, i) => (

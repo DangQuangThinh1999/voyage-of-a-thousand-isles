@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node tools/bank-meta.cjs && tsc -b && vite build",
+    "build": "node tools/bank-meta.cjs && node tools/build-syn.cjs && tsc -b && vite build",
     "preview": "vite preview",
     "check-level": "node tools/check-level.cjs"
   },

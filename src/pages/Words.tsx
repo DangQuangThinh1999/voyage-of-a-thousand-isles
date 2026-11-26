@@ -126,26 +126,31 @@ function WordsHome() {
 function LearnCard() {
   const W = useApp().W!, w = W.group[W.i];
   return (
-    <>
+    <div className="learn">
       <div className="sess-top">
         <button className="icon" title="Thoát" onClick={quitWords}>✕</button>
-        <ProgressBar pct={Math.round((W.i / W.group.length) * 100)} /><span className="muted small">{W.i + 1}/{W.group.length}</span>
+        <ProgressBar pct={Math.round((W.i / W.group.length) * 100)} /><span className="muted small">Từ {W.i + 1}/{W.group.length}</span>
       </div>
-      <p className="tip small">⬇️ Kéo xuống dưới, đọc hết ngữ pháp và viết xong câu của bạn rồi mới bấm <b>Học từ này</b> hoặc <b>Đã biết</b> để sang từ mới.</p>
-      <Card className="center wordcard">
-        <div className="en">{w.w}</div>
-        <div className="muted">{w.ipa} · <i>{w.pos}</i>{w.awl ? <> · <span className="band">học thuật</span></> : null}</div>
+      <ol className="lc-steps" aria-label="Các bước học một từ"><li>Nghe & hiểu từ</li><li>Đọc câu ví dụ</li><li>Tự đặt câu</li></ol>
+
+      <section className="card lc-hero">
+        <span className="lc-num">1</span>
+        <div className="lc-word">{w.w}</div>
+        <div className="lc-meta"><span className="ipa">{w.ipa}</span><span className="chip2">{w.pos}</span>{w.awl ? <span className="chip2">học thuật</span> : null}</div>
         <div className="row gap center"><SayBoth text={w.w} /></div>
-        <Senses vi={w.vi} />
-        <hr />
-        <p className="ex"><b>{w.ex}</b> <AudioButton text={w.ex} /> <AudioButton text={w.ex} slow label="🐢" title="Đọc chậm" /></p>
-        <Ipa text={w.ex} />
-        <p className="muted">{w.exvi}</p>
-        <GrammarNotes en={w.ex} pos={w.pos} open />
-        <p className="tip small">🗣️ Đọc to từ và câu ví dụ 3 lần, rồi tự viết một câu về bạn có dùng từ <b>{w.w}</b>.</p>
-      </Card>
+        <div className="lc-senses"><Senses vi={w.vi} /></div>
+      </section>
+
+      <section className="card lc-sec">
+        <div className="lc-head"><span className="lc-num">2</span><b>Câu ví dụ</b><span className="muted small">đọc to 3 lần</span></div>
+        <p className="lc-ex">{w.ex} <AudioButton text={w.ex} className="icon xs" /> <AudioButton text={w.ex} slow label="🐢" title="Đọc chậm" className="icon xs" /></p>
+        <div className="lc-ipa"><Ipa text={w.ex} /></div>
+        <p className="lc-vi">{w.exvi}</p>
+        <GrammarNotes en={w.ex} pos={w.pos} title="Vì sao câu này như vậy? (ngữ pháp — bấm để xem)" />
+      </section>
+
       <WriteSentence key={w.w} />
-    </>
+    </div>
   );
 }
 
@@ -176,7 +181,7 @@ function WriteSentence() {
   return (
     <>
       <Card>
-        <h3>✍️ Viết câu của bạn với “{w.w}”</h3>
+        <div className="lc-head"><span className="lc-num">3</span><b>Tự đặt câu với “{w.w}”</b><span className="muted small">viết hoặc 🎤 nói</span></div>
         <p className="muted small">Viết một câu thật về bạn, công việc hoặc cuộc sống của bạn (ít nhất 5 từ). Máy chấm ngữ pháp, cách dùng từ và độ tự nhiên. <b>Đặt được câu đúng mới qua được từ này.</b></p>
         <form onSubmit={(e) => { e.preventDefault(); check(); }}>
           <textarea className="ans" rows={2} placeholder={`Ví dụ: I ... ${w.w} ...`} value={text} disabled={passed}

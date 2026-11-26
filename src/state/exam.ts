@@ -3,7 +3,7 @@
 import { aiFetch } from '../lib/ai';
 import { unitById, type Unit } from '../data';
 import { bankRange } from '../data/bank';
-import { KINDS, levelNow, tallySkill, unitProg, vocabWeekSize, weekUnits } from '../lib/progress';
+import { KINDS, levelNow, tallySkill, unitProg, vocabWeekSize, weekNow, weekUnits } from '../lib/progress';
 import { roadmap } from '../lib/roadmap';
 import { promoteWords } from '../lib/srs';
 import { norm } from '../lib/text';
@@ -163,7 +163,7 @@ async function saveToPool(key: string, X: Exam, cefr: string, band: string): Pro
 /** Soạn ngầm 1 đề vào kho chung (không mở ra), dùng để luôn có đề sẵn cho lần sau / admin soạn trước */
 export async function generateToPool(key: string, onPart?: (n: number) => void): Promise<string | null> {
   const ctx = await contextOf(key);
-  const base = { cefr: ctx.cefr, band: ctx.band, target: app.P.settings.target, now: levelNow(app.P), topics: ctx.topics, words: ctx.words };
+  const base = { cefr: ctx.cefr, band: ctx.band, target: app.P.settings.target, now: levelNow(app.P), topics: ctx.topics, words: ctx.words, stock: true, base: baseOf(key) };
   const X: Partial<Exam> = {};
   let n = 0;
   for (const part of ['lr', 'vg', 'ws'] as const) {
@@ -186,6 +186,35 @@ export async function prefetchNext(key: string, current?: string) {
   const id = await generateToPool(key).catch(() => null);
   prefetching = false;
   if (id) toast('📚 Đã chuẩn bị sẵn đề tiếp theo cho lần sau');
+}
+
+// ---------- tự chuẩn bị kho đề theo level: tuần đang học + tuần kế tiếp, mỗi nhóm đủ 3 đề ----------
+const STOCK_LS = 'ht.stock.v1', STOCK_PER_DAY = 2;
+let stocking = false;
+/** Chạy ngầm khi người học đang rảnh: kho của tuần hiện tại / tuần sau còn < 3 đề thì soạn thêm 1 đề (không trừ lượt người học) */
+export async function autoStock() {
+  if (stocking || !Cloud.user) return;
+  let st = { day: '', n: 0 };
+  try { st = JSON.parse(localStorage.getItem(STOCK_LS) || '{"day":"","n":0}'); } catch { /* bỏ qua */ }
+  if (st.day !== dayKey()) st = { day: dayKey(), n: 0 };
+  if (st.n >= STOCK_PER_DAY) return;
+  const w = weekNow(app.P), keys = [...new Set(['w' + w, 'w' + (w + 1)])].filter((k) => baseOf(k));
+  for (const key of keys) {
+    const have = (await bankIdsAll(key, true)).length - staticIds(key).length;
+    if (have >= 3) continue;
+    stocking = true;
+    const id = await generateToPool(key).catch(() => null);
+    stocking = false;
+    if (id) { st.n++; try { localStorage.setItem(STOCK_LS, JSON.stringify(st)); } catch { /* bỏ qua */ } }
+    return; // mỗi lần chạy chỉ soạn 1 đề
+  }
+}
+let lastAct = Date.now();
+/** Bật tự chuẩn bị kho đề: 1 phút sau khi mở app, rồi mỗi 20 phút nếu người học không thao tác ≥ 2 phút */
+export function startAutoStock() {
+  (['keydown', 'pointerdown'] as const).forEach((ev) => addEventListener(ev, () => { lastAct = Date.now(); }, { passive: true }));
+  setTimeout(() => { if (Date.now() - lastAct > 30_000) autoStock(); }, 60_000);
+  setInterval(() => { if (document.visibilityState === 'visible' && Date.now() - lastAct > 120_000) autoStock(); }, 20 * 60_000);
 }
 
 async function generate(key: string) {

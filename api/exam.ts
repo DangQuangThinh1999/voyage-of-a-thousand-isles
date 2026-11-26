@@ -2,6 +2,7 @@
 // part: lr (Nghe + Đọc) | vg (Từ vựng + Ngữ pháp) | ws (đề Viết + Nói, kèm bài mẫu) | grade (chấm Viết + Nói, sửa trọn bài)
 // Đề soạn theo đúng vốn từ người học đã học, trình độ hiện tại và mức IELTS cần đạt; mọi câu có đáp án + căn cứ + giải thích.
 import { gemini, guard, json } from './_gemini.js';
+import { db, quotaOn } from './_quota.js';
 
 const BASE = `Bạn là người ra đề IELTS chuyên nghiệp (từng ra đề cho Cambridge/British Council/IDP), soạn ĐỀ KIỂM TRA cho người Việt.
 Nguyên tắc bắt buộc:
@@ -97,7 +98,12 @@ export async function POST(req: Request): Promise<Response> {
   let b: any;
   try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
   // 1 đề = 1 lượt: chỉ phần đầu (lr) tính lượt, 2 phần sau (vg, ws) không tính; chấm bài (grade) tính 1 lượt
-  const bad = await guard(req, 60, b && (b.part === 'vg' || b.part === 'ws') ? 0 : 1); if (bad) return bad;
+  let cost = b && (b.part === 'vg' || b.part === 'ws') ? 0 : 1;
+  // soạn đề bổ sung kho chung (kho nhóm đó còn < 3 đề) → không trừ lượt người học
+  if (cost && b && b.part === 'lr' && b.stock && quotaOn() && /^(w\d{2}|b\d\.\d|u[a-z0-9-]{1,40})$/.test(String(b.base || ''))) {
+    try { const n = (await db().collection('exbank').where('base', '==', String(b.base)).select().get()).size; if (n < 3) cost = 0; } catch { /* tính lượt như thường */ }
+  }
+  const bad = await guard(req, 60, cost); if (bad) return bad;
   const cefr = s(b.cefr || 'A2', 4), band = s(b.band || '4.0', 4), target = s(b.target || '', 4), now = s(b.now || '', 12);
   const level = `Trình độ cần kiểm tra: CEFR ${cefr}, IELTS ${band}${target ? ` (mục tiêu cuối: IELTS ${target})` : ''}${now ? `. Trình độ hiện tại của người học: ${now}` : ''}.`;
 

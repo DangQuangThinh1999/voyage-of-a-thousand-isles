@@ -6,10 +6,11 @@ import { Cloud } from '../lib/cloud';
 import type { Step, Skill } from '../lib/exercises';
 import { addXPTo, fresh, load, mergeProgress, persist, today, type Kind, type Progress } from '../lib/progress';
 import type { ReviewState } from '../lib/srs';
+import type { WordsState } from './words';
 import { configureSpeech, onVoicesChanged, stopSpeaking } from '../lib/speech';
 import type { SpeechScore } from '../lib/text';
 
-export type Screen = 'home' | 'unit' | 'session' | 'review' | 'journal' | 'plan' | 'settings' | 'mic';
+export type Screen = 'home' | 'unit' | 'session' | 'words' | 'review' | 'journal' | 'plan' | 'settings' | 'mic';
 
 export type MicResult = (SpeechScore & { err?: undefined }) | { err: string };
 export interface StepState {
@@ -31,6 +32,7 @@ export const app = {
   arg: null as string | null,
   S: null as Session | null,
   R: null as ReviewState | null,
+  W: null as WordsState | null,
   MT: { busy: false, res: null as MicTestResult | null },
   curSkill: null as string | null,
   toast: { msg: '', show: false },
@@ -68,7 +70,7 @@ export const inTest = () => app.scr === 'session' && !!app.S && app.S.kind === '
 export function go(s: Screen, a: string | null = null) {
   stopSpeaking();
   app.scr = s; app.arg = a;
-  app.curSkill = s === 'review' ? 'review' : s === 'journal' ? 'write' : null;
+  app.curSkill = s === 'review' || s === 'words' ? 'review' : s === 'journal' ? 'write' : null;
   app.scrollReq = 'top';
   emit();
 }

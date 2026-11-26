@@ -1,16 +1,15 @@
 // Hành động cho ôn từ, nhật ký, lộ trình, cài đặt, test micro.
-import { WORDS } from '../data';
 import { Cloud } from '../lib/cloud';
 import { today } from '../lib/progress';
 import { hear, micErr, micLive, speak, stopListening } from '../lib/speech';
-import { newReview, rateCard } from '../lib/srs';
+import { cardInfo, newReview, rateCard } from '../lib/srs';
 import { scoreSpeech } from '../lib/text';
 import { dayKey } from '../lib/util';
 import { addXP, app, emit, go, resetProgress, save, toast } from './store';
 
 // ---------- ôn từ vựng ----------
 function reviewSpeak() { const R = app.R, c = R && R.q[R.i]; if (c && c.dir === 'en') speak(c.w); }
-export function startReview(extra: boolean) { app.R = newReview(app.P, extra); emit(); reviewSpeak(); }
+export async function startReview(extra: boolean) { app.R = await newReview(app.P, extra); emit(); reviewSpeak(); }
 export function flipCard() { const R = app.R!; R.flip = true; emit(); const c = R.q[R.i]; if (c.dir === 'vi') speak(c.w); }
 export function rate(ok: boolean) {
   const R = app.R!;
@@ -19,7 +18,7 @@ export function rate(ok: boolean) {
   save();
   R.i++; R.flip = false; emit(); reviewSpeak();
 }
-export const reviewWord = (w: string) => WORDS[w];
+export const reviewWord = cardInfo;
 
 // ---------- nhật ký ----------
 export function saveJournal(u: string, text: string): boolean {
@@ -43,6 +42,7 @@ export function addMinutes(k: string) { const day = today(app.P); day.sec[k] = (
 export function setRate(v: number) { app.P.settings.rate = v; save(); emit(); }
 export function setVoice(v: string) { app.P.settings.voice = v; save(); emit(); speak('Hello! How are you today?'); }
 export function setGoal(m: number) { app.P.settings.goalMin = m; save(); emit(); }
+export function setWpd(n: number) { app.P.settings.wpd = n; save(); emit(); }
 export async function login() {
   try { await Cloud.signIn(); } catch (e) { const er = e as { code?: string; message?: string }; toast('Đăng nhập thất bại: ' + (er.code || er.message)); }
 }

@@ -3,7 +3,7 @@ import { UNITS, WEEK_GOALS as WG } from '../data';
 import { Card } from '../components/Card';
 import { ProgressBar } from '../components/ProgressBar';
 import { UnitCard } from '../components/UnitCard';
-import { dayNumber, levelNow, minutesToday, nextTask, TOTAL_DAYS, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
+import { bankLearned, dayNumber, levelNow, newWordsToday, minutesToday, nextTask, TOTAL_DAYS, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
 import { dueWords } from '../lib/srs';
 import { introOk } from '../state/actions';
 import { startQuickTest, startSession } from '../state/session';
@@ -40,11 +40,12 @@ export function Home() {
       <Card className="today">
         <div className="row between"><b>Hôm nay · Ngày {dayNumber(P)}/{TOTAL_DAYS}</b><span className="muted">{min} / {goal} phút</span></div>
         <ProgressBar pct={pct} />
-        <p className="lvline">🎯 Trình độ ước tính: <b>IELTS {levelNow(P)}</b> · Mục tiêu: <b>IELTS 5.5</b><br /><span className="muted small">Ước tính theo các tuần đã học xong hoặc đã qua kiểm tra, không phải điểm thi thật.</span></p>
+        <p className="lvline">🎯 Trình độ ước tính: <b>IELTS {levelNow(P)}</b> · Mục tiêu: <b>IELTS 5.5</b><br /><span className="muted small">📗 Kho từ: đã học {bankLearned(P)} từ. Ước tính theo các tuần đã học xong hoặc đã qua kiểm tra, không phải điểm thi thật.</span></p>
         <div className="row gap">
           {nt
             ? <button className="btn big" data-act="start" data-u={nt.u.id} data-k={nt.k[0]} onClick={() => startSession(nt.u.id, nt.k[0])}>▶ Học tiếp: {nt.u.emoji} {nt.u.title} · {nt.k[1]} {nt.k[2]}</button>
             : <div className="muted">Bạn đã xong tất cả bài hiện có 🎉 Bài mới cho tuần 5–8 sẽ được thêm vào.</div>}
+          <button className="btn ghost big" data-act="tab" data-tab="words" onClick={() => tab('words')}>📗 Từ mới {Math.min(newWordsToday(P), P.settings.wpd)}/{P.settings.wpd}</button>
           <button className="btn ghost big" data-act="tab" data-tab="review" onClick={() => tab('review')}>🔁 Ôn từ vựng{due ? <> <span className="pill">{due}</span></> : null}</button>
         </div>
       </Card>

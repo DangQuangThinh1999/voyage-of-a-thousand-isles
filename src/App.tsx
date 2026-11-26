@@ -11,10 +11,11 @@ import { Review } from './pages/Review';
 import { Session } from './pages/Session';
 import { Settings } from './pages/Settings';
 import { Unit } from './pages/Unit';
+import { Words } from './pages/Words';
 import { app, useApp, type Screen } from './state/store';
 
 const PAGES: Record<Screen, () => JSX.Element | null> = {
-  home: Home, unit: Unit, session: Session, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest,
+  home: Home, unit: Unit, session: Session, words: Words, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest,
 };
 
 export default function App() {

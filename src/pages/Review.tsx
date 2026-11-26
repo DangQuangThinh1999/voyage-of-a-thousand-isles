@@ -19,7 +19,7 @@ export function Review() {
           <p>Bạn đã học <b>{learned}</b> từ. Cần ôn hôm nay: <b>{due}</b> từ.</p>
           {due ? <button className="btn big" data-act="review" onClick={() => startReview(false)}>Ôn {due} từ</button>
             : learned ? <><p className="muted">Không còn từ nào cần ôn hôm nay 🎉</p><button className="btn ghost" data-act="review" data-extra="1" onClick={() => startReview(true)}>Ôn thêm 10 từ ngẫu nhiên</button></>
-              : <p className="muted">Học phần 📚 Từ vựng của bài 1 trước nhé.</p>}
+              : <p className="muted">Học phần 📚 Từ vựng của bài 1 hoặc 📗 Từ mới trước nhé.</p>}
         </Card>
         <p className="muted small">Thẻ nhớ dùng cách “lặp lại ngắt quãng”: từ bạn nhớ sẽ ôn lại sau 1, 2, 4, 7, 14, 30 ngày; từ bạn quên sẽ ôn lại ngay.</p>
       </>
@@ -35,8 +35,9 @@ export function Review() {
       <Card className="center flash">
         {c.dir === 'en'
           ? <><div className="en">{w.en}</div><div className="row gap center"><SayBoth text={w.en} /></div><p className="muted">Nghĩa là gì?</p></>
-          : <><div className="huge">{w.em}</div><div className="vi">{w.vi}</div><p className="muted">Tiếng Anh là gì? Hãy nói to!</p></>}
-        {R.flip && <><hr /><div className="huge">{w.em}</div><div className="en">{w.en} <AudioButton text={w.en} /></div><div className="vi">{w.vi}</div></>}
+          : <>{w.em && <div className="huge">{w.em}</div>}<div className="vi">{w.vi}</div><p className="muted">Tiếng Anh là gì? Hãy nói to!</p></>}
+        {R.flip && <><hr />{w.em && <div className="huge">{w.em}</div>}<div className="en">{w.en} <AudioButton text={w.en} /></div>{w.ipa && <div className="muted">{w.ipa}</div>}<div className="vi">{w.vi}</div>
+          {w.ex && <><p className="ex"><b>{w.ex}</b> <AudioButton text={w.ex} /></p><p className="muted small">{w.exvi}</p></>}</>}
       </Card>
       <div className="foot">{R.flip
         ? <><button className="btn ghost big" data-act="rate" data-ok="0" onClick={() => rate(false)}>😕 Quên</button><button className="btn big" data-act="rate" data-ok="1" onClick={() => rate(true)}>🙂 Nhớ</button></>

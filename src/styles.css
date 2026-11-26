@@ -271,3 +271,8 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
 .playback audio { height: 36px; max-width: 100%; }
 .tips { padding-left: 20px; }
 .tips li { padding: 3px 0; }
+/* Từ mới mỗi ngày */
+.badc { color: var(--bad); font-weight: 700; }
+.ex { font-size: 1.05rem; margin: 10px 0 4px; }
+.ms { display: grid; gap: 6px; margin: 12px 0 8px; }
+.wordcard .vi { color: var(--ink); font-weight: 600; }

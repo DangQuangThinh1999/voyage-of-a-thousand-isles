@@ -17,11 +17,14 @@ export const KINDS: KindInfo[] = [
 export const SKILL_OF: Record<Kind, string> = { vocab: 'review', listen: 'listen', speak: 'speak', read: 'read', write: 'write' };
 export const PLAN_KEYS = ['listen', 'speak', 'read', 'write', 'review'];
 
-export interface Day { xp: number; sec: Record<string, number> }
-export interface SrsCard { b: number; due: string }
+/** nw = số từ mới (kho từ) đã học trong ngày */
+export interface Day { xp: number; sec: Record<string, number>; nw?: number }
+/** f = file kho từ chứa từ này (không có = từ trong bài học) */
+export interface SrsCard { b: number; due: string; f?: string }
 export interface JournalEntry { id: number; d: string; u: string; t: string }
 export interface TestResult { best: number; passed: boolean; date?: string }
-export interface Settings { rate: number; voice: string; goalMin: number }
+/** wpd = số từ mới mỗi ngày */
+export interface Settings { rate: number; voice: string; goalMin: number; wpd: number }
 export interface Progress {
   v: 1; xp: number; streak: number; lastDay: string;
   days: Record<string, Day>;
@@ -33,7 +36,7 @@ export interface Progress {
 }
 
 export const fresh = (): Progress => ({ v: 1, xp: 0, streak: 0, lastDay: '', days: {}, units: {}, srs: {}, journal: [], tests: {},
-  settings: { rate: 0.85, voice: '', goalMin: 210 }, startDate: dayKey(), updated: 0, seenIntro: false });
+  settings: { rate: 0.85, voice: '', goalMin: 210, wpd: 30 }, startDate: dayKey(), updated: 0, seenIntro: false });
 
 export function load(): Progress {
   try {
@@ -58,6 +61,9 @@ export function addXPTo(P: Progress, n: number) {
   if (P.lastDay !== k) { P.streak = P.lastDay === addDays(k, -1) ? P.streak + 1 : 1; P.lastDay = k; }
   P.xp += n; today(P).xp += n;
 }
+/** Số từ trong kho đã học (có trong thẻ ôn) */
+export const bankLearned = (P: Progress) => Object.values(P.srs).filter((c) => c.f).length;
+export const newWordsToday = (P: Progress) => (P.days[dayKey()] || { nw: 0 }).nw || 0;
 export const unitProg = (P: Progress, id: string) => P.units[id] || (P.units[id] = {});
 export const doneCount = (P: Progress, id: string) => KINDS.filter(([k]) => (P.units[id] || {})[k]).length;
 export const unlocked = (P: Progress, i: number) => i === 0 || doneCount(P, UNITS[i - 1].id) >= 3;
@@ -97,7 +103,7 @@ export function mergeProgress(P: Progress, r: Progress | null | undefined): Prog
   for (const [k, d] of Object.entries(newer.days || {})) {
     const o = m.days[k] || { xp: 0, sec: {} }, sec = { ...(o.sec || {}) };
     for (const [s, v] of Object.entries(d.sec || {})) sec[s] = Math.max(sec[s] || 0, v);
-    m.days[k] = { xp: Math.max(o.xp || 0, d.xp || 0), sec };
+    m.days[k] = { xp: Math.max(o.xp || 0, d.xp || 0), sec, nw: Math.max(o.nw || 0, d.nw || 0) };
   }
   m.tests = { ...(older.tests || {}) };
   for (const [k, v] of Object.entries(newer.tests || {})) { const o = m.tests[k] || ({} as Partial<TestResult>); m.tests[k] = { ...v, best: Math.max(o.best || 0, v.best || 0), passed: !!(o.passed || v.passed) }; }

@@ -783,3 +783,4 @@ main { max-width: 980px; overflow-x: clip; }
 .adm-list { display: grid; gap: 8px; margin-top: 8px; }
 .adm-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
 .adm-num { width: 80px; }
+.aichip { border: 1px solid rgba(34,211,238,.45); background: rgba(34,211,238,.12); color: var(--ink); border-radius: 99px; padding: 3px 10px; font-weight: 700; font-size: .85rem; white-space: nowrap; } .aichip.warn { border-color: #f59e0b; background: rgba(245,158,11,.15); }

@@ -8,7 +8,7 @@ export async function GET(req: Request): Promise<Response> {
   const u = await who(req);
   if (!u) return json({ enabled: true, login: false, adminEmailSet: !!process.env.ADMIN_EMAIL });
   const me = await usage(u);
-  if (!u.admin) return json({ enabled: true, login: true, adminEmailSet: !!process.env.ADMIN_EMAIL, ...me });
+  if (!u.admin || new URL(req.url).searchParams.has('me')) return json({ enabled: true, login: true, adminEmailSet: !!process.env.ADMIN_EMAIL, ...me });
   const list = await members(), day = ptDay();
   const users = list.map((q) => ({ uid: q.uid, email: q.email, name: q.name, used: q.day === day ? q.used : 0, limit: q.limit ?? LIMIT, last: q.last, joined: q.joined, total: q.total || 0 }))
     .sort((a, b) => b.used - a.used);

@@ -56,5 +56,18 @@ Từ mục tiêu: ${words.join(', ')}
 BẢN DỊCH CỦA NGƯỜI HỌC: """${s(b.answer, 800)}"""`;
     return gemini(GRADE_SYS, user, GRADE_SCHEMA, 0.2, true);
   }
+  if (b.part === 'meaning') {
+    // Kiểm tra nhanh nghĩa: người học gõ nghĩa tiếng Việt của từ tiếng Anh — đúng nghĩa (kể cả từ đồng nghĩa, diễn đạt khác) là biết
+    const items = (Array.isArray(b.items) ? b.items : []).slice(0, 100).map((x: { w?: string; vi?: string; a?: string }) => ({ w: s(x.w, 40), vi: s(x.vi, 160), a: s(x.a, 120) }));
+    const user = `Với mỗi từ, xem người học có HIỂU ĐÚNG NGHĨA không. "vi" là các nghĩa trong từ điển, "a" là câu trả lời của người học.
+- ok = true nếu câu trả lời đúng với BẤT KỲ nghĩa phổ biến nào của từ (chấp nhận từ đồng nghĩa, diễn đạt khác, viết thiếu dấu tiếng Việt, sai chính tả nhẹ, nghĩa rộng/hẹp hơn một chút nhưng đúng bản chất).
+- ok = false nếu sai nghĩa, nghĩa ngược, nhầm với từ khác, hoặc quá chung chung không chứng tỏ biết từ.
+- note_vi: rất ngắn (≤ 15 từ): nếu sai thì nói nghĩa đúng / nhầm với từ nào; nếu đúng có thể để "".
+Trả results đúng thứ tự, đủ ${items.length} mục.
+${JSON.stringify(items)}`;
+    return gemini('Bạn là giáo viên tiếng Anh cho người Việt, chấm nghĩa từ vựng công bằng, không khắt khe về câu chữ.', user,
+      { type: 'OBJECT', properties: { results: { type: 'ARRAY', items: { type: 'OBJECT', properties: { w: { type: 'STRING' }, ok: { type: 'BOOLEAN' }, note_vi: { type: 'STRING' } }, required: ['w', 'ok', 'note_vi'] } } }, required: ['results'] },
+      0.1, true);
+  }
   return json({ error: 'bad_part' }, 400);
 }

@@ -740,3 +740,10 @@ main { max-width: 980px; overflow-x: clip; }
 .chunk-src { font-size: 1.2rem; font-weight: 700; line-height: 1.5; margin: 4px 0; padding: 12px 14px; border-radius: 12px; background: var(--pri-soft); border-left: 4px solid var(--pri); }
 .chunk-words { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .chunk textarea { width: 100%; box-sizing: border-box; font: inherit; }
+/* kiểm tra nhanh từ vựng */
+.qv { display: grid; gap: 10px; }
+.qv-word { padding: 10px 0; } .huge-word { font-size: 2.2rem; font-weight: 800; letter-spacing: .5px; }
+.qv-list { display: grid; gap: 6px; margin: 10px 0; }
+.qv-row { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); cursor: pointer; }
+.qv-row.ok { border-color: var(--good); } .qv-row.no { border-color: var(--bad); }
+.qv-row input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--good); }

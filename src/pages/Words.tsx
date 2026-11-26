@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChunkPractice } from '../components/ChunkPractice';
+import { QuickVocab } from '../components/QuickVocab';
 import { Pills } from '../components/ui';
 import { useRouteParam } from '../lib/route';
 import { Dropdown } from '../components/Dropdown';
@@ -37,14 +38,15 @@ export function Words() {
 
 function WordsHome() {
   const { P, W } = useApp();
-  const [t, setT] = useRouteParam<'learn' | 'chunk'>('t', 'learn');
+  const [t, setT] = useRouteParam<'learn' | 'chunk' | 'check'>('t', 'learn');
   const head = (
     <div className="pagehead">
       <h2>📗 Từ vựng</h2>
-      <Pills id="words" value={t} onChange={setT} items={[['learn', '📗 Học từ mới mỗi ngày'], ['chunk', '🧩 Học theo cụm (dịch câu/đoạn)']]} />
+      <Pills id="words" value={t} onChange={setT} items={[['learn', '📗 Học từ mới mỗi ngày'], ['chunk', '🧩 Học theo cụm (dịch câu/đoạn)'], ['check', '⚡ Kiểm tra nhanh, bỏ qua từ đã biết']]} />
     </div>
   );
   if (t === 'chunk') return <>{head}<ChunkPractice /></>;
+  if (t === 'check') return <>{head}<QuickVocab /></>;
 
   const wpd = P.settings.wpd, done = newWordsToday(P), left = leftToday(), learned = bankLearned(P);
   const next = MILESTONES.find(([, n]) => n > learned);

@@ -29,14 +29,14 @@ const Q = {
 const SENT = { type: 'ARRAY', items: { type: 'OBJECT', properties: { en: { type: 'STRING' }, vi: { type: 'STRING' } }, required: ['en', 'vi'] } };
 const QRULE = `Quy ước câu hỏi: type "mcq" → options 4 lựa chọn, answer = chỉ số đúng (0-based), answer_text = "".
 type "tfng" → options đúng là ["True","False","Not Given"], answer = chỉ số.
-type "type" (gõ đáp án, tối đa 3 từ) → options = [], answer = -1, answer_text = đáp án (các cách viết đúng khác ngăn bằng |, ví dụ "small|little"), ipa = phiên âm Anh của đáp án chính dạng /.../.
+type "type" (gõ đáp án, tối đa 3 từ) → TUYỆT ĐỐI KHÔNG dùng tên người, tên riêng khó đánh vần (tên người, tên công ty, tên đường lạ) làm đáp án gõ; đáp án gõ phải là từ thông dụng, số, ngày giờ, giá tiền hoặc từ vựng đã học. Tên người chỉ được xuất hiện trong mcq. options = [], answer = -1, answer_text = đáp án (các cách viết đúng khác ngăn bằng |, ví dụ "small|little"), ipa = phiên âm Anh của đáp án chính dạng /.../.
 Với mcq/tfng: ipa = "".`;
 
 const SPEC: Record<string, { rule: string; schema: unknown }> = {
   lr: {
     rule: `Soạn 2 phần:
 1) listening: bài NGHE kiểu IELTS (hội thoại 2 người hoặc độc thoại), accent ghi quốc gia giọng nói (vd "British", "Australian"). script: mảng câu, mỗi câu bắt đầu bằng tên người nói "Tên: ..." nếu là hội thoại, kèm dịch vi. Độ dài: A1 8–10 câu; A2 10–12; B1 12–16; B2+ 16–22.
-   questions: 6 câu trộn: 2–3 "type" (điền từ nghe được: tên, số, từ khoá, q có ____), còn lại "mcq"/"tfng". evidence là câu trong script.
+   questions: 6 câu trộn: 2–3 "type" (điền từ nghe được: số, giờ, giá tiền, ngày tháng, từ khoá thông dụng — KHÔNG phải tên người; q có ____), còn lại "mcq"/"tfng". evidence là câu trong script.
 2) reading: bài ĐỌC kiểu IELTS (bài báo, quảng cáo, email, bài khoa học phổ thông tuỳ trình độ), source mô tả nguồn/kiểu bài và quốc gia. passage: mảng câu kèm dịch. Độ dài: A1 7–9 câu; A2 9–12; B1 12–16; B2+ 16–24.
    questions: 7 câu trộn "mcq", "tfng" (có ít nhất 1 Not Given) và 1–2 "type" (điền từ trong bài, q có ____). evidence là câu nguyên văn trong bài.
 ${QRULE}`,

@@ -128,7 +128,8 @@ async function generate(key: string) {
 function validate(X: Exam) {
   const fix = (qs: ExamQ[]) => qs.filter((q) => {
     if (q.type === 'tfng') q.options = ['True', 'False', 'Not Given'];
-    if (q.type === 'type') return !!q.answer_text;
+    // câu gõ đáp án là tên người / tên riêng (viết hoa, không ở đầu câu) → bỏ, vì khó đánh vần và dễ chấm sai
+    if (q.type === 'type') return !!q.answer_text && !q.answer_text.split('|').some((a) => /^[A-Z][a-z'-]+( [A-Z][a-z'-]+)*$/.test(a.trim()) && !/^_{3,}/.test(q.q.trim()));
     return Array.isArray(q.options) && q.options.length >= 2 && q.answer >= 0 && q.answer < q.options.length;
   });
   X.listening.questions = fix(X.listening.questions || []);

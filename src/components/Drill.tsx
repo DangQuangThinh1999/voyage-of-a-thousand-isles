@@ -21,7 +21,9 @@ export function Drill({ name }: { name: string }) {
   const [q, setQ] = useState<number[]>([]), [i, setI] = useState(0);
   const [pick, setPick] = useState<number | null>(null), [typed, setTyped] = useState(''), [checked, setChecked] = useState<boolean | null>(null);
   const [score, setScore] = useState(0), [firstTry, setFirstTry] = useState<Set<number>>(new Set()), [wrongOnce, setWrongOnce] = useState<Set<number>>(new Set());
-  const start = (its: DrillItem[]) => { setItems(its); setQ(shuffle(its.map((_, k) => k))); setI(0); setScore(0); setFirstTry(new Set()); setWrongOnce(new Set()); reset(); };
+  // trộn thứ tự lựa chọn mỗi lần làm (đáp án đúng không cố định ở một vị trí)
+  const mix = (its: DrillItem[]) => its.map((it) => { if (it.t !== 'mcq' || !it.opts) return it; const right = it.opts[it.a as number], opts = shuffle(it.opts); return { ...it, opts, a: opts.indexOf(right) }; });
+  const start = (raw: DrillItem[]) => { const its = mix(raw); setItems(its); setQ(shuffle(its.map((_, k) => k))); setI(0); setScore(0); setFirstTry(new Set()); setWrongOnce(new Set()); reset(); };
   const reset = () => { setPick(null); setTyped(''); setChecked(null); };
   useEffect(() => { const f = fileOf(name); const load = f && FILES['../data/drills/' + f]; if (load) load().then((m) => start(m.default.items)); }, [name]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!hasDrill(name)) return null;

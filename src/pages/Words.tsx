@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ChunkPractice } from '../components/ChunkPractice';
-import { QuickVocab } from '../components/QuickVocab';
 import { Milestones } from '../components/Milestone';
 import { Pills } from '../components/ui';
 import { useRouteParam } from '../lib/route';
@@ -39,15 +38,14 @@ export function Words() {
 
 function WordsHome() {
   const { P, W } = useApp();
-  const [t, setT] = useRouteParam<'learn' | 'chunk' | 'check' | 'mile'>('t', 'learn');
+  const [t, setT] = useRouteParam<'learn' | 'chunk' | 'mile'>('t', 'learn');
   const head = (
     <div className="pagehead">
       <h2>📗 Từ vựng</h2>
-      <Pills id="words" value={t} onChange={setT} items={[['learn', '📗 Học từ mới mỗi ngày'], ['chunk', '🧩 Học theo cụm (dịch câu/đoạn)'], ['check', '⚡ Kiểm tra nhanh, bỏ qua từ đã biết'], ['mile', '🏁 Kiểm tra mốc 100 từ']]} />
+      <Pills id="words" value={t} onChange={setT} items={[['learn', '📗 Học từ mới mỗi ngày'], ['chunk', '🧩 Học theo cụm (dịch câu/đoạn)'], ['mile', '🏁 Kiểm tra mốc 100 từ']]} />
     </div>
   );
   if (t === 'chunk') return <>{head}<ChunkPractice /></>;
-  if (t === 'check') return <>{head}<QuickVocab /></>;
   if (t === 'mile') return <>{head}<Milestones /></>;
   const msOpen = Math.floor(bankLearned(P) / 100), msNext = Array.from({ length: msOpen }, (_, i) => i + 1).find((k) => !(P.ms && P.ms[k] !== undefined));
 

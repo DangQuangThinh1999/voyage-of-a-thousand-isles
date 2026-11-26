@@ -776,3 +776,6 @@ main { max-width: 980px; overflow-x: clip; }
 .chunk-dots button { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); color: var(--muted); font-weight: 700; }
 .chunk-dots button.done { border-color: var(--good); color: var(--good); }
 .chunk-dots button.on { background: var(--pri); color: var(--pri-ink); border-color: var(--pri); }
+.chunk.cpass { border-color: var(--good); } .chunk.cfail { border-color: var(--bad); }
+.chunk-rev { display: grid; gap: 4px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.chunk-dots button.gap { margin-left: 18px; }

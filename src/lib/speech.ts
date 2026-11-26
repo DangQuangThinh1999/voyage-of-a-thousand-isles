@@ -105,7 +105,7 @@ export function onVoicesChanged(fn: () => void) { if (TTS) TTS.onvoiceschanged =
 
 // ---------- nhận giọng nói ----------
 export interface HeardResult { alts: string[]; text: string; audio: string | null }
-export interface HearOptions { onText?: (t: string) => void; onLevel?: (v: number) => void; maxMs?: number; silenceMs?: number; startMs?: number }
+export interface HearOptions { onText?: (t: string) => void; onLevel?: (v: number) => void; maxMs?: number; silenceMs?: number; startMs?: number; lang?: string }
 
 let REC: { stop: () => void } | null = null;
 /** Dừng lượt nghe đang chạy (nếu có) */
@@ -113,7 +113,7 @@ export function stopListening() { if (REC) REC.stop(); }
 
 // Nghe liên tục cho tới khi bạn ngừng nói (im lặng ~2 giây) hoặc bấm dừng.
 // Đồng thời ghi âm để bạn nghe lại giọng mình, và đo âm lượng micro.
-export function hear({ onText, onLevel, maxMs = 30000, silenceMs = 2000, startMs = 7000 }: HearOptions = {}): Promise<HeardResult> {
+export function hear({ onText, onLevel, maxMs = 30000, silenceMs = 2000, startMs = 7000, lang = 'en-US' }: HearOptions = {}): Promise<HeardResult> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (res, rej) => {
     stopSpeaking();
@@ -140,7 +140,7 @@ export function hear({ onText, onLevel, maxMs = 30000, silenceMs = 2000, startMs
     // Một số máy không báo 'onend' sau khi dừng: tự kết thúc sau 2,5 giây để không bị kẹt
     const halt = () => { try { r.stop(); } catch { /* đã dừng */ } setTimeout(() => { if (!ended) finish(); }, 2500); };
     REC = { stop: halt };
-    r.lang = 'en-US'; r.continuous = true; r.interimResults = true; r.maxAlternatives = 3;
+    r.lang = lang; r.continuous = true; r.interimResults = true; r.maxAlternatives = 3;
     const finals: string[][] = []; let interim = '', err: string | null = null, timer: ReturnType<typeof setTimeout> | undefined;
     const stopIn = (ms: number) => { clearTimeout(timer); timer = setTimeout(halt, ms); };
     const hard = setTimeout(halt, maxMs);

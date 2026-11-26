@@ -1,3 +1,4 @@
+import { Dictate } from '../components/Dictate';
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouteParam } from '../lib/route';
@@ -103,6 +104,7 @@ function Analyzer() {
         <p className="muted small">Gõ bất kỳ câu tiếng Anh nào (câu bạn tự viết, câu trong sách, đề IELTS). Máy tìm lỗi sai, đưa câu đã sửa, tô màu từ loại và giải thích ngữ pháp.</p>
         <form onSubmit={(e) => { e.preventDefault(); run(); }}>
           <textarea className="ans" rows={3} placeholder="Ví dụ: She go to school yesterday because she want learn English." value={text} onChange={(e) => setText(e.target.value)} />
+          <Dictate value={text} onChange={setText} />
           <button className="btn mt-2" disabled={busy || !text.trim()}>{busy ? 'Đang phân tích…' : 'Phân tích'}</button>
         </form>
       </Section>

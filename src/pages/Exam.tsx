@@ -1,5 +1,6 @@
 // Trang ĐỀ KIỂM TRA do AI soạn: Nghe (nghe tối đa 3 lần) · Đọc · Từ vựng & Ngữ pháp · Viết · Nói (ghi âm tối đa 5 lần mỗi câu).
 // Làm hết rồi NỘP một lần → chấm trắc nghiệm theo đáp án, AI chấm Viết + Nói và viết lại trọn bài đã sửa.
+import { Dictate } from '../components/Dictate';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { AudioButton } from '../components/AudioButton';
@@ -221,6 +222,7 @@ function Writing({ E, X }: { E: ExamState; X: ExamT }) {
       <details><summary className="muted small">💡 Gợi ý ý tưởng</summary><ul className="small">{X.writing.ideas.map((x, i) => <li key={i}>{x}</li>)}</ul></details>
       <textarea className="inp exam-text" rows={10} value={E.ans.writing} placeholder="Viết bài của bạn ở đây…" spellCheck={false}
         onChange={(e) => { E.ans.writing = e.target.value; saveAns(); emit(); }} />
+      <Dictate value={E.ans.writing} onChange={(v) => { E.ans.writing = v; saveAns(); emit(); }} />
       <div className="row between small"><span className={n >= X.writing.minWords ? 'okc' : 'muted'}>{n}/{X.writing.minWords} từ</span><span className="muted">Bài mẫu + bài sửa hoàn chỉnh hiện sau khi nộp</span></div>
       <Bar pct={Math.min(100, (n / X.writing.minWords) * 100)} h={6} />
     </section>

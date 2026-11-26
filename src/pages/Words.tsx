@@ -1,3 +1,4 @@
+import { Dictate } from '../components/Dictate';
 import { useState } from 'react';
 import { ChunkPractice } from '../components/ChunkPractice';
 import { Milestones } from '../components/Milestone';
@@ -179,6 +180,7 @@ function WriteSentence() {
           <textarea className="ans" rows={2} placeholder={`Ví dụ: I ... ${w.w} ...`} value={text} disabled={passed}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); check(); } }} />
+          {!passed && <Dictate value={text} onChange={setText} />}
           {!passed && <button className="btn" type="submit" disabled={busy || !text.trim()} style={{ marginTop: 10 }}>{busy ? 'Đang chấm…' : tries ? '🔁 Kiểm tra lại' : 'Kiểm tra câu'}</button>}
         </form>
         {rules && !rulesOk && <ul className="checks mt-2">{rules.filter(([ok]) => !ok).map(([, m]) => <li key={m} className="badc">✗ {m}</li>)}</ul>}

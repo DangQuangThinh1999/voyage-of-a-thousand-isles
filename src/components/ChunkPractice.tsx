@@ -1,5 +1,6 @@
 // HỌC THEO CỤM: thay vì học từng từ rời, dịch cả câu (~10 từ) hoặc đoạn ngắn (tối đa 20 từ) có chứa từ đang học,
 // rồi Gemini chấm, viết lại trọn bản dịch đã sửa và giải thích từng lỗi. Không có AI → dùng câu ví dụ trong kho từ, chấm sơ bộ.
+import { Dictate } from './Dictate';
 import { aiFetch } from '../lib/ai';
 import { motion } from 'motion/react';
 import { useState } from 'react';
@@ -165,6 +166,7 @@ export function ChunkPractice() {
       )}
       <textarea className="ans" rows={3} value={answers[i]} placeholder={d === 'vi-en' ? 'Viết bản dịch tiếng Anh…' : 'Viết bản dịch tiếng Việt…'} spellCheck={false}
         onChange={(e) => { const c = [...answers]; c[i] = e.target.value; setAnswers(c); }} />
+      <Dictate lang={d === 'vi-en' ? 'en-US' : 'vi-VN'} value={answers[i]} onChange={(v) => { const c = [...answers]; c[i] = v; setAnswers(c); }} />
       <div className="row between gap wrap">
         <button className="btn ghost" disabled={i === 0} onClick={() => { setI(i - 1); setHint(false); }}>← Trước</button>
         {last ? <button className="btn big glow" onClick={submitAll}>📤 Nộp cả 2 vòng để chấm</button>

@@ -1,3 +1,4 @@
+import { Dictate } from '../components/Dictate';
 import { useState } from 'react';
 import { Dropdown } from '../components/Dropdown';
 import { JOURNAL_PROMPTS, LEVELS, UNITS } from '../data';
@@ -49,6 +50,7 @@ export function Journal() {
           {(L as { outline?: string[] }).outline && <><b className="small">Dàn ý:</b><ol className="small">{((L as { outline?: string[] }).outline || []).map((x) => <li key={x}>{x}</li>)}</ol></>}
           <p className="small"><b>Cụm từ hữu ích:</b> {L.useful.join(' · ')}</p></details>}
         <textarea id="jtext" rows={L ? 10 : 5} placeholder="Viết bằng tiếng Anh… Sai cũng không sao, máy sẽ chỉ lỗi!" value={text} onChange={(e) => setText(e.target.value)} />
+        <Dictate value={text} onChange={setText} />
         <div className="row between">
           <span className={wc >= minWords ? 'okc small' : 'muted small'} id="wc">{wc}/{minWords} từ</span>
           <span className="row gap">

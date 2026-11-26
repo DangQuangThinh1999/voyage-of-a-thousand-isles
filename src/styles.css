@@ -790,3 +790,4 @@ main { max-width: 980px; overflow-x: clip; }
 .stock { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin-top: 10px; }
 .stock-i { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); font-size: .88rem; }
 .stock-i b { flex: 1; } .stock-i.ok { border-color: var(--good); } .stock-i.low { border-color: #f59e0b; }
+.dictate { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 6px 0; }

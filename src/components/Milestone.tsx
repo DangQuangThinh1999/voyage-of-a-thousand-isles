@@ -1,5 +1,6 @@
 // KIỂM TRA MỐC 100 TỪ: mỗi khi học đủ 100 từ → 1 bài: dịch đoạn văn Anh→Việt, dịch đoạn Việt→Anh (dùng chính 100 từ đó),
 // viết lại từ đã học bằng tiếng Anh, viết câu theo ngữ pháp trọng tâm. Làm hết rồi nộp, Gemini chấm 1 lần và sửa trọn bài.
+import { Dictate } from './Dictate';
 import { aiFetch } from '../lib/ai';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
@@ -132,12 +133,14 @@ function Run({ m, set }: { m: MS; set: (x: MS | null) => void }) {
         <h3 className="m-0">① Dịch sang tiếng Việt</h3>
         <p className="chunk-src">{m.gen.read.en} <AudioButton text={m.gen.read.en} className="icon xs" /></p>
         <textarea className="ans ms-text" rows={5} value={m.ans.read} placeholder="Bản dịch tiếng Việt của bạn…" onChange={(e) => { m.ans.read = e.target.value; upd(); }} />
+        <Dictate lang="vi-VN" value={m.ans.read} onChange={(v) => { m.ans.read = v; upd(); }} />
       </section>
 
       <section className="card">
         <h3 className="m-0">② Dịch sang tiếng Anh</h3>
         <p className="chunk-src">{m.gen.write.vi}</p>
         <textarea className="ans ms-text" rows={5} value={m.ans.write} spellCheck={false} placeholder="Bản dịch tiếng Anh của bạn (dùng từ đã học)…" onChange={(e) => { m.ans.write = e.target.value; upd(); }} />
+        <Dictate value={m.ans.write} onChange={(v) => { m.ans.write = v; upd(); }} />
         <div className="muted small">{wc(m.ans.write)} từ · bản mẫu ~{wc(m.gen.write.en)} từ</div>
       </section>
 

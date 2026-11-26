@@ -1,6 +1,6 @@
 import { UNITS, WEEK_GOALS as WG } from '../data';
-import { doneCount, levelNow, unlocked, weekDone, weekUnits } from '../lib/progress';
-import { go, goWeek, leaveOk, toast, useApp } from '../state/store';
+import { doneCount, levelNow, unlocked, vocabWeek, weekDone, weekUnits } from '../lib/progress';
+import { go, goWeek, leaveOk, tab, toast, useApp } from '../state/store';
 
 /** Cột tổng quan bên trái (màn hình rộng ≥ 1100px) */
 export function Sidebar() {
@@ -10,10 +10,13 @@ export function Sidebar() {
     <aside id="side" className="side" aria-label="Tổng quan">
       <div className="side-lv"><small>Trình độ ước tính</small><b>IELTS {levelNow(P)}</b><small>Mục tiêu: IELTS 5.5</small></div>
       {Object.entries(WG).map(([w, g]) => {
-        const us = weekUnits(+w), done = weekDone(P, +w);
+        const us = weekUnits(+w), done = weekDone(P, +w), vw = vocabWeek(P, +w);
         return (
           <div key={w} className={done ? 'side-wk done' : 'side-wk'}>
             <button className="side-h" data-act="week" data-w={w} onClick={() => leaveOk() && goWeek(w)}><b>Tuần {w}</b><span className="band">{g.cefr} · 🎯 {g.band}{done ? ' ✓' : ''}</span></button>
+            <button className={vw.done >= vw.size ? 'side-u okc' : 'side-u'} data-act="tab" data-tab="words" onClick={() => leaveOk() && tab('words')}>
+              <span>📗</span><span className="t">Từ vựng</span><span className="n">{vw.done}/{vw.size}</span>
+            </button>
             {us.length ? us.map((u) => {
               const lock = !unlocked(P, UNITS.indexOf(u));
               const cls = ['side-u', u.id === cur && 'on', lock && 'locked'].filter(Boolean).join(' ');

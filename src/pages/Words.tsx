@@ -1,12 +1,14 @@
+import { useState } from 'react';
 import { AudioButton, SayBoth } from '../components/AudioButton';
 import { Card } from '../components/Card';
 import { ChoiceList } from '../components/ChoiceList';
 import { ProgressBar } from '../components/ProgressBar';
 import { BANK_TOTAL, MILESTONES } from '../data/bank';
-import { bankLearned, newWordsToday } from '../lib/progress';
+import { bankLearned, newWordsToday, vocabBehind, vocabWeek, weekNow } from '../lib/progress';
+import { dueWords } from '../lib/srs';
 import { setWpd } from '../state/actions';
-import { useApp } from '../state/store';
-import { GROUP, knowWord, leftToday, learnWord, nextWordQ, pickWordAnswer, quitWords, startWords } from '../state/words';
+import { tab, useApp } from '../state/store';
+import { checkTyped, GROUP, knowWord, leftToday, learnWord, nextWordQ, pickWordAnswer, quitWords, startWords } from '../state/words';
 
 const WPD = [10, 20, 30, 40, 50, 70, 100];
 const fmt = (n: number) => n.toLocaleString('vi-VN');
@@ -20,6 +22,7 @@ export function Words() {
 
   const wpd = P.settings.wpd, done = newWordsToday(P), left = leftToday(), learned = bankLearned(P);
   const next = MILESTONES.find(([, n]) => n > learned);
+  const due = dueWords(P).length, wk = weekNow(P), wv = vocabWeek(P, wk), behind = vocabBehind(P);
   return (
     <>
       <h2>📗 Từ mới mỗi ngày</h2>
@@ -30,6 +33,17 @@ export function Words() {
           {W.learn.length > 0 && <p className="muted small">Trả lời đúng {W.ok}/{W.q.length} câu. Các từ mới sẽ hiện trong 🔁 Ôn từ từ ngày mai.</p>}
         </Card>
       )}
+      {due > 0 && (
+        <Card className="warnc">
+          <p>🔁 Bạn có <b>{due}</b> từ cũ cần ôn hôm nay. <b>Ôn từ cũ trước</b> rồi mới học từ mới, để không quên những gì đã học.</p>
+          <button className="btn" data-act="tab" data-tab="review" onClick={() => tab('review')}>Ôn {due} từ trước</button>
+        </Card>
+      )}
+      <Card>
+        <div className="row between"><b>Tuần {wk} · từ vựng</b><span className="muted">{wv.done} / {wv.size} từ</span></div>
+        <ProgressBar pct={Math.round((wv.done / wv.size) * 100)} />
+        <p className="muted small">{behind > 0 ? `Bạn đang chậm ${behind} từ so với lịch (${wpd} từ/ngày). Học bù dần, mỗi ngày thêm một lượt.` : 'Bạn đang theo kịp lịch học từ vựng 👍'}</p>
+      </Card>
       <Card>
         <div className="row between"><b>Hôm nay</b><span className="muted">{done} / {wpd} từ</span></div>
         <ProgressBar pct={Math.min(100, Math.round((done / wpd) * 100))} />
@@ -54,6 +68,17 @@ export function Words() {
         </div>
         {next && <p className="muted small">Với {wpd} từ/ngày, bạn đạt mốc IELTS {next[0]} (~{fmt(next[1])} từ) sau khoảng {Math.ceil((next[1] - learned) / wpd)} ngày.</p>}
         {BANK_TOTAL < 10000 && <p className="muted small">Kho đang được bổ sung dần lên 10.000 từ.</p>}
+      </Card>
+      <Card>
+        <h3>🧠 Mẹo nhớ lâu (cho người hay quên)</h3>
+        <ul className="tips">
+          <li><b>Ôn trước, học sau:</b> mỗi ngày làm 🔁 Ôn từ trước. Ôn đúng lúc sắp quên giúp từ vào trí nhớ dài hạn.</li>
+          <li><b>Đọc to 3 lần</b> mỗi từ mới và câu ví dụ. Vừa nói vừa nghe giúp nhớ hơn đọc thầm.</li>
+          <li><b>Tự gõ lại từ:</b> phần kiểm tra cuối mỗi lượt bắt bạn tự nhớ ra từ. Thấy khó là đúng, càng khó nhớ ra thì càng nhớ lâu.</li>
+          <li><b>Gắn với bản thân:</b> nghĩ một câu về chính bạn, ví dụ "I have a <i>deadline</i> on Friday".</li>
+          <li><b>Ít mà đều:</b> chia thành nhiều lượt 10 từ trong ngày (sáng, trưa, tối) tốt hơn học dồn một lần.</li>
+          <li><b>Ngủ đủ:</b> não sắp xếp lại trí nhớ khi ngủ. Ôn nhanh 5 phút trước khi ngủ rất hiệu quả.</li>
+        </ul>
       </Card>
       <Card>
         <h3>Số từ mới mỗi ngày</h3>
@@ -82,6 +107,7 @@ function LearnCard() {
         <hr />
         <p className="ex"><b>{w.ex}</b> <AudioButton text={w.ex} /> <AudioButton text={w.ex} slow label="🐢" title="Đọc chậm" /></p>
         <p className="muted">{w.exvi}</p>
+        <p className="tip small">🗣️ Đọc to từ và câu ví dụ 3 lần, rồi tự nghĩ một câu về bạn có dùng từ <b>{w.w}</b>.</p>
       </Card>
       <div className="foot">
         <button className="btn ghost big" data-act="know" onClick={knowWord}>✓ Đã biết</button>
@@ -100,10 +126,11 @@ function QuizCard() {
         <ProgressBar pct={Math.round((W.qi / W.q.length) * 100)} /><span className="muted small">{W.qi + 1}/{W.q.length}</span>
       </div>
       <Card className="center">
-        {q.t === 'vi'
-          ? <><p className="ask">Nghĩa của từ này là gì?</p><div className="en">{q.w.w} <AudioButton text={q.w.w} /></div></>
-          : <><p className="ask">Nghe và chọn từ đúng</p><div className="row gap center"><AudioButton text={q.w.w} className="btn" label="🔊 Nghe lại" /><AudioButton text={q.w.w} slow className="btn ghost" label="🐢 Chậm" /></div></>}
-        <ChoiceList items={q.opts} answered={answered} correctIdx={q.ans} pickedIdx={W.picked ?? undefined} grid2 optClass={q.t === 'listen' ? 'en' : undefined} onPick={pickWordAnswer} />
+        {q.t === 'vi' && <><p className="ask">Nghĩa của từ này là gì?</p><div className="en">{q.w.w} <AudioButton text={q.w.w} /></div></>}
+        {q.t === 'listen' && <><p className="ask">Nghe và chọn từ đúng</p><div className="row gap center"><AudioButton text={q.w.w} className="btn" label="🔊 Nghe lại" /><AudioButton text={q.w.w} slow className="btn ghost" label="🐢 Chậm" /></div></>}
+        {q.t === 'type'
+          ? <TypeRecall key={W.qi} />
+          : <ChoiceList items={q.opts} answered={answered} correctIdx={q.ans} pickedIdx={W.picked ?? undefined} grid2 optClass={q.t === 'listen' ? 'en' : undefined} onPick={pickWordAnswer} />}
         {answered && <p className="muted" style={{ marginTop: 12 }}><b>{q.w.w}</b> {q.w.ipa}: {q.w.vi}</p>}
       </Card>
       {answered && (
@@ -112,6 +139,29 @@ function QuizCard() {
           <button className="btn big" data-act="next" data-autofocus onClick={nextWordQ}>Tiếp →</button>
         </div>
       )}
+    </>
+  );
+}
+
+/** Tự nhớ ra và gõ lại từ: nhìn nghĩa, nghe, rồi gõ */
+function TypeRecall() {
+  const W = useApp().W!, q = W.q[W.qi], answered = W.picked !== null;
+  const [text, setText] = useState('');
+  const [hint, setHint] = useState(false);
+  return (
+    <>
+      <p className="ask">Tự nhớ và gõ lại từ tiếng Anh</p>
+      <div className="vi-prompt">{q.w.vi}</div>
+      <div className="row gap center" style={{ margin: '10px 0' }}>
+        <AudioButton text={q.w.w} className="btn ghost" label="🔊 Nghe" />
+        {!answered && <button className="btn ghost" onClick={() => setHint(true)}>💡 Gợi ý</button>}
+      </div>
+      {hint && !answered && <p className="muted">Bắt đầu bằng <b>{q.w.w.slice(0, 2)}</b>…, có {q.w.w.length} chữ cái</p>}
+      <form onSubmit={(e) => { e.preventDefault(); checkTyped(text); }}>
+        <input className="ans" autoComplete="off" autoCapitalize="off" spellCheck={false} placeholder="Gõ từ tiếng Anh…" disabled={answered}
+          data-autofocus={answered ? undefined : '1'} value={text} onChange={(e) => setText(e.target.value)} />
+        {!answered && <button className="btn" type="submit" style={{ marginTop: 10 }}>Kiểm tra</button>}
+      </form>
     </>
   );
 }

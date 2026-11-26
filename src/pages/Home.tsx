@@ -3,7 +3,7 @@ import { UNITS, WEEK_GOALS as WG } from '../data';
 import { Card } from '../components/Card';
 import { ProgressBar } from '../components/ProgressBar';
 import { UnitCard } from '../components/UnitCard';
-import { bankLearned, dayNumber, levelNow, newWordsToday, minutesToday, nextTask, TOTAL_DAYS, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
+import { bankLearned, dayNumber, levelNow, newWordsToday, vocabWeek, weekNow, minutesToday, nextTask, TOTAL_DAYS, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
 import { dueWords } from '../lib/srs';
 import { introOk } from '../state/actions';
 import { startQuickTest, startSession } from '../state/session';
@@ -15,6 +15,17 @@ function WeekBadge({ w, P }: { w: number; P: Progress }) {
   if (!unlocked(P, UNITS.indexOf(us[0]))) return <span className="muted small">🔒</span>;
   const t = (P.tests || {})['w' + w];
   return <button className="btn ghost sm" data-act="test" data-w={w} onClick={() => startQuickTest({ w })}>⚡ Kiểm tra nhanh{t ? ` · ${t.best}%` : ''}</button>;
+}
+
+/** Từ vựng rải đều của tuần w (7 × số từ/ngày) */
+function VocabRow({ w, P }: { w: number; P: Progress }) {
+  const { done, size } = vocabWeek(P, w), now = weekNow(P);
+  const cls = done >= size ? 'vrow okc' : w === now ? 'vrow now' : 'vrow';
+  return (
+    <button className={cls} data-act="tab" data-tab="words" onClick={() => tab('words')}>
+      📗 Từ vựng tuần: <b>{done}/{size}</b> từ{done >= size ? ' ✓' : w === now ? ' · tuần này' : ''}
+    </button>
+  );
 }
 
 export function Home() {
@@ -54,6 +65,7 @@ export function Home() {
           <div className="wkrow" id={`wk-${w}`}>
             <div className="row between"><h3 className="wk">Tuần {w} · {WG[w].cefr} · 🎯 IELTS {WG[w].band}</h3><WeekBadge w={w} P={P} /></div>
             <div className="muted small">{WG[w].goal}</div>
+            <VocabRow w={w} P={P} />
           </div>
           <div className="units">{UNITS.map((u, i) => [u, i] as const).filter(([u]) => u.week === w).map(([u, i]) => <UnitCard key={u.id} u={u} P={P} locked={!unlocked(P, i)} />)}</div>
         </Fragment>
@@ -61,7 +73,10 @@ export function Home() {
       <h3>Các tuần tiếp theo</h3>
       <Card className="upcoming">
         {Object.entries(WG).filter(([w]) => !weeks.includes(+w)).map(([w, g]) => (
-          <div key={w} className="row between"><span><b>Tuần {w}</b> · {g.cefr} · {g.goal}</span><span className="band">🎯 {g.band}</span></div>
+          <div key={w}>
+            <div className="row between"><span><b>Tuần {w}</b> · {g.cefr} · {g.goal}</span><span className="band">🎯 {g.band}</span></div>
+            <VocabRow w={+w} P={P} />
+          </div>
         ))}
         <p className="muted small">Bài cho các tuần này sẽ được thêm dần.</p>
       </Card>

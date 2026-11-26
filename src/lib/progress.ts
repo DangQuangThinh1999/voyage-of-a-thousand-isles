@@ -33,6 +33,8 @@ export interface Progress {
   journal: JournalEntry[];
   tests: Record<string, TestResult>;
   settings: Settings; startDate: string; updated: number; seenIntro: boolean;
+  /** ngày bắt đầu học kho từ (để tính lịch từ vựng) */
+  vStart?: string;
 }
 
 export const fresh = (): Progress => ({ v: 1, xp: 0, streak: 0, lastDay: '', days: {}, units: {}, srs: {}, journal: [], tests: {},
@@ -62,7 +64,20 @@ export function addXPTo(P: Progress, n: number) {
   P.xp += n; today(P).xp += n;
 }
 /** Số từ trong kho đã học (có trong thẻ ôn) */
-export const bankLearned = (P: Progress) => Object.values(P.srs).filter((c) => c.f).length;
+let blCache = { p: null as Progress | null, u: -1, n: 0 };
+export function bankLearned(P: Progress) {
+  if (blCache.p !== P || blCache.u !== P.updated) blCache = { p: P, u: P.updated, n: Object.values(P.srs).filter((c) => c.f).length };
+  return blCache.n;
+}
+/** Từ vựng rải đều theo tuần: mỗi tuần 7 × số từ/ngày, học theo thứ tự nên tuần w gồm phần (w-1)·size … w·size */
+export const vocabWeekSize = (P: Progress) => P.settings.wpd * 7;
+export function vocabWeek(P: Progress, w: number) {
+  const size = vocabWeekSize(P);
+  return { size, done: Math.max(0, Math.min(size, bankLearned(P) - (w - 1) * size)) };
+}
+/** Số từ đáng lẽ đã học tới hôm nay trừ số đã học (dương = đang chậm) */
+export const vocabBehind = (P: Progress) => (P.vStart ? (daysBetween(P.vStart, dayKey()) + 1) * P.settings.wpd - bankLearned(P) : 0);
+export const weekNow = (P: Progress) => Math.ceil(dayNumber(P) / 7);
 export const newWordsToday = (P: Progress) => (P.days[dayKey()] || { nw: 0 }).nw || 0;
 export const unitProg = (P: Progress, id: string) => P.units[id] || (P.units[id] = {});
 export const doneCount = (P: Progress, id: string) => KINDS.filter(([k]) => (P.units[id] || {})[k]).length;
@@ -97,6 +112,7 @@ export function mergeProgress(P: Progress, r: Progress | null | undefined): Prog
   const m: Progress = { ...fresh(), ...newer, settings: { ...fresh().settings, ...(newer.settings || {}) } };
   m.xp = Math.max(P.xp || 0, r.xp || 0);
   m.startDate = [P.startDate, r.startDate].filter(Boolean).sort()[0] || dayKey();
+  m.vStart = [P.vStart, r.vStart].filter(Boolean).sort()[0];
   m.units = { ...(older.units || {}) };
   for (const [id, v] of Object.entries(newer.units || {})) m.units[id] = { ...(m.units[id] || {}), ...v };
   m.days = { ...(older.days || {}) };

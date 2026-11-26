@@ -10,7 +10,8 @@ import { addXP, app, emit, save, toast } from './store';
 
 export const GROUP = 10;
 
-export interface WordQ { w: BankWord; t: 'vi' | 'listen'; opts: string[]; ans: number; again?: boolean }
+/** vi = chọn nghĩa, listen = nghe chọn từ, type = nhìn nghĩa + nghe rồi tự gõ từ (nhớ chủ động) */
+export interface WordQ { w: BankWord; t: 'vi' | 'listen' | 'type'; opts: string[]; ans: number; again?: boolean }
 export interface WordsState {
   phase: 'loading' | 'learn' | 'quiz' | 'done';
   group: BankWord[]; i: number; learn: BankWord[]; known: number;
@@ -24,6 +25,7 @@ export const leftToday = () => Math.max(0, app.P.settings.wpd - newWordsToday(ap
 
 export async function startWords() {
   app.W = blank(); emit();
+  if (!app.P.vStart) app.P.vStart = dayKey();
   const n = Math.min(GROUP, leftToday() || GROUP);
   const per: Record<string, number> = {};
   for (const c of Object.values(app.P.srs)) if (c.f) per[c.f] = (per[c.f] || 0) + 1;
@@ -41,7 +43,8 @@ function nextCard() {
   W.i++;
   if (W.i < W.group.length) { emit(); speak(W.group[W.i].w); return; }
   if (!W.learn.length) { finish(); return; }
-  W.q = shuffle(W.learn.flatMap((w) => [makeQ(w, 'vi'), makeQ(w, 'listen')]));
+  // Dễ → khó, các lần gặp lại cùng một từ cách xa nhau: nhận nghĩa, nghe nhận từ, rồi tự gõ lại từ
+  W.q = (['vi', 'listen', 'type'] as const).flatMap((t) => shuffle(W.learn).map((w) => makeQ(w, t)));
   W.phase = 'quiz'; W.qi = 0; W.picked = null;
   emit(); autoSpeak();
 }
@@ -56,6 +59,7 @@ export function knowWord() {
 export function learnWord() { const W = app.W!; W.learn.push(W.group[W.i]); nextCard(); }
 
 function makeQ(w: BankWord, t: WordQ['t']): WordQ {
+  if (t === 'type') return { w, t, opts: [], ans: 0 };
   const pool = loadedBankWords().filter((x) => x.w !== w.w);
   if (t === 'vi') {
     const right = firstSense(w.vi);
@@ -68,7 +72,16 @@ function makeQ(w: BankWord, t: WordQ['t']): WordQ {
   return { w, t, opts, ans: opts.indexOf(w.w) };
 }
 
-function autoSpeak() { const W = app.W; const q = W && W.q[W.qi]; if (q && q.t === 'listen') speak(q.w.w); }
+function autoSpeak() { const W = app.W; const q = W && W.q[W.qi]; if (q && q.t !== 'vi') speak(q.w.w); }
+
+const norm = (s: string) => s.trim().toLowerCase().replace(/[^a-z' ]/g, '');
+/** Câu tự gõ: đúng khi gõ đúng từ (hoặc một dạng của nó) */
+export function checkTyped(text: string) {
+  const W = app.W!, q = W.q[W.qi];
+  if (W.picked !== null || !text.trim()) return;
+  const ok = [q.w.w, ...q.w.forms].some((f) => norm(f) === norm(text));
+  pickWordAnswer(ok ? 0 : 1);
+}
 
 export function pickWordAnswer(i: number) {
   const W = app.W!, q = W.q[W.qi];

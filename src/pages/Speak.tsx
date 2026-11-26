@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Dropdown } from '../components/Dropdown';
 import { AudioButton, SayBoth } from '../components/AudioButton';
 import { Ipa } from '../components/Ipa';
 import { LiveText, MicMeter, Playback } from '../components/MicRecorder';
@@ -106,9 +107,8 @@ function IeltsSpeaking() {
       <Section>
         <div className="flex flex-wrap items-center gap-2">
           <Pills id="part" value={part} onChange={(p) => { setPart(p); setQi(0); reset(); }} items={[['1', 'Part 1'], ['2', 'Part 2'], ['3', 'Part 3']]} />
-          <select className="w-auto" value={lv} onChange={(e) => { setLv(+e.target.value); setQi(0); reset(); }}>
-            <option value={0}>Cơ bản (A1)</option>{LEVELS.map((L, i) => <option key={L.id} value={i + 1}>{L.cefr} · IELTS {L.band}</option>)}
-          </select>
+          <Dropdown label="Cấp độ" value={lv} onChange={(v) => { setLv(v); setQi(0); reset(); }}
+            options={[{ value: 0, icon: '🌱', label: 'Cơ bản', sub: 'A1' }, ...LEVELS.map((L, i) => ({ value: i + 1, icon: L.emoji, label: `${L.cefr} · IELTS ${L.band}`, sub: L.vi }))]} />
           <button className="btn ghost sm" onClick={() => { setQi(qi + 1 + Math.floor(Math.random() * 2)); reset(); }}>🔀 Câu khác</button>
         </div>
         <div className="qcard">

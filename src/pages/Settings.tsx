@@ -1,4 +1,5 @@
 import { Card } from '../components/Card';
+import { Dropdown } from '../components/Dropdown';
 import { TargetPicker } from '../components/TargetPicker';
 import { Cloud } from '../lib/cloud';
 import { englishVoices, pickVoice } from '../lib/speech';
@@ -21,7 +22,7 @@ export function Settings() {
       </Card>
       <Card><h3>Micro</h3><p className="muted small">Kiểm tra micro, xem máy nghe được bao nhiêu từ và nghe lại giọng mình.</p><button className="btn" data-act="tab" data-tab="mic" onClick={() => go('mic')}>🎤 Test micro</button></Card>
       <Card><h3>Giọng đọc</h3>
-        {vs.length ? <select id="voice" value={cur ? cur.name : undefined} onChange={(e) => setVoice(e.target.value)}>{vs.map((v) => <option key={v.name + v.lang}>{v.name}</option>)}</select>
+        {vs.length ? <Dropdown className="w-full" label="Giọng" value={cur ? cur.name : ''} onChange={setVoice} options={vs.map((v) => ({ value: v.name, icon: /GB|UK/i.test(v.lang + v.name) ? '🇬🇧' : /US/i.test(v.lang) ? '🇺🇸' : '🗣️', label: v.name, sub: v.lang }))} />
           : <p className="muted">Không tìm thấy giọng đọc tiếng Anh. Hãy dùng Chrome hoặc Edge.</p>}
         <label className="lbl">Tốc độ: <b id="rateV">{P.settings.rate}</b></label>
         <input id="rate" type="range" min="0.5" max="1.1" step="0.05" value={P.settings.rate} onChange={(e) => setRate(+e.target.value)} />
@@ -29,9 +30,8 @@ export function Settings() {
       </Card>
       <Card><h3>Mục tiêu IELTS</h3><TargetPicker /><p className="muted small">Đổi lúc nào cũng được. Mục tiêu hiện ở cột bên trái và đầu trang.</p></Card>
       <Card><h3>Mục tiêu mỗi ngày</h3>
-        <select id="goal" value={P.settings.goalMin} onChange={(e) => setGoal(+e.target.value)}>
-          {GOALS.map((m) => <option key={m} value={m}>{m} phút{m === 210 ? ' (đủ cho 5.5 trong 3 tháng)' : ''}</option>)}
-        </select>
+        <Dropdown className="w-full" label="Mỗi ngày" value={P.settings.goalMin} onChange={setGoal} grid={3}
+          options={GOALS.map((m) => ({ value: m, label: <b>{m} phút</b>, sub: m === 210 ? 'đủ cho 5.5 / 3 tháng' : `${(m / 60).toFixed(1)} giờ` }))} />
       </Card>
       <Card><h3>Xóa tiến độ</h3><p className="muted small">Xóa toàn bộ tiến độ trên máy này. Không thể hoàn tác.</p><button className="btn danger" data-act="reset" onClick={reset}>Xóa tiến độ</button></Card>
     </>

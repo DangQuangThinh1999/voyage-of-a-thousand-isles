@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Dropdown } from '../components/Dropdown';
 import { AudioButton } from '../components/AudioButton';
 import { TapText } from '../components/TapText';
 import { Bar, Pills, Section } from '../components/ui';
@@ -181,7 +182,7 @@ export function Skills() {
         <>
           <Section>
             <label className="small">Chọn bài theo trình độ:</label>
-            <select value={si} onChange={(e) => setSi(+e.target.value)}>{sets.map((s, i) => <option key={s.id} value={i}>{s.label}</option>)}</select>
+            <Dropdown className="w-full" label="Bài" value={si} onChange={setSi} options={sets.map((s, i) => ({ value: i, label: s.label.split(' · ').slice(1).join(' · ') || s.label, sub: s.label.split(' · ')[0] }))} />
           </Section>
           {tab === 'read' ? <ReadingTutor key={'r' + si} {...sets[si].read} /> : <ListeningTutor key={'l' + si} {...sets[si].listen} />}
         </>

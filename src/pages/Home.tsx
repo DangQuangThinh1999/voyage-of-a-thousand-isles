@@ -3,6 +3,8 @@ import { UNITS } from '../data';
 import { roadmap, totalWeeks } from '../lib/roadmap';
 import { Card } from '../components/Card';
 import { Dashboard } from '../components/Dashboard';
+import { WeekCarousel } from '../components/WeekCarousel';
+import { motion } from 'motion/react';
 import { UnitCard } from '../components/UnitCard';
 import { vocabWeek, weekNow, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
 import { introOk } from '../state/actions';
@@ -50,26 +52,23 @@ export function Home() {
         </Card>
       )}
       <Dashboard P={P} />
-      {weeks.map((w) => (
+      {weeks.map((w, wi) => (
         <Fragment key={w}>
-          <div className="wkrow" id={`wk-${w}`}>
-            <div className="row between"><h3 className="wk">Tuần {w} · {WG[w].cefr} · 🎯 IELTS {WG[w].band}</h3><WeekBadge w={w} P={P} /></div>
-            <div className="muted small">{WG[w].goal}</div>
-            <VocabRow w={w} P={P} />
-          </div>
+          <motion.section className={`wk-banner ${weekDone(P, w) ? 'done' : ''} ${w === weekNow(P) ? 'now' : ''}`} id={`wk-${w}`}
+            initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ delay: wi * 0.03 }}>
+            <div className="wb-num"><small>TUẦN</small><b>{w}</b></div>
+            <div className="wb-main">
+              <div className="wb-chips"><span className="chip3">{WG[w].cefr}</span><span className="chip3 band">🎯 IELTS {WG[w].band}</span>{w === weekNow(P) && <span className="chip3 now">⛵ Tuần này</span>}</div>
+              <div className="wb-goal">{WG[w].goal}</div>
+              <VocabRow w={w} P={P} />
+            </div>
+            <div className="wb-act"><WeekBadge w={w} P={P} /></div>
+          </motion.section>
           <div className="units">{UNITS.map((u, i) => [u, i] as const).filter(([u]) => u.week === w).map(([u, i]) => <UnitCard key={u.id} u={u} P={P} locked={!unlocked(P, i)} />)}</div>
         </Fragment>
       ))}
-      <h3>Các tuần tiếp theo <span className="muted small">· tổng {totalWeeks(P)} tuần tới IELTS {P.settings.target}</span></h3>
-      <Card className="upcoming">
-        {Object.entries(WG).filter(([w]) => !weeks.includes(+w)).map(([w, g]) => (
-          <div key={w}>
-            <div className="row between"><span><b>Tuần {w}</b> · {g.cefr} · {g.goal}</span><span className="band">🎯 {g.band}</span></div>
-            <VocabRow w={+w} P={P} />
-          </div>
-        ))}
-        <p className="muted small">Bài cho các tuần này sẽ được thêm dần.</p>
-      </Card>
+      <div className="sec-h"><h3>🧭 Các tuần tiếp theo</h3><span className="muted small">Tổng {totalWeeks(P)} tuần tới IELTS {P.settings.target} · vuốt ngang để xem</span></div>
+      <WeekCarousel P={P} weeks={Object.entries(WG).filter(([w]) => !weeks.includes(+w)).map(([w, g]) => [+w, g])} />
       <p className="muted center small">Bài tiếp theo mở khi bạn làm xong 3/5 phần của bài trước.<br />Đã biết rồi? Bấm <b>⚡ Kiểm tra nhanh</b>: đúng hết 100% là qua luôn cả tuần.</p>
     </>
   );

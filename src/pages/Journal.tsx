@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Dropdown } from '../components/Dropdown';
 import { JOURNAL_PROMPTS, LEVELS, UNITS } from '../data';
 import { AudioButton } from '../components/AudioButton';
 import { Card } from '../components/Card';
@@ -34,11 +35,9 @@ export function Journal() {
     <>
       <h2>✍️ Viết & chấm bài</h2>
       <Section>
-        <label className="small">Chọn đề:</label>
-        <select value={pi} onChange={(e) => { setPi(+e.target.value); setRep(null); }}>
-          <option value={-1}>📝 Nhật ký hôm nay (bài {u.emoji} {u.title})</option>
-          {LEVELS.map((l, i) => <option key={l.id} value={i}>📄 {l.cefr} · IELTS {l.band} · đề viết {l.writing.minWords} từ</option>)}
-        </select>
+        <Dropdown className="w-full" label="Đề bài" value={pi} onChange={(v) => { setPi(v); setRep(null); }}
+          options={[{ value: -1, icon: '📝', label: 'Nhật ký hôm nay', sub: `Bài ${u.emoji} ${u.title} · ít nhất 30 từ` },
+            ...LEVELS.map((l, i) => ({ value: i, icon: '📄', label: `${l.cefr} · IELTS ${l.band}`, sub: `Đề viết ${l.writing.minWords} từ` }))]} />
         <p><b>Đề:</b> {prompt}</p>
         {L && <details><summary className="muted small">Dịch đề và gợi ý ý tưởng</summary><p className="muted">{L.writing.vi}</p><ul>{L.writing.ideas.map((x) => <li key={x}>{x}</li>)}</ul>
           <p className="small"><b>Cụm từ hữu ích:</b> {L.writing.useful.join(' · ')}</p></details>}

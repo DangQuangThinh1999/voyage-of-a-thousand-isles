@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Dropdown } from '../components/Dropdown';
 import { AudioButton, SayBoth } from '../components/AudioButton';
 import { Card } from '../components/Card';
 import { ChoiceList } from '../components/ChoiceList';
@@ -90,9 +91,8 @@ export function Words() {
       </Card>
       <Card>
         <h3>Số từ mới mỗi ngày</h3>
-        <select id="wpd" value={wpd} onChange={(e) => setWpd(+e.target.value)}>
-          {WPD.map((n) => <option key={n} value={n}>{n} từ/ngày{n === 30 ? ' (đề xuất)' : ''}</option>)}
-        </select>
+        <Dropdown className="w-full" label="Mỗi ngày" value={wpd} onChange={setWpd} grid={4}
+          options={WPD.map((n) => ({ value: n, label: <b>{n} từ</b>, sub: n === 30 ? 'đề xuất' : `${n * 7}/tuần` }))} />
         <p className="muted small">30 từ/ngày ≈ 3.000 từ sau 3 tháng, đủ vốn từ cho IELTS 5.5. Từ được xếp từ thông dụng nhất đến hiếm nhất (danh sách NGSL, AWL và 10.000 từ tần suất cao). Từ nào đã biết thì bấm <b>Đã biết</b> để bỏ qua, vẫn được ôn lại sau 30 ngày.</p>
       </Card>
     </>

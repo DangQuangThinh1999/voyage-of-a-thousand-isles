@@ -26,7 +26,10 @@ export function Header() {
   return (
     <header className="top">
       <div className="bar1">
-        <div className="brand">⛵ <b>Hải Trình {P.settings.target}</b></div>
+        <div className="brand">
+          <button className="home-btn" title="Về trang chính (Dashboard)" aria-label="Về trang chính" onClick={() => withLeave(() => go('home'))}>🏠</button>
+          <button className="brand-link" title="Về trang chính" onClick={() => withLeave(() => go('home'))}>⛵ <b>Hải Trình {P.settings.target}</b></button>
+        </div>
         <div id="stats" className="stats">
           <GuestChip />
           <AiChip />

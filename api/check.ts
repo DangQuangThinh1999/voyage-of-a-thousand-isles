@@ -47,7 +47,7 @@ const SCHEMA = {
 import { gemini, guard, json } from './_gemini.js';
 
 export async function POST(req: Request): Promise<Response> {
-  const bad = guard(req); if (bad) return bad;
+  const bad = await guard(req); if (bad) return bad;
   let body: { sentence?: string; word?: string; meaning?: string; context?: string; lessons?: string[] };
   try { body = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
   const sentence = String(body.sentence || '').trim().slice(0, 500);

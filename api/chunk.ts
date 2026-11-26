@@ -30,7 +30,7 @@ const GRADE_SCHEMA = { type: 'OBJECT', properties: {
 const s = (x: unknown, n: number) => String(x ?? '').slice(0, n);
 
 export async function POST(req: Request): Promise<Response> {
-  const bad = guard(req, 120); if (bad) return bad;
+  const bad = await guard(req, 120); if (bad) return bad;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let b: any;
   try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }

@@ -1,4 +1,5 @@
 // Chấm câu "hiểu ngữ cảnh": gọi /api/check (Gemini, miễn phí). Chưa cài khóa hoặc lỗi → dùng LanguageTool + luật.
+import { aiFetch } from './ai';
 import { applyFixes, checkGrammar, softWarnings } from './sentence';
 import { LESSONS } from './grammarLessons';
 
@@ -27,7 +28,7 @@ const KIND_WHY: Record<string, string> = {
 export async function smartCheck(sentence: string, opt: { word?: string; meaning?: string; context?: string } = {}): Promise<SmartCheck> {
   if (!aiOff) {
     try {
-      const r = await fetch('/api/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sentence, ...opt, lessons: Object.keys(LESSONS) }) });
+      const r = await aiFetch('/api/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sentence, ...opt, lessons: Object.keys(LESSONS) }) });
       const d = await r.json().catch(() => ({}));
       // Chỉ tắt AI cho cả phiên khi máy chủ chưa cài khóa; AI bận thì lần sau vẫn thử lại
       if (r.status === 404 || d.error === 'not_configured') aiOff = true;

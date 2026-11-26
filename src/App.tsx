@@ -23,13 +23,14 @@ import { Speak } from './pages/Speak';
 import { Pron } from './pages/Pron';
 import { Skills } from './pages/Skills';
 import { Exam } from './pages/Exam';
+import { Admin } from './pages/Admin';
 import { ExamDock } from './components/ExamDock';
 const Stats = lazy(() => import('./pages/Stats'));
 const StatsPage = () => <Suspense fallback={<p className="muted">Đang tải…</p>}><Stats /></Suspense>;
 import { app, useApp, type Screen } from './state/store';
 
 const PAGES: Record<Screen, () => JSX.Element | null> = {
-  home: Home, unit: Unit, session: Session, words: Words, grammar: Grammar, speak: Speak, ipa: Pron, skills: Skills, stats: StatsPage, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest, exam: Exam,
+  home: Home, unit: Unit, session: Session, words: Words, grammar: Grammar, speak: Speak, ipa: Pron, skills: Skills, stats: StatsPage, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest, exam: Exam, admin: Admin,
 };
 
 export default function App() {

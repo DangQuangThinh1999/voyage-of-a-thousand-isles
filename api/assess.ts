@@ -29,7 +29,7 @@ const SCHEMA = {
 };
 
 export async function POST(req: Request): Promise<Response> {
-  const bad = guard(req, 40); if (bad) return bad;
+  const bad = await guard(req, 40); if (bad) return bad;
   let b: { task?: string; text?: string; cefr?: string; vocab?: string[]; seconds?: number };
   try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
   const text = String(b.text || '').slice(0, 6000);

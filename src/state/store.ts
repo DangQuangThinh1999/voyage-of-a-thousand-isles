@@ -10,7 +10,7 @@ import type { WordsState } from './words';
 import { configureSpeech, onVoicesChanged, stopSpeaking } from '../lib/speech';
 import type { SpeechScore } from '../lib/text';
 
-export type Screen = 'home' | 'unit' | 'session' | 'words' | 'review' | 'grammar' | 'speak' | 'ipa' | 'skills' | 'journal' | 'stats' | 'plan' | 'settings' | 'mic' | 'exam';
+export type Screen = 'home' | 'unit' | 'session' | 'words' | 'review' | 'grammar' | 'speak' | 'ipa' | 'skills' | 'journal' | 'stats' | 'plan' | 'settings' | 'mic' | 'exam' | 'admin';
 
 export type MicResult = (SpeechScore & { err?: undefined }) | { err: string };
 export interface StepState {
@@ -51,7 +51,7 @@ export function emit() { syncHash(); version++; subs.forEach((f) => f()); }
 // Tải lại vẫn ở đúng chỗ, nút Quay lại / Tiến tới hoạt động. Tab con là tầng thứ 2, tham số khác ở sau dấu ?
 export const SLUG: Partial<Record<Screen, string>> = {
   words: 'tu-moi', review: 'on-tu', grammar: 'ngu-phap', speak: 'giao-tiep', ipa: 'phat-am', skills: 'ky-nang', journal: 'viet',
-  stats: 'thanh-tuu', plan: 'lo-trinh', settings: 'cai-dat', mic: 'test-micro', exam: 'de-thi',
+  stats: 'thanh-tuu', plan: 'lo-trinh', settings: 'cai-dat', mic: 'test-micro', exam: 'de-thi', admin: 'quan-ly',
 };
 /** Tên tầng 2 (tab con) cho từng trang */
 export const SUB: Partial<Record<Screen, Record<string, [slug: string, label: string]>>> = {

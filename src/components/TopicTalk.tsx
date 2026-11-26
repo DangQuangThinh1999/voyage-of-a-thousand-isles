@@ -1,5 +1,6 @@
 // Nói theo chủ đề: đề hiện ngay theo cấp độ (không chờ AI), từ vựng nên dùng, dàn ý; nói một mạch (im lặng 3 giây thì dừng);
 // sửa chữ máy nghe nhầm; chấm MỘT lần bằng AI: điểm 3 tiêu chí, từng câu sai + loại lỗi + giải thích, từ vựng, bài sửa, bài mẫu.
+import { aiFetch } from '../lib/ai';
 import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { SPEAK_TOPICS } from '../data/speakTopics';
@@ -76,7 +77,7 @@ export function TopicTalk() {
     setGrading(true); setRes(null); setErr('');
     const loc = coachSpeaking(text, sec || words / 1.6);
     try {
-      const r = await fetch('/api/assess', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ task: task.en + (task.points ? ' You should say: ' + task.points.join('; ') : ''), text, cefr, vocab: task.vocab, seconds: sec }) });
+      const r = await aiFetch('/api/assess', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ task: task.en + (task.points ? ' You should say: ' + task.points.join('; ') : ''), text, cefr, vocab: task.vocab, seconds: sec }) });
       const d = await r.json();
       if (!r.ok || d.error) throw new Error('ai');
       setRes(d);

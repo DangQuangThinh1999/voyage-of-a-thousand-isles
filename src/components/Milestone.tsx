@@ -1,5 +1,6 @@
 // KIỂM TRA MỐC 100 TỪ: mỗi khi học đủ 100 từ → 1 bài: dịch đoạn văn Anh→Việt, dịch đoạn Việt→Anh (dùng chính 100 từ đó),
 // viết lại từ đã học bằng tiếng Anh, viết câu theo ngữ pháp trọng tâm. Làm hết rồi nộp, Gemini chấm 1 lần và sửa trọn bài.
+import { aiFetch } from '../lib/ai';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { ensureBank, firstSense, loadedBankWords, type BankWord } from '../data/bank';
@@ -31,9 +32,9 @@ const LS = 'ht.ms.v1';
 const load = (): MS | null => { try { return JSON.parse(localStorage.getItem(LS) || 'null'); } catch { return null; } };
 const store = (m: MS | null) => { try { if (m) localStorage.setItem(LS, JSON.stringify(m)); else localStorage.removeItem(LS); } catch { /* bỏ qua */ } };
 const post = async (body: unknown) => {
-  const r = await fetch('/api/chunk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const r = await aiFetch('/api/chunk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const d = await r.json().catch(() => ({}));
-  if (!r.ok || d.error) throw new Error(d.error === 'quota' ? 'AI hết lượt miễn phí, thử lại sau' : r.status === 404 ? 'máy chủ AI chưa bật' : 'AI đang bận, thử lại sau ít phút');
+  if (!r.ok || d.error) throw new Error(d.msg || (d.error === 'quota' ? 'AI hết lượt miễn phí, thử lại sau' : r.status === 404 ? 'máy chủ AI chưa bật' : 'AI đang bận, thử lại sau ít phút'));
   return d;
 };
 const GRAM = Object.keys(LESSONS);

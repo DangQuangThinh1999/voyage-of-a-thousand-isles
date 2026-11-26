@@ -1,5 +1,6 @@
 // Tạo bài luyện mới bằng AI (/api/gen): chủ đề đa dạng (IELTS, nhiều quốc gia, môi trường, khoa học, công sở đa quốc gia…),
 // thể loại khác nhau mỗi lần, đúng cấp độ CEFR. Lưu các bài đã tạo trên máy để làm lại và tránh trùng đề.
+import { aiFetch } from './ai';
 import { pick1 } from './util';
 
 export type GenKind = 'reading' | 'listening' | 'speaking' | 'writing';
@@ -40,7 +41,7 @@ export async function generate(kind: GenKind, cefr: string, topicIdx: number): P
   const T = topicIdx >= 0 ? TOPICS[topicIdx] : pick1(TOPICS);
   const angle = pick1(T[2]), genre = pick1(GENRES[kind]);
   const avoid = genHistory(kind).slice(0, 10).map((x) => x.title);
-  const r = await fetch('/api/gen', {
+  const r = await aiFetch('/api/gen', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ kind, cefr: lv[0], band: lv[1], topic: `${angle} (genre: ${genre})`, avoid }),
   }).catch(() => { throw new Error('Không kết nối được. Kiểm tra mạng rồi thử lại.'); });

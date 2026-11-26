@@ -1,3 +1,4 @@
+import { AiQuotaCard } from './Admin';
 import { Card } from '../components/Card';
 import { startRename } from '../components/NickModal';
 import { balance, renameCost } from '../lib/nick';
@@ -22,6 +23,7 @@ export function Settings() {
           : u ? <><p>Đã đăng nhập: <b>{u.email || u.displayName || ''}</b>. Tiến độ tự lưu lên mây.</p><button className="btn ghost" data-act="logout" onClick={logout}>Đăng xuất</button></>
             : <><p>Đăng nhập Google để lưu tiến độ lên mây và học trên nhiều máy.</p><button className="btn" data-act="login" onClick={login}>Đăng nhập Google</button></>}
       </Card>
+      <AiQuotaCard />
       <Card><h3>Micro</h3><p className="muted small">Kiểm tra micro, xem máy nghe được bao nhiêu từ và nghe lại giọng mình.</p><button className="btn" data-act="tab" data-tab="mic" onClick={() => go('mic')}>🎤 Test micro</button></Card>
       <Card><h3>Giọng đọc</h3>
         {vs.length ? <Dropdown className="w-full" label="Giọng" value={cur ? cur.name : ''} onChange={setVoice} options={vs.map((v) => ({ value: v.name, icon: /GB|UK/i.test(v.lang + v.name) ? '🇬🇧' : /US/i.test(v.lang) ? '🇺🇸' : '🗣️', label: v.name, sub: v.lang }))} />

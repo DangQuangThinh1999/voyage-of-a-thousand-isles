@@ -1,5 +1,6 @@
 // HỌC THEO CỤM: thay vì học từng từ rời, dịch cả câu (~10 từ) hoặc đoạn ngắn (tối đa 20 từ) có chứa từ đang học,
 // rồi Gemini chấm, viết lại trọn bản dịch đã sửa và giải thích từng lỗi. Không có AI → dùng câu ví dụ trong kho từ, chấm sơ bộ.
+import { aiFetch } from '../lib/ai';
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import { bankRange, bankWord, nextBankWords, type BankWord } from '../data/bank';
@@ -20,9 +21,9 @@ type Dir = 'vi-en' | 'en-vi';
 const LENS: [Len, string][] = [['10', '📝 Câu ~10 từ'], ['15', '📝 Câu dài ~15 từ'], ['20', '📄 Đoạn ≤20 từ']];
 const wc = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
 const post = async (body: unknown) => {
-  const r = await fetch('/api/chunk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const r = await aiFetch('/api/chunk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const d = await r.json().catch(() => ({}));
-  if (!r.ok || d.error) throw new Error(d.error || String(r.status));
+  if (!r.ok || d.error) throw new Error(d.msg || d.error || String(r.status));
   return d;
 };
 

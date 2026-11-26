@@ -1,4 +1,5 @@
 // Bài mẫu cho một đề viết (AI viết đúng cấp độ), có dịch, ghi chú vì sao bài tốt, từ vựng. Lưu trên máy để mở lại nhanh.
+import { aiFetch } from '../lib/ai';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 import { AudioButton } from './AudioButton';
@@ -17,7 +18,7 @@ export function ModelAnswer({ prompt, cefr, minWords }: { prompt: string; cefr: 
     setOpen(!open); if (s || busy || open) return;
     setBusy(true); setErr('');
     try {
-      const r = await fetch('/api/gen', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind: 'sample', cefr, topic: `${prompt} (khoảng ${minWords}–${Math.round(minWords * 1.2)} từ)` }) });
+      const r = await aiFetch('/api/gen', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind: 'sample', cefr, topic: `${prompt} (khoảng ${minWords}–${Math.round(minWords * 1.2)} từ)` }) });
       const d = await r.json();
       if (!r.ok || d.error) throw new Error(d.error === 'not_configured' ? 'Chưa cài khóa AI.' : 'AI đang bận, thử lại sau ít phút.');
       setS(d); try { localStorage.setItem(KEY, JSON.stringify({ ...cache(), [prompt]: d })); } catch { /* bỏ qua */ }

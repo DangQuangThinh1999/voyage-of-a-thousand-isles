@@ -23,7 +23,7 @@ const SCHEMA = {
 };
 
 export async function POST(req: Request): Promise<Response> {
-  const bad = guard(req); if (bad) return bad;
+  const bad = await guard(req); if (bad) return bad;
   let b: { question?: string; answer?: string; cefr?: string; part?: string };
   try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
   const q = String(b.question || '').slice(0, 400), a = String(b.answer || '').slice(0, 2000);

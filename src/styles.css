@@ -780,3 +780,6 @@ main { max-width: 980px; overflow-x: clip; }
 .chunk-rev { display: grid; gap: 4px; padding-top: 8px; border-top: 1px dashed var(--line); }
 .chunk-dots button.gap { margin-left: 18px; }
 .warn-box { background: var(--warn-soft); border: 1px solid #f59e0b; padding: 8px 10px; border-radius: 10px; text-align: left; }
+.adm-list { display: grid; gap: 8px; margin-top: 8px; }
+.adm-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); }
+.adm-num { width: 80px; }

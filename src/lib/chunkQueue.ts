@@ -1,5 +1,6 @@
 // Hàng chờ chấm lại "Học theo cụm": khi AI bận, lượt làm bài được lưu lại; app tự gửi chấm lại lúc rảnh
 // (khi mở app và vài phút một lần khi không thao tác), chấm xong thì cộng từ mới cho các câu QUA (cả 2 chiều ≥ 70).
+import { aiFetch } from './ai';
 import { today } from './progress';
 import { addDays, dayKey } from './util';
 import { addXP, app, save, toast } from '../state/store';
@@ -22,7 +23,7 @@ async function processQueue() {
   let gained: string[] = [], done = 0;
   for (const e of q) {
     try {
-      const r = await fetch('/api/chunk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ part: 'gradeall', cefr: e.cefr, items: e.items }) });
+      const r = await aiFetch('/api/chunk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ part: 'gradeall', cefr: e.cefr, items: e.items }) });
       const d = await r.json().catch(() => ({}));
       if (!r.ok || d.error || !Array.isArray(d.results)) break; // AI vẫn bận: để lần sau
       const P = app.P;

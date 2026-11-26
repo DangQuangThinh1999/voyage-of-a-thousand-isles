@@ -83,5 +83,7 @@ export const Cloud = {
   publishBoard, readBoard,
   init, signIn, signOut, schedulePush, push,
   get user() { return st.user; },
+  /** Vé đăng nhập (Firebase ID token) gửi kèm khi gọi AI để máy chủ đếm lượt theo người */
+  async token(): Promise<string | null> { try { return st.ok && st.fb.au.currentUser ? await st.fb.au.currentUser.getIdToken() : null; } catch { return null; } },
   get configured() { return !!C.firebase; },
 };

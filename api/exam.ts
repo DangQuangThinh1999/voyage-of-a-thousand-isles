@@ -93,7 +93,7 @@ const COUNTRIES = ['the UK', 'Australia', 'Canada', 'the USA', 'New Zealand', 'I
 const s = (x: unknown, n: number) => String(x ?? '').slice(0, n);
 
 export async function POST(req: Request): Promise<Response> {
-  const bad = guard(req, 60); if (bad) return bad;
+  const bad = await guard(req, 60); if (bad) return bad;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let b: any;
   try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }

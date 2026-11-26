@@ -1,5 +1,6 @@
 // Đề kiểm tra do AI (Gemini) soạn: bấm Kiểm tra → soạn nền (có thanh tiến trình, đi trang khác vẫn chạy) → xong hiện popup vào làm.
 // Đề chưa làm được giữ tới hết ngày. Mỗi lần làm lại là một đề MỚI. Làm hết 4 kỹ năng rồi nộp → chấm một lần (đáp án + AI sửa trọn bài).
+import { aiFetch } from '../lib/ai';
 import { unitById, type Unit } from '../data';
 import { bankRange } from '../data/bank';
 import { KINDS, levelNow, tallySkill, unitProg, vocabWeekSize, weekUnits } from '../lib/progress';
@@ -84,9 +85,9 @@ async function contextOf(key: string): Promise<Ctx> {
 }
 
 async function post(body: unknown) {
-  const r = await fetch('/api/exam', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const r = await aiFetch('/api/exam', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const d = await r.json().catch(() => ({}));
-  if (!r.ok || d.error) throw new Error(d.error === 'not_configured' ? 'Chưa cài khoá AI' : d.error === 'quota' ? 'AI hết lượt miễn phí, thử lại sau ít phút' : r.status === 404 ? 'Máy chủ AI chưa bật (chỉ chạy trên web đã deploy)' : 'AI đang bận, thử lại sau');
+  if (!r.ok || d.error) throw new Error(d.msg || (d.error === 'not_configured' ? 'Chưa cài khoá AI' : d.error === 'quota' ? 'AI hết lượt miễn phí, thử lại sau ít phút' : r.status === 404 ? 'Máy chủ AI chưa bật (chỉ chạy trên web đã deploy)' : 'AI đang bận, thử lại sau'));
   return d;
 }
 

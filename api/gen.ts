@@ -63,7 +63,7 @@ vocab: 5–8 từ/cụm hay trong bài có phiên âm Anh /.../ và nghĩa.`,
 };
 
 export async function POST(req: Request): Promise<Response> {
-  const bad = guard(req, 60); if (bad) return bad;
+  const bad = await guard(req, 60); if (bad) return bad;
   let b: { kind?: string; cefr?: string; band?: string; topic?: string; avoid?: string[] };
   try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
   const spec = SPEC[String(b.kind)];

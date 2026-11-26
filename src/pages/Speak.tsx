@@ -1,3 +1,4 @@
+import { aiFetch } from '../lib/ai';
 import { useEffect, useState } from 'react';
 import { useRouteNum, useRouteParam } from '../lib/route';
 import { Dropdown } from '../components/Dropdown';
@@ -77,7 +78,7 @@ function isEcho(q: string, a: string) {
 async function askExaminer(question: string, answer: string, cefr: string, part: string): Promise<Talk | null> {
   if (!answer.trim()) return null;
   try {
-    const r = await fetch('/api/talk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question, answer, cefr, part }) });
+    const r = await aiFetch('/api/talk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question, answer, cefr, part }) });
     const d = await r.json(); return r.ok && d.reply ? d : null;
   } catch { return null; }
 }

@@ -52,3 +52,15 @@ export async function generate(kind: GenKind, cefr: string, topicIdx: number): P
   try { localStorage.setItem(KEY, JSON.stringify([item, ...load()].slice(0, 40))); } catch { /* bỏ qua */ }
   return item;
 }
+
+/** Bài của giờ này (dùng chung cho mọi người, đổi mỗi giờ theo giờ Việt Nam). null nếu chưa có / máy chủ bận. */
+export async function hourly(kind: GenKind, cefr: string): Promise<GenItem | null> {
+  try {
+    const r = await aiFetch(`/api/gen?hourly=1&kind=${kind}&cefr=${cefr}`);
+    const d = await r.json();
+    if (!r.ok || d.error) return null;
+    const title = d.title || d.prompt?.slice(0, 60) || d.part2?.cue || d._topic;
+    const hh = String(d.slot || '').slice(-2);
+    return { id: -parseInt(String(d.slot || '0').replace(/\D/g, '').slice(-8), 10) || -1, kind, cefr, topic: `🕐 Bài giờ ${hh}:00`, title, data: d };
+  } catch { return null; }
+}

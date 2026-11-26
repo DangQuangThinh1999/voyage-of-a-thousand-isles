@@ -1,6 +1,7 @@
 // Vercel Function: POST /api/gen — tạo bài luyện MỚI mỗi lần (Gemini, gói miễn phí) theo kỹ năng, cấp độ, chủ đề IELTS.
 // kind: reading | listening | speaking | writing. Đáp án phải có căn cứ trong bài; giải thích bằng tiếng Việt.
 import { gemini, guard, json } from './_gemini.js';
+import { db, quotaOn } from './_quota.js';
 
 const BASE = `Bạn là người ra đề IELTS giàu kinh nghiệm, soạn bài cho người Việt luyện thi.
 - Viết đúng trình độ CEFR được yêu cầu (từ vựng, độ dài câu, ngữ pháp). A1–A2 dùng câu ngắn, từ thông dụng; B2–C2 dùng văn phong học thuật như đề thật.
@@ -72,4 +73,46 @@ export async function POST(req: Request): Promise<Response> {
   const avoid = (Array.isArray(b.avoid) ? b.avoid : []).slice(0, 10).map((x) => String(x).slice(0, 80));
   const user = `Trình độ: ${cefr}${band ? ` (IELTS ${band})` : ''}. ${b.kind === 'sample' ? 'Đề viết' : 'Chủ đề'}: ${topic}.${avoid.length ? `\nTránh lặp lại các bài đã làm có tiêu đề/ý: ${avoid.join('; ')}` : ''}\n${spec.rule}`;
   return gemini(BASE, user, spec.schema, b.kind === 'sample' ? 0.5 : 0.9);
+}
+
+// ---------- BÀI CỦA GIỜ NÀY: mỗi giờ, mỗi loại bài + trình độ có 1 bài mới, soạn 1 lần dùng chung cho mọi người ----------
+// GET /api/gen?hourly=1&kind=reading&cefr=B1 → bài của giờ hiện tại (giờ Việt Nam). Chưa có thì soạn (không trừ lượt người học).
+const ANGLES = ['a job interview at a tech company in Singapore', 'climate policy in a Nordic country', 'street food culture in Bangkok', 'a study on sleep and memory', 'remote work in Canada', 'overtourism in Venice', 'rice farming in the Mekong Delta', 'public transport in Tokyo',
+  'a university lecture on marine biology', 'mental health at work in the UK', 'renewable energy in Germany', 'a customer complaint at a hotel in Sydney', 'volunteering in South Africa', 'e-sports in South Korea', 'housing costs for young people in Ireland', 'learning a second language as an adult',
+  'food waste in supermarkets', 'the four-day work week', 'smart cities and privacy', 'a museum tour in Paris', 'healthy eating habits in Japan', 'coral reef restoration in Australia', 'a podcast about saving money', 'cycling in Amsterdam', 'a family tradition at Lunar New Year',
+  'studying abroad in New Zealand', 'fake news and media literacy', 'a team meeting at a startup in India', 'coffee production in Brazil and Vietnam', 'ageing populations', 'space tourism', 'a radio interview with a young entrepreneur in Kenya', 'online shopping habits', 'a weekend trip in the Scottish Highlands'];
+const GENRE: Record<string, string[]> = {
+  reading: ['news article', 'research summary', 'magazine feature', 'blog post', 'opinion column', 'company report', 'IELTS-style academic passage'],
+  listening: ['conversation between two friends', 'university lecture', 'radio interview', 'podcast segment', 'customer service phone call', 'team meeting', 'tour guide talk'],
+  speaking: ['IELTS speaking test'], writing: ['IELTS writing task'],
+};
+const BANDS: Record<string, string> = { A1: '2.0–3.0', A2: '3.5–4.0', B1: '4.5–5.5', B2: '6.0–6.5', C1: '7.0–8.0', C2: '8.5–9.0' };
+const vnHour = () => { const d = new Date(Date.now() + 7 * 3600_000); return d.toISOString().slice(0, 13).replace('T', '-'); };
+const making = new Map<string, Promise<unknown>>();
+
+export async function GET(req: Request): Promise<Response> {
+  const u = new URL(req.url), kind = String(u.searchParams.get('kind')), cefr = String(u.searchParams.get('cefr') || 'B1').slice(0, 2);
+  if (!u.searchParams.has('hourly') || !SPEC[kind] || kind === 'sample' || !BANDS[cefr]) return json({ error: 'bad_request' }, 400);
+  if (!quotaOn()) return json({ error: 'not_configured' }, 503);
+  const slot = vnHour(), id = `${kind}_${cefr}_${slot}`, ref = db().collection('hourly').doc(id);
+  const have = await ref.get();
+  if (have.exists) return json({ slot, ...(JSON.parse(have.get('data')) as object) });
+  // chưa có: soạn (cần đăng nhập, không trừ lượt), mỗi máy chủ chỉ soạn 1 lần cho cùng một giờ
+  const bad = await guard(req, 120, 0); if (bad) return bad;
+  if (!making.has(id)) making.set(id, (async () => {
+    const h = parseInt(slot.slice(-2), 10) + parseInt(slot.slice(8, 10), 10) * 24;
+    const angle = ANGLES[(h * 7 + kind.length * 3 + cefr.charCodeAt(1)) % ANGLES.length], genres = GENRE[kind], genre = genres[h % genres.length];
+    const spec = SPEC[kind];
+    const user = `Trình độ: ${cefr} (IELTS ${BANDS[cefr]}). Chủ đề: ${angle} (genre: ${genre}).\nTình huống phải chân thật, sát đời sống/đề thi thật, áp dụng được ngay.\n${spec.rule}`;
+    const r = await gemini(BASE, user, spec.schema, 0.8);
+    const d = await r.json() as Record<string, unknown>;
+    if (!r.ok || d.error) throw new Error(String(d.error || r.status));
+    const data = { ...d, _topic: angle, _genre: genre };
+    await ref.set({ kind, cefr, slot, data: JSON.stringify(data), created: Date.now() });
+    // dọn bài cũ hơn 2 ngày để database gọn
+    try { const old = await db().collection('hourly').where('created', '<', Date.now() - 48 * 3600_000).limit(30).get(); await Promise.all(old.docs.map((x) => x.ref.delete())); } catch { /* bỏ qua */ }
+    return data;
+  })().finally(() => setTimeout(() => making.delete(id), 60_000)));
+  try { const data = await making.get(id); return json({ slot, ...(data as object) }); }
+  catch (e) { return json({ error: (e as Error).message === 'quota' ? 'quota' : 'busy' }, 503); }
 }

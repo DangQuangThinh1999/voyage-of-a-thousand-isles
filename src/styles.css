@@ -755,3 +755,9 @@ main { max-width: 980px; overflow-x: clip; }
 .speak-out.empty { color: var(--muted); font-style: italic; }
 .bandbox.pass { border-color: var(--good); } .bandbox.fail { border-color: var(--bad); }
 .bandbox small + b + small { display: block; font-size: .7rem; margin-top: 2px; }
+.script { margin: 10px 0; padding: 10px 12px; border-radius: 12px; background: var(--bg); border: 1px solid var(--line); display: grid; gap: 6px; }
+.script .sline { margin: 0; padding: 6px 8px; border-radius: 8px; line-height: 1.55; }
+.script .sline.hit { background: rgba(250, 204, 21, .12); border-left: 3px solid #facc15; }
+.script mark { background: #facc15; color: #1a1a1a; border-radius: 4px; padding: 0 3px; font-weight: 700; }
+.qtag { display: inline-block; font-size: .72rem; font-weight: 800; padding: 1px 7px; border-radius: 99px; margin-right: 6px; }
+.qtag.ok { background: var(--good-soft); color: var(--good); } .qtag.no { background: var(--bad-soft); color: var(--bad); }

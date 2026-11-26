@@ -317,12 +317,12 @@ function Results({ E }: { E: ExamState }) {
 
       <section className="card">
         <h3 className="m-0">🎧 Nghe · {R.score.listening.join('/')}</h3>
-        <details><summary className="small">📜 Lời thoại + dịch</summary>{X.listening.script.map((l, i) => <p key={i} className="small m-0"><b>{l.en}</b> <AudioButton text={strip(l.en)} className="icon xs" /><br /><span className="muted">{l.vi}</span></p>)}</details>
+        <Script lines={X.listening.script} qs={X.listening.questions} E={E} sec="listening" title="📜 Lời thoại (script) — dò đáp án" audio />
         <Qs E={E} sec="listening" qs={X.listening.questions} review />
       </section>
       <section className="card">
         <h3 className="m-0">📖 Đọc · {R.score.reading.join('/')}</h3>
-        <details><summary className="small">📜 Bài đọc + dịch</summary>{X.reading.passage.map((l, i) => <p key={i} className="small m-0">{l.en}<br /><span className="muted">{l.vi}</span></p>)}</details>
+        <Script lines={X.reading.passage} qs={X.reading.questions} E={E} sec="reading" title="📜 Bài đọc — dò đáp án" />
         <Qs E={E} sec="reading" qs={X.reading.questions} review />
       </section>
       <section className="card">
@@ -332,6 +332,34 @@ function Results({ E }: { E: ExamState }) {
     </div>
   );
 }
+const nz = (t: string) => t.toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+/** Script/bài đọc sau khi nộp: câu chứa căn cứ được tô sáng + nhãn số câu hỏi (xanh = bạn đúng, đỏ = sai), đáp án gõ in đậm */
+function Script({ lines, qs, E, sec, title, audio }: { lines: { en: string; vi: string }[]; qs: ExamQ[]; E: ExamState; sec: SecKey; title: string; audio?: boolean }) {
+  const [vi, setVi] = useState(true);
+  const hitOf = (line: string) => qs.map((q, k) => ({ q, k })).filter(({ q }) => { const a = nz(line), b = nz(strip(q.evidence || '')); return b.length > 6 && (a.includes(b) || b.includes(a)); });
+  const bold = (line: string, hs: { q: ExamQ }[]) => {
+    const keys = hs.filter(({ q }) => q.type === 'type').flatMap(({ q }) => q.answer_text.split('|')).filter((x) => x.trim().length > 0);
+    if (!keys.length) return line;
+    const re = new RegExp(`(${keys.map((x) => x.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'i');
+    return line.split(re).map((part, j) => (j % 2 ? <mark key={j}>{part}</mark> : part));
+  };
+  return (
+    <div className="script">
+      <div className="row between"><b className="small">{title}</b><button className="btn ghost sm" onClick={() => setVi(!vi)}>{vi ? 'Ẩn' : 'Hiện'} dịch</button></div>
+      {lines.map((l, i) => {
+        const hs = hitOf(l.en);
+        return (
+          <p key={i} className={'sline ' + (hs.length ? 'hit' : '')}>
+            {hs.map(({ q, k }) => <span key={k} className={'qtag ' + (isRight(q, E.ans.q[qid(sec, k)]) ? 'ok' : 'no')}>Câu {k + 1}</span>)}
+            <span>{bold(l.en, hs)}</span>{audio && <> <AudioButton text={strip(l.en)} className="icon xs" /></>}
+            {vi && <><br /><span className="muted small">{l.vi}</span></>}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 function BandList({ b }: { b: { name: string; band: number; comment_vi: string }[] }) {
   return <ul className="bandlist">{b.map((x, i) => <li key={i}><b>{x.name}: {x.band}</b> — {x.comment_vi}</li>)}</ul>;
 }

@@ -20,7 +20,8 @@ const COOL = new Map<string, number>();
 
 export async function gemini(system: string, user: string, schema: unknown, temperature = 0.2, fast = false, perModelMs = 32_000, budgetMs = 100_000): Promise<Response> {
   const key = process.env.GEMINI_API_KEY!;
-  const order = fast ? ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-3.5-flash'] : ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];
+  // Gói miễn phí: Flash 20 lượt/ngày/model, Flash Lite 500 lượt/ngày/model → việc thường dùng Lite trước, việc cần chất lượng (fast = false) thử Flash trước
+  const order = fast ? ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-3.6-flash'] : ['gemini-3.8-flash', 'gemini-3.6-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];
   const models = [...new Set([process.env.GEMINI_MODEL, ...order, 'gemini-flash-latest'].filter(Boolean) as string[])];
   const t0 = Date.now();
   let last = 0;

@@ -35,6 +35,8 @@ export interface Progress {
   settings: Settings; startDate: string; updated: number; seenIntro: boolean;
   /** ngày bắt đầu học kho từ (để tính lịch từ vựng) */
   vStart?: string;
+  /** câu người học tự viết cho từng từ (hiện lại khi ôn) */
+  vs?: Record<string, string>;
 }
 
 export const fresh = (): Progress => ({ v: 1, xp: 0, streak: 0, lastDay: '', days: {}, units: {}, srs: {}, journal: [], tests: {},
@@ -113,6 +115,7 @@ export function mergeProgress(P: Progress, r: Progress | null | undefined): Prog
   m.xp = Math.max(P.xp || 0, r.xp || 0);
   m.startDate = [P.startDate, r.startDate].filter(Boolean).sort()[0] || dayKey();
   m.vStart = [P.vStart, r.vStart].filter(Boolean).sort()[0];
+  m.vs = { ...(older.vs || {}), ...(newer.vs || {}) };
   m.units = { ...(older.units || {}) };
   for (const [id, v] of Object.entries(newer.units || {})) m.units[id] = { ...(m.units[id] || {}), ...v };
   m.days = { ...(older.days || {}) };

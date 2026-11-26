@@ -37,7 +37,8 @@ export function Review() {
           ? <><div className="en">{w.en}</div><div className="row gap center"><SayBoth text={w.en} /></div><p className="muted">Nghĩa là gì?</p></>
           : <>{w.em && <div className="huge">{w.em}</div>}<div className="vi">{w.vi}</div><p className="muted">Tiếng Anh là gì? Hãy nói to!</p></>}
         {R.flip && <><hr />{w.em && <div className="huge">{w.em}</div>}<div className="en">{w.en} <AudioButton text={w.en} /></div>{w.ipa && <div className="muted">{w.ipa}</div>}<div className="vi">{w.vi}</div>
-          {w.ex && <><p className="ex"><b>{w.ex}</b> <AudioButton text={w.ex} /></p><p className="muted small">{w.exvi}</p></>}</>}
+          {w.ex && <><p className="ex"><b>{w.ex}</b> <AudioButton text={w.ex} /></p><p className="muted small">{w.exvi}</p></>}
+          {P.vs && P.vs[c.w] && <p className="tip">✍️ Câu của bạn: <b>{P.vs[c.w]}</b> <AudioButton text={P.vs[c.w]} /></p>}</>}
       </Card>
       <div className="foot">{R.flip
         ? <><button className="btn ghost big" data-act="rate" data-ok="0" onClick={() => rate(false)}>😕 Quên</button><button className="btn big" data-act="rate" data-ok="1" onClick={() => rate(true)}>🙂 Nhớ</button></>

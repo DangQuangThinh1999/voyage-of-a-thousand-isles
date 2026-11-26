@@ -8,7 +8,8 @@ import { bankLearned, newWordsToday, vocabBehind, vocabWeek, weekNow } from '../
 import { dueWords } from '../lib/srs';
 import { setWpd } from '../state/actions';
 import { tab, useApp } from '../state/store';
-import { checkTyped, GROUP, knowWord, leftToday, learnWord, nextWordQ, pickWordAnswer, quitWords, startWords } from '../state/words';
+import { checkSentence, type SentenceResult } from '../lib/sentence';
+import { checkTyped, GROUP, knowWord, saveSentence, leftToday, learnWord, nextWordQ, pickWordAnswer, quitWords, startWords } from '../state/words';
 
 const WPD = [10, 20, 30, 40, 50, 70, 100];
 const fmt = (n: number) => n.toLocaleString('vi-VN');
@@ -107,11 +108,57 @@ function LearnCard() {
         <hr />
         <p className="ex"><b>{w.ex}</b> <AudioButton text={w.ex} /> <AudioButton text={w.ex} slow label="🐢" title="Đọc chậm" /></p>
         <p className="muted">{w.exvi}</p>
-        <p className="tip small">🗣️ Đọc to từ và câu ví dụ 3 lần, rồi tự nghĩ một câu về bạn có dùng từ <b>{w.w}</b>.</p>
+        <p className="tip small">🗣️ Đọc to từ và câu ví dụ 3 lần, rồi tự viết một câu về bạn có dùng từ <b>{w.w}</b>.</p>
+      </Card>
+      <WriteSentence key={w.w} />
+    </>
+  );
+}
+
+/** Tự viết 1 câu với từ mới, máy chấm đúng/sai. Viết đạt mới được bấm "Học từ này". */
+function WriteSentence() {
+  const W = useApp().W!, w = W.group[W.i];
+  const [text, setText] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [res, setRes] = useState<SentenceResult | null>(null);
+  const [fails, setFails] = useState(0);
+  const passed = !!res && res.ok;
+  async function check() {
+    if (!text.trim() || busy) return;
+    setBusy(true);
+    const r = await checkSentence(text, w);
+    setBusy(false); setRes(r);
+    if (r.ok) saveSentence(text); else setFails((n) => n + 1);
+  }
+  return (
+    <>
+      <Card>
+        <h3>✍️ Viết câu của bạn với “{w.w}”</h3>
+        <p className="muted small">Viết một câu thật về bạn, công việc hoặc cuộc sống của bạn (ít nhất 5 từ). Máy sẽ chấm từ vựng và ngữ pháp.</p>
+        <form onSubmit={(e) => { e.preventDefault(); check(); }}>
+          <textarea className="ans" rows={2} placeholder={`Ví dụ: I ... ${w.w} ...`} value={text} disabled={passed}
+            data-autofocus={passed ? undefined : '1'} onChange={(e) => { setText(e.target.value); setRes(null); }}
+            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); check(); } }} />
+          {!passed && <button className="btn" type="submit" disabled={busy || !text.trim()} style={{ marginTop: 10 }}>{busy ? 'Đang chấm…' : 'Kiểm tra câu'}</button>}
+        </form>
+        {res && (
+          <div className="sent-res">
+            {res.ok
+              ? <p className="okc">✅ Câu đúng! {res.offline ? '(Không kết nối được máy chấm ngữ pháp, mới chấm theo luật của app.)' : ''} <AudioButton text={text} /></p>
+              : <p className="badc">Chưa đạt, sửa lại nhé:</p>}
+            <ul className="checks">
+              {res.checks.filter(([ok]) => !ok).map(([, m]) => <li key={m} className="badc">✗ {m}</li>)}
+              {res.issues.map((x, i) => (
+                <li key={i}>✗ {x.kind}: <b className="badc">“{x.bad}”</b>{x.fix.length ? <> → <b className="okc">{x.fix.join(' / ')}</b></> : null}<br /><span className="muted small">{x.msg}</span></li>
+              ))}
+            </ul>
+          </div>
+        )}
       </Card>
       <div className="foot">
         <button className="btn ghost big" data-act="know" onClick={knowWord}>✓ Đã biết</button>
-        <button className="btn big" data-act="learn" onClick={learnWord}>Học từ này →</button>
+        <button className="btn big" data-act="learn" disabled={!passed} title={passed ? '' : 'Viết đúng một câu để tiếp tục'} onClick={learnWord}>Học từ này →</button>
+        {!passed && fails >= 2 && <button className="btn ghost sm" onClick={learnWord}>Bỏ qua câu này</button>}
       </div>
     </>
   );

@@ -56,6 +56,13 @@ export function knowWord() {
   W.known++; countNew(1); save();
   nextCard();
 }
+/** Lưu câu tự viết đã đạt cho từ đang học */
+export function saveSentence(text: string) {
+  const W = app.W!, w = W.group[W.i];
+  if (!app.P.vs) app.P.vs = {};
+  app.P.vs[w.w] = text.trim();
+  W.xp += 1; save();
+}
 export function learnWord() { const W = app.W!; W.learn.push(W.group[W.i]); nextCard(); }
 
 function makeQ(w: BankWord, t: WordQ['t']): WordQ {
@@ -102,7 +109,7 @@ function finish() {
   const W = app.W!, due = addDays(dayKey(), 1);
   W.learn.forEach((w) => { if (!app.P.srs[w.w]) app.P.srs[w.w] = { b: 0, due, f: w.f }; });
   countNew(W.learn.length);
-  W.xp = W.learn.length * 2 + W.known;
+  W.xp += W.learn.length * 2 + W.known;
   W.phase = 'done';
   if (W.xp) addXP(W.xp); else { save(); emit(); }
 }

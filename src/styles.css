@@ -283,3 +283,6 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
 .vrow.now { border-color: var(--pri); background: var(--pri-soft); }
 .vrow.okc { border-color: var(--good); }
 .gap-s { font-size: 1.15rem; font-weight: 600; line-height: 1.5; margin: 8px 0; }
+.sent-res { margin-top: 12px; }
+.checks { list-style: none; padding: 0; margin: 6px 0 0; display: grid; gap: 6px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }

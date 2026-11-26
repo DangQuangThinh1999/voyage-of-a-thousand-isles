@@ -7165,3 +7165,476 @@
 {"w":"reactive","syn":["sensitive","excited","unstable","activated","oxidizable"],"ant":["unreactive"]}
 {"w":"rite","syn":["ritual","religious rite"],"ant":[]}
 {"w":"compass","syn":["ambit","comprehend","range","scope","reach","apprehend","savvy","dig","orbit","circumnavigate","get the picture","grasp"],"ant":[]}
+{"w":"repetitive","syn":["insistent","continual","repetitious","unvarying","unvaried","iterative","reiterative"],"ant":[]}
+{"w":"desperation","syn":["despair"],"ant":[]}
+{"w":"arthritis","syn":[],"ant":[]}
+{"w":"telly","syn":["idiot box","boob tube","tv","television","television set","goggle box","television receiver","tv set"],"ant":[]}
+{"w":"influx","syn":["inflow"],"ant":["effluence","efflux","outflow"]}
+{"w":"construe","syn":["interpret"],"ant":[]}
+{"w":"avoidance","syn":["shunning","dodging","turning away"],"ant":[]}
+{"w":"battalion","syn":["multitude","pack","large number"],"ant":[]}
+{"w":"pier","syn":[],"ant":[]}
+{"w":"maltreat","syn":["abuse","mistreat","ill-use","ill-treat"],"ant":[]}
+{"w":"admirable","syn":["pleasing","estimable"],"ant":[]}
+{"w":"deception","syn":["legerdemain","illusion","deceit","magic","misrepresentation","trick","dissimulation","dissembling","magic trick","conjuring trick"],"ant":["maladroit"]}
+{"w":"lifelong","syn":["long","womb-to-tomb"],"ant":[]}
+{"w":"moist","syn":["wet","damp","dampish"],"ant":[]}
+{"w":"sweetheart","syn":["peach","steady","sweetie","beauty","dish","knockout","stunner","lulu","looker","mantrap","smasher","truelove"],"ant":[]}
+{"w":"lipid","syn":["lipide","lipoid"],"ant":[]}
+{"w":"boiler","syn":["kettle","steam boiler"],"ant":[]}
+{"w":"abolition","syn":["abolishment"],"ant":[]}
+{"w":"stubborn","syn":["dour","tenacious","obstinate","pertinacious","unyielding","hard","difficult","determined","dogged","cantankerous","intractable","contrarious","mulish","hardheaded","refractory","bullheaded","strong-willed","bulldog","bolshy","strong-minded","pigheaded","stroppy","bloody-minded","stiff-necked","unregenerate","unreconstructed","cross-grained","bullet-headed"],"ant":["docile"]}
+{"w":"intestinal","syn":["enteral","enteric"],"ant":[]}
+{"w":"downstream","syn":["downriver"],"ant":["upstream","upriver"]}
+{"w":"purport","syn":["spirit","drift","purpose","propose","intent","aim"],"ant":[]}
+{"w":"attest","syn":["manifest","demonstrate","evidence","certify","testify","bear witness","take the stand"],"ant":[]}
+{"w":"youthful","syn":["immature","young","vernal"],"ant":[]}
+{"w":"rout","syn":["root","expel","rabble","groove","discomfit","gouge","rootle","discomfiture","spread-eagle","spreadeagle","rout out","mob"],"ant":[]}
+{"w":"inverse","syn":["reciprocal","opposite","reverse","backward"],"ant":["direct"]}
+{"w":"reflective","syn":["pensive","musing","thoughtful","contemplative","ruminative","brooding","pondering","intellectual","meditative","broody","specular","reflecting","mirrorlike"],"ant":["nonreflecting","nonreflective"]}
+{"w":"pellet","syn":["shot"],"ant":[]}
+{"w":"analogous","syn":["similar","correspondent"],"ant":["homologous","heterological","heterologic","heterologous"]}
+{"w":"materially","syn":[],"ant":[]}
+{"w":"disapprove","syn":["reject"],"ant":["sanction","okay","approve","ok"]}
+{"w":"mitigate","syn":["palliate","extenuate"],"ant":[]}
+{"w":"guitarist","syn":["guitar player"],"ant":[]}
+{"w":"nutritional","syn":["nutritionary"],"ant":[]}
+{"w":"testament","syn":["will"],"ant":[]}
+{"w":"plaza","syn":["mall","shopping mall","shopping center","center","piazza","place"],"ant":[]}
+{"w":"predictive","syn":["prophetic","prognostic","prophetical","prognosticative"],"ant":[]}
+{"w":"turtle","syn":[],"ant":[]}
+{"w":"mole","syn":["bulwark","jetty","groin","breakwater","groyne","seawall","mol","gram molecule","counterspy"],"ant":[]}
+{"w":"indict","syn":[],"ant":[]}
+{"w":"benign","syn":["genial","kind","benignant","harmless","kindly","nonmalignant"],"ant":["malign"]}
+{"w":"richness","syn":["profusion","affluence","cornucopia","fullness","fertility","prolificacy","mellowness","profuseness"],"ant":[]}
+{"w":"broadcaster","syn":["spreader"],"ant":[]}
+{"w":"excise","syn":["strike","expunge","excise tax"],"ant":[]}
+{"w":"optimum","syn":["optimal","best"],"ant":[]}
+{"w":"tee","syn":["tee up","teeing ground","golf tee","football tee"],"ant":[]}
+{"w":"headmaster","syn":["master","schoolmaster"],"ant":[]}
+{"w":"competency","syn":["competence"],"ant":["incompetence","incompetency"]}
+{"w":"handbook","syn":["enchiridion","vade mecum"],"ant":[]}
+{"w":"goddess","syn":[],"ant":[]}
+{"w":"fumble","syn":["blunder","grope","muff","bollix","spoil","bobble","bollocks","fluff","botch","mess up","bungle","flub","mishandle","muck up","screw up","foul up","ball up","louse up","botch up","bollix up","bollocks up","blow"],"ant":[]}
+{"w":"pixel","syn":["pel","picture element"],"ant":[]}
+{"w":"skim","syn":["skitter","cream","plane","scan","skimming","skimmed","glance over","run down","skim off","nonfat","fat-free","cream off","fatless","skim over","rake","skip"],"ant":[]}
+{"w":"disbelief","syn":["incredulity","skepticism","mental rejection","unbelief"],"ant":["belief"]}
+{"w":"striker","syn":[],"ant":[]}
+{"w":"indispensable","syn":["critical","essential","necessary","obligatory","vital"],"ant":["dispensable"]}
+{"w":"heroine","syn":[],"ant":[]}
+{"w":"meiosis","syn":["litotes","reduction division"],"ant":[]}
+{"w":"skinny","syn":["lean","poop","thin","scraggy","scrawny","weedy","low-down","dope","underweight"],"ant":[]}
+{"w":"swimmer","syn":["bather","natator"],"ant":[]}
+{"w":"spa","syn":["watering hole","watering place","resort hotel"],"ant":[]}
+{"w":"scarlet","syn":["chromatic","carmine","ruddy","crimson","vermilion","cherry","ruby","blood-red","ruby-red","cherry-red","orange red","cerise","colored","red","reddish"],"ant":[]}
+{"w":"perceptual","syn":[],"ant":[]}
+{"w":"dictatorship","syn":["tyranny","despotism","authoritarianism","absolutism","totalitarianism","monocracy","shogunate","one-man rule","caesarism","stalinism"],"ant":[]}
+{"w":"periodically","syn":["sporadically"],"ant":[]}
+{"w":"drastically","syn":[],"ant":[]}
+{"w":"honeymoon","syn":[],"ant":[]}
+{"w":"preventive","syn":["hitch","encumbrance","hindrance","preemptive","prophylactic","deterrent","thwarting","incumbrance","interference","hindering","frustrating","protective","cautionary","healthful","obstructive","preventative","impeding","precautionary","preclusive","prohibitive","clogging","frustrative","contraceptive","prohibitory","blockading","precautional","contraceptive device","prophylactic device","birth control device"],"ant":["permissive"]}
+{"w":"coronary","syn":["coronary thrombosis"],"ant":[]}
+{"w":"insemination","syn":[],"ant":[]}
+{"w":"scrutinize","syn":["inspect","audit","take stock","size up"],"ant":[]}
+{"w":"comrade","syn":["familiar","companion","fellow","associate","brother"],"ant":[]}
+{"w":"ceremonial","syn":["solemn","observance","formal","ceremony","ceremonial occasion"],"ant":[]}
+{"w":"forego","syn":["precede","antedate","antecede","predate"],"ant":["follow","postdate"]}
+{"w":"phosphorylation","syn":[],"ant":[]}
+{"w":"commonplace","syn":["trivial","banal","ordinary","trite","stock","prosaic","hackneyed","humdrum","platitude","threadbare","tired","banality","timeworn","well-worn","bromide","shopworn","unoriginal","cliche","unexciting","unglamorous","unglamourous"],"ant":[]}
+{"w":"crab","syn":["crab louse","crabmeat","pubic louse","phthirius pubis","crabby person"],"ant":[]}
+{"w":"unsure","syn":["timid","diffident","ambivalent","dubious","uncertain","hesitant","insecure","shy","doubtful","unconfident","unsafe","groping","incertain"],"ant":["sure"]}
+{"w":"conspicuous","syn":["salient","ostentatious","flagrant","egregious","prominent","pretentious","blatant","obvious","open","obtrusive","bold","large","blazing","big","outstanding","rank","striking","spectacular","gross","glaring","noticeable","marked","eye-catching","visible","unconcealed","featured","exhibitionistic","flaunty","in evidence","attention-getting"],"ant":["inconspicuous","invisible"]}
+{"w":"implicitly","syn":[],"ant":["explicitly"]}
+{"w":"vertex","syn":["peak","acme","apex"],"ant":[]}
+{"w":"insecurity","syn":[],"ant":["security"]}
+{"w":"finely","syn":["delicately","fine","exquisitely"],"ant":["coarsely"]}
+{"w":"inexperience","syn":[],"ant":["experience"]}
+{"w":"fingerprint","syn":["fingermark"],"ant":[]}
+{"w":"lest","syn":[],"ant":[]}
+{"w":"atrocity","syn":["barbarity","heinousness","inhumanity","atrociousness","barbarousness"],"ant":[]}
+{"w":"ubiquitous","syn":["present","omnipresent"],"ant":[]}
+{"w":"monarch","syn":["danaus plexippus","monarch butterfly","milkweed butterfly","crowned head","sovereign"],"ant":[]}
+{"w":"ivory","syn":["pearl","bone","tusk","off-white"],"ant":[]}
+{"w":"fundamentalist","syn":["fundamentalistic"],"ant":[]}
+{"w":"enlightenment","syn":["age of reason"],"ant":["unenlightenment"]}
+{"w":"amazingly","syn":["astonishingly","surprisingly"],"ant":[]}
+{"w":"overhaul","syn":["pass","overtake","modernize","overhauling","inspection and repair","service"],"ant":[]}
+{"w":"weekday","syn":[],"ant":[]}
+{"w":"retrieval","syn":["recovery"],"ant":[]}
+{"w":"contractual","syn":[],"ant":[]}
+{"w":"dope","syn":["poop","boob","gage","pot","dummy","weed","grass","sess","booby","cola","low-down","cannabis","pinhead","mary jane","ganja","dumbbell","marijuana","dope up","marihuana","mary-jane","cannabis sativa","sens","skinny","skunk","smoke"],"ant":[]}
+{"w":"recurrence","syn":["return"],"ant":[]}
+{"w":"tenor","syn":["strain","high","high-pitched","tenor voice"],"ant":[]}
+{"w":"crusade","syn":["drive","push","cause","effort","movement","fight","agitate","campaign"],"ant":[]}
+{"w":"protagonist","syn":["champion","friend","supporter","booster","admirer"],"ant":[]}
+{"w":"farmhouse","syn":[],"ant":[]}
+{"w":"duct","syn":["channel","canal"],"ant":[]}
+{"w":"baffle","syn":["thwart","trounce","queer","cross","foil","beat","get","regulate","perplex","bilk","amaze","gravel","spoil","frustrate","bewilder","nonplus","flummox","stupefy","dumbfound","puzzle","stupify","mystify","baffle board","scotch"],"ant":[]}
+{"w":"pilgrim","syn":["palmer"],"ant":[]}
+{"w":"refinement","syn":["nuance","subtlety","gentility","polish","elaboration","refining","nicety","genteelness","breeding","shade"],"ant":[]}
+{"w":"seriousness","syn":["sincerity","earnestness","distressfulness","serious-mindedness"],"ant":["frivolity","frivolousness"]}
+{"w":"knowledgeable","syn":["intimate","informed","aware","enlightened","experienced","knowing","educated","lettered","well-read","well-educated","intimate with","knowledgeable about","learned","versed"],"ant":["ignorant","unversed"]}
+{"w":"preferential","syn":["advantageous","discriminatory"],"ant":[]}
+{"w":"nostalgia","syn":[],"ant":[]}
+{"w":"ruthless","syn":["merciless","pitiless","remorseless","unpitying","unmerciful"],"ant":[]}
+{"w":"amenity","syn":["agreeableness"],"ant":["disagreeableness"]}
+{"w":"faulty","syn":["defective","imperfect","inaccurate"],"ant":[]}
+{"w":"shrimp","syn":["runt","peewee","prawn","half-pint"],"ant":[]}
+{"w":"dummy","syn":["unreal","boob","artificial","blank","booby","dope","pinhead","dummy up","dumbbell","blank shell","silent person"],"ant":[]}
+{"w":"bum","syn":["stern","butt","ass","sleazy","inferior","prat","punk","tramp","bottom","tail","arse","fundament","chintzy","keister","rat","rear","derriere","rump","cheesy","backside","behind","tush","loafer","rotter","posterior","cheap","cadge","seat","grub","tinny","idler","buttocks","layabout","crumb","fanny","crummy","buns","so-and-so","sponge","lowlife"],"ant":[]}
+{"w":"housework","syn":["housekeeping"],"ant":[]}
+{"w":"authenticity","syn":["legitimacy","genuineness"],"ant":[]}
+{"w":"statesman","syn":["national leader","solon"],"ant":[]}
+{"w":"null","syn":["void","nugatory","invalid"],"ant":[]}
+{"w":"doubtless","syn":["undoubtedly","without doubt","beyond question","beyond any doubt"],"ant":[]}
+{"w":"greedy","syn":["esurient","avid","avaricious","covetous","acquisitive","desirous","prehensile","gluttonous","grasping","devouring","grabby"],"ant":[]}
+{"w":"specialization","syn":["specialty","speciality","specialisation","differentiation","specialism"],"ant":[]}
+{"w":"resonate","syn":["come across"],"ant":[]}
+{"w":"quiver","syn":["flutter","tremor","frisson","thrill","flitter","shudder","quivering","flicker","tingle","trembling","chill","vibration","palpitation","shaking","shakiness","quake","shiver","waver"],"ant":[]}
+{"w":"pervasive","syn":["general","pervading","permeant","permeative","distributive","permeating"],"ant":[]}
+{"w":"lush","syn":["exuberant","lavish","abundant","rich","riotous","plush","succulent","luxuriant","souse","profuse","juicy","boozer","dipsomaniac","plushy","soaker","alcoholic","lucullan"],"ant":[]}
+{"w":"famously","syn":[],"ant":[]}
+{"w":"nasal","syn":["high","pinched","high-pitched","adenoidal","nasal bone","rhinal","nasal consonant","os nasale"],"ant":[]}
+{"w":"twitch","syn":["jerk","twinge","vellicate","squeeze","pinch","twitching","flip","nip","tweet"],"ant":[]}
+{"w":"sinister","syn":["baleful","evil","wicked","minatory","black","dark","ominous","alarming","minacious","forbidding","menacing","ugly","threatening","sinistral"],"ant":[]}
+{"w":"verification","syn":["check","confirmation","substantiation"],"ant":[]}
+{"w":"bra","syn":["brassiere","bandeau"],"ant":[]}
+{"w":"commend","syn":["remember","recommend"],"ant":[]}
+{"w":"ashore","syn":["onto land","on land","toward land"],"ant":[]}
+{"w":"assassinate","syn":[],"ant":[]}
+{"w":"inflammatory","syn":["provocative","incendiary","seditious","incitive","unhealthy","instigative","rabble-rousing"],"ant":[]}
+{"w":"metabolic","syn":["metabolous"],"ant":["ametabolic","ametabolous"]}
+{"w":"diversification","syn":[],"ant":[]}
+{"w":"ware","syn":["squander","shirk","waste","consume"],"ant":[]}
+{"w":"freezer","syn":["deepfreeze"],"ant":[]}
+{"w":"autograph","syn":["inscribe","john hancock"],"ant":[]}
+{"w":"martial","syn":["military","warlike","soldierly","warriorlike","soldierlike"],"ant":[]}
+{"w":"patriotic","syn":["chauvinistic","jingoistic","nationalistic","superpatriotic","loyal"],"ant":["disloyal","unpatriotic"]}
+{"w":"friendliness","syn":[],"ant":["unfriendliness"]}
+{"w":"ore","syn":[],"ant":[]}
+{"w":"imbalance","syn":["instability","asymmetry","unbalance"],"ant":["balance","correspondence","symmetry","symmetricalness"]}
+{"w":"sturdy","syn":["robust","stout","rugged","tough","hardy","stalwart"],"ant":[]}
+{"w":"alleviate","syn":["facilitate","assuage","palliate","ease","relieve"],"ant":[]}
+{"w":"compilation","syn":["digest","compiling"],"ant":[]}
+{"w":"pharmacy","syn":["dispensary","drugstore","pharmaceutics"],"ant":[]}
+{"w":"sculptor","syn":["carver","sculpturer","statue maker"],"ant":[]}
+{"w":"purify","syn":["sublimate","sanctify","distill","make pure"],"ant":[]}
+{"w":"catalyst","syn":["accelerator"],"ant":["anticatalyst"]}
+{"w":"recite","syn":["tell","recount","declaim","spin","narrate","retell"],"ant":[]}
+{"w":"showcase","syn":["case","display case","show window"],"ant":[]}
+{"w":"usefulness","syn":["utility"],"ant":["inutility","uselessness","unusefulness"]}
+{"w":"roadside","syn":["wayside"],"ant":[]}
+{"w":"commencement","syn":["offset","start","first","beginning","outset","kickoff","graduation","starting time","graduation exercise","commencement exercise","commencement ceremony"],"ant":["end","finish","middle","ending","finishing"]}
+{"w":"snort","syn":["snicker","hiss","hoot","boo","razzing","bird","raspberry","snore","take a hit","bronx cheer","huff"],"ant":[]}
+{"w":"nonlinear","syn":[],"ant":["additive","linear"]}
+{"w":"bash","syn":["bang","brawl","smash","knock","bonk","belt","do","bop","whap","sock","whop"],"ant":[]}
+{"w":"adversity","syn":["hardship"],"ant":[]}
+{"w":"esteem","syn":["regard","value","respect","admiration","prise","repute","prize","think of","look upon","look on","regard as","take to be"],"ant":["disesteem","disrespect"]}
+{"w":"insignificant","syn":["light","trivial","superficial","little","small","minor","meaningless","inconsiderable","unimportant","unmeaning","colorless","inappreciable","undistinguished","hole-and-corner","peanut","unnoticeable","hole-in-corner"],"ant":["significant","important"]}
+{"w":"magnet","syn":[],"ant":[]}
+{"w":"tolerant","syn":["broad","kind","easygoing","forgiving","broad-minded","unbigoted","patient of","liberal","patient"],"ant":["intolerant"]}
+{"w":"provisional","syn":["tentative","provisionary","conditional","probationary"],"ant":[]}
+{"w":"vapor","syn":["vapour","evaporation","vaporization","vaporisation"],"ant":[]}
+{"w":"yogurt","syn":["yoghurt","yoghourt"],"ant":[]}
+{"w":"flex","syn":["inflection","bend","flection","flexion","bending"],"ant":["straighten","unbend"]}
+{"w":"lust","syn":["crave","lecherousness","hunger","luxuria","thirst","lustfulness","starve"],"ant":[]}
+{"w":"hymn","syn":["anthem"],"ant":[]}
+{"w":"commuter","syn":["suburbanite","commuter train"],"ant":[]}
+{"w":"beware","syn":["mind"],"ant":[]}
+{"w":"insurgency","syn":[],"ant":[]}
+{"w":"explanatory","syn":["informative","instructive"],"ant":[]}
+{"w":"oppression","syn":["subjugation","oppressiveness"],"ant":[]}
+{"w":"tentative","syn":["unsettled","doubtful","provisionary","conditional","probationary","provisional"],"ant":[]}
+{"w":"imprint","syn":["form","impress","impression","embossment","depression"],"ant":[]}
+{"w":"afflict","syn":["trouble","ail","pain","smite"],"ant":[]}
+{"w":"sociologist","syn":[],"ant":[]}
+{"w":"proprietor","syn":["owner"],"ant":[]}
+{"w":"sitcom","syn":[],"ant":[]}
+{"w":"amnesty","syn":["pardon","free pardon"],"ant":[]}
+{"w":"normalize","syn":["standardize","renormalize"],"ant":[]}
+{"w":"saline","syn":["salt","saline solution","salty"],"ant":[]}
+{"w":"personalize","syn":["individualise","individualize"],"ant":["depersonalize"]}
+{"w":"succumb","syn":["yield","give in","knuckle under","buckle under"],"ant":["survive","make it","pull through","come through"]}
+{"w":"gigantic","syn":["large","big","mammoth"],"ant":[]}
+{"w":"pilgrimage","syn":[],"ant":[]}
+{"w":"greed","syn":["avarice","rapacity","covetousness","avaritia"],"ant":[]}
+{"w":"foreclosure","syn":[],"ant":[]}
+{"w":"tedious","syn":["dull","irksome","verbose","prolix","wearisome","slow","tiresome","uninteresting","ho-hum","deadening","wordy","long-winded","windy","boring"],"ant":[]}
+{"w":"sling","syn":["catapult","slingshot"],"ant":[]}
+{"w":"cavalry","syn":["horse","horse cavalry"],"ant":[]}
+{"w":"homogeneous","syn":["solid","uniform","consistent","homogenized"],"ant":["heterogeneous"]}
+{"w":"unionist","syn":["trade unionist","union member"],"ant":[]}
+{"w":"wield","syn":["handle","exert","maintain"],"ant":[]}
+{"w":"forefront","syn":["head","vanguard","cutting edge"],"ant":[]}
+{"w":"sprint","syn":["dash"],"ant":[]}
+{"w":"senate","syn":["united states senate"],"ant":[]}
+{"w":"prosper","syn":["flourish","expand","boom","thrive","get ahead","fligh high"],"ant":[]}
+{"w":"dodge","syn":["elude","stratagem","circumvent","scheme","evade","contrivance","skirt","hedge","fudge","sidestep","put off","dodging","duck","parry"],"ant":[]}
+{"w":"pore","syn":["focus","concentrate","centre","stoma","center","rivet"],"ant":[]}
+{"w":"wicket","syn":["lattice","hoop","grille","wicket gate","wicket door"],"ant":[]}
+{"w":"vaccination","syn":["inoculation"],"ant":[]}
+{"w":"nightlife","syn":[],"ant":[]}
+{"w":"discretionary","syn":["arbitrary","unrestricted","discretional"],"ant":[]}
+{"w":"champ","syn":["champion","chomp","title-holder"],"ant":[]}
+{"w":"exporter","syn":[],"ant":[]}
+{"w":"solvent","syn":["thinner","resolvent","dissolvent","dissolver","dilutant","dissolving agent"],"ant":["insolvent"]}
+{"w":"obsolete","syn":["outdated","superannuated","disused","noncurrent","out-of-date"],"ant":[]}
+{"w":"switchboard","syn":["patchboard","plugboard"],"ant":[]}
+{"w":"spectral","syn":["phantasmal","supernatural","ghostly","spiritual","apparitional","ghostlike"],"ant":[]}
+{"w":"undecided","syn":["open","unsettled","indecisive","unresolved","uncommitted","undetermined","on the fence"],"ant":[]}
+{"w":"kernel","syn":["essence","core","pith","substance","marrow","heart","meat","nub","nitty-gritty","inwardness","center","gist","sum"],"ant":[]}
+{"w":"recede","syn":["withdraw","retreat","retire","pull back","pull away","draw back","drop off","fall back","lose","move back","fall behind"],"ant":["advance","pass on","win","make headway","move on","get ahead","march on","go on","gain ground","gain","progress"]}
+{"w":"malaria","syn":[],"ant":[]}
+{"w":"inefficient","syn":["incompetent","ineffective","wasteful","uneconomical"],"ant":["efficient"]}
+{"w":"fulfillment","syn":["fulfilment"],"ant":[]}
+{"w":"relentless","syn":["inexorable","grim","stern","implacable","persistent","continual","unrelenting","unforgiving","unappeasable"],"ant":[]}
+{"w":"falter","syn":["stumble","stammer","faltering","hesitation","stutter","bumble","waver"],"ant":[]}
+{"w":"endowment","syn":["gift","talent","natural endowment","endowment fund"],"ant":[]}
+{"w":"harmonic","syn":["sympathetic","harmonious","consonant","harmonized","harmonical","in harmony"],"ant":["nonharmonic"]}
+{"w":"astonishment","syn":["amazement"],"ant":[]}
+{"w":"poultry","syn":["fowl","domestic fowl"],"ant":[]}
+{"w":"uptake","syn":["consumption","intake","ingestion"],"ant":[]}
+{"w":"continual","syn":["perpetual","perennial","incessant","relentless","persistent","everlasting","insistent","constant","unrelenting","recurrent","endless","continuous","uninterrupted","repetitive","repeated"],"ant":["sporadic"]}
+{"w":"enrollment","syn":["registration","enrolment"],"ant":[]}
+{"w":"hitch","syn":["jerk","check","snag","hobble","arrest","encumbrance","limp","hindrance","catch","incumbrance","stop","stay","interference","thumb","rub","preventive","tour","preventative","stoppage","hang-up","enlistment","tour of duty","hitchhike","duty tour","term of enlistment","buck","halt"],"ant":["unhitch"]}
+{"w":"meditation","syn":["musing","rumination","reflection","contemplation","reflexion","thoughtfulness"],"ant":[]}
+{"w":"warmly","syn":["cordially","heartily"],"ant":[]}
+{"w":"discontent","syn":["discontentment","discontented","discontentedness"],"ant":["content","contentment"]}
+{"w":"bedside","syn":[],"ant":[]}
+{"w":"ordinarily","syn":["usually","normally","commonly","unremarkably"],"ant":["remarkably","unco","outstandingly","unusually"]}
+{"w":"fireman","syn":["forefighter","reliever","fire-eater","fire fighter","relief pitcher","stoker"],"ant":[]}
+{"w":"pastoral","syn":["idyllic","bucolic","pleasant","rustic","idyll","rural","pastorale","arcadian"],"ant":[]}
+{"w":"mediator","syn":["intermediary","go-between","intermediator"],"ant":[]}
+{"w":"versatile","syn":["skilled","various","varied","variable","flexible","mobile"],"ant":[]}
+{"w":"wisely","syn":["sagely","showing wisdom","with wisdom"],"ant":["foolishly","unwisely"]}
+{"w":"pointless","syn":["otiose","superfluous","blunt","meaningless","senseless","wasted","worthless","purposeless","unpointed"],"ant":["pointed"]}
+{"w":"liar","syn":["prevaricator"],"ant":["straight arrow","square shooter"]}
+{"w":"professionally","syn":[],"ant":[]}
+{"w":"flute","syn":["fluting","transverse flute","champagne flute","flute glass"],"ant":[]}
+{"w":"housekeeper","syn":["housewife","lady of the house","woman of the house"],"ant":[]}
+{"w":"electronically","syn":[],"ant":[]}
+{"w":"shovel","syn":["digger","excavator","spadeful","shovelful","power shovel"],"ant":[]}
+{"w":"gem","syn":["stone","treasure","jewel","gemstone","muffin","precious stone"],"ant":[]}
+{"w":"sprout","syn":["shoot","germinate","pullulate","bourgeon","burgeon forth","spud"],"ant":[]}
+{"w":"manor","syn":["manor house"],"ant":[]}
+{"w":"spear","syn":["lance","fizgig","gig","fishgig","spear up","shaft"],"ant":[]}
+{"w":"bog","syn":["peat bog","bog down"],"ant":[]}
+{"w":"impetus","syn":["impulse","drift","impulsion"],"ant":[]}
+{"w":"helper","syn":["benefactor","supporter","assistant","help"],"ant":[]}
+{"w":"sleepy","syn":["sleepy-eyed","sleepyheaded"],"ant":[]}
+{"w":"forensic","syn":["rhetorical"],"ant":[]}
+{"w":"idol","syn":["paragon","graven image","perfection","beau ideal","matinee idol","god"],"ant":[]}
+{"w":"sponge","syn":["bum","parasite","cadge","minion","grub","mooch","poriferan","parazoan","leech"],"ant":["felicitous"]}
+{"w":"rash","syn":["efflorescence","bold","imprudent","foolhardy","eruption","skin rash","reckless","skin eruption"],"ant":[]}
+{"w":"abrupt","syn":["sharp","precipitous","discourteous","steep","sudden","disconnected","staccato"],"ant":[]}
+{"w":"betrayal","syn":["perfidy","treachery","treason"],"ant":[]}
+{"w":"uprise","syn":[],"ant":[]}
+{"w":"gunman","syn":["gun","torpedo","shooter","gunslinger","hired gun","hit man"],"ant":[]}
+{"w":"intuitive","syn":["visceral","natural","illogical","glandular","nonrational","unlogical"],"ant":[]}
+{"w":"arithmetic","syn":["arithmetical"],"ant":[]}
+{"w":"flux","syn":["fluxion","magnetic flux","magnetic field","flux density"],"ant":[]}
+{"w":"asymptotic","syn":[],"ant":[]}
+{"w":"nanny","syn":["nurse","nursemaid","she-goat","nanny-goat"],"ant":[]}
+{"w":"grievance","syn":["score","grudge"],"ant":[]}
+{"w":"purge","syn":["purgation","purging"],"ant":["rehabilitate"]}
+{"w":"vineyard","syn":["vinery"],"ant":[]}
+{"w":"bleach","syn":["decolorize","decolor","bleaching agent","bleach out","blanching agent","discolorize","whitener"],"ant":[]}
+{"w":"coke","syn":["cocain","cocaine","c","coca cola","snow"],"ant":[]}
+{"w":"discredit","syn":["disgrace","disrepute","disbelieve"],"ant":["believe","repute","reputation"]}
+{"w":"infinitely","syn":["endlessly","immeasurably","boundlessly"],"ant":["finitely"]}
+{"w":"reappear","syn":["re-emerge"],"ant":[]}
+{"w":"stoop","syn":["bow","condescend","bend","descend","stoup","stoep","lower oneself","crouch"],"ant":[]}
+{"w":"fluorescent","syn":["light","colorful","colourful"],"ant":[]}
+{"w":"persuasion","syn":["sentiment","view","thought","opinion","suasion"],"ant":["dissuasion"]}
+{"w":"rubble","syn":["detritus","debris","junk","dust"],"ant":[]}
+{"w":"graceful","syn":["lithe","gracious","refined","svelte","elegant","slender","lissom","smooth","lissome","fluent","lithesome","fluid","sylphlike","gracile","willowy","gainly","deft","flowing","liquid","supple"],"ant":["awkward"]}
+{"w":"unleash","syn":["loose","let loose"],"ant":[]}
+{"w":"agreeable","syn":["congenial","sympathetic","concordant","accordant","sociable","pleasing","consonant","consistent","conformable","compatible","pleasureful","in agreement","in accord"],"ant":["uncongenial","incompatible","disagreeable"]}
+{"w":"spontaneously","syn":["impromptu","ad lib","ad libitum"],"ant":[]}
+{"w":"naught","syn":["cipher","aught","zilch","nix","nil","nothing","cypher","zero","nada","goose egg","zip"],"ant":[]}
+{"w":"sewage","syn":["sewerage"],"ant":[]}
+{"w":"harass","syn":["provoke","tease","beset","badger","bug","pester","hassle","molest","beleaguer","plague","oppress","chevy","harry","heckle","chivvy","persecute","chivy","chevvy"],"ant":[]}
+{"w":"burger","syn":[],"ant":[]}
+{"w":"beverage","syn":["drink","potable","drinkable"],"ant":[]}
+{"w":"penis","syn":["member","phallus"],"ant":[]}
+{"w":"conveniently","syn":["handily"],"ant":["inconveniently"]}
+{"w":"postulate","syn":["contend","posit"],"ant":[]}
+{"w":"jockey","syn":["chicane","screw","chouse","cheat","shaft"],"ant":[]}
+{"w":"thwart","syn":["queer","cross","foil","bilk","spoil","frustrate","baffle","cross thwart","scotch"],"ant":[]}
+{"w":"buckle","syn":["heave","clasp","warp","crumple"],"ant":["unbuckle"]}
+{"w":"cloudy","syn":["sullen","dull","turbid","opaque","heavy","indistinct","nebulous","overcast","leaden","vaporous","murky","brumous","foggy","nebulose","grey","hazy","threatening","miasmic","mirky","muddy","sunless","clouded","lowering","nebular","miasmal","smoggy","cloudlike","cloud-covered","gray","misty"],"ant":["clear"]}
+{"w":"inconsistency","syn":["incompatibility","mutual exclusiveness"],"ant":["consistency","consistence"]}
+{"w":"catastrophic","syn":["harmful","ruinous"],"ant":[]}
+{"w":"globally","syn":[],"ant":[]}
+{"w":"innate","syn":["congenital","born","inborn","unconditioned","unlearned","noninheritable","nonheritable"],"ant":["conditioned","learned"]}
+{"w":"rebate","syn":["discount","rabbet","cut a rebate in"],"ant":[]}
+{"w":"uniformly","syn":[],"ant":[]}
+{"w":"unfinished","syn":["bare","pending","undone","undressed","incomplete","uncompleted","roughhewn","unended","unhewn","unpainted","unfattened","unsanded"],"ant":["finished"]}
+{"w":"infamous","syn":["notorious","disreputable","ill-famed"],"ant":[]}
+{"w":"pod","syn":["cod","shell","seedpod","seedcase","fuel pod"],"ant":[]}
+{"w":"clothe","syn":["apparel","adorn","raiment","garb","garment","dress","invest","tog","habilitate","enclothe","fit out"],"ant":["strip","disrobe","undress","discase","strip down","unclothe","uncase"]}
+{"w":"newborn","syn":["immature","new","neonate","young","new-sprung","newly arisen"],"ant":[]}
+{"w":"displacement","syn":["shift","supplanting","translation"],"ant":[]}
+{"w":"emulate","syn":["copy"],"ant":[]}
+{"w":"unresolved","syn":["open","dissonant","unsettled","undecided","unharmonious","unsolved","undetermined","inharmonious"],"ant":["resolved","solved"]}
+{"w":"cobble","syn":["sett","cobblestone"],"ant":[]}
+{"w":"optic","syn":["eye","oculus","peeper","optical","ocular","visual","opthalmic"],"ant":[]}
+{"w":"eradicate","syn":["extirpate","eliminate","annihilate","extinguish","decimate","uproot","exterminate","wipe out","carry off"],"ant":[]}
+{"w":"mathematician","syn":[],"ant":[]}
+{"w":"boomer","syn":["baby boomer"],"ant":[]}
+{"w":"latent","syn":["potential","possible","inactive"],"ant":[]}
+{"w":"amp","syn":["a","ampere","adenosine monophosphate","adenylic acid"],"ant":[]}
+{"w":"persona","syn":["character","part","image","role","theatrical role"],"ant":[]}
+{"w":"turbulent","syn":["agitated","tumultuous","riotous","troubled","roiled","unquiet","roiling","roily","disruptive","churning"],"ant":[]}
+{"w":"bandage","syn":["bind"],"ant":["unadorned","undecorated"]}
+{"w":"chronological","syn":[],"ant":[]}
+{"w":"foe","syn":["opposition","enemy","opponent","foeman"],"ant":["ally","friend","confederate"]}
+{"w":"antiquity","syn":["ancientness"],"ant":[]}
+{"w":"nap","syn":["sleep","snooze","catnap","forty winks","cat sleep","catch a wink","short sleep"],"ant":[]}
+{"w":"symphony","syn":["symphony orchestra","symphonic music"],"ant":[]}
+{"w":"scorn","syn":["disdain","contempt","spurn","reject","despise","contemn","turn down","pooh-pooh","freeze off"],"ant":[]}
+{"w":"textual","syn":[],"ant":[]}
+{"w":"squadron","syn":[],"ant":[]}
+{"w":"melancholy","syn":["melancholic","sad","black bile"],"ant":[]}
+{"w":"obligatory","syn":["indispensable","necessary","compulsory","prerequisite","required","imposed","bounden","mandatory","de rigueur"],"ant":["optional"]}
+{"w":"inflammation","syn":["flush","inflaming","redness"],"ant":[]}
+{"w":"whirl","syn":["crack","commotion","pass","fling","twist","purl","tumble","vortex","gyrate","twiddle","twirl","offer","convolution","spin","swirl","gurge","whirlpool","twisting","birl","skirl","whirl around","go","spin around","eddy","reel"],"ant":[]}
+{"w":"subunit","syn":["fractional monetary unit"],"ant":[]}
+{"w":"prosodic","syn":[],"ant":[]}
+{"w":"privatize","syn":[],"ant":[]}
+{"w":"conjure","syn":["invoke","stir","arouse","raise","put forward","bring up","call forth","conjure up","call down"],"ant":[]}
+{"w":"conservatism","syn":[],"ant":[]}
+{"w":"marketer","syn":[],"ant":[]}
+{"w":"patriotism","syn":["nationalism"],"ant":[]}
+{"w":"herald","syn":["harbinger","acclaim","precursor","foretell","announce","annunciate","hail","forerunner"],"ant":[]}
+{"w":"unrealistic","syn":["chimerical","delusive","surreal","fantastic","phantasmagoric","false","unreasonable","surrealistic","phantasmagorical","kafkaesque"],"ant":["realistic"]}
+{"w":"reorganize","syn":["shake up","regroup"],"ant":[]}
+{"w":"patio","syn":["terrace"],"ant":[]}
+{"w":"loaf","syn":["lounge","tarry","lurk","lallygag","loiter","loll","mill about","lollygag","hang around","mill around","footle","bum around","arse around","mess about","loaf of bread","lounge around","arse about","frig around","loll around","bum about","lounge about","linger"],"ant":[]}
+{"w":"jolly","syn":["mirthful","gay","joyous","banter","pretty","jocund","chaff","merry","kid","jolly boat","jovial"],"ant":[]}
+{"w":"pact","syn":["accord","treaty"],"ant":[]}
+{"w":"humidity","syn":["humidness"],"ant":[]}
+{"w":"aggravate","syn":["exacerbate","exasperate","worsen"],"ant":["ameliorate","improve","meliorate","better","amend"]}
+{"w":"squirrel","syn":[],"ant":[]}
+{"w":"finalize","syn":["settle","nail down"],"ant":[]}
+{"w":"fuzzy","syn":["bleary","indistinct","muzzy","foggy","hirsute","hazy","hairy","blurred","blurry","fuzzed"],"ant":[]}
+{"w":"collide","syn":["clash","jar"],"ant":[]}
+{"w":"dwindle","syn":["dwindle away","dwindle down"],"ant":[]}
+{"w":"diner","syn":["buffet car","dining car","dining compartment"],"ant":[]}
+{"w":"petroleum","syn":["crude","crude oil","coal oil","rock oil","fossil oil"],"ant":[]}
+{"w":"etch","syn":[],"ant":[]}
+{"w":"hasten","syn":["induce","stimulate","rush","expedite","race","hurry","hie","speed","hotfoot","look sharp","pelt along","belt along","bucket along","cannonball along","rush along"],"ant":["dawdle","linger"]}
+{"w":"cannon","syn":["shank","carom"],"ant":[]}
+{"w":"agitate","syn":["shift","charge","stir","rouse","push","fight","campaign","shake","commove","disturb","excite","budge","foment","stir up","charge up","shake up","raise up","crusade"],"ant":["lull","calm","quiet","quieten","tranquillize","tranquilize","calm down","still"]}
+{"w":"decidedly","syn":["emphatically","unquestionably","definitely","by all odds"],"ant":[]}
+{"w":"designation","syn":["appellation","appointment","denomination","appellative","assignment","identification","naming"],"ant":[]}
+{"w":"macro","syn":["large","big"],"ant":[]}
+{"w":"renewable","syn":["inexhaustible"],"ant":["nonrenewable","unrenewable"]}
+{"w":"atop","syn":[],"ant":[]}
+{"w":"surveyor","syn":[],"ant":[]}
+{"w":"candidacy","syn":["campaigning","electioneering","candidature","political campaign"],"ant":[]}
+{"w":"delinquent","syn":["derelict","incorrigible","remiss","negligent","guilty","due","overdue","juvenile delinquent","owed","neglectful"],"ant":[]}
+{"w":"phonology","syn":["phonemics"],"ant":[]}
+{"w":"flop","syn":["right","collapse","founder","bust","washout","dud","fall flat","fall through","floating-point operation"],"ant":[]}
+{"w":"incompatible","syn":["incongruous","antagonistic","contrastive","contradictory","discrepant","inconsistent","inappropriate","uncongenial","disagreeable","unsympathetic","clashing","antonymous","mismatched","ill-sorted","unfitting","immiscible","mismated","mutually exclusive","unsuited","unmixable","out or keeping"],"ant":["congenial","agreeable","compatible","synergistic","interactive"]}
+{"w":"swarm","syn":["stream","horde","drove","pour","teem"],"ant":[]}
+{"w":"prep","syn":["preparation","homework"],"ant":[]}
+{"w":"kite","syn":[],"ant":[]}
+{"w":"spacecraft","syn":["space vehicle","ballistic capsule"],"ant":[]}
+{"w":"authoritative","syn":["important","standard","definitive","influential","classical","official","authorized"],"ant":[]}
+{"w":"downside","syn":[],"ant":[]}
+{"w":"fret","syn":["gall","gag","chafe","fray","niggle","fuss","scratch","grate","swither","erode","choke","rub","lather","stew","sweat","rankle","eat away","eat into"],"ant":[]}
+{"w":"penguin","syn":[],"ant":[]}
+{"w":"alpha","syn":["important","of import"],"ant":[]}
+{"w":"urchin","syn":[],"ant":[]}
+{"w":"homosexuality","syn":["homosexualism","homoeroticism","gayness"],"ant":[]}
+{"w":"lordship","syn":[],"ant":[]}
+{"w":"barrack","syn":["jeer","scoff","urge","flout","exhort","cheer","inspire","urge on","pep up","gibe"],"ant":[]}
+{"w":"typewriter","syn":[],"ant":[]}
+{"w":"nylon","syn":[],"ant":[]}
+{"w":"depot","syn":["terminus","terminal","storage","store","entrepot","storehouse"],"ant":[]}
+{"w":"charcoal","syn":["achromatic","colorless","fusain","oxford gray","charcoal gray","wood coal","charcoal-gray","charcoal grey","charcoal-grey","oxford grey"],"ant":[]}
+{"w":"craftsman","syn":["artisan","artificer","journeyman","crafter"],"ant":[]}
+{"w":"apprehension","syn":["dread","discernment","understanding","savvy","arrest","misgiving","pinch","collar","apprehensiveness","catch","taking into custody"],"ant":[]}
+{"w":"estuary","syn":[],"ant":[]}
+{"w":"spec","syn":["specification"],"ant":[]}
+{"w":"rodent","syn":["gnawer","gnawing animal"],"ant":[]}
+{"w":"cocoa","syn":["chocolate","hot chocolate"],"ant":[]}
+{"w":"artwork","syn":["art","graphics","nontextual matter"],"ant":[]}
+{"w":"clump","syn":["cluster","thump","thud","bunch","constellate","bundle","clod","plunk","lump","flock","clunk","ball","glob","clomp","thumping","clop","bunch up","chunk"],"ant":[]}
+{"w":"boulder","syn":["bowlder"],"ant":[]}
+{"w":"conglomerate","syn":["gather","amass","accumulate","cumulate","combined","pile up","pudding stone","empire"],"ant":[]}
+{"w":"teaspoon","syn":["teaspoonful"],"ant":[]}
+{"w":"fluently","syn":[],"ant":[]}
+{"w":"trough","syn":["till","gutter","bowl","public treasury","basin","manger"],"ant":[]}
+{"w":"immerse","syn":["absorb","plunge","engulf","engross","bury","steep","swallow","swallow up","eat up"],"ant":[]}
+{"w":"assimilate","syn":["imbibe","absorb","take in","ingest"],"ant":["dissimilate"]}
+{"w":"unravel","syn":["ravel","run","untangle","unscramble","unknot","ravel out","unpick"],"ant":["ravel","knot","tangle"]}
+{"w":"hilarious","syn":["humorous","uproarious","screaming","humourous"],"ant":[]}
+{"w":"kin","syn":["cognate","clan","tribe","consanguine","consanguineous","family","kin group","kinsperson","blood-related","akin","kindred","kinship group"],"ant":[]}
+{"w":"novice","syn":["initiate","tyro","beginner","beginning","tiro"],"ant":[]}
+{"w":"foliage","syn":["foliation","leaf","leafage"],"ant":[]}
+{"w":"pinpoint","syn":["speck"],"ant":[]}
+{"w":"guru","syn":["mahatma","sage"],"ant":[]}
+{"w":"peril","syn":["queer","expose","menace","jeopardize","jeopardy","danger","scupper","imperil","endanger","threaten","riskiness","hazard","risk"],"ant":[]}
+{"w":"practicality","syn":[],"ant":["impracticality"]}
+{"w":"vortex","syn":["maelstrom","whirl","convolution","swirl","whirlpool"],"ant":[]}
+{"w":"motorist","syn":["automobilist"],"ant":[]}
+{"w":"overflow","syn":["flood","outpouring","overrun","bubble over","overflowing","spill over","runoff","overspill","brim over","well over","run over"],"ant":[]}
+{"w":"superstar","syn":[],"ant":[]}
+{"w":"fresco","syn":[],"ant":[]}
+{"w":"tally","syn":["fit","run","check","score","hit","jibe","count","match","enumeration","total","reckoning","summate","add","correspond","tot","agree","add up","counting","sum up","numeration","rack up","chalk up","tot up","add together","tote up","gibe","sum"],"ant":["disaccord","disagree","discord"]}
+{"w":"probation","syn":[],"ant":[]}
+{"w":"zinc","syn":["atomic number 30","zn"],"ant":[]}
+{"w":"challenger","syn":["competition","contender","rival","competitor"],"ant":[]}
+{"w":"therein","syn":["in that","in this"],"ant":[]}
+{"w":"mar","syn":["vitiate","impair","mutilate","spoil","deflower","march"],"ant":[]}
+{"w":"lettuce","syn":[],"ant":[]}
+{"w":"slippery","syn":["lubricious","slick","tricky","slithery","slipping","sliding","untrustworthy","slimy","slippy","slimed","slithering","untrusty","nonstick"],"ant":["nonslippery"]}
+{"w":"abound","syn":["burst","bristle"],"ant":[]}
+{"w":"granule","syn":[],"ant":[]}
+{"w":"snapshot","syn":["shot"],"ant":[]}
+{"w":"jersey","syn":["t-shirt","tee shirt"],"ant":[]}
+{"w":"watcher","syn":["spectator","viewer","security guard","watchman","witness"],"ant":[]}
+{"w":"frantic","syn":["wild","agitated","frenetic","delirious","frenzied","excited","unrestrained","mad","phrenetic"],"ant":[]}
+{"w":"pornography","syn":["porn","porno"],"ant":[]}
+{"w":"shaky","syn":["precarious","unsteady","unstable","quivering","trembling","quaking","insecure","wonky","wobbly","unsafe","rickety","shivering","shaking"],"ant":[]}
+{"w":"inset","syn":["gusset","insert"],"ant":[]}
+{"w":"seduce","syn":["score","make"],"ant":[]}
+{"w":"geology","syn":["formation","geological formation"],"ant":[]}
+{"w":"wrongly","syn":["wrong","incorrectly"],"ant":["right","aright","correctly"]}
+{"w":"snarl","syn":["snap","tangle","mat","complication","embrangle","entangle","snarl up"],"ant":["straighten out","disentangle","unsnarl"]}
+{"w":"heed","syn":["regard","mind","attentiveness","listen","paying attention"],"ant":["inattentiveness","heedlessness"]}
+{"w":"topple","syn":["tumble"],"ant":[]}
+{"w":"rust","syn":["chromatic","corrode","rusty","eat","rust fungus","rusting","colored"],"ant":[]}
+{"w":"durable","syn":["long","lasting","imperishable","perdurable","long-lasting","serviceable","long-lived","indestructible","long-wearing","undistroyable"],"ant":[]}
+{"w":"regularity","syn":["geometrical regularity"],"ant":["irregularity","unregularity"]}
+{"w":"scenic","syn":["beautiful"],"ant":[]}
+{"w":"engrave","syn":["inscribe","grave"],"ant":[]}
+{"w":"physiology","syn":[],"ant":[]}
+{"w":"confidentiality","syn":[],"ant":[]}
+{"w":"barge","syn":["lighter","hoy","flatboat","push forward","thrust ahead"],"ant":[]}
+{"w":"subside","syn":["settle","lessen"],"ant":[]}
+{"w":"caress","syn":[],"ant":[]}
+{"w":"authoritarian","syn":["domineering","autocratic","despotic","tyrannical","dictator","overbearing","unpermissive","dictatorial","undemocratic"],"ant":[]}
+{"w":"hush","syn":["quiet","quiesce","quieten","silence","stillness","hush up","shut up","pipe down","quiet down","still"],"ant":[]}
+{"w":"lipstick","syn":["lip rouge"],"ant":[]}
+{"w":"footprint","syn":["step","footmark"],"ant":[]}
+{"w":"grit","syn":["gumption","backbone","sand","guts","gritrock","gritstone"],"ant":[]}
+{"w":"orchard","syn":["woodlet","grove"],"ant":[]}
+{"w":"vibration","syn":["tremor","quiver","quivering","oscillation","trembling","palpitation","shaking","shakiness"],"ant":[]}
+{"w":"flirt","syn":["dalliance","play","minx","tease","coquetry","coquette","dally","mash","philander","prickteaser","toy","toying","chat up","flirtation","vamper","flirting","coquet","romance","vamp"],"ant":[]}
+{"w":"conjecture","syn":["surmise","speculate","supposition","hypothesis","speculation","suppose","hypothesize","theorize","hypothecate","guess","theorise"],"ant":[]}
+{"w":"watercolor","syn":["watercolous"],"ant":[]}
+{"w":"overload","syn":["clog","surcharge","overcharge","overburden"],"ant":[]}
+{"w":"pastry","syn":["pastry dough"],"ant":[]}
+{"w":"posit","syn":["pose","postulate","fix","deposit","situate"],"ant":[]}
+{"w":"drunken","syn":["inebriated","intoxicated","bibulous","boozy","sottish","drunk"],"ant":[]}
+{"w":"prenatal","syn":["antenatal"],"ant":["perinatal","postnatal"]}
+{"w":"pneumonia","syn":["lobar pneumonia"],"ant":[]}
+{"w":"siren","syn":["temptress","enchantress","femme fatale","delilah"],"ant":[]}
+{"w":"tramp","syn":["bum","hike","hobo"],"ant":[]}
+{"w":"bourgeois","syn":["capitalist","capitalistic","materialistic","middle-class","businessperson","burgher","conservative"],"ant":[]}
+{"w":"buffalo","syn":["bison bison","old world buffalo","american bison","american buffalo"],"ant":[]}
+{"w":"intellect","syn":["understanding","mind","intellectual","reason"],"ant":[]}
+{"w":"witty","syn":["humorous","humourous"],"ant":[]}

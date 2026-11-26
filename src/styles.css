@@ -296,3 +296,18 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
 .syn-l { font-size: .8rem; font-weight: 700; color: var(--muted); }
 .syn { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); border-radius: 99px; padding: 2px 4px 2px 10px; font-size: .88rem; background: var(--card); }
 .icon.xs { width: 26px; height: 26px; min-height: 26px; font-size: .8rem; padding: 0; }
+.gp { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; margin-top: 8px; }
+.gp summary { cursor: pointer; }
+.formula { background: var(--pri-soft); border-radius: 8px; padding: 6px 10px; margin: 8px 0 4px; font-weight: 700; font-size: .92rem; }
+.okbad { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
+.okbad > div { display: grid; gap: 4px; align-content: start; }
+.strike { text-decoration: line-through; text-decoration-color: var(--bad); color: var(--muted); }
+.note { background: var(--warn-soft); border-left: 3px solid #e0a800; padding: 6px 10px; border-radius: 6px; }
+.gq { border-top: 1px dashed var(--line); margin-top: 8px; padding-top: 8px; }
+.gq-opts { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.opt.sm { min-height: 36px; padding: 6px 12px; font-size: .92rem; }
+.ai { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 8px; }
+.ai-a { background: var(--card); border: 1px solid var(--pri); border-radius: 10px; padding: 8px 12px; }
+.ai-q { font-weight: 600; }
+.rich p { margin: 4px 0; } .rich ul { margin: 4px 0; padding-left: 18px; }
+@media (max-width: 600px) { .okbad { grid-template-columns: 1fr; } }

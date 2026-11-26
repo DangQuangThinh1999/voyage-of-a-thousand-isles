@@ -1,5 +1,5 @@
 // Hàng chờ chấm lại "Học theo cụm": khi AI bận, lượt làm bài được lưu lại; app tự gửi chấm lại lúc rảnh
-// (khi mở app và vài phút một lần khi không thao tác), chấm xong thì cộng từ mới cho các câu QUA (cả 2 chiều ≥ 70).
+// (khi mở app và vài phút một lần khi không thao tác), chấm xong thì cộng từ mới cho các câu QUA (cả 2 chiều ≥ 80).
 import { aiFetch } from './ai';
 import { today } from './progress';
 import { addDays, dayKey } from './util';
@@ -7,7 +7,7 @@ import { addXP, app, save, toast } from '../state/store';
 
 export interface QItem { dir: 'en-vi' | 'vi-en'; source: string; reference: string; answer: string; words: string[] }
 export interface QEntry { id: number; day: string; cefr: string; n: number; items: QItem[]; fresh: { w: string; f: string }[][] }
-const LS = 'ht.chunkq.v1', PASS = 70;
+const LS = 'ht.chunkq.v1', PASS = 80;
 const load = (): QEntry[] => { try { return JSON.parse(localStorage.getItem(LS) || '[]'); } catch { return []; } };
 const store = (q: QEntry[]) => { try { localStorage.setItem(LS, JSON.stringify(q)); } catch { /* bỏ qua */ } };
 

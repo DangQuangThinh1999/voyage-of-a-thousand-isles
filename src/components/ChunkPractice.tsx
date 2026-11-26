@@ -71,7 +71,7 @@ export function ChunkPractice() {
   /** vòng 1: câu en (dịch sang Việt) · vòng 2: câu KHÁC en2/vi2 (dịch sang Anh), cùng từ mục tiêu */
   const srcOf = (s: number) => { const x = items![s % N]; return s < N ? x.en : x.vi2; };
   const refOf = (s: number) => { const x = items![s % N]; return s < N ? x.vi : x.en2; };
-  const PASS = 70;
+  const PASS = 80;
   const passed = (k: number) => !!grades && !grades[k].rough && grades[k].score >= PASS && grades[k + N].score >= PASS;
 
   /** Nộp cả lượt (2 vòng): AI chấm tất cả trong MỘT lần gọi */
@@ -97,7 +97,7 @@ export function ChunkPractice() {
       });
     }
     const P = app.P, fresh: string[] = [];
-    // Câu QUA (cả 2 chiều ≥ 70) → các từ mới trong câu được tính là đã học (cộng vào số từ, ôn từ ngày mai)
+    // Câu QUA (cả 2 chiều ≥ 80) → các từ mới trong câu được tính là đã học (cộng vào số từ, ôn từ ngày mai)
     items.forEach((x, k) => {
       if (rs[k].rough || rs[k].score < PASS || rs[k + N].score < PASS) return;
       for (const w of x.words) {

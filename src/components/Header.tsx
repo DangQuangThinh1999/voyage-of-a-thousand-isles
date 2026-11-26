@@ -1,6 +1,6 @@
 import { Cloud } from '../lib/cloud';
 import { minutesToday, streakNow } from '../lib/progress';
-import { go, leaveOk, useApp } from '../state/store';
+import { go, withLeave, useApp } from '../state/store';
 import { Breadcrumbs } from './Breadcrumbs';
 import { setTheme } from '../state/actions';
 import { openSearch } from './SearchModal';
@@ -19,7 +19,7 @@ export function Header() {
           <button className="acct" title="Tìm kiếm (Ctrl+K)" onClick={openSearch}>🔍</button>
           <span title="Điểm kinh nghiệm">⭐ {P.xp}</span>
           <button className="acct" title="Đổi giao diện sáng / tối" onClick={() => setTheme(P.settings.theme === 'light' ? 'dark' : 'light')}>{P.settings.theme === 'light' ? '🌙' : '☀️'}</button>
-          <button className="acct" data-act="settings" title={u ? u.email || '' : 'Cài đặt & đăng nhập'} onClick={() => leaveOk() && go('settings')}>
+          <button className="acct" data-act="settings" title={u ? u.email || '' : 'Cài đặt & đăng nhập'} onClick={() => withLeave(() => go('settings'))}>
             {u && u.photoURL ? <img src={u.photoURL} alt="" /> : '⚙️'}
           </button>
         </div>

@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import { micLive } from '../lib/speech';
 import type { StepState } from '../state/store';
-import { leaveOk, tab } from '../state/store';
+import { withLeave, tab } from '../state/store';
 import { WordsHit } from './WordsHit';
 
 /** Thanh âm lượng micro (cập nhật liên tục khi đang nghe) */
@@ -27,7 +27,7 @@ export function MicResult({ ss }: { ss: StepState }) {
   }
   if (!r) return null;
   if (r.err !== undefined) {
-    return <p className="note">{r.err} <button className="btn ghost sm" data-act="tab" data-tab="mic" onClick={() => leaveOk() && tab('mic')}>🎤 Test micro</button></p>;
+    return <p className="note">{r.err} <button className="btn ghost sm" data-act="tab" data-tab="mic" onClick={() => withLeave(() => tab('mic'))}>🎤 Test micro</button></p>;
   }
   return (
     <div className="score">

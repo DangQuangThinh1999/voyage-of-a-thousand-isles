@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { KINDS } from '../lib/progress';
 import { checkFix, checkType, nextStep, quit, retakeTest, step } from '../state/session';
+import { askConfirm } from '../state/store';
 import { app, type Session } from '../state/store';
 import { ProgressBar } from './ProgressBar';
 import { STEP_VIEWS } from './steps';
@@ -19,7 +20,7 @@ export function SessionRunner({ S }: { S: Session }) {
         <button className="icon" data-act="quit" onClick={quit}>✕</button>
         <ProgressBar pct={pct} />
         {S.kind === 'test' && <button className="btn ghost sm" data-act="retake" title="Bỏ bài này, làm lại từ đầu với đề mới"
-          onClick={() => confirm(`Làm lại ${S.key && S.key[0] === 'w' ? 'kiểm tra tuần' : 'kiểm tra chủ đề'} từ đầu với đề mới?`) && retakeTest(S.key || '')}>🔁 Làm lại</button>}
+          onClick={() => askConfirm({ icon: '🔁', title: `Làm lại ${S.key && S.key[0] === 'w' ? 'kiểm tra tuần' : 'kiểm tra chủ đề'}?`, msg: 'Bài đang làm sẽ bị bỏ, bắt đầu lại từ câu 1 với đề mới.', ok: 'Làm lại từ đầu', cancel: 'Làm tiếp' }).then((ok) => ok && retakeTest(S.key || ''))}>🔁 Làm lại</button>}
         {S.kind === 'test' ? <Timer deadline={ss.deadline || 0} answered={ss.answered} /> : <span className="muted small">{kd}</span>}
       </div>
       <View key={S.i} S={S} st={st} />

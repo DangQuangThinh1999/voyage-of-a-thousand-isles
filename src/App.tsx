@@ -5,6 +5,7 @@ import { Sidebar } from './components/Sidebar';
 import { Tabs } from './components/Tabs';
 import { Toast } from './components/Toast';
 import { SearchModal } from './components/SearchModal';
+import { ConfirmDialog } from './components/ConfirmDialog';
 import { Home } from './pages/Home';
 import { Journal } from './pages/Journal';
 import { MicTest } from './pages/MicTest';
@@ -26,7 +27,7 @@ const PAGES: Record<Screen, () => JSX.Element | null> = {
 };
 
 export default function App() {
-  const { scr } = useApp();
+  const { scr, nav } = useApp();
   useAfterRender();
   const Page = PAGES[scr];
   return (
@@ -34,11 +35,12 @@ export default function App() {
       <Sidebar />
       <Header />
       <AnimatePresence mode="wait">
-        <motion.main id="main" key={scr} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }}><Page /></motion.main>
+        <motion.main id="main" key={scr + nav} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }}><Page /></motion.main>
       </AnimatePresence>
       <Tabs />
       <Toast />
       <SearchModal />
+      <ConfirmDialog />
     </>
   );
 }

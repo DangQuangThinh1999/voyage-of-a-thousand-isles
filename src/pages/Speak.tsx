@@ -7,6 +7,7 @@ import { LiveText, MicMeter, Playback } from '../components/MicRecorder';
 import { TapText } from '../components/TapText';
 import { CoachReport, Pills, Section } from '../components/ui';
 import { GenBar } from '../components/GenBar';
+import { TopicTalk } from '../components/TopicTalk';
 import type { GenItem } from '../lib/gen';
 import { WordsHit } from '../components/WordsHit';
 import { LEVELS, type Pair } from '../data';
@@ -187,12 +188,12 @@ function IeltsSpeaking() {
 
 /** Tab Giao tiếp: mẫu câu theo tình huống + luyện nói IELTS có chấm */
 export function Speak() {
-  const [tab, setTab] = useRouteParam<'phrases' | 'ielts'>('t', 'phrases');
+  const [tab, setTab] = useRouteParam<'talk' | 'phrases' | 'ielts'>('t', 'talk');
   return (
     <>
       <h2>🗣️ Giao tiếp & Speaking</h2>
-      <Pills id="speak" value={tab} onChange={setTab} items={[['phrases', '💬 Mẫu câu giao tiếp'], ['ielts', '🎤 Luyện nói IELTS']]} />
-      {tab === 'phrases' ? <Phrases /> : <IeltsSpeaking />}
+      <Pills id="speak" value={tab} onChange={setTab} items={[['talk', '🎤 Nói theo chủ đề'], ['phrases', '💬 Mẫu câu giao tiếp'], ['ielts', '🧑‍🏫 Hỏi đáp với giám khảo']]} />
+      {tab === 'talk' ? <TopicTalk /> : tab === 'phrases' ? <Phrases /> : <IeltsSpeaking />}
     </>
   );
 }

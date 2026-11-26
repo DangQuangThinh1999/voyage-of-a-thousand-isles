@@ -11,7 +11,7 @@ import { checkTyped, norm, scoreSpeech, tokens } from '../lib/text';
 import { sameAs } from '../lib/lex';
 import { altCorrect } from '../lib/sentence';
 import { dayKey } from '../lib/util';
-import { addXP, app, emit, go, inTest, save, toast, type Session, type StepState } from './store';
+import { addXP, app, askConfirm, emit, go, inTest, save, toast, type Session, type StepState } from './store';
 
 const newState = (): StepState => ({ answered: false, picked: [], tries: 0, result: null, hint: false, showVi: false, plays: 0 });
 const cur = () => app.S as Session;
@@ -141,7 +141,9 @@ function finishTest() {
 }
 
 export function quit() {
-  if (confirm('Thoát bài này? Kết quả phần này sẽ không được lưu.')) { const id = cur().u.id; app.S = null; go('unit', id); }
+  const id = cur().u.id;
+  askConfirm({ icon: '🚪', title: 'Thoát bài này?', msg: 'Kết quả phần này sẽ không được lưu.', ok: 'Thoát', cancel: 'Làm tiếp', danger: true })
+    .then((ok) => { if (ok) { app.S = null; go('unit', id); } });
 }
 
 // ---------- các thao tác trả lời ----------

@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { LESSONS } from '../lib/grammarLessons';
 import { dictWords, loadLex, lookup, wordIpa } from '../lib/lex';
-import { go, leaveOk, tab, type Screen } from '../state/store';
+import { go, tab, withLeave, type Screen } from '../state/store';
 import { AudioButton } from './AudioButton';
 import { posVi } from './TapText';
 import { TABS } from './Tabs';
@@ -36,7 +36,7 @@ export function SearchModal() {
     return { words, lessons, tabs };
   }, [q, ver]);
   const close = () => { setOpen(false); setQ(''); };
-  const nav = (s: Screen, arg: string | null = null) => { if (!leaveOk()) return; close(); if (arg) go(s, arg); else tab(s); };
+  const nav = (s: Screen, arg: string | null = null) => { close(); withLeave(() => { if (arg) go(s, arg); else tab(s); }); };
   const empty = q.trim() && !res.words.length && !res.lessons.length && !res.tabs.length;
 
   return (

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { UNITS } from '../data';
 import { roadmap } from '../lib/roadmap';
 import { doneCount, levelNow, unlocked, vocabWeek, weekDone, weekNow, weekUnits } from '../lib/progress';
-import { go, goWeek, leaveOk, tab, toast, useApp } from '../state/store';
+import { go, goWeek, withLeave, tab, toast, useApp } from '../state/store';
 import { TargetPicker } from './TargetPicker';
 
 /** Vòng tiến độ nhỏ cho từng tuần */
@@ -49,19 +49,19 @@ export function Sidebar() {
               <AnimatePresence initial={false}>
                 {o && (
                   <motion.div className="wk-body" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }}>
-                    <button className="side-u" onClick={() => leaveOk() && tab('words')}>
+                    <button className="side-u" onClick={() => withLeave(() => tab('words'))}>
                       <span>📗</span><span className="t">Từ vựng<i className="mini-bar"><i style={{ width: `${(vw.done / Math.max(1, vw.size)) * 100}%` }} /></i></span><span className="n">{vw.done}/{vw.size}</span>
                     </button>
                     {us.length ? us.map((u) => {
                       const lock = !unlocked(P, UNITS.indexOf(u)), d = doneCount(P, u.id);
                       return (
                         <button key={u.id} className={['side-u', u.id === cur && 'on', lock && 'locked'].filter(Boolean).join(' ')}
-                          onClick={() => (lock ? toast('🔒 Làm xong 3/5 phần của bài trước để mở bài này') : leaveOk() && go('unit', u.id))}>
+                          onClick={() => (lock ? toast('🔒 Làm xong 3/5 phần của bài trước để mở bài này') : withLeave(() => go('unit', u.id)))}>
                           <span>{lock ? '🔒' : u.emoji}</span><span className="t">{u.title}<i className="mini-bar"><i style={{ width: `${(d / 5) * 100}%` }} /></i></span><span className="n">{d}/5</span>
                         </button>
                       );
                     }) : <p className="soon">🧭 {g.goal}</p>}
-                    <button className="wk-go" onClick={() => leaveOk() && goWeek(w)}>Xem tuần {w} →</button>
+                    <button className="wk-go" onClick={() => withLeave(() => goWeek(w))}>Xem tuần {w} →</button>
                   </motion.div>
                 )}
               </AnimatePresence>

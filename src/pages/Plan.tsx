@@ -1,7 +1,8 @@
-import { DAILY_PLAN, ROADMAP, type Phase } from '../data';
+import { DAILY_PLAN } from '../data';
+import { roadmap, wordsFor } from '../lib/roadmap';
 import { Card } from '../components/Card';
 import { ProgressBar } from '../components/ProgressBar';
-import { dayNumber, PLAN_KEYS, today, TOTAL_DAYS } from '../lib/progress';
+import { dayNumber, PLAN_KEYS, today, weekNow } from '../lib/progress';
 import { addMinutes } from '../state/actions';
 import { useApp } from '../state/store';
 
@@ -13,25 +14,43 @@ const LINKS: [string, string][] = [
   ['https://ielts.org', '📝 IELTS.org: đề mẫu chính thức (dùng từ tuần 9)'],
 ];
 
-/** Lộ trình 3 tháng + thời khóa biểu mỗi ngày */
+const CEFR_NAME: Record<string, string> = { A1: 'nền tảng', A2: 'sơ cấp', B1: 'trung cấp, làm quen và luyện đề IELTS', B2: 'trung cao cấp', C1: 'cao cấp', C2: 'thành thạo như người bản xứ' };
+interface PhaseRow { from: number; to: number; cefr: string; bands: string[]; goals: string[] }
+/** Gom các tuần liền nhau cùng trình độ CEFR thành một giai đoạn */
+function phasesOf(rm: ReturnType<typeof roadmap>): PhaseRow[] {
+  const out: PhaseRow[] = [];
+  for (const [ws, g] of Object.entries(rm)) {
+    const w = +ws, c = g.cefr.replace('+', ''), last = out[out.length - 1];
+    if (last && last.cefr === c) { last.to = w; if (!last.bands.includes(g.band)) last.bands.push(g.band); if (!last.goals.includes(g.goal)) last.goals.push(g.goal); }
+    else out.push({ from: w, to: w, cefr: c, bands: [g.band], goals: [g.goal] });
+  }
+  return out;
+}
+
+/** Lộ trình theo mục tiêu IELTS + thời khóa biểu mỗi ngày */
 export function Plan() {
   const { P } = useApp();
-  const dn = dayNumber(P), week = Math.ceil(dn / 7), d = today(P);
-  const phase = (r: Phase) => { const [a, b] = r.weeks.split('–').map(Number); return week >= a && week <= b; };
+  const rm = roadmap(P), N = Object.keys(rm).length, dn = dayNumber(P), week = Math.min(weekNow(P), N), d = today(P), size = P.settings.wpd * 7;
+  const target = parseFloat(P.settings.target) || 5.5, hours = Math.round((target - 2) * 180);
   return (
     <>
-      <h2>🗺️ Lộ trình 3 tháng → IELTS 5.5</h2>
-      <Card><div className="row between"><b>Ngày {dn}/{TOTAL_DAYS} · Tuần {week}/12</b><span className="muted small">bắt đầu {P.startDate}</span></div>
-        <ProgressBar pct={Math.round((dn / TOTAL_DAYS) * 100)} />
-        <p className="note">Nói thật: từ mức 2.0 lên 5.5 thường cần khoảng 600–800 giờ học. Muốn xong trong 90 ngày thì cần <b>3–4 giờ mỗi ngày, không nghỉ ngày nào</b>.
-          {' '}Học ít hơn vẫn tiến bộ, chỉ là cần thêm thời gian (khoảng 5–6 tháng). Học đều mỗi ngày quan trọng hơn học dồn.</p></Card>
+      <h2>🗺️ Lộ trình {N} tuần → IELTS {P.settings.target}</h2>
+      <Card><div className="row between"><b>Ngày {Math.min(dn, N * 7)}/{N * 7} · Tuần {week}/{N}</b><span className="muted small">bắt đầu {P.startDate}</span></div>
+        <ProgressBar pct={Math.round((Math.min(dn, N * 7) / (N * 7)) * 100)} />
+        <p className="note">Nói thật: từ mức 2.0 lên IELTS {P.settings.target} thường cần khoảng <b>{hours.toLocaleString('vi-VN')} giờ học</b> và vốn khoảng <b>{wordsFor(target).toLocaleString('vi-VN')} từ</b>.
+          {' '}Lộ trình {N} tuần này tính theo {P.settings.wpd} từ mới mỗi ngày; học ít hơn vẫn tiến bộ, chỉ cần thêm thời gian. Học đều mỗi ngày quan trọng hơn học dồn.</p></Card>
       <h3>Các giai đoạn</h3>
-      {ROADMAP.map((r) => (
-        <Card key={r.weeks} className={phase(r) ? 'phase now' : 'phase'}>
-          <div className="row between"><b>Tuần {r.weeks} · {r.level}</b>{phase(r) && <span className="pill">Bạn đang ở đây</span>}</div>
-          <p>{r.goal}</p>{r.inApp ? <p className="muted small">✅ Đã có bài trong app</p> : <p className="muted small">⏳ Bài trong app sẽ được thêm dần</p>}
-        </Card>
-      ))}
+      {phasesOf(rm).map((r) => {
+        const now = week >= r.from && week <= r.to, done = week > r.to;
+        return (
+          <Card key={r.from} className={now ? 'phase now' : 'phase'}>
+            <div className="row between"><b>{done ? '✅ ' : ''}Tuần {r.from}{r.to > r.from ? `–${r.to}` : ''} · {r.cefr} · {CEFR_NAME[r.cefr] || ''}</b>{now && <span className="pill">Bạn đang ở đây</span>}</div>
+            <div className="wb-chips mt-1"><span className="chip3 band">🎯 IELTS {r.bands[0]}{r.bands.length > 1 ? ` → ${r.bands[r.bands.length - 1]}` : ''}</span><span className="chip3">📗 ~{Math.min(10000, r.to * size).toLocaleString('vi-VN')} từ tích lũy</span><span className="chip3">{r.to - r.from + 1} tuần</span></div>
+            <ul className="small mt-2 mb-1">{r.goals.map((g) => <li key={g}>{g.replace(/^🎯 Mốc [\d.]+: /, '')}</li>)}</ul>
+            <p className="muted small m-0">{r.from <= 4 ? '✅ Có bài học chủ đề + kiểm tra + từ vựng + bài AI 4 kỹ năng' : '✅ Từ vựng theo tuần + kiểm tra tuần + bài Đọc / Nghe / Nói / Viết do AI tạo đúng cấp độ'}</p>
+          </Card>
+        );
+      })}
       <h3>Mỗi ngày ({P.settings.goalMin} phút)</h3>
       <Card>
         {DAILY_PLAN.map(([ic, name, min, desc], i) => {

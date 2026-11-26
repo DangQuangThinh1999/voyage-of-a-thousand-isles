@@ -2,8 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
-// base './' để chạy được trên GitHub Pages dưới một thư mục con (https://user.github.io/repo/)
+// base '/': đường dẫn phân tầng (/tuan-1/hello) cần tài nguyên ở gốc trang
 export default defineConfig({
-  base: './',
+  base: '/',
   plugins: [react(), tailwindcss()],
 });

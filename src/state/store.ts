@@ -1,7 +1,7 @@
 // Kho trạng thái nhỏ của app: tiến độ (P), màn hình đang xem, phiên làm bài (S), ôn từ (R), test micro (MT).
 // Các hành động thay đổi trạng thái rồi gọi emit() để React vẽ lại.
 import { useSyncExternalStore } from 'react';
-import type { Unit } from '../data';
+import { UNITS, type Unit } from '../data';
 import { Cloud } from '../lib/cloud';
 import type { Step, Skill } from '../lib/exercises';
 import { addXPTo, freshKeep, load, mergeProgress, persist, today, type Kind, type Progress } from '../lib/progress';
@@ -36,6 +36,9 @@ export const app = {
   MT: { busy: false, res: null as MicTestResult | null },
   curSkill: null as string | null,
   toast: { msg: '', show: false },
+  dlg: null as Dlg | null,
+  /** tăng khi cần vẽ lại trang từ đầu (về gốc trang) */
+  nav: 0,
   /** cuộn trang sau lần vẽ tiếp theo: 'top' hoặc id của phần tử */
   scrollReq: null as null | 'top' | string,
 };
@@ -44,33 +47,74 @@ let version = 0;
 const subs = new Set<() => void>();
 export function emit() { syncHash(); version++; subs.forEach((f) => f()); }
 
-// ---------- đường dẫn (URL): mỗi trang một địa chỉ, tải lại vẫn ở đúng chỗ, nút Quay lại hoạt động ----------
-const ROUTES: Screen[] = ['home', 'unit', 'words', 'review', 'grammar', 'speak', 'skills', 'journal', 'stats', 'plan', 'settings', 'mic'];
-function pathOf(): string {
-  // Đang làm bài (không khôi phục được khi tải lại) → địa chỉ của chủ đề đang học
-  if (app.scr === 'session') return app.S ? '#/unit/' + encodeURIComponent(app.S.u.id) : '#/home';
-  return '#/' + app.scr + (app.scr === 'unit' && app.arg ? '/' + encodeURIComponent(app.arg) : '');
+// ---------- đường dẫn (URL) phân tầng giống breadcrumb: /tuan-1/hello, /giao-tiep/noi-theo-chu-de ----------
+// Tải lại vẫn ở đúng chỗ, nút Quay lại / Tiến tới hoạt động. Tab con là tầng thứ 2, tham số khác ở sau dấu ?
+export const SLUG: Partial<Record<Screen, string>> = {
+  words: 'tu-moi', review: 'on-tu', grammar: 'ngu-phap', speak: 'giao-tiep', skills: 'ky-nang', journal: 'viet',
+  stats: 'thanh-tuu', plan: 'lo-trinh', settings: 'cai-dat', mic: 'test-micro',
+};
+/** Tên tầng 2 (tab con) cho từng trang */
+export const SUB: Partial<Record<Screen, Record<string, [slug: string, label: string]>>> = {
+  speak: { talk: ['noi-theo-chu-de', '🎤 Nói theo chủ đề'], phrases: ['mau-cau', '💬 Mẫu câu'], ielts: ['hoi-dap-giam-khao', '🧑‍🏫 Hỏi đáp giám khảo'] },
+  grammar: { analyze: ['phan-tich-cau', '🔍 Phân tích câu'], mist: ['so-loi-sai', '📒 Sổ lỗi sai'], pos: ['tu-loai', '🧩 Từ loại'], lib: ['thu-vien', '📚 Thư viện'] },
+  skills: { weak: ['ky-nang-yeu', '📊 Kỹ năng yếu'], read: ['doc-hieu', '📖 Đọc hiểu'], listen: ['nghe-hieu', '🎧 Nghe hiểu'] },
+};
+/** Tab con mặc định của từng trang */
+export const DEFAULT_SUB: Partial<Record<Screen, string>> = { speak: 'talk', grammar: 'analyze', skills: 'weak' };
+const BY_SLUG = Object.fromEntries(Object.entries(SLUG).map(([k, v]) => [v, k as Screen]));
+const unitWeek = (id: string) => UNITS.find((u) => u.id === id)?.week;
+/** Đường dẫn tầng trang (không gồm tab con) */
+function rootOf(): string {
+  if (app.scr === 'session') return app.S ? `/tuan-${app.S.u.week}/${app.S.u.id}` : '/';
+  if (app.scr === 'unit' && app.arg) return `/tuan-${unitWeek(app.arg) ?? 1}/${encodeURIComponent(app.arg)}`;
+  if (app.scr === 'home') return app.arg ? `/tuan-${app.arg}` : '/';
+  return '/' + (SLUG[app.scr] || '');
 }
 function syncHash() {
   if (typeof location === 'undefined') return;
-  const want = pathOf(), [cur] = location.hash.split('?');
-  if ((cur || '#/home') !== want) history.pushState(null, '', want);
+  const want = rootOf(), cur = decodeURIComponent(location.pathname);
+  // Chỉ trang có tab con mới được có tầng sâu hơn (vd /giao-tiep/mau-cau); /tuan-1 ≠ /tuan-1/hello
+  const ok = want === '/' ? cur === '/' : cur === want || (!!SUB[app.scr] && cur.startsWith(want + '/'));
+  if (!ok) history.pushState(null, '', want);
 }
-/** Đọc địa chỉ hiện tại → trang. Trả về true nếu đổi trang */
+/** Đọc đường dẫn → trang. Trả về true nếu đổi trang. Link cũ dạng #/… tự chuyển sang dạng mới. */
 export function readHash(): boolean {
-  const m = location.hash.match(/^#\/([a-z]+)(?:\/([^?]*))?/);
-  const s = (m && ROUTES.includes(m[1] as Screen) ? m[1] : 'home') as Screen, a = m && m[2] ? decodeURIComponent(m[2]) : null;
+  if (location.hash.startsWith('#/')) {
+    const [p, q] = location.hash.slice(1).split('?'), [s0, a0] = p.split('/').filter(Boolean);
+    const s = s0 as Screen, sp = new URLSearchParams(q || ''), t = sp.get('t'); sp.delete('t');
+    let path = s === 'unit' && a0 ? `/tuan-${unitWeek(decodeURIComponent(a0)) ?? 1}/${a0}` : '/' + (SLUG[s] || '');
+    if (t && SUB[s] && SUB[s]![t]) path += '/' + SUB[s]![t][0];
+    const qs = sp.toString(); history.replaceState(null, '', path + (qs ? '?' + qs : ''));
+  }
+  const seg = decodeURIComponent(location.pathname).split('/').filter(Boolean);
+  let s: Screen = 'home', a: string | null = null;
+  const wk = seg[0] && seg[0].match(/^tuan-(\d+)$/);
+  if (wk) { if (seg[1] && UNITS.some((u) => u.id === seg[1])) { s = 'unit'; a = seg[1]; } else { a = wk[1]; } }
+  else if (seg[0] && BY_SLUG[seg[0]]) s = BY_SLUG[seg[0]];
   if (app.scr === 'session' && app.S && s === 'unit' && a === app.S.u.id) return false;
   if (s === app.scr && a === app.arg) return false;
-  app.scr = s; app.arg = s === 'unit' ? a : null; app.scrollReq = 'top';
+  app.scr = s; app.arg = a;
+  app.scrollReq = s === 'home' && a ? 'wk-' + a : 'top';
   return true;
 }
-/** Tham số con trong địa chỉ (phần sau dấu ?), ví dụ tab con: #/speak?t=ielts&p=2 */
-export function getParam(key: string): string | null { return new URLSearchParams(location.hash.split('?')[1] || '').get(key); }
+/** Tham số con: 't' (tab con) là tầng 2 của đường dẫn, các tham số khác ở sau dấu ? */
+export function getParam(key: string): string | null {
+  if (key === 't') {
+    const sub = SUB[app.scr], seg = decodeURIComponent(location.pathname).split('/').filter(Boolean)[1];
+    const hit = sub && seg && Object.entries(sub).find(([, [slug]]) => slug === seg);
+    return hit ? hit[0] : null;
+  }
+  return new URLSearchParams(location.search).get(key);
+}
 export function setParam(key: string, v: string | null) {
-  const [p, q = ''] = location.hash.split('?'), sp = new URLSearchParams(q);
-  if (v === null || v === '') sp.delete(key); else sp.set(key, v);
-  const qs = sp.toString(); history.replaceState(null, '', (p || '#/home') + (qs ? '?' + qs : ''));
+  const sp = new URLSearchParams(location.search);
+  let path = location.pathname;
+  if (key === 't' && SUB[app.scr]) {
+    const root = rootOf(), slug = v ? SUB[app.scr]![v]?.[0] : null;
+    path = slug ? `${root}/${slug}` : root; sp.delete('t');
+  } else if (v === null || v === '') sp.delete(key); else sp.set(key, v);
+  const qs = sp.toString(); history.replaceState(null, '', path + (qs ? '?' + qs : ''));
+  version++; subs.forEach((f) => f());
 }
 const subscribe = (f: () => void) => { subs.add(f); return () => { subs.delete(f); }; };
 const getVersion = () => version;
@@ -98,22 +142,39 @@ export const inTest = () => app.scr === 'session' && !!app.S && app.S.kind === '
 // ---------- điều hướng ----------
 export function go(s: Screen, a: string | null = null) {
   stopSpeaking();
+  // Bấm lại trang đang mở (vd tầng cha trên breadcrumb) → về gốc trang đó, bỏ tab con
+  if (s === app.scr && SUB[s] && typeof location !== 'undefined') { app.nav++; history.pushState(null, '', '/' + SLUG[s]); }
   app.scr = s; app.arg = a;
   app.curSkill = s === 'review' || s === 'words' ? 'review' : s === 'journal' ? 'write' : s === 'speak' ? 'speak' : s === 'grammar' ? 'read' : s === 'skills' ? 'listen' : null;
   app.scrollReq = 'top';
   emit();
 }
 /** Đang làm bài dở thì hỏi trước khi rời đi */
+// ---------- hộp thoại xác nhận tự thiết kế (thay confirm() của trình duyệt) ----------
+export interface Dlg { icon: string; title: string; msg: string; ok: string; cancel: string; danger?: boolean; resolve: (v: boolean) => void }
+export function askConfirm(o: Partial<Omit<Dlg, 'resolve'>> & { title: string }): Promise<boolean> {
+  return new Promise((resolve) => {
+    app.dlg = { icon: '❓', msg: '', ok: 'Đồng ý', cancel: 'Hủy', ...o, resolve: (v) => { app.dlg = null; emit(); resolve(v); } };
+    emit();
+  });
+}
+const inProgress = () => app.scr === 'session' && !!app.S && !app.S.done && !app.S.intro;
+/** Rời trang: đang làm bài dở thì hỏi bằng hộp thoại đẹp trước khi chạy fn */
+export function withLeave(fn: () => void) {
+  if (!inProgress()) { fn(); return; }
+  askConfirm({ icon: '🚪', title: 'Thoát bài đang làm?', msg: 'Kết quả bài này sẽ không được lưu. Bạn có thể làm lại sau.', ok: 'Thoát bài', cancel: 'Ở lại làm tiếp', danger: true })
+    .then((ok) => { if (ok) { app.S = null; fn(); } });
+}
 export function leaveOk() {
   const S = app.S;
-  if (app.scr === 'session' && S && !S.done && !S.intro) return confirm('Thoát bài đang làm? Kết quả bài này sẽ không được lưu.');
+  if (app.scr === 'session' && S && !S.done && !S.intro) return false;
   return true;
 }
 export function tab(t: Screen, reset = false) {
   if (reset || t === 'review') app.R = null;
   go(t);
 }
-export function goWeek(w: number | string) { go('home'); app.scrollReq = 'wk-' + w; }
+export function goWeek(w: number | string) { go('home', String(w)); app.scrollReq = 'wk-' + w; }
 
 // ---------- thông báo ----------
 let toastT: ReturnType<typeof setTimeout> | undefined;
@@ -142,6 +203,13 @@ export function initApp() {
   }, 15000);
   Cloud.init({ get: () => app.P, merge: mergeCloud, changed: () => emit() });
   // Nút Quay lại / Tiến tới của trình duyệt
-  addEventListener('popstate', () => { if (app.scr === 'session' && app.S && !app.S.done && !leaveOk()) { syncHash(); return; } if (readHash()) { app.S = null; emit(); } });
+  addEventListener('popstate', () => {
+    if (inProgress()) {
+      const target = location.pathname + location.search; syncHash();
+      withLeave(() => { history.pushState(null, '', target); if (readHash()) emit(); });
+      return;
+    }
+    if (readHash()) { app.S = null; emit(); }
+  });
   addEventListener('pagehide', () => { persist(app.P); Cloud.push(); });
 }

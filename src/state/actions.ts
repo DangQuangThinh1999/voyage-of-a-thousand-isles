@@ -5,7 +5,7 @@ import { hear, micErr, micLive, speak, stopListening } from '../lib/speech';
 import { cardInfo, newReview, rateCard } from '../lib/srs';
 import { scoreSpeech } from '../lib/text';
 import { dayKey } from '../lib/util';
-import { addXP, app, emit, go, resetProgress, save, toast } from './store';
+import { addXP, app, askConfirm, emit, go, resetProgress, save, toast } from './store';
 
 // ---------- ôn từ vựng ----------
 function reviewSpeak() { const R = app.R, c = R && R.q[R.i]; if (c && c.dir === 'en') speak(c.w); }
@@ -27,7 +27,8 @@ export function saveJournal(u: string, text: string): boolean {
   return true;
 }
 export function deleteJournal(id: number) {
-  if (confirm('Xóa bài này?')) { app.P.journal = app.P.journal.filter((e) => e.id !== id); save(); emit(); }
+  askConfirm({ icon: '🗑️', title: 'Xóa bài viết này?', msg: 'Bài viết sẽ bị xóa khỏi nhật ký và không khôi phục được.', ok: 'Xóa', danger: true })
+    .then((ok) => { if (ok) { app.P.journal = app.P.journal.filter((e) => e.id !== id); save(); emit(); } });
 }
 export async function copyJournal(id: number) {
   const e = app.P.journal.find((x) => x.id === id); if (!e) return;
@@ -49,7 +50,10 @@ export async function login() {
   try { await Cloud.signIn(); } catch (e) { const er = e as { code?: string; message?: string }; toast('Đăng nhập thất bại: ' + (er.code || er.message)); }
 }
 export async function logout() { await Cloud.signOut(); emit(); }
-export function reset() { if (confirm('Xóa toàn bộ tiến độ trên máy này?')) { resetProgress(); go('home'); } }
+export function reset() {
+  askConfirm({ icon: '⚠️', title: 'Xóa toàn bộ tiến độ?', msg: 'Bài học, từ vựng, điểm và nhật ký sẽ về 0. Không thể hoàn tác.', ok: 'Xóa hết', danger: true })
+    .then((ok) => { if (ok) { resetProgress(); go('home'); } });
+}
 export function introOk() { app.P.seenIntro = true; save(); emit(); }
 
 // ---------- test micro ----------

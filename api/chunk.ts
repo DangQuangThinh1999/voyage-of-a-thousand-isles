@@ -8,9 +8,9 @@ const GEN_SYS = `Bạn là giáo viên tiếng Anh cho người Việt, soạn b
 - Đếm số từ tiếng Anh cẩn thận: KHÔNG vượt quá giới hạn số từ.
 - Ngữ cảnh đa dạng: gia đình, công việc, trường học, du lịch, mua sắm, sức khoẻ, công nghệ, môi trường, nhiều quốc gia.`;
 const GEN_SCHEMA = { type: 'OBJECT', properties: { items: { type: 'ARRAY', items: { type: 'OBJECT', properties: {
-  en: { type: 'STRING' }, vi: { type: 'STRING' },
+  en: { type: 'STRING' }, vi: { type: 'STRING' }, en2: { type: 'STRING' }, vi2: { type: 'STRING' },
   words: { type: 'ARRAY', items: { type: 'OBJECT', properties: { w: { type: 'STRING' }, ipa: { type: 'STRING' }, vi: { type: 'STRING' } }, required: ['w', 'ipa', 'vi'] } },
-}, required: ['en', 'vi', 'words'] } } }, required: ['items'] };
+}, required: ['en', 'vi', 'en2', 'vi2', 'words'] } } }, required: ['items'] };
 
 const GRADE_SYS = `Bạn là giáo viên tiếng Anh cho người Việt, chấm bài DỊCH cả câu/đoạn của người học.
 - So bản dịch với câu gốc. Chấp nhận mọi cách dịch đúng nghĩa và đúng ngữ pháp, KHÔNG bắt buộc giống bản tham khảo. Không bao giờ đánh dấu sai một câu đúng.
@@ -44,6 +44,7 @@ Từ mục tiêu người học đang học: ${words.join(', ') || '(tự chọn
 Soạn ${n} bài, mỗi bài là ${kind}, dài ${Math.max(6, len - 4)}–${len} từ tiếng Anh (tuyệt đối không quá ${len} từ).
 Mỗi bài dùng ${len >= 16 ? '3–5' : '2–3'} từ mục tiêu khác nhau (chia đều để dùng hết các từ), giữ nguyên dạng hoặc chia đúng ngữ pháp.
 words: liệt kê các từ mục tiêu đã dùng trong bài (w đúng dạng gốc), ipa giọng Anh dạng /.../, vi nghĩa trong ngữ cảnh.
+en2/vi2: một câu/đoạn THỨ HAI, KHÁC HẲN câu thứ nhất (ngữ cảnh, chủ ngữ, tình huống, cấu trúc khác; không dịch lại hay đảo câu thứ nhất), cùng độ dài, nhưng dùng LẠI ĐÚNG các từ mục tiêu trong words. Người học dịch câu 1 Anh→Việt rồi dịch câu 2 Việt→Anh, nên câu 2 không được giống câu 1.
 Mã ngẫu nhiên: ${Math.random().toString(36).slice(2, 8)}.`;
     return gemini(GEN_SYS, user, GEN_SCHEMA, 0.9, true);
   }

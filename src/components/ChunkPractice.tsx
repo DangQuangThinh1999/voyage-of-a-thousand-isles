@@ -14,7 +14,7 @@ import { AudioButton } from './AudioButton';
 import { StepProgress } from './Progress';
 import { Bar, Pills } from './ui';
 
-interface Item { en: string; vi: string; words: { w: string; ipa: string; vi: string }[] }
+interface Item { en: string; vi: string; en2: string; vi2: string; words: { w: string; ipa: string; vi: string }[] }
 interface Grade { score: number; verdict: 'correct' | 'minor' | 'wrong'; corrected: string; natural: string; errors: { original: string; corrected: string; type_vi: string; explain_vi: string }[]; used: string[]; missed: string[]; comment_vi: string; rough?: boolean }
 type Len = '10' | '15' | '20';
 type Dir = 'vi-en' | 'en-vi';
@@ -52,13 +52,14 @@ export function ChunkPractice() {
     let its: Item[];
     try {
       const d = await post({ part: 'gen', len: n, n: 5, cefr: cefr(), words: targets });
-      its = (d.items as Item[]).filter((x) => x.en && x.vi && wc(x.en) <= 20).slice(0, 6);
+      its = (d.items as Item[]).filter((x) => x.en && x.vi && x.en2 && x.vi2 && wc(x.en) <= 20 && norm(x.en2) !== norm(x.en)).slice(0, 6);
       if (!its.length) throw new Error('empty');
       setOffline(false);
     } catch {
       // Không có AI: lấy câu ví dụ trong kho từ có độ dài phù hợp
       const ex = shuffle(p.filter((w) => w.ex && w.exvi && wc(w.ex) <= n && wc(w.ex) >= Math.min(5, n - 4)));
-      its = ex.slice(0, 5).map((w) => ({ en: w.ex, vi: w.exvi, words: [{ w: w.w, ipa: w.ipa, vi: w.vi }] }));
+      // vòng 2 dùng câu ví dụ của một từ khác để không trùng vòng 1
+      its = ex.slice(0, 5).map((w, k) => { const o = ex[k + 5] || ex[(k + 1) % ex.length]; return { en: w.ex, vi: w.exvi, en2: o.ex, vi2: o.exvi, words: [{ w: w.w, ipa: w.ipa, vi: w.vi }, ...(o !== w ? [{ w: o.w, ipa: o.ipa, vi: o.vi }] : [])] }; });
       setOffline(true);
     }
     setItems(its); setAnswers([...its, ...its].map(() => '')); setBusy(false);
@@ -67,8 +68,9 @@ export function ChunkPractice() {
   const N = items ? items.length : 0;
   /** ô thứ s: vòng 1 (s < N) dịch Anh → Việt, vòng 2 dịch Việt → Anh cùng các câu đó */
   const dirOf = (s: number): Dir => (s < N ? 'en-vi' : 'vi-en');
-  const srcOf = (s: number) => { const x = items![s % N]; return dirOf(s) === 'vi-en' ? x.vi : x.en; };
-  const refOf = (s: number) => { const x = items![s % N]; return dirOf(s) === 'vi-en' ? x.en : x.vi; };
+  /** vòng 1: câu en (dịch sang Việt) · vòng 2: câu KHÁC en2/vi2 (dịch sang Anh), cùng từ mục tiêu */
+  const srcOf = (s: number) => { const x = items![s % N]; return s < N ? x.en : x.vi2; };
+  const refOf = (s: number) => { const x = items![s % N]; return s < N ? x.vi : x.en2; };
   const PASS = 70;
   const passed = (k: number) => !!grades && !grades[k].rough && grades[k].score >= PASS && grades[k + N].score >= PASS;
 
@@ -114,7 +116,7 @@ export function ChunkPractice() {
   if (!items || busy) return (
     <section className="card">
       <h3 className="m-0">🧩 Học từ vựng theo cụm</h3>
-      <p className="muted small">Học từ trong cả câu sẽ nhớ lâu hơn học từ rời. AI đặt 5 {unit} chứa <b>từ mới</b> (tiếp theo trong kho) và từ đã học để ôn. <b>Vòng 1:</b> dịch Anh → Việt (hiểu nghĩa). <b>Vòng 2:</b> dịch lại chính các {unit} đó Việt → Anh (tự viết được). Làm xong cả 2 vòng mới nộp, AI chấm <b>một lần</b>. Một {unit} <b>qua</b> khi cả 2 chiều đạt ≥ {PASS}/100 — khi đó từ mới trong {unit} được <b>cộng vào số từ đã học</b> (tính cho các mốc 100 từ).</p>
+      <p className="muted small">Học từ trong cả câu sẽ nhớ lâu hơn học từ rời. AI đặt 5 {unit} chứa <b>từ mới</b> (tiếp theo trong kho) và từ đã học để ôn. <b>Vòng 1:</b> dịch Anh → Việt (hiểu nghĩa). <b>Vòng 2:</b> dịch Việt → Anh các {unit} <b>khác</b> dùng lại đúng những từ đó (tự viết được, không chép được vòng 1). Làm xong cả 2 vòng mới nộp, AI chấm <b>một lần</b>. Một {unit} <b>qua</b> khi cả 2 chiều đạt ≥ {PASS}/100 — khi đó từ mới trong {unit} được <b>cộng vào số từ đã học</b> (tính cho các mốc 100 từ).</p>
       <div className="row gap wrap"><Pills id="chunk-len" value={len} onChange={setLen} items={LENS} /></div>
       {busy ? <StepProgress steps={['Chọn từ mới + từ ôn', 'AI đặt câu theo ngữ cảnh', 'Sẵn sàng']} step={1} note="thường 5–15 giây" />
         : <button className="btn big" onClick={start}>▶ Bắt đầu 5 {unit}</button>}

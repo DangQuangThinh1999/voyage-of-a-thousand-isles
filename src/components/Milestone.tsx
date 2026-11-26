@@ -149,7 +149,8 @@ function Run({ m, set }: { m: MS; set: (x: MS | null) => void }) {
         <div className="ms-spell">{m.spell.map((x, i) => (
           <label key={x.w} className="ms-sp">
             <span><b>{i + 1}. {x.vi}</b> <span className="muted small">({x.pos})</span><br /><span className="muted small">🔢 {x.w.length} chữ cái · bắt đầu “{x.w[0]}” · 🔊 {edge(x.ipa)}</span></span>
-            <input className="ans" value={m.ans.spell[i]} autoCapitalize="off" autoCorrect="off" spellCheck={false} placeholder="tiếng Anh…" onChange={(e) => { m.ans.spell[i] = e.target.value; upd(); }} />
+<span><input className="ans" value={m.ans.spell[i]} autoCapitalize="off" autoCorrect="off" spellCheck={false} placeholder="tiếng Anh…" onChange={(e) => { m.ans.spell[i] = e.target.value; upd(); }} />
+              <Dictate short value={m.ans.spell[i]} onChange={(v) => { m.ans.spell[i] = v; upd(); }} label="🎤" /></span>
           </label>
         ))}</div>
       </section>
@@ -161,6 +162,7 @@ function Run({ m, set }: { m: MS; set: (x: MS | null) => void }) {
             <div><span className="chip2">📐 {t.grammar}</span> <b>{t.prompt_vi}</b></div>
             <div className="small muted">Từ phải dùng: {t.words.map((w) => <b key={w}> {w}</b>)} <button className="btn ghost sm" onClick={() => go('grammar', null)} title="Xem lại bài ngữ pháp">📚</button></div>
             <input className="ans" value={m.ans.tasks[i]} spellCheck={false} placeholder="Viết 1 câu tiếng Anh…" onChange={(e) => { m.ans.tasks[i] = e.target.value; upd(); }} />
+            <Dictate value={m.ans.tasks[i]} onChange={(v) => { m.ans.tasks[i] = v; upd(); }} label="🎤 Nói thay viết" />
           </div>
         ))}
       </section>

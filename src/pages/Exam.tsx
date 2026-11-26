@@ -189,6 +189,7 @@ function Qs({ E, sec, qs, review }: { E: ExamState; sec: SecKey; qs: ExamQ[]; re
                 {!review && <TypeHint q={q} />}
                 <input className="ans inp" disabled={review} value={String(v ?? '')} placeholder="Gõ đáp án…" autoCapitalize="off" autoCorrect="off" spellCheck={false}
                   onChange={(e) => { E.ans.q[k] = e.target.value; saveAns(); emit(); }} />
+                {!review && <Dictate short value={String(v ?? '')} onChange={(x) => { E.ans.q[k] = x; saveAns(); emit(); }} label="🎤 Nói đáp án" />}
               </>
             ) : (
               <div className="opts">{q.options.map((o, j) => (

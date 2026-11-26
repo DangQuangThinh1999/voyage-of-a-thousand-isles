@@ -25,7 +25,9 @@ export const leftToday = () => Math.max(0, app.P.settings.wpd - newWordsToday(ap
 export async function startWords() {
   app.W = blank(); emit();
   const n = Math.min(GROUP, leftToday() || GROUP);
-  const group = await nextBankWords((w) => !!app.P.srs[w], n);
+  const per: Record<string, number> = {};
+  for (const c of Object.values(app.P.srs)) if (c.f) per[c.f] = (per[c.f] || 0) + 1;
+  const group = await nextBankWords((w) => !!app.P.srs[w], n, (f) => per[f] || 0);
   if (!app.W) return;
   if (!group.length) { app.W = null; toast('Bạn đã học hết kho từ hiện có 🎉'); emit(); return; }
   app.W = { ...blank(), phase: 'learn', group };

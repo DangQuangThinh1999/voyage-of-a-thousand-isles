@@ -56,9 +56,10 @@ arr.forEach((e, i) => {
 });
 if (isExt) {
   const miss = chunk.filter((x) => !seen.has(x.w)).map((x) => x.w);
-  if (miss.length) bad(`Thiếu ${miss.length} từ so với chunk: ${miss.slice(0, 30).join(', ')}${miss.length > 30 ? '…' : ''}`);
+  // File mở rộng được phép chưa đủ (bổ sung dần); thêm --full để bắt buộc đủ.
+  if (miss.length) (process.argv.includes('--full') ? bad : console.log)(`Thiếu ${miss.length} từ so với chunk: ${miss.slice(0, 30).join(', ')}${miss.length > 30 ? '…' : ''}`);
 }
-const [from, to] = process.argv.slice(3).map(Number);
+const [from, to] = process.argv.slice(3).filter((a) => !a.startsWith('--')).map(Number);
 if (from && to) {
   const want = [...ngsl].filter(([, r]) => r >= from && r <= to).map(([w]) => w);
   const miss = want.filter((w) => !seen.has(w));

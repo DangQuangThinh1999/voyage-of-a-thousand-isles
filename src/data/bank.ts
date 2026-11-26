@@ -32,9 +32,11 @@ export const bankWord = (w: string): BankWord | undefined => BANK[w];
 export const loadedBankWords = (): BankWord[] => [...loaded.values()].flat();
 
 /** n từ tiếp theo chưa học, theo thứ tự từ thông dụng nhất */
-export async function nextBankWords(skip: (w: string) => boolean, n: number): Promise<BankWord[]> {
+/** doneIn(f) = số từ của file f đã học: file đã học hết thì bỏ qua, không cần tải */
+export async function nextBankWords(skip: (w: string) => boolean, n: number, doneIn: (f: string) => number = () => 0): Promise<BankWord[]> {
   const out: BankWord[] = [];
-  for (const { f } of BANK_FILES) {
+  for (const { f, n: size } of BANK_FILES) {
+    if (doneIn(f) >= size) continue;
     for (const e of await loadBankFile(f)) {
       if (skip(e.w)) continue;
       out.push(e);

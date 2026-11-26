@@ -308,3 +308,12 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
 .opt.sm { min-height: 36px; padding: 6px 12px; font-size: .92rem; }
 .ai { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 8px; }
 @media (max-width: 600px) { .okbad { grid-template-columns: 1fr; } }
+.ipa { font-family: 'Segoe UI', 'Noto Sans', 'Lucida Sans Unicode', sans-serif; color: var(--muted); font-size: .92rem; margin: 2px 0 6px; }
+.ipa.small { font-size: .78rem; margin: 0; }
+.senses { text-align: left; display: inline-block; margin: 8px auto 12px; padding-left: 22px; font-size: 1.05rem; font-weight: 600; }
+.senses li { margin: 2px 0; }
+.tag { display: inline-block; border-radius: 6px; padding: 2px 8px; font-size: .78rem; font-weight: 800; letter-spacing: .03em; vertical-align: middle; }
+.tag.wk { background: #6d28d9; color: #fff; }
+.tag.tp { background: #0e7c86; color: #fff; }
+.target { font-size: .8rem; display: inline-flex; align-items: center; gap: 4px; }
+.target select { font-size: .85rem; padding: 2px 6px; border-radius: 6px; width: auto; min-height: 0; }

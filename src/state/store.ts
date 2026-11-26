@@ -22,7 +22,7 @@ export interface Session {
   kind: Kind | 'test'; u: Unit; steps: Step[]; i: number; ok: number; graded: number; state: StepState; requeued: Set<number>;
   done?: { xp: number; passed?: boolean; pct?: number };
   // chỉ có ở bài kiểm tra
-  intro?: boolean; units?: Unit[]; key?: string; title?: string; skill: Partial<Record<Skill, [number, number]>>;
+  intro?: boolean; units?: Unit[]; key?: string; title?: string; failAt?: number; skill: Partial<Record<Skill, [number, number]>>;
 }
 export type MicTestResult = (SpeechScore & { audio: string | null; n: number; err?: undefined }) | { err: string };
 

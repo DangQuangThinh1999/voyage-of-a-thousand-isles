@@ -3,13 +3,14 @@ import { AudioButton, SayBoth } from '../components/AudioButton';
 import { Card } from '../components/Card';
 import { ChoiceList } from '../components/ChoiceList';
 import { GrammarNotes } from '../components/GrammarNotes';
-import { Synonyms } from '../components/Synonyms';
+import { Ipa, Senses } from '../components/Ipa';
 import { ProgressBar } from '../components/ProgressBar';
 import { BANK_TOTAL, MILESTONES } from '../data/bank';
 import { bankLearned, newWordsToday, vocabBehind, vocabWeek, weekNow } from '../lib/progress';
 import { dueWords } from '../lib/srs';
 import { setWpd } from '../state/actions';
 import { tab, useApp } from '../state/store';
+import { sameAs } from '../lib/lex';
 import { checkSentence, type SentenceResult } from '../lib/sentence';
 import { checkTyped, GROUP, knowWord, saveSentence, leftToday, learnWord, nextWordQ, pickWordAnswer, quitWords, startWords } from '../state/words';
 
@@ -102,14 +103,15 @@ function LearnCard() {
         <button className="icon" title="Thoát" onClick={quitWords}>✕</button>
         <ProgressBar pct={Math.round((W.i / W.group.length) * 100)} /><span className="muted small">{W.i + 1}/{W.group.length}</span>
       </div>
+      <p className="tip small">⬇️ Kéo xuống dưới, đọc hết ngữ pháp và viết xong câu của bạn rồi mới bấm <b>Học từ này</b> hoặc <b>Đã biết</b> để sang từ mới.</p>
       <Card className="center wordcard">
         <div className="en">{w.w}</div>
         <div className="muted">{w.ipa} · <i>{w.pos}</i>{w.awl ? <> · <span className="band">học thuật</span></> : null}</div>
         <div className="row gap center"><SayBoth text={w.w} /></div>
-        <div className="vi" style={{ marginTop: 10 }}>{w.vi}</div>
-        <Synonyms w={w.w} />
+        <Senses vi={w.vi} />
         <hr />
         <p className="ex"><b>{w.ex}</b> <AudioButton text={w.ex} /> <AudioButton text={w.ex} slow label="🐢" title="Đọc chậm" /></p>
+        <Ipa text={w.ex} />
         <p className="muted">{w.exvi}</p>
         <GrammarNotes en={w.ex} pos={w.pos} open />
         <p className="tip small">🗣️ Đọc to từ và câu ví dụ 3 lần, rồi tự viết một câu về bạn có dùng từ <b>{w.w}</b>.</p>
@@ -141,14 +143,14 @@ function WriteSentence() {
         <p className="muted small">Viết một câu thật về bạn, công việc hoặc cuộc sống của bạn (ít nhất 5 từ). Máy sẽ chấm từ vựng và ngữ pháp.</p>
         <form onSubmit={(e) => { e.preventDefault(); check(); }}>
           <textarea className="ans" rows={2} placeholder={`Ví dụ: I ... ${w.w} ...`} value={text} disabled={passed}
-            data-autofocus={passed ? undefined : '1'} onChange={(e) => { setText(e.target.value); setRes(null); }}
+            onChange={(e) => { setText(e.target.value); setRes(null); }}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); check(); } }} />
           {!passed && <button className="btn" type="submit" disabled={busy || !text.trim()} style={{ marginTop: 10 }}>{busy ? 'Đang chấm…' : 'Kiểm tra câu'}</button>}
         </form>
         {res && (
           <div className="sent-res">
             {res.ok
-              ? <p className="okc">✅ Câu đúng! {res.offline ? '(Không kết nối được máy chấm ngữ pháp, mới chấm theo luật của app.)' : ''} <AudioButton text={text} /></p>
+              ? <p className="okc">✅ Câu đúng! {res.offline ? '(Không kết nối được máy chấm ngữ pháp, mới chấm theo luật của app.)' : ''}{res.copied ? ' Câu giống câu ví dụ, lần sau thử đổi vài từ để tự luyện nhé.' : ''} <AudioButton text={text} /></p>
               : <p className="badc">Chưa đạt, sửa lại nhé:</p>}
             {res.ok && <GrammarNotes en={text} open title="Ngữ pháp trong câu bạn vừa viết" />}
             <ul className="checks">
@@ -183,7 +185,7 @@ function QuizCard() {
         {q.t === 'type'
           ? <TypeRecall key={W.qi} />
           : <ChoiceList items={q.opts} answered={answered} correctIdx={q.ans} pickedIdx={W.picked ?? undefined} grid2 optClass={q.t === 'listen' ? 'en' : undefined} onPick={pickWordAnswer} />}
-        {answered && <p className="muted" style={{ marginTop: 12 }}><b>{q.w.w}</b> {q.w.ipa}: {q.w.vi}</p>}
+        {answered && <div className="muted" style={{ marginTop: 12 }}><b>{q.w.w}</b> {q.w.ipa}<Senses vi={q.w.vi} />{q.t === 'type' && sameAs(q.w.w).length > 0 && <p>Từ cùng nghĩa cũng đúng: <b>{sameAs(q.w.w).join(', ')}</b></p>}</div>}
       </Card>
       {answered && (
         <div className="foot">
@@ -202,7 +204,7 @@ function TypeRecall() {
   const [hint, setHint] = useState(false);
   return (
     <>
-      <p className="ask">Tự nhớ và gõ lại từ tiếng Anh</p>
+      <p className="ask">Tự nhớ và gõ lại từ tiếng Anh{sameAs(q.w.w).length ? <span className="muted small"> (có {sameAs(q.w.w).length + 1} từ đúng, gõ 1 từ là được)</span> : null}</p>
       <div className="vi-prompt">{q.w.vi}</div>
       <div className="row gap center" style={{ margin: '10px 0' }}>
         <AudioButton text={q.w.w} className="btn ghost" label="🔊 Nghe" />

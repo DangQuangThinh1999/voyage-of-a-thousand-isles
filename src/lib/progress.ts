@@ -20,11 +20,11 @@ export const PLAN_KEYS = ['listen', 'speak', 'read', 'write', 'review'];
 /** nw = số từ mới (kho từ) đã học trong ngày */
 export interface Day { xp: number; sec: Record<string, number>; nw?: number }
 /** f = file kho từ chứa từ này (không có = từ trong bài học) */
-export interface SrsCard { b: number; due: string; f?: string }
+export interface SrsCard { b: number; due: string; f?: string; k?: 1 }
 export interface JournalEntry { id: number; d: string; u: string; t: string }
 export interface TestResult { best: number; passed: boolean; date?: string }
 /** wpd = số từ mới mỗi ngày */
-export interface Settings { rate: number; voice: string; goalMin: number; wpd: number }
+export interface Settings { rate: number; voice: string; goalMin: number; wpd: number; target: string }
 export interface Progress {
   v: 1; xp: number; streak: number; lastDay: string;
   days: Record<string, Day>;
@@ -42,7 +42,7 @@ export interface Progress {
 }
 
 export const fresh = (): Progress => ({ v: 1, xp: 0, streak: 0, lastDay: '', days: {}, units: {}, srs: {}, journal: [], tests: {},
-  settings: { rate: 0.85, voice: '', goalMin: 210, wpd: 30 }, startDate: dayKey(), updated: 0, seenIntro: false });
+  settings: { rate: 0.85, voice: '', goalMin: 210, wpd: 30, target: '5.5' }, startDate: dayKey(), updated: 0, seenIntro: false });
 
 /** Xóa tiến độ một lần cho mọi máy: 26/11/2026, các bài kiểm tra lúc app còn dang dở không tính */
 export const RESET_AT = 1795664612984;
@@ -92,6 +92,8 @@ export function vocabWeek(P: Progress, w: number) {
 export const vocabBehind = (P: Progress) => (P.vStart ? (daysBetween(P.vStart, dayKey()) + 1) * P.settings.wpd - bankLearned(P) : 0);
 export const weekNow = (P: Progress) => Math.ceil(dayNumber(P) / 7);
 export const newWordsToday = (P: Progress) => (P.days[dayKey()] || { nw: 0 }).nw || 0;
+/** Các mức mục tiêu IELTS người học chọn được */
+export const TARGETS = ['4.0', '4.5', '5.0', '5.5', '6.0', '6.5', '7.0', '7.5', '8.0', '8.5', '9.0'];
 export const unitProg = (P: Progress, id: string) => P.units[id] || (P.units[id] = {});
 export const doneCount = (P: Progress, id: string) => KINDS.filter(([k]) => (P.units[id] || {})[k]).length;
 export const unlocked = (P: Progress, i: number) => i === 0 || doneCount(P, UNITS[i - 1].id) >= 3;

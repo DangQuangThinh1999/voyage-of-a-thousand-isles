@@ -1,5 +1,6 @@
 import type { StepOf } from '../../lib/exercises';
 import { checkType, hint } from '../../state/session';
+import { sameAs } from '../../lib/lex';
 import { TypeAnswer } from '../TypeAnswer';
 import { StepFrame, strict, type StepProps } from './StepFrame';
 
@@ -13,7 +14,7 @@ export function SpellStep(p: StepProps<StepOf<'spell'>>) {
       {S.kind !== 'test' && <button className="btn ghost" data-act="hint" onClick={hint}>💡 Gợi ý</button>}
       <button className="btn big" data-act="checkType" onClick={checkType}>Kiểm tra</button>
     </>}>
-      <p className="ask">Viết từ tiếng Anh</p>
+      <p className="ask">Viết từ tiếng Anh{sameAs(en).length ? <span className="muted small"> (có {sameAs(en).length + 1} từ đúng, gõ 1 từ là được)</span> : null}</p>
       <div className="center">{!T && <div className="huge">{em}</div>}<div className="vi">{vi}</div>
         <p className="hint">{T ? '' : blanks}</p></div>
       <TypeAnswer placeholder="Gõ từ tiếng Anh…" disabled={ss.answered} initial={ss.typed} onChange={(v) => { ss.typed = v; }} />

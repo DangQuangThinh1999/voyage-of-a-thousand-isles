@@ -19,7 +19,7 @@ export function FeedbackBar({ st, ss, isTest }: { st: Step; ss: StepState; isTes
         {s && !ss.correct && <div className="muted">{s[1]}</div>}
       </div>
       {st.t === 'type' && !ss.correct && !isTest && <button className="btn ghost sm" data-act="overrule" onClick={overrule}>Câu tôi cũng đúng</button>}
-      <button className="btn big" data-act="next" onClick={nextStep}>Tiếp tục →</button>
+      <button className="btn big" data-act="next" onClick={nextStep}>{isTest && !ss.correct ? 'Xem kết quả →' : 'Tiếp tục →'}</button>
     </div>
   );
 }

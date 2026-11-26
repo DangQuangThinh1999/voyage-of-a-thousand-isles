@@ -4,6 +4,7 @@
 // 3) Xong: từ vào thẻ ôn ngắt quãng (ôn lại sau 1 ngày).
 import { firstSense, loadedBankWords, nextBankWords, type BankWord } from '../data/bank';
 import { newWordsToday, today } from '../lib/progress';
+import { sameAs } from '../lib/lex';
 import { speak } from '../lib/speech';
 import { addDays, dayKey, sample, shuffle } from '../lib/util';
 import { addXP, app, emit, save, toast } from './store';
@@ -41,6 +42,7 @@ function countNew(n: number) { const d = today(app.P); d.nw = (d.nw || 0) + n; }
 function nextCard() {
   const W = app.W!;
   W.i++;
+  app.scrollReq = 'top';
   if (W.i < W.group.length) { emit(); speak(W.group[W.i].w); return; }
   if (!W.learn.length) { finish(); return; }
   // Dễ → khó, các lần gặp lại cùng một từ cách xa nhau: nhận nghĩa, nghe nhận từ, rồi tự gõ lại từ
@@ -52,7 +54,7 @@ function nextCard() {
 /** Đã biết từ này: vào thẻ ôn ở mức cao (ôn lại sau 30 ngày) */
 export function knowWord() {
   const W = app.W!, w = W.group[W.i];
-  app.P.srs[w.w] = { b: 5, due: addDays(dayKey(), 30), f: w.f };
+  app.P.srs[w.w] = { b: 5, due: addDays(dayKey(), 3650), f: w.f, k: 1 };
   W.known++; countNew(1); save();
   nextCard();
 }
@@ -86,7 +88,7 @@ const norm = (s: string) => s.trim().toLowerCase().replace(/[^a-z' ]/g, '');
 export function checkTyped(text: string) {
   const W = app.W!, q = W.q[W.qi];
   if (W.picked !== null || !text.trim()) return;
-  const ok = [q.w.w, ...q.w.forms].some((f) => norm(f) === norm(text));
+  const ok = [q.w.w, ...q.w.forms, ...sameAs(q.w.w)].some((f) => norm(f) === norm(text));
   pickWordAnswer(ok ? 0 : 1);
 }
 
@@ -106,7 +108,7 @@ export function nextWordQ() {
 }
 
 function finish() {
-  const W = app.W!, due = addDays(dayKey(), 1);
+  const W = app.W!, due = addDays(dayKey(), 7);
   W.learn.forEach((w) => { if (!app.P.srs[w.w]) app.P.srs[w.w] = { b: 0, due, f: w.f }; });
   countNew(W.learn.length);
   W.xp += W.learn.length * 2 + W.known;

@@ -8,6 +8,7 @@ import { KINDS, SKILL_OF, unitProg, vocabWeekSize, weekUnits, type Kind } from '
 import { addNewWords, promoteWords } from '../lib/srs';
 import { hear, micErr, micLive, speak, SR, stopListening } from '../lib/speech';
 import { checkTyped, norm, scoreSpeech, tokens } from '../lib/text';
+import { sameAs } from '../lib/lex';
 import { dayKey } from '../lib/util';
 import { addXP, app, emit, go, inTest, save, toast, type Session, type StepState } from './store';
 
@@ -33,10 +34,10 @@ export function startQuickTest({ w, u }: { w?: number | string; u?: string }) {
     // Từ vựng của tuần trong kho từ (7 × số từ/ngày) + từ các tuần trước
     const size = vocabWeekSize(app.P), n = +w;
     Promise.all([bankRange((n - 1) * size, n * size), bankRange(0, (n - 1) * size)])
-      .then(([week, earlier]) => startTest(weekUnits(n), 'w' + n, `Tuần ${n}`, buildVocabSteps(week, earlier)))
-      .catch(() => startTest(weekUnits(n), 'w' + n, `Tuần ${n}`));
+      .then(([week, earlier]) => startTest(weekUnits(n), 'w' + n, `tuần ${n}`, buildVocabSteps(week, earlier)))
+      .catch(() => startTest(weekUnits(n), 'w' + n, `tuần ${n}`));
   }
-  else if (u) { const unit = unitById(u) as Unit; startTest([unit], 'u' + u, `bài ${unit.title}`); }
+  else if (u) { const unit = unitById(u) as Unit; startTest([unit], 'u' + u, `chủ đề ${unit.title}`); }
 }
 
 export function beginTest() { cur().intro = false; beginStep(); }
@@ -97,7 +98,17 @@ export function answer(correct: boolean, fb?: string | null) {
   if (say) speak(say);
 }
 
-export function nextStep() { const S = cur(); S.i++; if (S.i >= S.steps.length) finishSession(); else beginStep(); }
+export function nextStep() {
+  const S = cur(), st = step();
+  // Bài kiểm tra: sai 1 câu là dừng, phải làm lại từ đầu
+  if (S.kind === 'test' && st && GRADED.has(st.t) && S.state.answered && !S.state.correct) { S.failAt = S.i + 1; finishSession(); return; }
+  S.i++; if (S.i >= S.steps.length) finishSession(); else beginStep();
+}
+/** Làm lại bài kiểm tra từ đầu (đề mới) */
+export function retakeTest(key: string) {
+  app.S = null;
+  if (key[0] === 'w') startQuickTest({ w: +key.slice(1) }); else startQuickTest({ u: key.slice(1) });
+}
 
 function finishSession() {
   const S = cur();
@@ -143,7 +154,13 @@ export function hint() { cur().state.hint = true; emit(); }
 export function checkType() {
   const S = cur(), st = step() as StepOf<'spell' | 'type' | 'dictation'>, v = (S.state.typed || '').trim(); if (!v) return;
   S.state.typed = v;
-  const target = st.t === 'spell' ? st.w[0] : st.s[0], r = checkTyped(v, target);
+  const target = st.t === 'spell' ? st.w[0] : st.s[0];
+  if (st.t === 'spell') {
+    const others = sameAs(target), hit = others.find((o) => norm(o) === norm(v));
+    if (hit) { answer(true, `Đúng! “${hit}” cùng nghĩa. Từ trong bài: “${target}”${others.length > 1 ? `, cũng đúng: ${others.filter((o) => o !== hit).join(', ')}` : ''}.`); return; }
+    if (norm(v) === norm(target) && others.length) { answer(true, `Chính xác! Cũng đúng: ${others.join(', ')}.`); return; }
+  }
+  const r = checkTyped(v, target);
   if (S.kind === 'test' && st.t !== 'spell' && r !== 'bad' && (!/^[A-Z]/.test(v) || v.slice(-1) !== target.slice(-1))) {
     answer(false, `Sai hình thức: câu phải viết hoa chữ cái đầu và kết thúc bằng dấu “${target.slice(-1)}”`); return;
   }
@@ -209,7 +226,7 @@ async function doMic(target: string) {
     const sc = ss.result.score;
     const test = S.kind === 'test', need = test ? 1 : 0.75;
     if (sc >= need) { answer(true, sc === 1 ? 'Phát âm tuyệt vời! 🎉' : 'Tốt lắm! Từ màu đỏ cần đọc rõ hơn.'); return; }
-    if ((ss.scored || 0) >= (test ? 2 : 3)) { answer(false, test ? 'Chưa đạt: bài kiểm tra cần đọc đúng 100% các từ.' : 'Chưa đạt. Nghe lại mẫu và luyện thêm nhé.'); return; }
+    if ((ss.scored || 0) >= (test ? 5 : 3)) { answer(false, test ? 'Chưa đạt sau 5 lần nói: bài kiểm tra cần đọc đúng 100% các từ.' : 'Chưa đạt. Nghe lại mẫu và luyện thêm nhé.'); return; }
   }
   emit();
 }

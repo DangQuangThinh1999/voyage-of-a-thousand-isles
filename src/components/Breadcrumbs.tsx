@@ -15,12 +15,12 @@ export function Breadcrumbs() {
   if (scr === 'session' && S && S.kind === 'test' && S.key && S.key[0] === 'w') parts.push(weekCrumb(+S.key.slice(1)), <span key="t">⚡ Kiểm tra tuần</span>);
   else if (u) {
     parts.push(weekCrumb(u.week), <button key="u" data-act="unit" data-u={u.id} onClick={() => leaveOk() && go('unit', u.id)}>{u.emoji} {u.title}</button>);
-    if (scr === 'session' && S) { const k = KINDS.find(([x]) => x === S.kind); parts.push(<span key="k">{k ? k[1] + ' ' + k[2] : '⚡ Kiểm tra'}</span>); }
+    if (scr === 'session' && S) { const k = KINDS.find(([x]) => x === S.kind); parts.push(<span key="k">{k ? k[1] + ' ' + k[2] : '⚡ Kiểm tra chủ đề'}</span>); }
   } else if (scr !== 'home') parts.push(<span key="s">{NAMES[scr]}</span>);
   return (
     <nav id="crumbs" className="crumbs" aria-label="Đường dẫn">
       <div className="path">{parts.map((p, i) => <Fragment key={i}>{i > 0 && <i>›</i>}{p}</Fragment>)}</div>
-      <span className="lv">🎯 Trình độ ~IELTS <b>{levelNow(P)}</b> → 5.5</span>
+      <span className="lv">🎯 Trình độ ~IELTS <b>{levelNow(P)}</b> → {P.settings.target}</span>
     </nav>
   );
 }

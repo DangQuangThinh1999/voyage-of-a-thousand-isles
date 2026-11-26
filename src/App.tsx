@@ -43,6 +43,6 @@ function useAfterRender() {
       if (req !== 'top') { const el = document.getElementById(req); if (el) el.scrollIntoView({ block: 'start' }); }
     }
     const inp = document.querySelector<HTMLElement>('#main [data-autofocus]:not(:disabled)');
-    if (inp && document.activeElement !== inp) inp.focus();
+    if (inp && document.activeElement !== inp) inp.focus({ preventScroll: true });
   });
 }

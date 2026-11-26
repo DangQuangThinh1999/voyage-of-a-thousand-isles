@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { UNITS, WEEK_GOALS as WG } from '../data';
 import { Card } from '../components/Card';
+import { TargetPicker } from '../components/TargetPicker';
 import { ProgressBar } from '../components/ProgressBar';
 import { UnitCard } from '../components/UnitCard';
 import { bankLearned, dayNumber, levelNow, newWordsToday, vocabWeek, weekNow, minutesToday, nextTask, TOTAL_DAYS, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
@@ -11,10 +12,11 @@ import { tab, useApp } from '../state/store';
 
 function WeekBadge({ w, P }: { w: number; P: Progress }) {
   const us = weekUnits(w);
-  if (weekDone(P, w)) return <span className="okc small">✓ Đạt ~IELTS {WG[w].band}</span>;
+  const t0 = (P.tests || {})['w' + w];
+  if (weekDone(P, w)) return <span className="row gap"><span className="okc small">✓ Đạt ~IELTS {WG[w].band}</span><button className="btn ghost sm" onClick={() => startQuickTest({ w })}>🔁 Làm lại kiểm tra tuần{t0 ? ` · ${t0.best}%` : ''}</button></span>;
   if (!unlocked(P, UNITS.indexOf(us[0]))) return <span className="muted small">🔒</span>;
   const t = (P.tests || {})['w' + w];
-  return <button className="btn ghost sm" data-act="test" data-w={w} onClick={() => startQuickTest({ w })}>⚡ Kiểm tra nhanh{t ? ` · ${t.best}%` : ''}</button>;
+  return <button className="btn ghost sm" data-act="test" data-w={w} onClick={() => startQuickTest({ w })}>⚡ Kiểm tra tuần {w}{t ? ` · ${t.best}% · làm lại` : ''}</button>;
 }
 
 /** Từ vựng rải đều của tuần w (7 × số từ/ngày) */
@@ -51,7 +53,7 @@ export function Home() {
       <Card className="today">
         <div className="row between"><b>Hôm nay · Ngày {dayNumber(P)}/{TOTAL_DAYS}</b><span className="muted">{min} / {goal} phút</span></div>
         <ProgressBar pct={pct} />
-        <p className="lvline">🎯 Trình độ ước tính: <b>IELTS {levelNow(P)}</b> · Mục tiêu: <b>IELTS 5.5</b><br /><span className="muted small">📗 Kho từ: đã học {bankLearned(P)} từ. Ước tính theo các tuần đã học xong hoặc đã qua kiểm tra, không phải điểm thi thật.</span></p>
+        <p className="lvline">🎯 Trình độ ước tính: <b>IELTS {levelNow(P)}</b> · <TargetPicker className="target inline" /><br /><span className="muted small">📗 Kho từ: đã học {bankLearned(P)} từ. Ước tính theo các tuần đã học xong hoặc đã qua kiểm tra, không phải điểm thi thật.</span></p>
         <div className="row gap">
           {nt
             ? <button className="btn big" data-act="start" data-u={nt.u.id} data-k={nt.k[0]} onClick={() => startSession(nt.u.id, nt.k[0])}>▶ Học tiếp: {nt.u.emoji} {nt.u.title} · {nt.k[1]} {nt.k[2]}</button>

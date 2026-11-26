@@ -1,6 +1,7 @@
 import { JOURNAL_PROMPTS, unitById } from '../data';
 import { AudioButton } from '../components/AudioButton';
 import { GrammarNotes } from '../components/GrammarNotes';
+import { Ipa } from '../components/Ipa';
 import { Card } from '../components/Card';
 import { doneCount, KINDS } from '../lib/progress';
 import { startQuickTest, startSession } from '../state/session';
@@ -16,7 +17,7 @@ export function Unit() {
       <div className="row gap"><h2>{u.emoji} {u.title} <small className="muted">· {u.vi}</small></h2></div>
       <div className="list">
         {doneCount(P, u.id) < 5 && (
-          <button className="item quick" data-act="test" data-u={u.id} onClick={() => startQuickTest({ u: u.id })}><span className="em">⚡</span><span className="t"><b>Kiểm tra nhanh</b><small>Khó hơn bài học: 14 câu đủ 4 kỹ năng, có giới hạn thời gian, chỉ nghe 2 lần, không gợi ý. Đúng hết 100% mới qua</small></span><span className="go">Làm</span></button>
+          <button className="item quick" data-act="test" data-u={u.id} onClick={() => startQuickTest({ u: u.id })}><span className="em">⚡</span><span className="t"><b>Kiểm tra nhanh CHỦ ĐỀ: {u.title}</b><small>Chỉ nội dung chủ đề này. Khó hơn bài học, có giới hạn thời gian, sai 1 câu là làm lại từ đầu. Đúng hết 100% mới qua.{P.tests && P.tests['u' + u.id] ? ` Kết quả tốt nhất: ${P.tests['u' + u.id].best}%${P.tests['u' + u.id].passed ? ' ✓ đã qua' : ''}` : ''}</small></span><span className="go">{P.tests && P.tests['u' + u.id] ? '🔁 Làm lại' : 'Làm'}</span></button>
         )}
         {KINDS.map(([k, ic, name, desc]) => (
           <button key={k} className="item" data-act="start" data-u={u.id} data-k={k} onClick={() => startSession(u.id, k)}>
@@ -28,11 +29,11 @@ export function Unit() {
       </div>
       <h3>Sổ tay từ vựng</h3>
       <Card><table className="words"><tbody>{u.words.map(([en, vi, em]) => (
-        <tr key={en}><td>{em}</td><td><b>{en}</b></td><td className="muted">{vi}</td><td><AudioButton text={en} className="icon sm" /></td></tr>
+        <tr key={en}><td>{em}</td><td><b>{en}</b><Ipa text={en} className="ipa small" /></td><td className="muted">{vi}</td><td><AudioButton text={en} className="icon sm" /></td></tr>
       ))}</tbody></table></Card>
       <h3>Câu mẫu</h3>
       <Card>{u.sentences.map(([en, vi]) => (
-        <div key={en} className="sent"><AudioButton text={en} className="icon sm" /><div><b>{en}</b><div className="muted">{vi}</div><GrammarNotes en={en} /></div></div>
+        <div key={en} className="sent"><AudioButton text={en} className="icon sm" /><div><b>{en}</b><Ipa text={en} /><div className="muted">{vi}</div><GrammarNotes en={en} /></div></div>
       ))}</Card>
     </>
   );

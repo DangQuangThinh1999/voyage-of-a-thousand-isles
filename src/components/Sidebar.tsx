@@ -1,4 +1,5 @@
 import { UNITS, WEEK_GOALS as WG } from '../data';
+import { TargetPicker } from './TargetPicker';
 import { doneCount, levelNow, unlocked, vocabWeek, weekDone, weekUnits } from '../lib/progress';
 import { go, goWeek, leaveOk, tab, toast, useApp } from '../state/store';
 
@@ -8,7 +9,7 @@ export function Sidebar() {
   const cur = scr === 'unit' ? arg : scr === 'session' && S ? S.u.id : null;
   return (
     <aside id="side" className="side" aria-label="Tổng quan">
-      <div className="side-lv"><small>Trình độ ước tính</small><b>IELTS {levelNow(P)}</b><small>Mục tiêu: IELTS 5.5</small></div>
+      <div className="side-lv"><small>Trình độ ước tính</small><b>IELTS {levelNow(P)}</b><TargetPicker /></div>
       {Object.entries(WG).map(([w, g]) => {
         const us = weekUnits(+w), done = weekDone(P, +w), vw = vocabWeek(P, +w);
         return (

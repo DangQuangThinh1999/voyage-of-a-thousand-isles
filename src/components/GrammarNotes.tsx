@@ -30,7 +30,7 @@ function Point({ p, open }: { p: GrammarPoint; open: boolean }) {
       <summary><b>{p.name}</b> <span className="hit">{p.hit}</span></summary>
       {L ? (
         <>
-          <div className="formula">📌 {L.formula}</div>
+          <div className="formula">{L.formula.split(/\s+·\s+/).map((f) => <div key={f}>📌 {f}</div>)}</div>
           <p>💬 {L.simple}</p>
           {specific && <p className="muted small">Trong câu này: {p.why}</p>}
           <div className="okbad">

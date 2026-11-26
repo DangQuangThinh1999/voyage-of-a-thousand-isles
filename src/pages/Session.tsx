@@ -3,14 +3,15 @@ import { Card } from '../components/Card';
 import { SessionRunner } from '../components/SessionRunner';
 import { PASS, SKILL_NAME, type ParaStep, type Skill } from '../lib/exercises';
 import { KINDS, nextTask } from '../lib/progress';
-import { beginTest, startQuickTest, startSession } from '../state/session';
+import { beginTest, retakeTest, startQuickTest, startSession } from '../state/session';
 import { go, tab, useApp, type Session as S } from '../state/store';
 
 function TestIntro({ S }: { S: S }) {
   const para = S.steps[S.steps.length - 1] as ParaStep, key = S.key || '', w = key[0] === 'w' ? +key.slice(1) : null;
   return (
     <Card>
-      <h2>⚡ Kiểm tra nhanh · {S.title}</h2>
+      <h2><span className={w ? 'tag wk' : 'tag tp'}>{w ? '⚡ KIỂM TRA TUẦN' : '⚡ KIỂM TRA CHỦ ĐỀ'}</span> {S.title}</h2>
+      <p className="muted">{w ? `Gồm tất cả chủ đề của tuần ${w} và từ vựng của tuần.` : 'Chỉ gồm nội dung của chủ đề này.'}</p>
       {w ? <p>Qua bài này nghĩa là bạn đạt mục tiêu <b>🎯 IELTS ~{WG[w].band}</b> ({WG[w].cefr}).</p> : null}
       <p><b>{S.steps.length} câu</b>, đủ 4 kỹ năng. Bài kiểm tra <b>khó hơn bài học thường</b>:</p>
       <ul className="rules">
@@ -19,7 +20,8 @@ function TestIntro({ S }: { S: S }) {
         <li>🎧 Mỗi bài nghe chỉ được nghe <b>tối đa 2 lần</b>, giọng đọc nhanh, không có nút đọc chậm.</li>
         <li>🚫 Không gợi ý, không dịch tiếng Việt, không có hình minh họa. Chọn nghĩa có 6 đáp án.</li>
         <li>✍️ Nghe chép và tự viết câu phải <b>gõ cả câu</b>, đúng chữ hoa và dấu câu. Sai 1 chữ cái là sai.</li>
-        <li>🗣️ Phần nói không có mẫu để nghe, phải đọc <b>đúng 100% số từ</b>, tối đa 2 lần.</li>
+        <li>🗣️ Phần nói không có mẫu để nghe, phải đọc <b>đúng 100% số từ</b>, được nói tối đa <b>5 lần</b>.</li>
+        <li>🔁 <b>Sai 1 câu là dừng</b>, phải làm lại từ đầu với đề mới.</li>
         <li>📝 Đoạn văn: ít nhất {para.minWords} từ, {para.minSents} câu, dùng {para.minVocab} từ vựng đã học.</li>
         <li>🎯 Phải <b>đúng hết 100%</b> mới qua.</li>
       </ul>
@@ -36,7 +38,8 @@ function TestDone({ S }: { S: S }) {
   return (
     <Card className="center finish">
       <div className="huge">{d.passed ? '🎉' : '💪'}</div>
-      <h2>{d.passed ? `Qua rồi! ${S.title} đã xong` : `Chưa qua ${S.title}`}</h2>
+      <h2><span className={key[0] === 'w' ? 'tag wk' : 'tag tp'}>{key[0] === 'w' ? 'KIỂM TRA TUẦN' : 'KIỂM TRA CHỦ ĐỀ'}</span><br />{d.passed ? `Qua rồi! ${S.title} đã xong` : `Chưa qua ${S.title}`}</h2>
+      {S.failAt && <p className="badc">Sai ở câu {S.failAt}/{S.steps.length}. Bấm <b>Làm lại từ đầu</b> để làm đề mới.</p>}
       {d.passed && key[0] === 'w' && <p className="xp">🎯 Bạn đạt ~IELTS {WG[+key.slice(1)].band}</p>}
       <p>Đúng <b>{S.ok}/{S.graded}</b> ({d.pct}%) · cần đúng hết 100%</p>
       <Card className="left">{skills.map(([k, [ok, n]]) => (
@@ -47,6 +50,7 @@ function TestDone({ S }: { S: S }) {
       <p className="xp">+{d.xp} ⭐</p>
       <div className="row gap center">
         <button className="btn ghost" data-act="tab" data-tab="home" onClick={() => tab('home')}>← Trang chủ</button>
+        <button className={d.passed ? 'btn ghost' : 'btn'} data-act="retake" onClick={() => retakeTest(key)}>🔁 Làm lại từ đầu</button>
         {d.passed && hasNext && <button className="btn" data-act="test" data-w={next!} onClick={() => startQuickTest({ w: next! })}>⚡ Kiểm tra tuần {next} →</button>}
         {!d.passed && <button className="btn" data-act="unit" data-u={S.u.id} onClick={() => go('unit', S.u.id)}>Học bài {S.u.title} →</button>}
       </div>

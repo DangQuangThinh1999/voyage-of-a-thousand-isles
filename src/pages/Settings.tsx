@@ -1,4 +1,5 @@
 import { Card } from '../components/Card';
+import { TargetPicker } from '../components/TargetPicker';
 import { Cloud } from '../lib/cloud';
 import { englishVoices, pickVoice } from '../lib/speech';
 import { login, logout, reset, setGoal, setRate, setVoice } from '../state/actions';
@@ -26,6 +27,7 @@ export function Settings() {
         <input id="rate" type="range" min="0.5" max="1.1" step="0.05" value={P.settings.rate} onChange={(e) => setRate(+e.target.value)} />
         <button className="btn ghost" data-act="say" onClick={() => say('Hello! How are you today?')}>🔊 Thử giọng</button>
       </Card>
+      <Card><h3>Mục tiêu IELTS</h3><TargetPicker /><p className="muted small">Đổi lúc nào cũng được. Mục tiêu hiện ở cột bên trái và đầu trang.</p></Card>
       <Card><h3>Mục tiêu mỗi ngày</h3>
         <select id="goal" value={P.settings.goalMin} onChange={(e) => setGoal(+e.target.value)}>
           {GOALS.map((m) => <option key={m} value={m}>{m} phút{m === 210 ? ' (đủ cho 5.5 trong 3 tháng)' : ''}</option>)}

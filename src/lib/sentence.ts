@@ -11,7 +11,7 @@ const KIND_VI: Record<string, string> = {
   GRAMMAR: 'Lỗi ngữ pháp', TYPOS: 'Lỗi chính tả', CASING: 'Lỗi viết hoa', PUNCTUATION: 'Lỗi dấu câu',
   CONFUSED_WORDS: 'Dùng nhầm từ', COLLOCATIONS: 'Kết hợp từ chưa tự nhiên', SEMANTICS: 'Câu chưa hợp nghĩa', MISC: 'Lỗi khác',
 };
-export interface SentenceResult { ok: boolean; checks: Check[]; issues: GrammarIssue[]; offline: boolean }
+export interface SentenceResult { ok: boolean; checks: Check[]; issues: GrammarIssue[]; offline: boolean; copied?: boolean }
 
 const VI_RE = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
 
@@ -30,7 +30,6 @@ export function ruleChecks(text: string, w: BankWord): Check[] {
   const t = text.trim(), words = t.match(/[A-Za-z']+/g) || [];
   const forms = wordForms(w.w, w.forms);
   const used = w.w.includes(' ') ? norm(t).includes(norm(w.w)) : words.some((x) => forms.has(x.toLowerCase()));
-  const copied = norm(t) === norm(w.ex);
   return [
     [used, `Có dùng từ “${w.w}” (hoặc dạng chia của nó)`],
     [words.length >= 5, `Ít nhất 5 từ (đang có ${words.length})`],
@@ -38,7 +37,6 @@ export function ruleChecks(text: string, w: BankWord): Check[] {
     [/[.!?]$/.test(t), 'Kết thúc bằng dấu . ? hoặc !'],
     [!/\bi\b/.test(t), 'Chữ “I” (tôi) luôn viết hoa'],
     [!VI_RE.test(t), 'Chỉ viết tiếng Anh'],
-    [!copied, 'Tự viết câu của bạn, không chép câu ví dụ'],
   ];
 }
 
@@ -63,8 +61,8 @@ export async function checkSentence(text: string, w: BankWord): Promise<Sentence
   if (!checks.every(([ok]) => ok)) return { ok: false, checks, issues: [], offline: false };
   try {
     const issues = await grammar(text.trim());
-    return { ok: issues.length === 0, checks, issues, offline: false };
+    return { ok: issues.length === 0, checks, issues, offline: false, copied: norm(text) === norm(w.ex) };
   } catch {
-    return { ok: true, checks, issues: [], offline: true };
+    return { ok: true, checks, issues: [], offline: true, copied: norm(text) === norm(w.ex) };
   }
 }

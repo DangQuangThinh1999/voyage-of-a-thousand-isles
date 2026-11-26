@@ -779,3 +779,4 @@ main { max-width: 980px; overflow-x: clip; }
 .chunk.cpass { border-color: var(--good); } .chunk.cfail { border-color: var(--bad); }
 .chunk-rev { display: grid; gap: 4px; padding-top: 8px; border-top: 1px dashed var(--line); }
 .chunk-dots button.gap { margin-left: 18px; }
+.warn-box { background: var(--warn-soft); border: 1px solid #f59e0b; padding: 8px 10px; border-radius: 10px; text-align: left; }

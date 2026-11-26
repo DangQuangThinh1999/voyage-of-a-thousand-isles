@@ -1,4 +1,5 @@
-import { lazy, Suspense, useLayoutEffect } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect } from 'react';
+import { startChunkQueue } from './lib/chunkQueue';
 import { AnimatePresence, motion } from 'motion/react';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
@@ -33,6 +34,7 @@ const PAGES: Record<Screen, () => JSX.Element | null> = {
 export default function App() {
   const { scr, nav } = useApp();
   useAfterRender();
+  useEffect(() => { startChunkQueue(); }, []);
   const Page = PAGES[scr];
   return (
     <>

@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import { bankRange, bankWord, nextBankWords, type BankWord } from '../data/bank';
+import { enqueueChunk } from '../lib/chunkQueue';
 import { addMistake, bankLearned, tallySkill, today, vocabWeekSize, weekNow } from '../lib/progress';
 import { roadmap } from '../lib/roadmap';
 import { norm } from '../lib/text';
@@ -40,12 +41,12 @@ export function ChunkPractice() {
   const [len, setLen] = useState<Len>('10');
   const [items, setItems] = useState<Item[] | null>(null), [i, setI] = useState(0), [busy, setBusy] = useState(false), [offline, setOffline] = useState(false);
   const [answers, setAnswers] = useState<string[]>([]), [hint, setHint] = useState(false);
-  const [grades, setGrades] = useState<Grade[] | null>(null), [grading, setGrading] = useState(false), [newWords, setNewWords] = useState<string[]>([]);
+  const [grades, setGrades] = useState<Grade[] | null>(null), [grading, setGrading] = useState(false), [newWords, setNewWords] = useState<string[]>([]), [queued, setQueued] = useState(false);
   const cefr = () => { const RM = roadmap(app.P); return (RM[weekNow(app.P)] || RM[1])?.cefr || 'A2'; };
   const unit = len === '20' ? 'đoạn' : 'câu';
 
   const start = async () => {
-    setBusy(true); setItems(null); setI(0); setGrades(null); setAnswers([]); setHint(false); setNewWords([]);
+    setBusy(true); setItems(null); setI(0); setGrades(null); setAnswers([]); setHint(false); setNewWords([]); setQueued(false);
     const n = +len, p = await pick(n >= 16 ? 20 : 12).catch(() => [] as BankWord[]), targets = p.map((w) => w.w);
     let its: Item[];
     try {
@@ -81,6 +82,10 @@ export function ChunkPractice() {
       const d = await post({ part: 'gradeall', cefr: cefr(), items: answers.map((a, s) => ({ dir: dirOf(s), source: srcOf(s), reference: refOf(s), answer: a, words: items[s % N].words.map((w) => w.w) })) });
       rs = answers.map((_, s) => d.results?.[s] || { score: 0, verdict: 'wrong', corrected: '', natural: '', errors: [], used: [], missed: [], comment_vi: 'AI không trả kết quả cho bài này.' });
     } catch {
+      // AI bận: lưu lượt này để app tự chấm lại lúc rảnh và cộng từ sau
+      enqueueChunk({ cefr: cefr(), n: N, items: answers.map((a, s) => ({ dir: dirOf(s), source: srcOf(s), reference: refOf(s), answer: a, words: items[s % N].words.map((w) => w.w) })),
+        fresh: items.map((x) => x.words.map((w) => bankWord(w.w) || bankWord(w.w.toLowerCase())).filter((e): e is BankWord => !!e && !app.P.srs[e.w]).map((e) => ({ w: e.w, f: e.f }))) });
+      setQueued(true);
       // chấm sơ bộ: mức trùng từ với bản tham khảo (không cộng từ mới)
       rs = answers.map((a, s) => {
         const x = new Set(norm(a).split(' ')), y = norm(refOf(s)).split(' ');
@@ -125,6 +130,7 @@ export function ChunkPractice() {
           <div className="huge">{np === N ? '🏆' : np >= N / 2 ? '👍' : '💪'}</div>
           <h3 className="m-0">Qua {np}/{N} {unit} · điểm trung bình {avg}/100</h3>
           <p className="muted small">Mỗi {unit} cần cả Anh → Việt và Việt → Anh đạt ≥ {PASS}/100.</p>
+          {queued && <p className="warn-box small">⏳ <b>AI đang bận</b> nên điểm dưới đây chỉ là chấm sơ bộ. Bài của bạn <b>đã được lưu</b> — app sẽ <b>tự chấm lại khi rảnh</b> (lúc mở app hoặc khi bạn không thao tác) và tự cộng từ mới cho các {unit} qua, có thông báo khi xong.</p>}
           {newWords.length > 0 ? <p className="okc"><b>🆕 +{newWords.length} từ mới</b> được tính vào số từ đã học ({bankLearned(app.P)} từ): {newWords.join(', ')}</p>
             : <p className="muted small">Chưa có từ mới nào được cộng (từ đã học rồi, hoặc {unit} chưa qua).</p>}
           <p className="muted small">Từ mới sẽ vào lịch 🔁 Ôn từ từ ngày mai. Các lỗi đã ghi vào 📒 Sổ lỗi sai.</p>

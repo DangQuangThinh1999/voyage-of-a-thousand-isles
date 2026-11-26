@@ -1,6 +1,6 @@
 import { leaveOk, tab, useApp, type Screen } from '../state/store';
 
-const TABS: [Screen, string, string][] = [['home', '🏠', 'Học'], ['words', '📗', 'Từ mới'], ['review', '🔁', 'Ôn từ'], ['journal', '📝', 'Nhật ký'], ['plan', '🗺️', 'Lộ trình']];
+export const TABS: [Screen, string, string][] = [['home', '🏠', 'Học'], ['words', '📗', 'Từ mới'], ['review', '🔁', 'Ôn từ'], ['grammar', '📐', 'Ngữ pháp'], ['speak', '🗣️', 'Giao tiếp'], ['skills', '🎯', 'Kỹ năng'], ['journal', '✍️', 'Viết'], ['stats', '🏆', 'Thành tựu'], ['plan', '🗺️', 'Lộ trình']];
 /** Thanh tab dưới cùng (ẩn khi đang làm bài) */
 export function Tabs() {
   const { scr } = useApp();

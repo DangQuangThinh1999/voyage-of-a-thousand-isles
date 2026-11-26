@@ -4,11 +4,12 @@ import {
   AUTO_PLAY, BUILD, GRADED, LIMITS, PASS, SKILL_OF_STEP, buildTest, buildVocabSteps, paraChecks, passageText, type Step, type StepOf,
 } from '../lib/exercises';
 import { bankRange } from '../data/bank';
-import { KINDS, SKILL_OF, unitProg, vocabWeekSize, weekUnits, type Kind } from '../lib/progress';
+import { KINDS, SKILL_OF, tallySkill, unitProg, vocabWeekSize, weekUnits, type Kind } from '../lib/progress';
 import { addNewWords, promoteWords } from '../lib/srs';
 import { hear, micErr, micLive, speak, SR, stopListening } from '../lib/speech';
 import { checkTyped, norm, scoreSpeech, tokens } from '../lib/text';
 import { sameAs } from '../lib/lex';
+import { altCorrect } from '../lib/sentence';
 import { dayKey } from '../lib/util';
 import { addXP, app, emit, go, inTest, save, toast, type Session, type StepState } from './store';
 
@@ -86,6 +87,7 @@ export function answer(correct: boolean, fb?: string | null) {
   if (GRADED.has(st.t)) {
     if (!S.requeued.has(S.i)) { S.graded++; if (correct) S.ok++; }
     if (S.kind === 'test') { const k = SKILL_OF_STEP[st.t]!, v = S.skill[k] || (S.skill[k] = [0, 0]); v[1]++; if (correct) v[0]++; }
+    if (!S.requeued.has(S.i) && SKILL_OF_STEP[st.t]) { tallySkill(app.P, SKILL_OF_STEP[st.t]!, correct); save(); }
     if (!correct && S.kind !== 'test' && !S.requeued.has(S.i) && st.t !== 'speak') { S.requeued.add(S.steps.length); S.steps.push(st); S.state.pushed = true; }
   }
   emit();
@@ -151,7 +153,7 @@ export function checkTiles() {
   answer(norm(got) === norm(tokens(st.s[0]).join(' ')));
 }
 export function hint() { cur().state.hint = true; emit(); }
-export function checkType() {
+export async function checkType() {
   const S = cur(), st = step() as StepOf<'spell' | 'type' | 'dictation'>, v = (S.state.typed || '').trim(); if (!v) return;
   S.state.typed = v;
   const target = st.t === 'spell' ? st.w[0] : st.s[0];
@@ -161,6 +163,14 @@ export function checkType() {
     if (norm(v) === norm(target) && others.length) { answer(true, `Chính xác! Cũng đúng: ${others.join(', ')}.`); return; }
   }
   const r = checkTyped(v, target);
+  if (st.t === 'type' && r === 'bad') {
+    S.state.fb = 'Đang chấm câu của bạn…'; emit();
+    const alt = await altCorrect(v, target, sameAs);
+    if (cur() !== S || S.state.answered) return;
+    S.state.fb = null;
+    if (alt.ok && !(S.kind === 'test' && (!/^[A-Z]/.test(v) || !/[.?!]$/.test(v)))) { answer(true, `Câu của bạn đúng ngữ pháp và đủ ý ✅ Đáp án mẫu: “${target}”`); return; }
+    if (alt.issues.length) { answer(false, 'Câu có lỗi: ' + alt.issues.map((i) => `“${i.bad}” → ${i.fix[0] || '?'}`).join('; ')); return; }
+  }
   if (S.kind === 'test' && st.t !== 'spell' && r !== 'bad' && (!/^[A-Z]/.test(v) || v.slice(-1) !== target.slice(-1))) {
     answer(false, `Sai hình thức: câu phải viết hoa chữ cái đầu và kết thúc bằng dấu “${target.slice(-1)}”`); return;
   }

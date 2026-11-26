@@ -1,4 +1,5 @@
-import { useLayoutEffect } from 'react';
+import { lazy, Suspense, useLayoutEffect } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { Tabs } from './components/Tabs';
@@ -12,10 +13,15 @@ import { Session } from './pages/Session';
 import { Settings } from './pages/Settings';
 import { Unit } from './pages/Unit';
 import { Words } from './pages/Words';
+import { Grammar } from './pages/Grammar';
+import { Speak } from './pages/Speak';
+import { Skills } from './pages/Skills';
+const Stats = lazy(() => import('./pages/Stats'));
+const StatsPage = () => <Suspense fallback={<p className="muted">Đang tải…</p>}><Stats /></Suspense>;
 import { app, useApp, type Screen } from './state/store';
 
 const PAGES: Record<Screen, () => JSX.Element | null> = {
-  home: Home, unit: Unit, session: Session, words: Words, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest,
+  home: Home, unit: Unit, session: Session, words: Words, grammar: Grammar, speak: Speak, skills: Skills, stats: StatsPage, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest,
 };
 
 export default function App() {
@@ -26,7 +32,9 @@ export default function App() {
     <>
       <Sidebar />
       <Header />
-      <main id="main"><Page /></main>
+      <AnimatePresence mode="wait">
+        <motion.main id="main" key={scr} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }}><Page /></motion.main>
+      </AnimatePresence>
       <Tabs />
       <Toast />
     </>

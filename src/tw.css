@@ -1,0 +1,9 @@
+/* Tailwind (không dùng preflight để không phá kiểu dáng cũ) */
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@theme inline {
+  --color-pri: var(--pri); --color-ink: var(--ink); --color-muted: var(--muted); --color-card: var(--card);
+  --color-line: var(--line); --color-good: var(--good); --color-bad: var(--bad); --color-soft: var(--pri-soft);
+  --color-sea: #0b4f6c; --color-deep: #062f43; --color-sand: #f4d58d; --color-coral: #ff7a59;
+}

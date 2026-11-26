@@ -4,7 +4,7 @@ import { lessonFor, type Quiz } from '../lib/grammarLessons';
 import { AudioButton } from './AudioButton';
 
 /** Câu hỏi thử ngay sau mỗi điểm ngữ pháp */
-function TryQuiz({ quiz }: { quiz: Quiz }) {
+export function TryQuiz({ quiz, onRight }: { quiz: Quiz; onRight?: () => void }) {
   const [pick, setPick] = useState<number | null>(null);
   return (
     <div className="gq">
@@ -12,12 +12,30 @@ function TryQuiz({ quiz }: { quiz: Quiz }) {
       <div className="gq-opts">
         {quiz.opts.map((o, i) => {
           const cls = pick === null ? '' : i === quiz.a ? 'right' : i === pick ? 'wrong' : 'dim';
-          return <button key={o} className={`opt sm ${cls}`} disabled={pick !== null} onClick={() => setPick(i)}>{String.fromCharCode(65 + i)}. {o}</button>;
+          return <button key={o} className={`opt sm ${cls}`} disabled={pick !== null} onClick={() => { setPick(i); if (i === quiz.a && onRight) onRight(); }}>{String.fromCharCode(65 + i)}. {o}</button>;
         })}
       </div>
       {pick !== null && <p className={pick === quiz.a ? 'okc' : 'badc'}>{pick === quiz.a ? '✅ Đúng rồi! ' : '❌ Chưa đúng. '}<span className="muted">{quiz.why}</span>
         {pick !== quiz.a && <button className="btn ghost sm" style={{ marginLeft: 8 }} onClick={() => setPick(null)}>Làm lại</button>}</p>}
     </div>
+  );
+}
+
+/** Nội dung một bài ngữ pháp (dùng ở tab Ngữ pháp) */
+export function LessonBody({ name, onRight }: { name: string; onRight?: () => void }) {
+  const L = lessonFor(name);
+  if (!L) return null;
+  return (
+    <>
+      <div className="formula">{L.formula.split(/\s+·\s+/).map((f) => <div key={f}>📌 {f}</div>)}</div>
+      <p>💬 {L.simple}</p>
+      <div className="okbad">
+        <div><b className="okc">✅ Đúng</b>{L.ok.map((s) => <div key={s}>{s} <AudioButton text={s} className="icon xs" /></div>)}</div>
+        <div><b className="badc">❌ Sai</b>{L.bad.map((s) => <div key={s} className="strike">{s}</div>)}</div>
+      </div>
+      {L.note && <p className="note">⚠️ {L.note}</p>}
+      {L.quiz && <TryQuiz quiz={L.quiz} onRight={onRight} />}
+    </>
   );
 }
 

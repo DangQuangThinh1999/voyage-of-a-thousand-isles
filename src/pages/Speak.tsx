@@ -1,0 +1,151 @@
+import { useState } from 'react';
+import { AudioButton, SayBoth } from '../components/AudioButton';
+import { Ipa } from '../components/Ipa';
+import { LiveText, MicMeter, Playback } from '../components/MicRecorder';
+import { TapText } from '../components/TapText';
+import { CoachReport, Pills, Section } from '../components/ui';
+import { WordsHit } from '../components/WordsHit';
+import { LEVELS, type Pair } from '../data';
+import { BASIC_PART1, SITUATIONS } from '../data/speak';
+import { coachSpeaking, type CoachResult } from '../lib/coach';
+import { tallySkill } from '../lib/progress';
+import { applyFixes } from '../lib/sentence';
+import { hear, micErr, micLive, SR, stopListening } from '../lib/speech';
+import { scoreSpeech, type SpeechScore } from '../lib/text';
+import { dayKey, pick1 } from '../lib/util';
+import { addXP, app, save } from '../state/store';
+
+/** Nói theo một câu mẫu, chấm phát âm từng từ */
+function Shadow({ s }: { s: Pair }) {
+  const [busy, setBusy] = useState(false);
+  const [res, setRes] = useState<(SpeechScore & { audio: string | null }) | { err: string } | null>(null);
+  async function go() {
+    if (busy) { stopListening(); return; }
+    setBusy(true); setRes(null); micLive.reset();
+    try {
+      const h = await hear({ onText: micLive.setText, onLevel: micLive.setLevel });
+      const sc = scoreSpeech(s[0], h.alts);
+      setRes({ ...sc, audio: h.audio });
+      tallySkill(app.P, 'speak', sc.score >= 0.8); if (sc.score >= 0.8) addXP(1); else save();
+    } catch (e) { setRes({ err: micErr(e) }); }
+    setBusy(false); micLive.reset();
+  }
+  return (
+    <div className="phrase">
+      <div className="flex items-start gap-2">
+        <div className="flex-1"><b><TapText text={s[0]} /></b><Ipa text={s[0]} /><div className="muted small">{s[1]}</div></div>
+        <SayBoth text={s[0]} />
+        {SR && <button className={busy ? 'btn sm' : 'btn ghost sm'} onClick={go}>{busy ? '⏹ Dừng' : '🎤 Nói theo'}</button>}
+      </div>
+      {busy && <div className="listening"><MicMeter /><LiveText placeholder="Đang nghe… đọc câu trên rồi im lặng 2 giây." /></div>}
+      {res && ('err' in res && res.err !== undefined
+        ? <p className="note">{res.err}</p>
+        : <div className="score"><WordsHit T={(res as SpeechScore).T} hit={(res as SpeechScore).hit} /><span className={(res as SpeechScore).score >= 0.8 ? 'okc' : 'badc'}> {Math.round((res as SpeechScore).score * 100)}% đúng</span>
+          {(res as { audio: string | null }).audio && <Playback src={(res as { audio: string }).audio} label="▶️ Giọng bạn:" />}</div>)}
+    </div>
+  );
+}
+
+function Phrases() {
+  const [k, setK] = useState(0);
+  return (
+    <>
+      <div className="chips">{SITUATIONS.map(([ic, t], i) => <button key={t} className={i === k ? 'chip on' : 'chip'} onClick={() => setK(i)}>{ic} {t}</button>)}</div>
+      <Section>
+        <h3 className="m-0">{SITUATIONS[k][0]} {SITUATIONS[k][1]}</h3>
+        <p className="muted small">Nghe 🔊 → nói theo 🎤 → máy tô xanh từ đúng, đỏ từ cần đọc lại. Chạm vào từng từ để xem nghĩa. Mỗi câu nói đạt 80% được +1 ⭐.</p>
+        <div className="grid gap-3 mt-2">{SITUATIONS[k][2].map((s) => <Shadow key={s[0]} s={s} />)}</div>
+      </Section>
+    </>
+  );
+}
+
+type Part = '1' | '2' | '3';
+function questionsFor(part: Part, lv: number): { q: string; vi: string; points?: string[] }[] {
+  if (lv === 0) return part === '1' ? BASIC_PART1.map(([q, vi]) => ({ q, vi })) : questionsFor(part, 1);
+  const L = LEVELS[lv - 1];
+  if (part === '1') return L.speaking.part1.map(([q, vi]) => ({ q, vi }));
+  if (part === '2') return [{ q: L.speaking.part2.cue, vi: L.speaking.part2.vi, points: L.speaking.part2.points }];
+  return L.speaking.part3.map(([q, vi]) => ({ q, vi }));
+}
+const TIPS: Record<Part, string> = {
+  '1': 'Part 1: trả lời 2–3 câu. Trả lời thẳng → giải thích lý do (because…) → thêm ví dụ.',
+  '2': 'Part 2: chuẩn bị 1 phút, nói 1–2 phút theo các gợi ý. Dùng thì quá khứ khi kể chuyện.',
+  '3': 'Part 3: nêu quan điểm → lý do → ví dụ → so sánh hai mặt (on the other hand…).',
+};
+
+/** Luyện nói IELTS: trả lời tự do, máy chấm 3 tiêu chí + sửa lỗi */
+function IeltsSpeaking() {
+  const [part, setPart] = useState<Part>('1');
+  const [lv, setLv] = useState(0);
+  const [qi, setQi] = useState(0);
+  const [busy, setBusy] = useState(false);
+  const [say, setSay] = useState<{ text: string; audio: string | null; sec: number } | null>(null);
+  const [rep, setRep] = useState<CoachResult | null>(null);
+  const [err, setErr] = useState('');
+  const qs = questionsFor(part, lv), q = qs[qi % qs.length];
+  function reset() { setSay(null); setRep(null); setErr(''); }
+  async function record() {
+    if (busy) { stopListening(); return; }
+    reset(); setBusy(true); micLive.reset();
+    const t0 = Date.now();
+    try {
+      const h = await hear({ onText: micLive.setText, onLevel: micLive.setLevel, silenceMs: part === '2' ? 5000 : 3500, maxMs: part === '2' ? 130000 : 60000 });
+      const sec = (Date.now() - t0) / 1000;
+      setSay({ text: h.text, audio: h.audio, sec });
+      const r = await coachSpeaking(h.text, sec);
+      setRep(r);
+      tallySkill(app.P, 'speak', r.band >= parseFloat(app.P.settings.target || '5.5') - 1);
+      (app.P.coach || (app.P.coach = [])).unshift({ d: dayKey(), k: 'speak', band: r.band, words: r.words, err: r.issues.length });
+      addXP(3);
+    } catch (e) { setErr(micErr(e)); }
+    setBusy(false); micLive.reset();
+  }
+  return (
+    <>
+      <Section>
+        <div className="flex flex-wrap items-center gap-2">
+          <Pills id="part" value={part} onChange={(p) => { setPart(p); setQi(0); reset(); }} items={[['1', 'Part 1'], ['2', 'Part 2'], ['3', 'Part 3']]} />
+          <select className="w-auto" value={lv} onChange={(e) => { setLv(+e.target.value); setQi(0); reset(); }}>
+            <option value={0}>Cơ bản (A1)</option>{LEVELS.map((L, i) => <option key={L.id} value={i + 1}>{L.cefr} · IELTS {L.band}</option>)}
+          </select>
+          <button className="btn ghost sm" onClick={() => { setQi(qi + 1 + Math.floor(Math.random() * 2)); reset(); }}>🔀 Câu khác</button>
+        </div>
+        <div className="qcard">
+          <div className="text-lg font-bold"><TapText text={q.q} /> <AudioButton text={q.q} /></div>
+          <Ipa text={q.q} />
+          <details><summary className="muted small">Xem nghĩa tiếng Việt</summary><p className="muted">{q.vi}</p></details>
+          {q.points && <ul className="m-0 pl-5">{q.points.map((p) => <li key={p}>{p}</li>)}</ul>}
+          <p className="tip small">💡 {TIPS[part]}</p>
+        </div>
+        {SR ? <button className={busy ? 'btn big w-full' : 'btn big w-full'} onClick={record}>{busy ? '⏹ Nói xong (bấm để dừng)' : '🎤 Bắt đầu trả lời'}</button>
+          : <p className="note">Luyện nói cần trình duyệt Chrome hoặc Edge (có nhận giọng nói).</p>}
+        {busy && <div className="listening"><MicMeter /><LiveText placeholder="Đang nghe… cứ nói tự nhiên, im lặng vài giây là máy dừng." /></div>}
+        {err && <p className="note">{err}</p>}
+      </Section>
+      {say && (
+        <Section>
+          <h3 className="m-0">🗒️ Máy nghe được</h3>
+          <p>{say.text || <span className="muted">(không nghe được gì)</span>}</p>
+          {rep && rep.issues.length > 0 && <div className="fixed"><b>Câu đã sửa:</b> {applyFixes(say.text[0]?.toUpperCase() + say.text.slice(1) + (/[.!?]$/.test(say.text) ? '' : '.'), rep.issues)}</div>}
+          {say.audio && <Playback src={say.audio} label="▶️ Nghe lại giọng bạn:" />}
+          <p className="muted small">Máy chỉ nghe ra chữ, chưa chấm được ngữ điệu và trọng âm. Luyện phát âm từng câu ở phần “Mẫu câu giao tiếp”.</p>
+        </Section>
+      )}
+      {rep && <CoachReport r={rep} title={`Điểm Speaking ước tính: ${rep.band.toFixed(1)}`} />}
+    </>
+  );
+}
+
+/** Tab Giao tiếp: mẫu câu theo tình huống + luyện nói IELTS có chấm */
+export function Speak() {
+  const [tab, setTab] = useState<'phrases' | 'ielts'>('phrases');
+  return (
+    <>
+      <h2>🗣️ Giao tiếp & Speaking</h2>
+      <Pills id="speak" value={tab} onChange={setTab} items={[['phrases', '💬 Mẫu câu giao tiếp'], ['ielts', '🎤 Luyện nói IELTS']]} />
+      {tab === 'phrases' ? <Phrases /> : <IeltsSpeaking />}
+    </>
+  );
+}
+export const randomPhrase = () => pick1(SITUATIONS.flatMap((s) => s[2]));

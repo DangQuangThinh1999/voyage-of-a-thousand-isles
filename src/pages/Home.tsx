@@ -2,13 +2,11 @@ import { Fragment } from 'react';
 import { UNITS } from '../data';
 import { roadmap, totalWeeks } from '../lib/roadmap';
 import { Card } from '../components/Card';
-import { TargetPicker } from '../components/TargetPicker';
-import { ProgressBar } from '../components/ProgressBar';
+import { Dashboard } from '../components/Dashboard';
 import { UnitCard } from '../components/UnitCard';
-import { bankLearned, dayNumber, levelNow, newWordsToday, vocabWeek, weekNow, minutesToday, nextTask, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
-import { dueWords } from '../lib/srs';
+import { vocabWeek, weekNow, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
 import { introOk } from '../state/actions';
-import { startQuickTest, startSession } from '../state/session';
+import { startQuickTest } from '../state/session';
 import { tab, useApp } from '../state/store';
 
 function WeekBadge({ w, P }: { w: number; P: Progress }) {
@@ -34,9 +32,7 @@ function VocabRow({ w, P }: { w: number; P: Progress }) {
 
 export function Home() {
   const { P } = useApp();
-  const WG = roadmap(P), TOTAL = totalWeeks(P) * 7;
-  const min = minutesToday(P), goal = P.settings.goalMin, pct = Math.min(100, Math.round((min / goal) * 100));
-  const nt = nextTask(P), due = dueWords(P).length;
+  const WG = roadmap(P);
   const weeks = [...new Set(UNITS.map((u) => u.week))];
   return (
     <>
@@ -53,18 +49,7 @@ export function Home() {
           <button className="btn" data-act="introOk" onClick={introOk}>Bắt đầu thôi!</button>
         </Card>
       )}
-      <Card className="today">
-        <div className="row between"><b>Hôm nay · Ngày {dayNumber(P)}/{TOTAL}</b><span className="muted">{min} / {goal} phút</span></div>
-        <ProgressBar pct={pct} />
-        <p className="lvline">🎯 Trình độ ước tính: <b>IELTS {levelNow(P)}</b> · <TargetPicker className="target inline" /><br /><span className="muted small">📗 Kho từ: đã học {bankLearned(P)} từ. Ước tính theo các tuần đã học xong hoặc đã qua kiểm tra, không phải điểm thi thật.</span></p>
-        <div className="row gap">
-          {nt
-            ? <button className="btn big" data-act="start" data-u={nt.u.id} data-k={nt.k[0]} onClick={() => startSession(nt.u.id, nt.k[0])}>▶ Học tiếp: {nt.u.emoji} {nt.u.title} · {nt.k[1]} {nt.k[2]}</button>
-            : <div className="muted">Bạn đã xong tất cả bài hiện có 🎉 Bài mới cho tuần 5–8 sẽ được thêm vào.</div>}
-          <button className="btn ghost big" data-act="tab" data-tab="words" onClick={() => tab('words')}>📗 Từ mới {Math.min(newWordsToday(P), P.settings.wpd)}/{P.settings.wpd}</button>
-          <button className="btn ghost big" data-act="tab" data-tab="review" onClick={() => tab('review')}>🔁 Ôn từ vựng{due ? <> <span className="pill">{due}</span></> : null}</button>
-        </div>
-      </Card>
+      <Dashboard P={P} />
       {weeks.map((w) => (
         <Fragment key={w}>
           <div className="wkrow" id={`wk-${w}`}>

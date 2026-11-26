@@ -152,6 +152,7 @@ function WriteSentence() {
             {res.ok
               ? <p className="okc">✅ Câu đúng! {res.offline ? '(Không kết nối được máy chấm ngữ pháp, mới chấm theo luật của app.)' : ''}{res.copied ? ' Câu giống câu ví dụ, lần sau thử đổi vài từ để tự luyện nhé.' : ''} <AudioButton text={text} /></p>
               : <p className="badc">Chưa đạt, sửa lại nhé:</p>}
+            {res.ok && res.warnings && res.warnings.length > 0 && <div className="note">⚠️ <b>Đúng ngữ pháp, nhưng có thể chưa tự nhiên:</b><ul className="m-0 pl-5">{res.warnings.map((w) => <li key={w}>{w}</li>)}</ul></div>}
             {res.ok && <GrammarNotes en={text} open title="Ngữ pháp trong câu bạn vừa viết" />}
             <ul className="checks">
               {res.checks.filter(([ok]) => !ok).map(([, m]) => <li key={m} className="badc">✗ {m}</li>)}

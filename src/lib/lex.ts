@@ -1,12 +1,14 @@
 // Phiên âm cho mọi từ / câu và danh sách từ cùng nghĩa (data/extra, tải một lần khi mở app).
 import ipaUrl from '../../data/extra/ipa.json?url';
 import sameUrl from '../../data/extra/same.json?url';
+import dictUrl from '../../data/extra/dict.json?url';
 
-let IPA: Record<string, string> = {}, SAME: Record<string, string[]> = {};
+let IPA: Record<string, string> = {}, SAME: Record<string, string[]> = {}, DICT: Record<string, [string, string, number]> = {};
 let ready: Promise<void> | null = null;
 export const loadLex = () => (ready ||= Promise.all([
   fetch(ipaUrl).then((r) => r.json()).then((d) => { IPA = d; }),
   fetch(sameUrl).then((r) => r.json()).then((d) => { SAME = d; }),
+  fetch(dictUrl).then((r) => r.json()).then((d) => { DICT = d; }),
 ]).then(() => undefined).catch(() => undefined));
 
 const CONTR: Record<string, string> = {
@@ -42,3 +44,20 @@ export function sentenceIpa(s: string): string {
 }
 /** Các từ cùng nghĩa (theo nghĩa tiếng Việt) để chấm đúng khi người học gõ từ khác nhưng cùng nghĩa */
 export const sameAs = (w: string): string[] => SAME[w.toLowerCase()] || [];
+
+/** Dạng gốc thường gặp của một từ đã chia (-s, -es, -ies, -ed, -ing, -ly) để tra từ điển */
+export function lemma(w: string): string {
+  const t = w.toLowerCase().replace(/[’]/g, "'").replace(/'s$/, '');
+  if (DICT[t]) return t;
+  const c = [t.replace(/ies$/, 'y'), t.replace(/es$/, ''), t.replace(/s$/, ''), t.replace(/ied$/, 'y'), t.replace(/ed$/, ''), t.replace(/d$/, ''),
+    t.replace(/ing$/, ''), t.replace(/ing$/, 'e'), t.replace(/(.)\1ing$/, '$1'), t.replace(/(.)\1ed$/, '$1'), t.replace(/ly$/, ''), t.replace(/ily$/, 'y')];
+  return c.find((x) => DICT[x]) || t;
+}
+export interface Entry { w: string; vi: string; pos: string; awl: boolean; ipa?: string }
+/** Tra nhanh nghĩa, từ loại, phiên âm của một từ (tự đưa về dạng gốc) */
+export function lookup(word: string): Entry | undefined {
+  const b = lemma(word), d = DICT[b];
+  return d ? { w: b, vi: d[0], pos: d[1], awl: !!d[2], ipa: wordIpa(b) } : undefined;
+}
+/** Danh sách từ trong từ điển (để tạo bài luyện từ loại) */
+export const dictWords = () => Object.keys(DICT);

@@ -3,7 +3,7 @@
 // 2) Kiểm tra các từ vừa học: chọn nghĩa + nghe chọn từ. Sai thì hỏi lại ở cuối.
 // 3) Xong: từ vào thẻ ôn ngắt quãng (ôn lại sau 1 ngày).
 import { firstSense, loadedBankWords, nextBankWords, type BankWord } from '../data/bank';
-import { newWordsToday, today } from '../lib/progress';
+import { newWordsToday, tallySkill, today } from '../lib/progress';
 import { sameAs } from '../lib/lex';
 import { speak } from '../lib/speech';
 import { addDays, dayKey, sample, shuffle } from '../lib/util';
@@ -96,6 +96,7 @@ export function pickWordAnswer(i: number) {
   const W = app.W!, q = W.q[W.qi];
   if (W.picked !== null) return;
   W.picked = i;
+  tallySkill(app.P, q.t === 'vi' ? 'read' : q.t === 'listen' ? 'listen' : 'write', i === q.ans);
   if (i === q.ans) W.ok++;
   else if (!q.again) W.q.push({ ...makeQ(q.w, q.t), again: true });
   emit(); speak(q.w.w);

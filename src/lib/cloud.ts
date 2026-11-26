@@ -64,7 +64,23 @@ async function push() {
   } catch (e) { console.warn('Cloud push', e); }
 }
 
+export interface BoardEntry { uid: string; name: string; photo: string; words: number; xp: number; band: string; streak: number }
+/** Đăng thành tích của mình lên bảng xếp hạng (chỉ khi đã đăng nhập) */
+async function publishBoard(e: Omit<BoardEntry, 'uid'>) {
+  if (!st.user) return;
+  const { fs, db } = st.fb;
+  await fs.setDoc(fs.doc(db, 'board', st.user.uid), { ...e, updated: fs.serverTimestamp() });
+}
+/** Top người học nhiều từ nhất */
+async function readBoard(): Promise<BoardEntry[]> {
+  if (!st.ok) throw new Error('offline');
+  const { fs, db } = st.fb;
+  const snap = await fs.getDocs(fs.query(fs.collection(db, 'board'), fs.orderBy('words', 'desc'), fs.limit(30)));
+  return snap.docs.map((d: any) => ({ uid: d.id, ...d.data() }));
+}
+
 export const Cloud = {
+  publishBoard, readBoard,
   init, signIn, signOut, schedulePush, push,
   get user() { return st.user; },
   get configured() { return !!C.firebase; },

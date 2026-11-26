@@ -24,4 +24,8 @@ for (const x of info) {
 fs.mkdirSync(path.join(root, 'data/extra'), { recursive: true });
 fs.writeFileSync(path.join(root, 'data/extra/ipa.json'), JSON.stringify(ipa));
 fs.writeFileSync(path.join(root, 'data/extra/same.json'), JSON.stringify(same));
-console.log(`lex: phiên âm ${Object.keys(ipa).length} từ, ${Object.keys(same).length} từ có từ cùng nghĩa`);
+// Từ điển tra nhanh: { từ: [nghĩa đầu, từ loại chính, awl] } để chạm vào từ là xem nghĩa, luyện từ loại, đếm từ học thuật
+const dict = {};
+for (const e of vocab) dict[e.w.toLowerCase()] = [e.vi.split(';')[0].trim(), e.pos.split(',')[0].trim(), e.awl ? 1 : 0];
+fs.writeFileSync(path.join(root, 'data/extra/dict.json'), JSON.stringify(dict));
+console.log(`lex: từ điển ${Object.keys(dict).length} từ, phiên âm ${Object.keys(ipa).length} từ, ${Object.keys(same).length} từ có từ cùng nghĩa`);

@@ -24,7 +24,7 @@ export interface SrsCard { b: number; due: string; f?: string; k?: 1 }
 export interface JournalEntry { id: number; d: string; u: string; t: string }
 export interface TestResult { best: number; passed: boolean; date?: string }
 /** wpd = số từ mới mỗi ngày */
-export interface Settings { rate: number; voice: string; goalMin: number; wpd: number; target: string }
+export interface Settings { rate: number; voice: string; goalMin: number; wpd: number; target: string; theme: 'dark' | 'light' }
 export interface Progress {
   v: 1; xp: number; streak: number; lastDay: string;
   days: Record<string, Day>;
@@ -39,10 +39,16 @@ export interface Progress {
   vs?: Record<string, string>;
   /** thời điểm xóa tiến độ: dữ liệu cũ hơn mốc này (ở máy khác, trên mây) bị bỏ qua khi gộp */
   resetAt?: number;
+  /** thống kê từng kỹ năng: [đúng, tổng] */
+  sk?: Record<string, [number, number]>;
+  /** ngữ pháp đã học (làm đúng câu thử) */
+  gram?: Record<string, number>;
+  /** các lần luyện nói / viết có chấm */
+  coach?: { d: string; k: 'speak' | 'write'; band: number; words: number; err: number }[];
 }
 
 export const fresh = (): Progress => ({ v: 1, xp: 0, streak: 0, lastDay: '', days: {}, units: {}, srs: {}, journal: [], tests: {},
-  settings: { rate: 0.85, voice: '', goalMin: 210, wpd: 30, target: '5.5' }, startDate: dayKey(), updated: 0, seenIntro: false });
+  settings: { rate: 0.85, voice: '', goalMin: 210, wpd: 30, target: '5.5', theme: 'dark' }, startDate: dayKey(), updated: 0, seenIntro: false });
 
 /** Xóa tiến độ một lần cho mọi máy: 26/11/2026, các bài kiểm tra lúc app còn dang dở không tính */
 export const RESET_AT = 1795664612984;
@@ -94,6 +100,11 @@ export const weekNow = (P: Progress) => Math.ceil(dayNumber(P) / 7);
 export const newWordsToday = (P: Progress) => (P.days[dayKey()] || { nw: 0 }).nw || 0;
 /** Các mức mục tiêu IELTS người học chọn được */
 export const TARGETS = ['4.0', '4.5', '5.0', '5.5', '6.0', '6.5', '7.0', '7.5', '8.0', '8.5', '9.0'];
+/** Cộng 1 lượt trả lời vào thống kê kỹ năng */
+export function tallySkill(P: Progress, skill: string, ok: boolean) {
+  const sk = P.sk || (P.sk = {}), v = sk[skill] || (sk[skill] = [0, 0]);
+  v[1]++; if (ok) v[0]++;
+}
 export const unitProg = (P: Progress, id: string) => P.units[id] || (P.units[id] = {});
 export const doneCount = (P: Progress, id: string) => KINDS.filter(([k]) => (P.units[id] || {})[k]).length;
 export const unlocked = (P: Progress, i: number) => i === 0 || doneCount(P, UNITS[i - 1].id) >= 3;
@@ -133,6 +144,10 @@ export function mergeProgress(P: Progress, r: Progress | null | undefined): Prog
   m.startDate = [P.startDate, r.startDate].filter(Boolean).sort()[0] || dayKey();
   m.vStart = [P.vStart, r.vStart].filter(Boolean).sort()[0];
   m.vs = { ...(older.vs || {}), ...(newer.vs || {}) };
+  m.gram = { ...(older.gram || {}), ...(newer.gram || {}) };
+  m.sk = { ...(older.sk || {}) };
+  for (const [k, v] of Object.entries(newer.sk || {})) { const o = m.sk[k] || [0, 0]; m.sk[k] = v[1] >= o[1] ? v : o; }
+  m.coach = [...(newer.coach || []), ...(older.coach || [])].filter((c, i, a) => a.findIndex((x) => x.d === c.d && x.k === c.k && x.words === c.words) === i).slice(0, 60);
   m.resetAt = Math.max(P.resetAt || 0, r.resetAt || 0) || undefined;
   m.units = { ...(older.units || {}) };
   for (const [id, v] of Object.entries(newer.units || {})) m.units[id] = { ...(m.units[id] || {}), ...v };

@@ -42,6 +42,7 @@ export function addMinutes(k: string) { const day = today(app.P); day.sec[k] = (
 export function setRate(v: number) { app.P.settings.rate = v; save(); emit(); }
 export function setVoice(v: string) { app.P.settings.voice = v; save(); emit(); speak('Hello! How are you today?'); }
 export function setGoal(m: number) { app.P.settings.goalMin = m; save(); emit(); }
+export function setTheme(t: 'dark' | 'light') { app.P.settings.theme = t; document.documentElement.dataset.theme = t; save(); emit(); }
 export function setTarget(t: string) { app.P.settings.target = t; save(); emit(); toast('Đã đổi mục tiêu: IELTS ' + t); }
 export function setWpd(n: number) { app.P.settings.wpd = n; save(); emit(); }
 export async function login() {

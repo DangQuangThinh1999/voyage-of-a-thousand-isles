@@ -10,7 +10,7 @@ import type { WordsState } from './words';
 import { configureSpeech, onVoicesChanged, stopSpeaking } from '../lib/speech';
 import type { SpeechScore } from '../lib/text';
 
-export type Screen = 'home' | 'unit' | 'session' | 'words' | 'review' | 'journal' | 'plan' | 'settings' | 'mic';
+export type Screen = 'home' | 'unit' | 'session' | 'words' | 'review' | 'grammar' | 'speak' | 'skills' | 'journal' | 'stats' | 'plan' | 'settings' | 'mic';
 
 export type MicResult = (SpeechScore & { err?: undefined }) | { err: string };
 export interface StepState {
@@ -70,7 +70,7 @@ export const inTest = () => app.scr === 'session' && !!app.S && app.S.kind === '
 export function go(s: Screen, a: string | null = null) {
   stopSpeaking();
   app.scr = s; app.arg = a;
-  app.curSkill = s === 'review' || s === 'words' ? 'review' : s === 'journal' ? 'write' : null;
+  app.curSkill = s === 'review' || s === 'words' ? 'review' : s === 'journal' ? 'write' : s === 'speak' ? 'speak' : s === 'grammar' ? 'read' : s === 'skills' ? 'listen' : null;
   app.scrollReq = 'top';
   emit();
 }
@@ -98,6 +98,7 @@ export function toast(msg: string) {
 let started = false;
 export function initApp() {
   if (started) return; started = true;
+  document.documentElement.dataset.theme = app.P.settings.theme || 'dark';
   configureSpeech(() => ({ rate: app.P.settings.rate, voice: app.P.settings.voice, fast: inTest() }));
   onVoicesChanged(() => { if (app.scr === 'settings') emit(); });
   let lastAct = Date.now();

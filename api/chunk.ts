@@ -35,7 +35,7 @@ export async function POST(req: Request): Promise<Response> {
   let b: any;
   try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
   const cefr = s(b.cefr || 'A2', 4);
-  const words = (Array.isArray(b.words) ? b.words : []).slice(0, 40).map((x: unknown) => s(x, 40));
+  const words = (Array.isArray(b.words) ? b.words : []).slice(0, 100).map((x: unknown) => s(x, 40));
   if (b.part === 'gen') {
     const len = Math.min(20, Math.max(6, Number(b.len) || 10)), n = Math.min(6, Math.max(1, Number(b.n) || 5));
     const kind = len >= 16 ? 'một ĐOẠN rất ngắn gồm 2 câu liên kết' : 'một CÂU hoàn chỉnh';
@@ -55,6 +55,29 @@ Bản dịch tham khảo: """${s(b.reference, 600)}"""
 Từ mục tiêu: ${words.join(', ')}
 BẢN DỊCH CỦA NGƯỜI HỌC: """${s(b.answer, 800)}"""`;
     return gemini(GRADE_SYS, user, GRADE_SCHEMA, 0.2, true);
+  }
+  if (b.part === 'skipgen') {
+    // Kiểm tra nhanh THEO CÂU: đặt các câu ngắn chứa càng nhiều từ cần kiểm tra càng tốt (phủ hết danh sách)
+    const user = `Trình độ người học: CEFR ${cefr}. Danh sách từ cần kiểm tra (${words.length} từ): ${words.join(', ')}.
+Đặt các câu tiếng Anh NGẮN (4–12 từ), tự nhiên, đúng ngữ pháp 100%, mỗi câu dùng càng nhiều từ trong danh sách càng tốt (thường 3–6 từ), sao cho TẤT CẢ các từ trong danh sách đều xuất hiện ít nhất một lần. Dùng đúng nghĩa phổ biến nhất của từ. Các từ còn lại trong câu phải rất thông dụng.
+Số câu khoảng ${Math.max(2, Math.ceil(words.length / 4))}.
+words: các từ TRONG DANH SÁCH xuất hiện trong câu, ghi đúng như trong danh sách (dạng gốc), kể cả khi trong câu đã chia (studies → study).
+vi: bản dịch tiếng Việt tự nhiên (đáp án tham khảo).`;
+    return gemini(GEN_SYS, user, { type: 'OBJECT', properties: { items: { type: 'ARRAY', items: { type: 'OBJECT', properties: { en: { type: 'STRING' }, vi: { type: 'STRING' }, words: { type: 'ARRAY', items: { type: 'STRING' } } }, required: ['en', 'vi', 'words'] } } }, required: ['items'] }, 0.7, true);
+  }
+  if (b.part === 'skipgrade') {
+    // Chấm bản dịch từng câu: người học hiểu đúng từ nào trong danh sách
+    const items = (Array.isArray(b.items) ? b.items : []).slice(0, 40).map((x: { en?: string; vi?: string; words?: string[]; a?: string }) => ({ en: s(x.en, 200), ref: s(x.vi, 300), words: (x.words || []).slice(0, 12).map((w) => s(w, 40)), a: s(x.a, 300) }));
+    const user = `Người học dịch từng câu tiếng Anh sang tiếng Việt để chứng minh đã biết các từ trong "words". Với MỖI câu:
+- known: các từ trong "words" mà bản dịch thể hiện người học HIỂU ĐÚNG (dịch đúng nghĩa, hoặc ý câu đúng và từ đó được thể hiện; với từ chức năng như a, the, am, is, to, of… thì tính là biết nếu cả câu dịch đúng ý). Chấp nhận dịch thoát ý, thiếu dấu tiếng Việt, khác bản tham khảo.
+- unknown: các từ còn lại (dịch sai, bỏ sót, hiểu nhầm), mỗi từ kèm note_vi ngắn: nghĩa đúng trong câu.
+- ok: true nếu cả câu hiểu đúng ý. comment_vi: rất ngắn (≤ 20 từ), nếu sai nói chỗ hiểu nhầm.
+Bản trống = không biết hết. Trả results đúng thứ tự, đủ ${items.length} mục.
+${JSON.stringify(items)}`;
+    return gemini('Bạn là giáo viên tiếng Anh cho người Việt, chấm hiểu nghĩa công bằng, không khắt khe câu chữ.', user,
+      { type: 'OBJECT', properties: { results: { type: 'ARRAY', items: { type: 'OBJECT', properties: { ok: { type: 'BOOLEAN' }, known: { type: 'ARRAY', items: { type: 'STRING' } },
+        unknown: { type: 'ARRAY', items: { type: 'OBJECT', properties: { w: { type: 'STRING' }, note_vi: { type: 'STRING' } }, required: ['w', 'note_vi'] } }, comment_vi: { type: 'STRING' } }, required: ['ok', 'known', 'unknown', 'comment_vi'] } } }, required: ['results'] },
+      0.1, true);
   }
   if (b.part === 'meaning') {
     // Kiểm tra nhanh nghĩa: người học gõ nghĩa tiếng Việt của từ tiếng Anh — đúng nghĩa (kể cả từ đồng nghĩa, diễn đạt khác) là biết

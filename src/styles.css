@@ -749,3 +749,5 @@ main { max-width: 980px; overflow-x: clip; }
 .qv-row input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--good); }
 .world-tick { font-weight: 700; color: var(--pri); margin: 6px 0; }
 .banklist { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.qv-sent { font-size: 1.45rem; font-weight: 800; line-height: 1.4; }
+.qv-sents { display: grid; gap: 6px; margin: 8px 0; } .qv-sents .qv-row { margin-top: 6px; cursor: default; }

@@ -126,7 +126,7 @@ export function addMistake(P: Progress, wrong: string, right: string, why: strin
 export const unitProg = (P: Progress, id: string) => P.units[id] || (P.units[id] = {});
 export const doneCount = (P: Progress, id: string) => KINDS.filter(([k]) => (P.units[id] || {})[k]).length;
 export const unlocked = (P: Progress, i: number) => i === 0 || doneCount(P, UNITS[i - 1].id) >= 3;
-export const minutesToday = (P: Progress) => Math.floor(Object.values(today(P).sec).reduce((a, b) => a + b, 0) / 60);
+export const minutesToday = (P: Progress) => Math.floor(Object.values(today(P).sec || {}).reduce((a, b) => a + b, 0) / 60);
 export const dayNumber = (P: Progress) => Math.min(TOTAL_DAYS, daysBetween(P.startDate, dayKey()) + 1);
 export const weekUnits = (w: number) => UNITS.filter((u) => u.week === w);
 export const weekDone = (P: Progress, w: number) => { const us = weekUnits(w); return us.length > 0 && us.every((u) => doneCount(P, u.id) === 5); };

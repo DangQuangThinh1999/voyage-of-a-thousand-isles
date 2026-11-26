@@ -7,6 +7,15 @@ import './styles.css';
 
 initApp();
 
+// Sau khi deploy bản mới, trình duyệt còn giữ trang cũ sẽ không tải được các file đã đổi tên (trang Thành tựu, đề, bài luyện…)
+// → tự tải lại trang MỘT lần để lấy bản mới, thay vì màn hình đen.
+addEventListener('vite:preloadError', (e) => {
+  e.preventDefault();
+  try { if (sessionStorage.getItem('ht.reloaded') === '1') return; sessionStorage.setItem('ht.reloaded', '1'); } catch { /* bỏ qua */ }
+  location.reload();
+});
+setTimeout(() => { try { sessionStorage.removeItem('ht.reloaded'); } catch { /* bỏ qua */ } }, 15000);
+
 // Móc kiểm thử (chỉ có khi chạy dev hoặc build với VITE_TEST_HOOK=1), dùng cho Playwright
 if (import.meta.env.DEV || import.meta.env.VITE_TEST_HOOK === '1') {
   import('./testHook').then((m) => m.install());

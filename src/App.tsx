@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useLayoutEffect } from 'react';
 import { startChunkQueue } from './lib/chunkQueue';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { AnimatePresence, motion } from 'motion/react';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
@@ -41,7 +42,7 @@ export default function App() {
       <Sidebar />
       <Header />
       <AnimatePresence mode="wait">
-        <motion.main id="main" key={scr + nav} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }}><Page /></motion.main>
+        <motion.main id="main" key={scr + nav} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.22 }}><ErrorBoundary k={scr + nav}><Page /></ErrorBoundary></motion.main>
       </AnimatePresence>
       <Tabs />
       <Toast />

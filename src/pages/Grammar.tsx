@@ -31,9 +31,10 @@ function markLearned(name: string) {
 }
 
 /** Thư viện ngữ pháp: theo nhóm, có tiến độ */
-function Library() {
+function Library({ initial }: { initial?: string | null }) {
   const { P } = useApp();
-  const [open, setOpen] = useState<string | null>(null);
+  const [open, setOpen] = useState<string | null>(initial || null);
+  useEffect(() => { if (initial) setTimeout(() => document.getElementById('ls-' + initial)?.scrollIntoView({ block: 'center' }), 300); }, [initial]);
   const done = ALL.filter((n) => P.gram && P.gram[n]).length;
   return (
     <>
@@ -48,7 +49,7 @@ function Library() {
             <div className="flex items-center justify-between"><h3 className="m-0">{ic} {title}</h3><span className="muted small">{d}/{list.length}</span></div>
             <div className="mt-2 grid gap-2">
               {list.map((n) => (
-                <div key={n} className="lesson-row">
+                <div key={n} id={'ls-' + n} className="lesson-row">
                   <button className="lesson-h" onClick={() => setOpen(open === n ? null : n)}>
                     <span>{P.gram && P.gram[n] ? '✅' : '📘'} {n}</span><span className="muted">{open === n ? '▲' : '▼'}</span>
                   </button>
@@ -106,7 +107,7 @@ function Analyzer() {
             : issues.length === 0 ? <><p className="okc">✅ Đúng ngữ pháp, chính tả.</p>{softWarnings(done).map((w) => <p key={w} className="note small">⚠️ {w}</p>)}</>
               : <>
                 <ul className="checks">{issues.map((x, i) => <li key={i}>✗ {x.kind}: <b className="badc">“{x.bad}”</b>{x.fix.length ? <> → <b className="okc">{x.fix.join(' / ')}</b></> : null}<br /><span className="muted small">{x.msg}</span></li>)}</ul>
-                {fixed && <div className="fixed"><b>Câu đã sửa:</b> {fixed} <AudioButton text={fixed} /><Ipa text={fixed} /></div>}
+                {fixed && <div className="fixbox"><b>Câu đã sửa:</b> {fixed} <AudioButton text={fixed} /><Ipa text={fixed} /></div>}
               </>}
           <h3>2. Từ loại từng từ <span className="muted small">(chạm vào từ để xem nghĩa)</span></h3>
           <div className="pos-legend"><span className="p-noun">danh từ</span><span className="p-verb">động từ</span><span className="p-adjective">tính từ</span><span className="p-adverb">trạng từ</span><span className="p-other">khác</span></div>
@@ -173,7 +174,7 @@ function PosLesson() {
           </div>
         ))}
       </div>
-      <div className="fixed mt-3"><b>Ví dụ cả họ từ:</b> success (danh từ) → succeed (động từ) → successful (tính từ) → successfully (trạng từ)<br />
+      <div className="fixbox mt-3"><b>Ví dụ cả họ từ:</b> success (danh từ) → succeed (động từ) → successful (tính từ) → successfully (trạng từ)<br />
         She <b>succeeded</b>. Her <b>success</b> was <b>successful</b>… → She finished the project <b>successfully</b>.</div>
     </Section>
   );
@@ -260,8 +261,8 @@ function Mistakes() {
 
 /** Tab Ngữ pháp */
 export function Grammar() {
-  const { P } = useApp();
-  const [tab, setTab] = useState<'analyze' | 'mist' | 'pos' | 'lib'>('analyze');
+  const { P, arg } = useApp();
+  const [tab, setTab] = useState<'analyze' | 'mist' | 'pos' | 'lib'>(arg && LESSONS[arg] ? 'lib' : 'analyze');
   const nm = (P.mist || []).filter((m) => m.ok < 3).length;
   return (
     <>
@@ -270,7 +271,7 @@ export function Grammar() {
       {tab === 'analyze' && <Analyzer />}
       {tab === 'mist' && <Mistakes />}
       {tab === 'pos' && <PartsOfSpeech />}
-      {tab === 'lib' && <Library />}
+      {tab === 'lib' && <Library initial={arg && LESSONS[arg] ? arg : null} />}
     </>
   );
 }

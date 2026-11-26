@@ -6,6 +6,8 @@ import { AudioButton } from './AudioButton';
 /** Câu hỏi thử ngay sau mỗi điểm ngữ pháp */
 export function TryQuiz({ quiz, onRight }: { quiz: Quiz; onRight?: () => void }) {
   const [pick, setPick] = useState<number | null>(null);
+  const H = quiz.help, right = quiz.opts[quiz.a], ok = pick === quiz.a;
+  const full = quiz.q.includes('_____') ? quiz.q.replace('_____', right) : right;
   return (
     <div className="gq">
       <b>🧪 Thử ngay:</b> {quiz.q}
@@ -15,8 +17,23 @@ export function TryQuiz({ quiz, onRight }: { quiz: Quiz; onRight?: () => void })
           return <button key={o} className={`opt sm ${cls}`} disabled={pick !== null} onClick={() => { setPick(i); if (i === quiz.a && onRight) onRight(); }}>{String.fromCharCode(65 + i)}. {o}</button>;
         })}
       </div>
-      {pick !== null && <p className={pick === quiz.a ? 'okc' : 'badc'}>{pick === quiz.a ? '✅ Đúng rồi! ' : '❌ Chưa đúng. '}<span className="muted">{quiz.why}</span>
-        {pick !== quiz.a && <button className="btn ghost sm" style={{ marginLeft: 8 }} onClick={() => setPick(null)}>Làm lại</button>}</p>}
+      {pick !== null && (
+        <div className={`qexp ${ok ? 'ok' : 'bad'}`}>
+          <div className="qexp-h">{ok ? '✅ Đúng rồi!' : <>❌ Chưa đúng. Đáp án đúng là <b>{String.fromCharCode(65 + quiz.a)}. {right}</b></>}</div>
+          <div className="qexp-full"><b>{full}</b> <AudioButton text={full} className="icon xs" /></div>
+          {H && <div className="muted">🇻🇳 {H.vi}</div>}
+          {!ok && H && H.no[pick] && <p className="qexp-wrong">Bạn chọn <b>“{quiz.opts[pick]}”</b>: {H.no[pick]}</p>}
+          <div className="qexp-steps"><b>🪜 Vì sao chọn “{right}”?</b>
+            {H ? <ol>{H.steps.map((s) => <li key={s}>{s}</li>)}</ol> : <p className="m-0">{quiz.why}</p>}
+          </div>
+          {H && Object.keys(H.no).length > 0 && (
+            <details><summary className="small">Vì sao các đáp án khác sai?</summary>
+              <ul className="small">{Object.entries(H.no).map(([i, why]) => <li key={i}><b>{String.fromCharCode(65 + +i)}. {quiz.opts[+i]}</b>: {why}</li>)}</ul>
+            </details>
+          )}
+          {!ok && <button className="btn ghost sm mt-2" onClick={() => setPick(null)}>🔁 Làm lại</button>}
+        </div>
+      )}
     </div>
   );
 }

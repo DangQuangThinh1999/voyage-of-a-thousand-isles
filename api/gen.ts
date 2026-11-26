@@ -54,14 +54,22 @@ Có prompt (tiếng Anh), vi (dịch), minWords, ideas (4 ý tưởng gợi ý b
   },
 };
 
+SPEC.sample = {
+  rule: `Viết BÀI MẪU cho đề viết được cung cấp, đúng trình độ đã cho (A1–A2: câu ngắn, từ đơn giản; B1+: đúng chuẩn IELTS, đủ số từ yêu cầu).
+sample: bài mẫu tiếng Anh (chia đoạn bằng dòng trống). vi: bản dịch tiếng Việt.
+notes: 4–6 ghi chú tiếng Việt vì sao bài tốt (cấu trúc đoạn, từ nối, câu phức, từ vựng hay), mỗi ghi chú trích ví dụ từ bài.
+vocab: 5–8 từ/cụm hay trong bài có phiên âm Anh /.../ và nghĩa.`,
+  schema: { type: 'OBJECT', properties: { sample: { type: 'STRING' }, vi: { type: 'STRING' }, notes: { type: 'ARRAY', items: { type: 'STRING' } }, vocab: VOCAB }, required: ['sample', 'vi', 'notes', 'vocab'] },
+};
+
 export async function POST(req: Request): Promise<Response> {
   const bad = guard(req, 60); if (bad) return bad;
   let b: { kind?: string; cefr?: string; band?: string; topic?: string; avoid?: string[] };
   try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
   const spec = SPEC[String(b.kind)];
   if (!spec) return json({ error: 'bad_kind' }, 400);
-  const cefr = String(b.cefr || 'A2').slice(0, 4), band = String(b.band || '').slice(0, 8), topic = String(b.topic || 'daily life').slice(0, 60);
+  const cefr = String(b.cefr || 'A2').slice(0, 4), band = String(b.band || '').slice(0, 8), topic = String(b.topic || 'daily life').slice(0, b.kind === 'sample' ? 600 : 60);
   const avoid = (Array.isArray(b.avoid) ? b.avoid : []).slice(0, 10).map((x) => String(x).slice(0, 80));
-  const user = `Trình độ: ${cefr}${band ? ` (IELTS ${band})` : ''}. Chủ đề: ${topic}.${avoid.length ? `\nTránh lặp lại các bài đã làm có tiêu đề/ý: ${avoid.join('; ')}` : ''}\n${spec.rule}`;
-  return gemini(BASE, user, spec.schema, 0.9);
+  const user = `Trình độ: ${cefr}${band ? ` (IELTS ${band})` : ''}. ${b.kind === 'sample' ? 'Đề viết' : 'Chủ đề'}: ${topic}.${avoid.length ? `\nTránh lặp lại các bài đã làm có tiêu đề/ý: ${avoid.join('; ')}` : ''}\n${spec.rule}`;
+  return gemini(BASE, user, spec.schema, b.kind === 'sample' ? 0.5 : 0.9);
 }

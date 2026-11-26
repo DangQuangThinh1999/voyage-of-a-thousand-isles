@@ -55,7 +55,7 @@ function ReadingTutor({ text, questions, why, ev, vocab, title }: { text: Pair[]
                 <button key={o} disabled={ans} className={`opt ${ans ? (i === q[3] ? 'right' : i === p ? 'wrong' : 'dim') : ''}`}
                   onClick={() => { setPicks({ ...picks, [qi]: i }); tallySkill(app.P, 'read', i === q[3]); if (i === q[3]) addXP(1); else save(); }}>{o}</button>
               ))}</div>
-              {ans && <p className="fixed small">🔎 <b>Câu chứa đáp án:</b> “{ev && ev[qi] ? ev[qi] : evidence(q)[0]}”{!ev && <><br /><span className="muted">{evidence(q)[1]}</span></>}{why && why[qi] && <><br />💬 {why[qi]}</>}</p>}
+              {ans && <p className="fixbox small">🔎 <b>Câu chứa đáp án:</b> “{ev && ev[qi] ? ev[qi] : evidence(q)[0]}”{!ev && <><br /><span className="muted">{evidence(q)[1]}</span></>}{why && why[qi] && <><br />💬 {why[qi]}</>}</p>}
             </div>
           );
         })}
@@ -129,7 +129,7 @@ function ListeningTutor({ script, questions, gaps, why, ev, vocab, title }: { sc
                 <button key={o} disabled={ans} className={`opt ${ans ? (i === q[3] ? 'right' : i === p ? 'wrong' : 'dim') : ''}`}
                   onClick={() => { setPicks({ ...picks, [qi]: i }); tallySkill(app.P, 'listen', i === q[3]); if (i === q[3]) addXP(1); else save(); }}>{o}</button>
               ))}</div>
-              {ans && <p className="fixed small">{ev && ev[qi] && <>🔎 “{ev[qi]}”<br /></>}💬 {why && why[qi] ? why[qi] : q[1]}</p>}
+              {ans && <p className="fixbox small">{ev && ev[qi] && <>🔎 “{ev[qi]}”<br /></>}💬 {why && why[qi] ? why[qi] : q[1]}</p>}
             </div>
           );
         })}

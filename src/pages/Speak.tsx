@@ -110,7 +110,7 @@ function IeltsSpeaking() {
     <>
       <GenBar kind="speaking" onItem={(it) => { setAi(it); setQi(0); reset(); }} />
       {ai && <Section><div className="flex justify-between"><b>✨ Bộ câu hỏi AI: {ai.title}</b><button className="btn ghost sm" onClick={() => setAi(null)}>← Câu có sẵn</button></div>
-        {ai.data.sample && <p className="fixed small mt-2">🗣️ <b>Trả lời mẫu (Part 1):</b> {ai.data.sample} <AudioButton text={ai.data.sample} className="icon xs" /></p>}
+        {ai.data.sample && <p className="fixbox small mt-2">🗣️ <b>Trả lời mẫu (Part 1):</b> {ai.data.sample} <AudioButton text={ai.data.sample} className="icon xs" /></p>}
         {ai.data.useful?.length > 0 && <div className="vgrid mt-2">{ai.data.useful.map((u: { en: string; vi: string }) => <div key={u.en} className="vchip"><b>{u.en}</b> <AudioButton text={u.en} className="icon xs" /><span className="small muted">{u.vi}</span></div>)}</div>}
       </Section>}
       <Section>
@@ -136,7 +136,7 @@ function IeltsSpeaking() {
         <Section>
           <h3 className="m-0">🗒️ Máy nghe được</h3>
           <p>{say.text || <span className="muted">(không nghe được gì)</span>}</p>
-          {rep && rep.issues.length > 0 && <div className="fixed"><b>Câu đã sửa:</b> {applyFixes(say.text[0]?.toUpperCase() + say.text.slice(1) + (/[.!?]$/.test(say.text) ? '' : '.'), rep.issues)}</div>}
+          {rep && rep.issues.length > 0 && <div className="fixbox"><b>Câu đã sửa:</b> {applyFixes(say.text[0]?.toUpperCase() + say.text.slice(1) + (/[.!?]$/.test(say.text) ? '' : '.'), rep.issues)}</div>}
           {say.audio && <Playback src={say.audio} label="▶️ Nghe lại giọng bạn:" />}
           <p className="muted small">Máy chỉ nghe ra chữ, chưa chấm được ngữ điệu và trọng âm. Luyện phát âm từng câu ở phần “Mẫu câu giao tiếp”.</p>
         </Section>

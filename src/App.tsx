@@ -4,6 +4,7 @@ import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { Tabs } from './components/Tabs';
 import { Toast } from './components/Toast';
+import { SearchModal } from './components/SearchModal';
 import { Home } from './pages/Home';
 import { Journal } from './pages/Journal';
 import { MicTest } from './pages/MicTest';
@@ -37,6 +38,7 @@ export default function App() {
       </AnimatePresence>
       <Tabs />
       <Toast />
+      <SearchModal />
     </>
   );
 }

@@ -425,7 +425,7 @@ h2 { font-weight: 900; letter-spacing: -.01em; }
 /* ngữ pháp */
 .lesson-row { border: 1px solid var(--line); border-radius: 12px; }
 .lesson-h { width: 100%; display: flex; justify-content: space-between; border: 0; background: none; padding: 10px 12px; font-weight: 700; text-align: left; }
-.fixed { background: var(--good-soft); border-left: 3px solid var(--good); padding: 8px 12px; border-radius: 8px; }
+.fixbox { background: var(--good-soft); border-left: 3px solid var(--good); padding: 8px 12px; border-radius: 8px; }
 .pos-legend { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; font-size: .8rem; }
 .pos-legend span { padding: 2px 8px; border-radius: 6px; }
 .pos-line { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -585,3 +585,27 @@ main { max-width: 980px; overflow-x: clip; }
 .vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin-top: 8px; }
 .vchip { display: flex; flex-direction: column; gap: 2px; border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; background: rgba(255, 255, 255, .02); }
 .recharts-legend-item-text { color: var(--ink) !important; }
+/* lời giải câu đố */
+.qexp { margin-top: 10px; border-radius: 12px; padding: 10px 12px; display: grid; gap: 6px; border: 1px solid var(--line); }
+.qexp.ok { border-color: var(--good); background: var(--good-soft); } .qexp.bad { border-color: var(--bad); background: var(--bad-soft); }
+.qexp-h { font-weight: 800; } .qexp-full { font-size: 1.05rem; }
+.qexp-wrong { margin: 0; padding: 6px 10px; border-radius: 8px; background: rgba(251, 113, 133, .12); }
+.qexp-steps ol { margin: 4px 0 0; padding-left: 20px; display: grid; gap: 3px; }
+/* tìm kiếm */
+.search-ov { position: fixed; inset: 0; z-index: 100; background: rgba(2, 8, 18, .6); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: flex-start; padding: 8vh 16px 16px; }
+.search-box { width: min(640px, 100%); max-height: 78vh; display: flex; flex-direction: column; border-radius: 18px; border: 1px solid var(--pri); background: var(--card); box-shadow: 0 30px 80px rgba(0, 0, 0, .5), 0 0 30px rgba(34, 211, 238, .15); overflow: hidden; }
+.search-in { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.search-in input { flex: 1; border: 0; outline: 0; background: transparent; color: var(--ink); font-size: 1.05rem; padding: 4px 0; }
+.search-in kbd { font-size: .72rem; border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; color: var(--muted); cursor: pointer; }
+.search-res { overflow-y: auto; padding: 8px 12px 14px; }
+.search-res h4 { margin: 12px 4px 6px; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.sr-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border-radius: 10px; border: 1px solid transparent; text-align: left; background: none; color: var(--ink); }
+.sr-item:hover { background: var(--pri-soft); border-color: rgba(34, 211, 238, .35); }
+/* ô chọn đang mở luôn nổi trên các thẻ khác (thẻ có hiệu ứng mờ nền tạo lớp riêng) */
+.card, .genbar, .wk-card, .side-lv { position: relative; }
+.card:has(.dd-btn.on), .genbar:has(.dd-btn.on), .side-lv:has(.dd-btn.on), .wk-card:has(.dd-btn.on) { z-index: 60; }
+.dd:has(.dd-btn.on) { z-index: 61; }
+.dd-menu { z-index: 70; }
+.model { margin: 6px 0 12px; }
+.model-body { overflow: hidden; display: grid; gap: 8px; margin-top: 8px; padding: 12px; border-radius: 14px; border: 1px dashed rgba(167, 139, 250, .55); background: rgba(167, 139, 250, .07); }
+.model-text { white-space: pre-wrap; line-height: 1.7; }

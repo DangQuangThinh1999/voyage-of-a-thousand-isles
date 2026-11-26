@@ -15,7 +15,7 @@ export function VerdictCard({ r, text }: { r: SmartCheck; text: string }) {
           {r.errors.map((e, i) => <li key={i}><b className="badc strike2">{e.wrong}</b> → <b className="okc">{e.right}</b><div className="muted small">{e.why}</div></li>)}
         </ul>
       )}
-      {fixed && <div className="fixed mt-2">✏️ <b>Câu đúng:</b> {fixed} <AudioButton text={fixed} className="icon xs" /><Ipa text={fixed} /></div>}
+      {fixed && <div className="fixbox mt-2">✏️ <b>Câu đúng:</b> {fixed} <AudioButton text={fixed} className="icon xs" /><Ipa text={fixed} /></div>}
       {r.better.length > 0 && (
         <div className="mt-2"><b>✨ Cách nói tự nhiên hơn:</b>
           {r.better.map((b) => <div key={b} className="better">{b} <AudioButton text={b} className="icon xs" /><Ipa text={b} className="ipa small" /></div>)}

@@ -5,6 +5,7 @@ import { AudioButton } from '../components/AudioButton';
 import { Card } from '../components/Card';
 import { CoachReport, Section } from '../components/ui';
 import { GenBar } from '../components/GenBar';
+import { ModelAnswer } from '../components/ModelAnswer';
 import type { GenItem } from '../lib/gen';
 import { coachWriting, type CoachResult } from '../lib/coach';
 import { nextTask, tallySkill } from '../lib/progress';
@@ -43,6 +44,7 @@ export function Journal() {
           options={[...(ai ? [{ value: -2, icon: '✨', label: 'Đề AI vừa tạo', sub: ai.title.slice(0, 60) }] : []), { value: -1, icon: '📝', label: 'Nhật ký hôm nay', sub: `Bài ${u.emoji} ${u.title} · ít nhất 30 từ` },
             ...LEVELS.map((l, i) => ({ value: i, icon: '📄', label: `${l.cefr} · IELTS ${l.band}`, sub: `Đề viết ${l.writing.minWords} từ` }))]} />
         <p><b>Đề:</b> {prompt}</p>
+        <ModelAnswer key={prompt} prompt={prompt} minWords={minWords} cefr={pi >= 0 ? LEVELS[pi].cefr : ai ? ai.cefr : 'A1'} />
         {L && <details><summary className="muted small">Dịch đề, gợi ý ý tưởng và dàn ý</summary><p className="muted">{L.vi}</p><ul>{L.ideas.map((x) => <li key={x}>{x}</li>)}</ul>
           {(L as { outline?: string[] }).outline && <><b className="small">Dàn ý:</b><ol className="small">{((L as { outline?: string[] }).outline || []).map((x) => <li key={x}>{x}</li>)}</ol></>}
           <p className="small"><b>Cụm từ hữu ích:</b> {L.useful.join(' · ')}</p></details>}
@@ -58,7 +60,7 @@ export function Journal() {
       </Section>
       {rep && <CoachReport r={rep.r} title={`Điểm Writing ước tính: ${rep.r.band.toFixed(1)}`} />}
       {rep && rep.r.issues.length > 0 && (
-        <Section><b>✅ Bài đã sửa</b> <AudioButton text={applyFixes(rep.text, rep.r.issues)} /><p className="fixed" style={{ whiteSpace: 'pre-wrap' }}>{applyFixes(rep.text, rep.r.issues)}</p></Section>
+        <Section><b>✅ Bài đã sửa</b> <AudioButton text={applyFixes(rep.text, rep.r.issues)} /><p className="fixbox" style={{ whiteSpace: 'pre-wrap' }}>{applyFixes(rep.text, rep.r.issues)}</p></Section>
       )}
       {P.journal.map((e) => (
         <Card key={e.id} className="jentry">

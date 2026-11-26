@@ -1,7 +1,9 @@
 // Bài giảng ngắn cho từng điểm ngữ pháp, viết cho người mới học (A1–B1):
 // công thức → hiểu đơn giản → câu đúng / câu sai → lưu ý → câu hỏi thử ngay.
 
-export interface Quiz { q: string; opts: string[]; a: number; why: string }
+import { QUIZ_HELP, type QuizHelp } from './quizHelp';
+
+export interface Quiz { q: string; opts: string[]; a: number; why: string; help?: QuizHelp }
 export interface Lesson { formula: string; simple: string; ok: string[]; bad: string[]; note?: string; quiz?: Quiz }
 
 export const LESSONS: Record<string, Lesson> = {
@@ -338,6 +340,9 @@ export const LESSONS: Record<string, Lesson> = {
     quiz: { q: 'She has worked here _____ January.', opts: ['since', 'for', 'from'], a: 0, why: 'January là mốc bắt đầu → since.' },
   },
 };
+
+// Gắn lời giải thích đầy đủ cho từng câu Thử ngay
+for (const [k, h] of Object.entries(QUIZ_HELP)) if (LESSONS[k] && LESSONS[k].quiz) LESSONS[k].quiz!.help = h;
 
 /** Tìm bài giảng cho tên điểm ngữ pháp (khớp tên đầy đủ trước, rồi phần trước dấu ":") */
 export function lessonFor(name: string): Lesson | undefined {

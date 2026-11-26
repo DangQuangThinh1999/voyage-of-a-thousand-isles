@@ -761,3 +761,14 @@ main { max-width: 980px; overflow-x: clip; }
 .script mark { background: #facc15; color: #1a1a1a; border-radius: 4px; padding: 0 3px; font-weight: 700; }
 .qtag { display: inline-block; font-size: .72rem; font-weight: 800; padding: 1px 7px; border-radius: 99px; margin-right: 6px; }
 .qtag.ok { background: var(--good-soft); color: var(--good); } .qtag.no { background: var(--bad-soft); color: var(--bad); }
+/* mốc 100 từ */
+.ms-list { display: grid; gap: 8px; margin-top: 12px; }
+.ms-item { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); }
+.ms-item.pass { border-color: var(--good); } .ms-item.tried { border-color: #f59e0b; } .ms-item.locked { opacity: .6; }
+.ms-n { font-weight: 800; }
+.ms-text { width: 100%; box-sizing: border-box; font: inherit; line-height: 1.6; }
+.ms-spell { display: grid; gap: 8px; margin-top: 8px; }
+.ms-sp { display: grid; grid-template-columns: 1fr minmax(120px, 200px); gap: 10px; align-items: center; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); }
+@media (max-width: 520px) { .ms-sp { grid-template-columns: 1fr; } }
+.ms-task { display: grid; gap: 6px; padding: 10px 0; border-top: 1px dashed var(--line); }
+.ms-task .ans { width: 100%; box-sizing: border-box; }

@@ -79,6 +79,46 @@ ${JSON.stringify(items)}`;
         unknown: { type: 'ARRAY', items: { type: 'OBJECT', properties: { w: { type: 'STRING' }, note_vi: { type: 'STRING' } }, required: ['w', 'note_vi'] } }, comment_vi: { type: 'STRING' } }, required: ['ok', 'known', 'unknown', 'comment_vi'] } } }, required: ['results'] },
       0.1, true);
   }
+  if (b.part === 'msgen') {
+    // Kiểm tra MỐC 100 TỪ: 2 đoạn văn dùng các từ đã học + đề viết câu theo ngữ pháp
+    const grammar = (Array.isArray(b.grammar) ? b.grammar : []).slice(0, 3).map((x: unknown) => s(x, 120));
+    const len = /^C|B2/.test(cefr) ? '90–120' : /^B/.test(cefr) ? '70–90' : '45–65';
+    const user = `Trình độ: CEFR ${cefr}. 100 TỪ NGƯỜI HỌC VỪA HỌC: ${words.join(', ')}.
+Ngữ pháp trọng tâm: ${grammar.join(' | ')}.
+Soạn:
+1) read: một đoạn văn tiếng Anh ${len} từ (en) + bản dịch tiếng Việt (vi), chủ đề đời sống thực tế, dùng NHIỀU từ trong danh sách nhất có thể (ít nhất 12 từ). Người học sẽ dịch Anh → Việt.
+2) write: một đoạn KHÁC chủ đề, ${len} từ, cũng dùng ít nhất 12 từ khác trong danh sách và có dùng ngữ pháp trọng tâm. vi là đoạn tiếng Việt người học sẽ dịch sang tiếng Anh, en là bản dịch mẫu.
+3) tasks: 3 đề viết câu, mỗi đề yêu cầu dùng một cấu trúc ngữ pháp trọng tâm (grammar = tên cấu trúc như đã cho) với 2 từ trong danh sách (words). prompt_vi: yêu cầu cụ thể bằng tiếng Việt (vd "Viết 1 câu ở thì hiện tại đơn về thói quen của bạn, dùng 'breakfast' và 'usually'"). example: một câu mẫu đúng.
+Tiếng Anh tự nhiên, đúng ngữ pháp 100%. Mã ngẫu nhiên: ${Math.random().toString(36).slice(2, 8)}.`;
+    const P2 = { type: 'OBJECT', properties: { en: { type: 'STRING' }, vi: { type: 'STRING' } }, required: ['en', 'vi'] };
+    return gemini(GEN_SYS, user, { type: 'OBJECT', properties: { read: P2, write: P2,
+      tasks: { type: 'ARRAY', items: { type: 'OBJECT', properties: { grammar: { type: 'STRING' }, prompt_vi: { type: 'STRING' }, words: { type: 'ARRAY', items: { type: 'STRING' } }, example: { type: 'STRING' } }, required: ['grammar', 'prompt_vi', 'words', 'example'] } },
+    }, required: ['read', 'write', 'tasks'] }, 0.8, false, 45_000, 120_000);
+  }
+  if (b.part === 'msgrade') {
+    const r = b.read || {}, w = b.write || {}, tasks = (Array.isArray(b.tasks) ? b.tasks : []).slice(0, 5);
+    const user = `Trình độ: CEFR ${cefr}. Chấm bài kiểm tra mốc 100 từ (chấm MỘT LẦN cả bài).
+PHẦN 1 — dịch Anh → Việt:
+Gốc: «${s(r.en, 1500)}»  Tham khảo: «${s(r.ref, 1500)}»
+Người học: «${s(r.a, 2000) || '(bỏ trống)'}»
+PHẦN 2 — dịch Việt → Anh:
+Gốc: «${s(w.vi, 1500)}»  Tham khảo: «${s(w.ref, 1500)}»
+Người học: «${s(w.a, 2000) || '(bỏ trống)'}»
+PHẦN 3 — viết câu theo ngữ pháp:
+${tasks.map((t: { prompt_vi?: string; grammar?: string; words?: string[]; a?: string }, i: number) => `${i + 1}. Yêu cầu: ${s(t.prompt_vi, 300)} (cấu trúc: ${s(t.grammar, 100)}; từ: ${(t.words || []).join(', ')})\n   Người học: «${s(t.a, 400) || '(bỏ trống)'}»`).join('\n')}
+Quy tắc: chấp nhận mọi cách dịch đúng nghĩa; không bao giờ đánh dấu sai câu đúng. score 0–100.
+read: score, comment_vi, misread (những chỗ hiểu sai: en_part = cụm tiếng Anh, explain_vi = nghĩa đúng + vì sao).
+write: score, corrected (VIẾT LẠI TRỌN VẸN bản tiếng Anh của người học đã sửa hết lỗi), natural (cách viết tự nhiên), errors (original, corrected, type_vi, explain_vi có quy tắc + ví dụ), comment_vi.
+tasks: đúng ${tasks.length} mục theo thứ tự: score, ok (dùng đúng cấu trúc + đúng ngữ pháp + dùng đúng 2 từ), corrected (câu đã sửa), explain_vi (vì sao, nhắc lại công thức).
+summary_vi: nhận xét chung + 2–3 việc cần luyện.`;
+    const ERR = { type: 'ARRAY', items: { type: 'OBJECT', properties: { original: { type: 'STRING' }, corrected: { type: 'STRING' }, type_vi: { type: 'STRING' }, explain_vi: { type: 'STRING' } }, required: ['original', 'corrected', 'type_vi', 'explain_vi'] } };
+    return gemini('Bạn là giáo viên tiếng Anh cho người Việt, chấm công bằng, giải thích dễ hiểu, có bằng chứng.', user, { type: 'OBJECT', properties: {
+      read: { type: 'OBJECT', properties: { score: { type: 'INTEGER' }, comment_vi: { type: 'STRING' }, misread: { type: 'ARRAY', items: { type: 'OBJECT', properties: { en_part: { type: 'STRING' }, explain_vi: { type: 'STRING' } }, required: ['en_part', 'explain_vi'] } } }, required: ['score', 'comment_vi', 'misread'] },
+      write: { type: 'OBJECT', properties: { score: { type: 'INTEGER' }, corrected: { type: 'STRING' }, natural: { type: 'STRING' }, errors: ERR, comment_vi: { type: 'STRING' } }, required: ['score', 'corrected', 'natural', 'errors', 'comment_vi'] },
+      tasks: { type: 'ARRAY', items: { type: 'OBJECT', properties: { score: { type: 'INTEGER' }, ok: { type: 'BOOLEAN' }, corrected: { type: 'STRING' }, explain_vi: { type: 'STRING' } }, required: ['score', 'ok', 'corrected', 'explain_vi'] } },
+      summary_vi: { type: 'STRING' },
+    }, required: ['read', 'write', 'tasks', 'summary_vi'] }, 0.2, true, 45_000, 120_000);
+  }
   if (b.part === 'meaning') {
     // Kiểm tra nhanh nghĩa: người học gõ nghĩa tiếng Việt của từ tiếng Anh — đúng nghĩa (kể cả từ đồng nghĩa, diễn đạt khác) là biết
     const items = (Array.isArray(b.items) ? b.items : []).slice(0, 100).map((x: { w?: string; vi?: string; a?: string }) => ({ w: s(x.w, 40), vi: s(x.vi, 160), a: s(x.a, 120) }));

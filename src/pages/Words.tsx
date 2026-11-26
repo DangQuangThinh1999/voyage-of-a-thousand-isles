@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChunkPractice } from '../components/ChunkPractice';
 import { QuickVocab } from '../components/QuickVocab';
+import { Milestones } from '../components/Milestone';
 import { Pills } from '../components/ui';
 import { useRouteParam } from '../lib/route';
 import { Dropdown } from '../components/Dropdown';
@@ -38,15 +39,17 @@ export function Words() {
 
 function WordsHome() {
   const { P, W } = useApp();
-  const [t, setT] = useRouteParam<'learn' | 'chunk' | 'check'>('t', 'learn');
+  const [t, setT] = useRouteParam<'learn' | 'chunk' | 'check' | 'mile'>('t', 'learn');
   const head = (
     <div className="pagehead">
       <h2>📗 Từ vựng</h2>
-      <Pills id="words" value={t} onChange={setT} items={[['learn', '📗 Học từ mới mỗi ngày'], ['chunk', '🧩 Học theo cụm (dịch câu/đoạn)'], ['check', '⚡ Kiểm tra nhanh, bỏ qua từ đã biết']]} />
+      <Pills id="words" value={t} onChange={setT} items={[['learn', '📗 Học từ mới mỗi ngày'], ['chunk', '🧩 Học theo cụm (dịch câu/đoạn)'], ['check', '⚡ Kiểm tra nhanh, bỏ qua từ đã biết'], ['mile', '🏁 Kiểm tra mốc 100 từ']]} />
     </div>
   );
   if (t === 'chunk') return <>{head}<ChunkPractice /></>;
   if (t === 'check') return <>{head}<QuickVocab /></>;
+  if (t === 'mile') return <>{head}<Milestones /></>;
+  const msOpen = Math.floor(bankLearned(P) / 100), msNext = Array.from({ length: msOpen }, (_, i) => i + 1).find((k) => !(P.ms && P.ms[k] !== undefined));
 
   const wpd = P.settings.wpd, done = newWordsToday(P), left = leftToday(), learned = bankLearned(P);
   const next = MILESTONES.find(([, n]) => n > learned);
@@ -54,6 +57,7 @@ function WordsHome() {
   return (
     <>
       {head}
+      {msNext && <Card className="warnc"><p>🏁 Bạn đã học đủ <b>{msNext * 100}</b> từ — có <b>bài kiểm tra mốc {msNext}</b>: dịch đoạn văn bằng chính các từ đã học, viết lại từ và viết câu theo ngữ pháp.</p><button className="btn" onClick={() => setT('mile')}>▶ Làm bài mốc {msNext}</button></Card>}
       {W && W.phase === 'done' && (
         <Card className="center">
           <div className="huge">✅</div>

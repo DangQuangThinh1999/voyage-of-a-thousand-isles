@@ -15,7 +15,7 @@ import { AudioButton } from './AudioButton';
 import { StepProgress } from './Progress';
 import { Bar, Pills } from './ui';
 
-interface Item { en: string; vi: string; en2: string; vi2: string; natural?: number; grammar?: string; grammar_vi?: string; collocation?: string; words: { w: string; ipa: string; vi: string }[] }
+interface Item { en: string; vi: string; en2: string; vi2: string; natural?: number; context?: string; grammar?: string; grammar_vi?: string; collocation?: string; words: { w: string; ipa: string; vi: string }[] }
 interface Grade { score: number; verdict: 'correct' | 'minor' | 'wrong'; corrected: string; natural: string; errors: { original: string; corrected: string; type_vi: string; explain_vi: string }[]; used: string[]; missed: string[]; comment_vi: string; rough?: boolean }
 type Len = '10' | '15' | '20';
 type Dir = 'vi-en' | 'en-vi';
@@ -52,10 +52,10 @@ export function ChunkPractice() {
     const n = +len, p = await pick(n >= 16 ? 20 : 12).catch(() => [] as BankWord[]), targets = p.map((w) => w.w);
     let its: Item[];
     try {
-      const d = await post({ part: 'gen', len: n, n: 5, cefr: cefr(), words: targets });
+      const d = await post({ part: 'gen', len: n, cefr: cefr(), words: targets });
       // bỏ câu AI tự chấm là chưa tự nhiên (< 4/5), lấy 5 câu tự nhiên nhất
       its = (d.items as Item[]).filter((x) => x.en && x.vi && x.en2 && x.vi2 && wc(x.en) <= 20 && norm(x.en2) !== norm(x.en) && (x.natural ?? 5) >= 4)
-        .sort((a, b) => (b.natural ?? 5) - (a.natural ?? 5)).slice(0, 5);
+        .slice(0, 10);
       if (!its.length) throw new Error('empty');
       setOffline(false);
     } catch {
@@ -119,10 +119,10 @@ export function ChunkPractice() {
   if (!items || busy) return (
     <section className="card">
       <h3 className="m-0">🧩 Học từ vựng theo cụm</h3>
-      <p className="muted small">Học từ trong cả câu sẽ nhớ lâu hơn học từ rời. AI đặt 5 {unit} chứa <b>từ mới</b> (tiếp theo trong kho) và từ đã học để ôn. <b>Vòng 1:</b> dịch Anh → Việt (hiểu nghĩa). <b>Vòng 2:</b> dịch Việt → Anh các {unit} <b>khác</b> dùng lại đúng những từ đó (tự viết được, không chép được vòng 1). Làm xong cả 2 vòng mới nộp, AI chấm <b>một lần</b>. Một {unit} <b>qua</b> khi cả 2 chiều đạt ≥ {PASS}/100 — khi đó từ mới trong {unit} được <b>cộng vào số từ đã học</b> (tính cho các mốc 100 từ).</p>
+      <p className="muted small">Học từ trong cả câu sẽ nhớ lâu hơn học từ rời. AI lấy {unit} <b>chân thật</b> từ tình huống thực tế trên thế giới (email, tin nhắn, biển báo, hội thoại, đề IELTS…) — số {unit} tuỳ theo, miễn <b>đủ hết từ cần học</b> gồm <b>từ mới</b> (tiếp theo trong kho) và từ đã học để ôn. <b>Vòng 1:</b> dịch Anh → Việt (hiểu nghĩa). <b>Vòng 2:</b> dịch Việt → Anh các {unit} <b>khác</b> dùng lại đúng những từ đó (tự viết được, không chép được vòng 1). Làm xong cả 2 vòng mới nộp, AI chấm <b>một lần</b>. Một {unit} <b>qua</b> khi cả 2 chiều đạt ≥ {PASS}/100 — khi đó từ mới trong {unit} được <b>cộng vào số từ đã học</b> (tính cho các mốc 100 từ).</p>
       <div className="row gap wrap"><Pills id="chunk-len" value={len} onChange={setLen} items={LENS} /></div>
       {busy ? <StepProgress steps={['Chọn từ mới + từ ôn', 'AI đặt câu theo ngữ cảnh', 'Sẵn sàng']} step={1} note="thường 5–15 giây" />
-        : <button className="btn big" onClick={start}>▶ Bắt đầu 5 {unit}</button>}
+        : <button className="btn big" onClick={start}>▶ Bắt đầu</button>}
     </section>
   );
 
@@ -140,7 +140,7 @@ export function ChunkPractice() {
           {newWords.length > 0 ? <p className="okc"><b>🆕 +{newWords.length} từ mới</b> được tính vào số từ đã học ({bankLearned(app.P)} từ): {newWords.join(', ')}</p>
             : <p className="muted small">Chưa có từ mới nào được cộng (từ đã học rồi, hoặc {unit} chưa qua).</p>}
           <p className="muted small">Từ mới sẽ vào lịch 🔁 Ôn từ từ ngày mai. Các lỗi đã ghi vào 📒 Sổ lỗi sai.</p>
-          <button className="btn" onClick={start}>🔁 Làm 5 {unit} mới</button> <button className="btn ghost" onClick={() => { setItems(null); setGrades(null); }}>⚙️ Đổi độ dài</button>
+          <button className="btn" onClick={start}>🔁 Làm lượt mới</button> <button className="btn ghost" onClick={() => { setItems(null); setGrades(null); }}>⚙️ Đổi độ dài</button>
         </section>
         {items.map((x, k) => (
           <section key={k} className={'card chunk ' + (passed(k) ? 'cpass' : 'cfail')}>
@@ -160,6 +160,7 @@ export function ChunkPractice() {
     <motion.section key={i} className="card chunk" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
       <div className="row between small wrap"><b>{d === 'en-vi' ? '🇬🇧 → 🇻🇳 Vòng 1 · dịch sang tiếng Việt' : '🇻🇳 → 🇬🇧 Vòng 2 · dịch sang tiếng Anh'}</b><span className="muted">{unit} {(i % N) + 1}/{N} · {offline ? '📚 câu trong kho (AI bận)' : '🤖 AI đặt câu'} · chấm 1 lần ở cuối</span></div>
       <Bar pct={(answers.filter((x) => x.trim()).length / answers.length) * 100} h={6} />
+      {i < N && it.context && <div className="muted small">📍 {it.context}</div>}
       <p className="chunk-src">{srcOf(i)} {d === 'en-vi' && <><AudioButton text={srcOf(i)} className="icon xs" /> <AudioButton text={srcOf(i)} slow label="🐢" className="icon xs" /></>}</p>
       {d === 'vi-en' && (
         <div className="small">

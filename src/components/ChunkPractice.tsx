@@ -15,7 +15,7 @@ import { AudioButton } from './AudioButton';
 import { StepProgress } from './Progress';
 import { Bar, Pills } from './ui';
 
-interface Item { en: string; vi: string; en2: string; vi2: string; words: { w: string; ipa: string; vi: string }[] }
+interface Item { en: string; vi: string; en2: string; vi2: string; natural?: number; grammar?: string; grammar_vi?: string; collocation?: string; words: { w: string; ipa: string; vi: string }[] }
 interface Grade { score: number; verdict: 'correct' | 'minor' | 'wrong'; corrected: string; natural: string; errors: { original: string; corrected: string; type_vi: string; explain_vi: string }[]; used: string[]; missed: string[]; comment_vi: string; rough?: boolean }
 type Len = '10' | '15' | '20';
 type Dir = 'vi-en' | 'en-vi';
@@ -53,7 +53,9 @@ export function ChunkPractice() {
     let its: Item[];
     try {
       const d = await post({ part: 'gen', len: n, n: 5, cefr: cefr(), words: targets });
-      its = (d.items as Item[]).filter((x) => x.en && x.vi && x.en2 && x.vi2 && wc(x.en) <= 20 && norm(x.en2) !== norm(x.en)).slice(0, 6);
+      // bỏ câu AI tự chấm là chưa tự nhiên (< 4/5), lấy 5 câu tự nhiên nhất
+      its = (d.items as Item[]).filter((x) => x.en && x.vi && x.en2 && x.vi2 && wc(x.en) <= 20 && norm(x.en2) !== norm(x.en) && (x.natural ?? 5) >= 4)
+        .sort((a, b) => (b.natural ?? 5) - (a.natural ?? 5)).slice(0, 5);
       if (!its.length) throw new Error('empty');
       setOffline(false);
     } catch {
@@ -143,6 +145,7 @@ export function ChunkPractice() {
         {items.map((x, k) => (
           <section key={k} className={'card chunk ' + (passed(k) ? 'cpass' : 'cfail')}>
             <div className="row between"><b>{k + 1}. {passed(k) ? '✅ Qua' : '❌ Chưa qua'}</b><span className="chunk-words">{x.words.map((w) => <span key={w.w} className="chip2"><b>{w.w}</b> <span className="ipa inline">{w.ipa}</span> · {w.vi} <AudioButton text={w.w} className="icon xs" /></span>)}</span></div>
+            {(x.grammar || x.collocation) && <div className="chunk-gram small">{x.grammar && <div>📐 <b>Ngữ pháp:</b> {x.grammar}{x.grammar_vi ? <span className="muted"> — {x.grammar_vi}</span> : null}</div>}{x.collocation && <div>🔗 <b>Cụm từ nên học:</b> {x.collocation}</div>}</div>}
             <Review label="Vòng 1 · Anh → Việt" src={srcOf(k)} ref_={refOf(k)} a={answers[k]} g={grades[k]} dir="en-vi" />
             <Review label="Vòng 2 · Việt → Anh" src={srcOf(k + N)} ref_={refOf(k + N)} a={answers[k + N]} g={grades[k + N]} dir="vi-en" />
           </section>

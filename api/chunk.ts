@@ -3,14 +3,19 @@
 // part "grade": chấm bản dịch cả câu/đoạn của người học, sửa trọn vẹn, chỉ ra từng lỗi có giải thích.
 import { gemini, guard, json } from './_gemini.js';
 
-const GEN_SYS = `Bạn là giáo viên tiếng Anh cho người Việt, soạn bài HỌC TỪ VỰNG THEO CỤM: mỗi bài là một câu hoặc đoạn rất ngắn tự nhiên, đời thường, dùng các từ mục tiêu trong ngữ cảnh thật.
-- Tiếng Anh tự nhiên như người bản xứ, đúng ngữ pháp 100%, đúng trình độ CEFR. Tiếng Việt tự nhiên, đủ dấu, dịch sát nghĩa.
+const GEN_SYS = `Bạn là giáo viên tiếng Anh bản xứ dạy người Việt, soạn bài HỌC TỪ VỰNG THEO CỤM.
+QUY TẮC QUAN TRỌNG NHẤT: mỗi câu phải là câu người bản xứ THỰC SỰ hay nói/viết trong đời sống, giống câu mẫu trong sách Cambridge English, Oxford Learner's Dictionary hoặc đề IELTS — KHÔNG được đặt câu gượng ép chỉ để nhét từ.
+- Chỉ dùng collocation/cụm từ thông dụng, đúng cách người bản xứ dùng (vd "put it to use", "take a break", "make a decision"; KHÔNG "take it into use", "do a decision").
+- Nếu một từ mục tiêu không thể đặt tự nhiên trong câu, hãy BỎ QUA từ đó và dùng từ khác trong danh sách. Thà ít từ mục tiêu mà câu tự nhiên.
+- Đúng ngữ pháp 100%, đúng trình độ CEFR. Tiếng Việt tự nhiên, đủ dấu, dịch sát nghĩa.
 - Đếm số từ tiếng Anh cẩn thận: KHÔNG vượt quá giới hạn số từ.
-- Ngữ cảnh đa dạng: gia đình, công việc, trường học, du lịch, mua sắm, sức khoẻ, công nghệ, môi trường, nhiều quốc gia.`;
+- Ngữ cảnh đa dạng, cụ thể: gia đình, công việc, trường học, du lịch, mua sắm, sức khoẻ, công nghệ, môi trường, nhiều quốc gia.
+- natural (1–5): tự chấm thật khắt khe mức tự nhiên của CẢ HAI câu (5 = người bản xứ nói y như vậy hằng ngày; 3 = đúng ngữ pháp nhưng nghe lạ). Câu dưới 5 thì viết lại cho tới khi đạt 5.
+- grammar: tên cấu trúc ngữ pháp chính của câu 1 kèm công thức (vd "Hiện tại đơn: S + V(s/es)", "Câu điều kiện loại 1: If + hiện tại đơn, will + V"); grammar_vi: 1–2 câu giải thích vì sao dùng cấu trúc đó trong câu này; collocation: cụm từ đáng học trong câu (vd "put sth to use = đưa vào sử dụng").`;
 const GEN_SCHEMA = { type: 'OBJECT', properties: { items: { type: 'ARRAY', items: { type: 'OBJECT', properties: {
-  en: { type: 'STRING' }, vi: { type: 'STRING' }, en2: { type: 'STRING' }, vi2: { type: 'STRING' },
+  en: { type: 'STRING' }, vi: { type: 'STRING' }, en2: { type: 'STRING' }, vi2: { type: 'STRING' }, natural: { type: 'INTEGER' }, grammar: { type: 'STRING' }, grammar_vi: { type: 'STRING' }, collocation: { type: 'STRING' },
   words: { type: 'ARRAY', items: { type: 'OBJECT', properties: { w: { type: 'STRING' }, ipa: { type: 'STRING' }, vi: { type: 'STRING' } }, required: ['w', 'ipa', 'vi'] } },
-}, required: ['en', 'vi', 'en2', 'vi2', 'words'] } } }, required: ['items'] };
+}, required: ['en', 'vi', 'en2', 'vi2', 'natural', 'grammar', 'grammar_vi', 'collocation', 'words'] } } }, required: ['items'] };
 
 const GRADE_SYS = `Bạn là giáo viên tiếng Anh cho người Việt, chấm bài DỊCH cả câu/đoạn của người học.
 - So bản dịch với câu gốc. Chấp nhận mọi cách dịch đúng nghĩa và đúng ngữ pháp, KHÔNG bắt buộc giống bản tham khảo. Không bao giờ đánh dấu sai một câu đúng.
@@ -41,12 +46,12 @@ export async function POST(req: Request): Promise<Response> {
     const kind = len >= 16 ? 'một ĐOẠN rất ngắn gồm 2 câu liên kết' : 'một CÂU hoàn chỉnh';
     const user = `Trình độ: CEFR ${cefr}.
 Từ mục tiêu người học đang học: ${words.join(', ') || '(tự chọn từ thông dụng)'}.
-Soạn ${n} bài, mỗi bài là ${kind}, dài ${Math.max(6, len - 4)}–${len} từ tiếng Anh (tuyệt đối không quá ${len} từ).
+Soạn ${n + 2} bài, mỗi bài là ${kind}, dài ${Math.max(6, len - 4)}–${len} từ tiếng Anh (tuyệt đối không quá ${len} từ).
 Mỗi bài dùng ${len >= 16 ? '3–5' : '2–3'} từ mục tiêu khác nhau (chia đều để dùng hết các từ), giữ nguyên dạng hoặc chia đúng ngữ pháp.
 words: liệt kê các từ mục tiêu đã dùng trong bài (w đúng dạng gốc), ipa giọng Anh dạng /.../, vi nghĩa trong ngữ cảnh.
 en2/vi2: một câu/đoạn THỨ HAI, KHÁC HẲN câu thứ nhất (ngữ cảnh, chủ ngữ, tình huống, cấu trúc khác; không dịch lại hay đảo câu thứ nhất), cùng độ dài, nhưng dùng LẠI ĐÚNG các từ mục tiêu trong words. Người học dịch câu 1 Anh→Việt rồi dịch câu 2 Việt→Anh, nên câu 2 không được giống câu 1.
 Mã ngẫu nhiên: ${Math.random().toString(36).slice(2, 8)}.`;
-    return gemini(GEN_SYS, user, GEN_SCHEMA, 0.9, true);
+    return gemini(GEN_SYS, user, GEN_SCHEMA, 0.6, true);
   }
   if (b.part === 'grade') {
     const dir = b.dir === 'en-vi' ? 'Anh → Việt' : 'Việt → Anh';

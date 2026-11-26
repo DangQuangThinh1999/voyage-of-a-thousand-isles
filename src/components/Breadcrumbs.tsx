@@ -1,5 +1,6 @@
 import { Fragment, type ReactNode } from 'react';
-import { unitById, WEEK_GOALS as WG } from '../data';
+import { unitById } from '../data';
+import { roadmap } from '../lib/roadmap';
 import { KINDS, levelNow } from '../lib/progress';
 import { go, goWeek, leaveOk, tab, useApp } from '../state/store';
 
@@ -7,6 +8,7 @@ const NAMES: Record<string, string> = { words: '📗 Từ mới', review: '🔁 
 /** Đường dẫn: Học › Tuần › Bài › Phần, kèm trình độ ước tính */
 export function Breadcrumbs() {
   const { scr, arg, S, P } = useApp();
+  const WG = roadmap(P);
   const parts: ReactNode[] = [<button key="h" data-act="tab" data-tab="home" onClick={() => leaveOk() && tab('home')}>🏠 Học</button>];
   const u = scr === 'unit' ? unitById(arg || '') : scr === 'session' && S ? S.u : null;
   const weekCrumb = (w: number) => (

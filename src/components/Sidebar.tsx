@@ -1,4 +1,5 @@
-import { UNITS, WEEK_GOALS as WG } from '../data';
+import { UNITS } from '../data';
+import { roadmap } from '../lib/roadmap';
 import { TargetPicker } from './TargetPicker';
 import { doneCount, levelNow, unlocked, vocabWeek, weekDone, weekUnits } from '../lib/progress';
 import { go, goWeek, leaveOk, tab, toast, useApp } from '../state/store';
@@ -6,6 +7,7 @@ import { go, goWeek, leaveOk, tab, toast, useApp } from '../state/store';
 /** Cột tổng quan bên trái (màn hình rộng ≥ 1100px) */
 export function Sidebar() {
   const { scr, arg, S, P } = useApp();
+  const WG = roadmap(P);
   const cur = scr === 'unit' ? arg : scr === 'session' && S ? S.u.id : null;
   return (
     <aside id="side" className="side" aria-label="Tổng quan">

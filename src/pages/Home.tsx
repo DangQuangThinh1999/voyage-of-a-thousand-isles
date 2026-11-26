@@ -1,16 +1,18 @@
 import { Fragment } from 'react';
-import { UNITS, WEEK_GOALS as WG } from '../data';
+import { UNITS } from '../data';
+import { roadmap, totalWeeks } from '../lib/roadmap';
 import { Card } from '../components/Card';
 import { TargetPicker } from '../components/TargetPicker';
 import { ProgressBar } from '../components/ProgressBar';
 import { UnitCard } from '../components/UnitCard';
-import { bankLearned, dayNumber, levelNow, newWordsToday, vocabWeek, weekNow, minutesToday, nextTask, TOTAL_DAYS, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
+import { bankLearned, dayNumber, levelNow, newWordsToday, vocabWeek, weekNow, minutesToday, nextTask, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
 import { dueWords } from '../lib/srs';
 import { introOk } from '../state/actions';
 import { startQuickTest, startSession } from '../state/session';
 import { tab, useApp } from '../state/store';
 
 function WeekBadge({ w, P }: { w: number; P: Progress }) {
+  const WG = roadmap(P);
   const us = weekUnits(w);
   const t0 = (P.tests || {})['w' + w];
   if (weekDone(P, w)) return <span className="row gap"><span className="okc small">✓ Đạt ~IELTS {WG[w].band}</span><button className="btn ghost sm" onClick={() => startQuickTest({ w })}>🔁 Làm lại kiểm tra tuần{t0 ? ` · ${t0.best}%` : ''}</button></span>;
@@ -32,6 +34,7 @@ function VocabRow({ w, P }: { w: number; P: Progress }) {
 
 export function Home() {
   const { P } = useApp();
+  const WG = roadmap(P), TOTAL = totalWeeks(P) * 7;
   const min = minutesToday(P), goal = P.settings.goalMin, pct = Math.min(100, Math.round((min / goal) * 100));
   const nt = nextTask(P), due = dueWords(P).length;
   const weeks = [...new Set(UNITS.map((u) => u.week))];
@@ -51,7 +54,7 @@ export function Home() {
         </Card>
       )}
       <Card className="today">
-        <div className="row between"><b>Hôm nay · Ngày {dayNumber(P)}/{TOTAL_DAYS}</b><span className="muted">{min} / {goal} phút</span></div>
+        <div className="row between"><b>Hôm nay · Ngày {dayNumber(P)}/{TOTAL}</b><span className="muted">{min} / {goal} phút</span></div>
         <ProgressBar pct={pct} />
         <p className="lvline">🎯 Trình độ ước tính: <b>IELTS {levelNow(P)}</b> · <TargetPicker className="target inline" /><br /><span className="muted small">📗 Kho từ: đã học {bankLearned(P)} từ. Ước tính theo các tuần đã học xong hoặc đã qua kiểm tra, không phải điểm thi thật.</span></p>
         <div className="row gap">
@@ -72,7 +75,7 @@ export function Home() {
           <div className="units">{UNITS.map((u, i) => [u, i] as const).filter(([u]) => u.week === w).map(([u, i]) => <UnitCard key={u.id} u={u} P={P} locked={!unlocked(P, i)} />)}</div>
         </Fragment>
       ))}
-      <h3>Các tuần tiếp theo</h3>
+      <h3>Các tuần tiếp theo <span className="muted small">· tổng {totalWeeks(P)} tuần tới IELTS {P.settings.target}</span></h3>
       <Card className="upcoming">
         {Object.entries(WG).filter(([w]) => !weeks.includes(+w)).map(([w, g]) => (
           <div key={w}>

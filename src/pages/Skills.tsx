@@ -3,6 +3,8 @@ import { Dropdown } from '../components/Dropdown';
 import { AudioButton } from '../components/AudioButton';
 import { TapText } from '../components/TapText';
 import { Bar, Pills, Section } from '../components/ui';
+import { GenBar } from '../components/GenBar';
+import type { GenItem } from '../lib/gen';
 import { LEVELS, UNITS, type Pair, type Question } from '../data';
 import { tallySkill, type Progress } from '../lib/progress';
 import { speak, stopSpeaking } from '../lib/speech';
@@ -18,7 +20,12 @@ export function skillStats(P: Progress) {
 }
 
 /** Bộ đọc hiểu: đoạn văn chạm-tra-từ, câu hỏi có giải thích câu chứa đáp án */
-function ReadingTutor({ text, questions }: { text: Pair[]; questions: Question[] }) {
+export interface Extra { why?: string[]; ev?: string[]; vocab?: { w: string; ipa: string; vi: string }[]; title?: string }
+function VocabBox({ vocab }: { vocab?: Extra['vocab'] }) {
+  if (!vocab || !vocab.length) return null;
+  return <Section><b>📗 Từ vựng đáng học trong bài</b><div className="vgrid">{vocab.map((v) => <div key={v.w} className="vchip"><b>{v.w}</b> <AudioButton text={v.w} className="icon xs" /><span className="muted small">{v.ipa}</span><span className="small">{v.vi}</span></div>)}</div></Section>;
+}
+function ReadingTutor({ text, questions, why, ev, vocab, title }: { text: Pair[]; questions: Question[] } & Extra) {
   const [vi, setVi] = useState(false);
   const [picks, setPicks] = useState<Record<number, number>>({});
   const evidence = (q: Question) => {
@@ -30,6 +37,7 @@ function ReadingTutor({ text, questions }: { text: Pair[]; questions: Question[]
   return (
     <>
       <Section>
+        {title && <h3 className="m-0 mb-1">{title}</h3>}
         <div className="flex items-center justify-between"><b>📖 Đoạn văn</b><label className="small"><input type="checkbox" checked={vi} onChange={(e) => setVi(e.target.checked)} /> Hiện dịch</label></div>
         <p className="muted small">Chạm vào từ bất kỳ để xem nghĩa, từ loại và phiên âm. Bấm 🔊 để nghe từng câu.</p>
         {text.map(([en, v], i) => (
@@ -47,17 +55,18 @@ function ReadingTutor({ text, questions }: { text: Pair[]; questions: Question[]
                 <button key={o} disabled={ans} className={`opt ${ans ? (i === q[3] ? 'right' : i === p ? 'wrong' : 'dim') : ''}`}
                   onClick={() => { setPicks({ ...picks, [qi]: i }); tallySkill(app.P, 'read', i === q[3]); if (i === q[3]) addXP(1); else save(); }}>{o}</button>
               ))}</div>
-              {ans && <p className="fixed small">🔎 <b>Câu chứa đáp án:</b> “{evidence(q)[0]}”<br /><span className="muted">{evidence(q)[1]}</span></p>}
+              {ans && <p className="fixed small">🔎 <b>Câu chứa đáp án:</b> “{ev && ev[qi] ? ev[qi] : evidence(q)[0]}”{!ev && <><br /><span className="muted">{evidence(q)[1]}</span></>}{why && why[qi] && <><br />💬 {why[qi]}</>}</p>}
             </div>
           );
         })}
       </Section>
+      <VocabBox vocab={vocab} />
     </>
   );
 }
 
 /** Trình phát bài nghe: câu đang đọc sáng lên, phát lại từng câu, tốc độ, ẩn/hiện chữ, điền từ, câu hỏi */
-function ListeningTutor({ script, questions, gaps }: { script: Pair[]; questions: Question[]; gaps: [string, string, string][] }) {
+function ListeningTutor({ script, questions, gaps, why, ev, vocab, title }: { script: Pair[]; questions: Question[]; gaps: [string, string, string][] } & Extra) {
   const [cur, setCur] = useState(-1);
   const [playing, setPlaying] = useState(false);
   const [hide, setHide] = useState(true);
@@ -76,6 +85,7 @@ function ListeningTutor({ script, questions, gaps }: { script: Pair[]; questions
   return (
     <>
       <Section className="player">
+        {title && <h3 className="m-0 mb-2">🎧 {title}</h3>}
         <div className="flex flex-wrap items-center gap-2">
           <button className="btn" onClick={() => (playing ? pause() : playAll(Math.max(0, cur)))}>{playing ? '⏸ Dừng' : '▶️ Nghe cả bài'}</button>
           <button className={slow ? 'btn sm' : 'btn ghost sm'} onClick={() => setSlow(!slow)}>{slow ? '🐢 Chậm' : '⚡ Bình thường'}</button>
@@ -119,13 +129,27 @@ function ListeningTutor({ script, questions, gaps }: { script: Pair[]; questions
                 <button key={o} disabled={ans} className={`opt ${ans ? (i === q[3] ? 'right' : i === p ? 'wrong' : 'dim') : ''}`}
                   onClick={() => { setPicks({ ...picks, [qi]: i }); tallySkill(app.P, 'listen', i === q[3]); if (i === q[3]) addXP(1); else save(); }}>{o}</button>
               ))}</div>
-              {ans && <p className="muted small">{q[1]}</p>}
+              {ans && <p className="fixed small">{ev && ev[qi] && <>🔎 “{ev[qi]}”<br /></>}💬 {why && why[qi] ? why[qi] : q[1]}</p>}
             </div>
           );
         })}
       </Section>
+      <VocabBox vocab={vocab} />
     </>
   );
+}
+
+/** Chuyển bài AI sang dạng hiển thị của bộ đọc / nghe */
+type Q = { q: string; q_vi: string; options: string[]; answer: number; evidence: string; why_vi: string };
+const qs = (list: Q[]): Question[] => list.map((q) => [q.q, q.q_vi, q.options, Math.max(0, Math.min(q.options.length - 1, q.answer))]);
+function fromAI(it: GenItem) {
+  const d = it.data, L: Q[] = d.questions || [];
+  return { title: d.title, text: (d.passage || []).map((s: { en: string; vi: string }) => [s.en, s.vi] as Pair), questions: qs(L), why: L.map((q) => q.why_vi), ev: L.map((q) => q.evidence), vocab: d.vocab };
+}
+function fromAIListen(it: GenItem) {
+  const d = it.data, L: Q[] = d.questions || [];
+  return { title: d.title, script: (d.script || []).map((s: { en: string; vi: string }) => [s.en, s.vi] as Pair), questions: qs(L), why: L.map((q) => q.why_vi), ev: L.map((q) => q.evidence), vocab: d.vocab,
+    gaps: (d.gaps || []).map((g: { sentence: string; answer: string; vi: string }) => [g.sentence.replace(/_{2,}/, '____'), g.answer, g.vi] as [string, string, string]) };
 }
 
 /** Bài đọc / nghe theo cấp: A1 (bài học tuần 1–4) + A2 → C2 */
@@ -139,6 +163,7 @@ export function Skills() {
   const { P } = useApp();
   const [tab, setTab] = useState<'weak' | 'read' | 'listen'>('weak');
   const sets = SETS();
+  const [ai, setAi] = useState<GenItem | null>(null);
   const [si, setSi] = useState(0);
   const st = skillStats(P), tried = st.filter((s) => s.n >= 5).sort((a, b) => a.acc - b.acc), weak = tried[0];
   const ACTION: Record<string, [string, () => void]> = {
@@ -180,11 +205,15 @@ export function Skills() {
       )}
       {tab !== 'weak' && (
         <>
+          <GenBar kind={tab === 'read' ? 'reading' : 'listening'} onItem={setAi} />
+          {ai && <button className="btn ghost sm mb-2" onClick={() => setAi(null)}>← Về bài có sẵn</button>}
           <Section>
             <label className="small">Chọn bài theo trình độ:</label>
             <Dropdown className="w-full" label="Bài" value={si} onChange={setSi} options={sets.map((s, i) => ({ value: i, label: s.label.split(' · ').slice(1).join(' · ') || s.label, sub: s.label.split(' · ')[0] }))} />
           </Section>
-          {tab === 'read' ? <ReadingTutor key={'r' + si} {...sets[si].read} /> : <ListeningTutor key={'l' + si} {...sets[si].listen} />}
+          {ai && ai.kind === (tab === 'read' ? 'reading' : 'listening')
+            ? (tab === 'read' ? <ReadingTutor key={ai.id} {...fromAI(ai)} /> : <ListeningTutor key={ai.id} {...fromAIListen(ai)} />)
+            : (tab === 'read' ? <ReadingTutor key={'r' + si} {...sets[si].read} /> : <ListeningTutor key={'l' + si} {...sets[si].listen} />)}
         </>
       )}
     </>

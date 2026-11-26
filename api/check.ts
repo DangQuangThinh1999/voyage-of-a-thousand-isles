@@ -31,47 +31,15 @@ const SCHEMA = {
   required: ['status', 'correction', 'better', 'explanation', 'errors', 'meaning', 'tip', 'usesWordCorrectly'],
 };
 
-const hits = new Map<string, { n: number; t: number }>();
-const limited = (ip: string) => {
-  const now = Date.now(), h = hits.get(ip);
-  if (!h || now - h.t > 3600_000) { hits.set(ip, { n: 1, t: now }); return false; }
-  return ++h.n > 120;
-};
-const json = (d: unknown, status = 200) => new Response(JSON.stringify(d), { status, headers: { 'Content-Type': 'application/json; charset=utf-8' } });
+import { gemini, guard, json } from './_gemini';
 
 export async function POST(req: Request): Promise<Response> {
-  const origin = req.headers.get('origin') || '';
-  if (origin && !/^https:\/\/[a-z0-9-]+\.vercel\.app$|^http:\/\/localhost(:\d+)?$/.test(origin)) return json({ error: 'forbidden' }, 403);
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) return json({ error: 'not_configured' }, 503);
-  const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || 'unknown';
-  if (limited(ip)) return json({ error: 'rate_limited' }, 429);
+  const bad = guard(req); if (bad) return bad;
   let body: { sentence?: string; word?: string; meaning?: string; context?: string };
   try { body = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
   const sentence = String(body.sentence || '').trim().slice(0, 500);
   if (!sentence) return json({ error: 'empty' }, 400);
   const word = String(body.word || '').slice(0, 40), meaning = String(body.meaning || '').slice(0, 120), context = String(body.context || '').slice(0, 300);
   const user = `Câu của người học: "${sentence}"${word ? `\nTừ mục tiêu cần dùng: "${word}"${meaning ? ` (nghĩa: ${meaning})` : ''}` : ''}${context ? `\nNgữ cảnh / đề bài: ${context}` : ''}`;
-  // Model quá tải / hết lượt thì thử model kế tiếp
-  const models = [...new Set([process.env.GEMINI_MODEL, 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite', 'gemini-flash-latest'].filter(Boolean) as string[])];
-  let last = 0;
-  for (const model of models) {
-  try {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: SYSTEM }] },
-        contents: [{ role: 'user', parts: [{ text: user }] }],
-        generationConfig: { temperature: 0.2, responseMimeType: 'application/json', responseSchema: SCHEMA },
-      }),
-    });
-    if (r.status === 429 || r.status === 503 || r.status === 500 || r.status === 404) { last = r.status; continue; }
-    if (!r.ok) return json({ error: `gemini_${r.status}` }, 502);
-    const d = await r.json() as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
-    const text = d.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('') || '';
-    return json({ ...JSON.parse(text), model });
-  } catch { last = -1; }
-  }
-  return json({ error: last === 429 ? 'quota' : 'busy' }, last === 429 ? 429 : 503);
+  return gemini(SYSTEM, user, SCHEMA);
 }

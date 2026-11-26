@@ -36,7 +36,7 @@ function SkillTree({ P, photo }: { P: Progress; photo?: string | null }) {
   const R = 120, C = 160;
   return (
     <div className="tree">
-      <svg viewBox="0 0 320 320" className="w-full max-w-[420px] mx-auto block">
+      <svg viewBox="0 -6 320 352" className="w-full max-w-[420px] mx-auto block">
         {nodes.map((n, i) => { const a = (i / nodes.length) * Math.PI * 2 - Math.PI / 2; return <motion.line key={n.name} x1={C} y1={C} x2={C + R * Math.cos(a)} y2={C + R * Math.sin(a)} stroke={n.color} strokeWidth={2.5} strokeOpacity={0.35 + n.pct * 0.65} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.8, delay: i * 0.08 }} />; })}
         {nodes.map((n, i) => {
           const a = (i / nodes.length) * Math.PI * 2 - Math.PI / 2, x = C + R * Math.cos(a), y = C + R * Math.sin(a), r = 26, c = 2 * Math.PI * (r + 4);
@@ -57,6 +57,13 @@ function SkillTree({ P, photo }: { P: Progress; photo?: string | null }) {
   );
 }
 
+/** Kiểu khung chú thích biểu đồ: theo màu giao diện, chữ rõ */
+const TT = {
+  contentStyle: { background: 'var(--card)', border: '1px solid var(--pri)', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,.35)', padding: '8px 12px' },
+  labelStyle: { color: 'var(--muted)', fontWeight: 700, marginBottom: 4 }, itemStyle: { color: 'var(--ink)', fontWeight: 700, padding: 0 },
+};
+const AX = { stroke: 'var(--muted)', fontSize: 11, tickLine: false };
+
 function Charts({ P }: { P: Progress }) {
   const days = Array.from({ length: 14 }, (_, i) => addDays(dayKey(), i - 13));
   const data = days.map((k) => { const d = P.days[k] || { xp: 0, sec: {} }; return { d: k.slice(5), 'Từ mới': d.nw || 0, XP: d.xp || 0, 'Phút': Math.round(Object.values(d.sec || {}).reduce((a, b) => a + b, 0) / 60) }; });
@@ -66,12 +73,13 @@ function Charts({ P }: { P: Progress }) {
     <>
       <Section>
         <h3 className="m-0">📈 14 ngày gần nhất</h3>
-        <div className="h-56 mt-2"><ResponsiveContainer><BarChart data={data}><CartesianGrid strokeDasharray="3 3" stroke="var(--line)" /><XAxis dataKey="d" fontSize={11} /><YAxis fontSize={11} width={30} /><Tooltip /><Legend /><RBar dataKey="Từ mới" fill="#22d3ee" radius={[6, 6, 0, 0]} /><RBar dataKey="Phút" fill="#a78bfa" radius={[6, 6, 0, 0]} /></BarChart></ResponsiveContainer></div>
-        <div className="h-40 mt-2"><ResponsiveContainer><AreaChart data={data}><defs><linearGradient id="gx" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#fbbf24" stopOpacity={0.6} /><stop offset="100%" stopColor="#fbbf24" stopOpacity={0} /></linearGradient></defs><XAxis dataKey="d" fontSize={11} /><YAxis fontSize={11} width={30} /><Tooltip /><Area dataKey="XP" stroke="#fbbf24" fill="url(#gx)" strokeWidth={2} /></AreaChart></ResponsiveContainer></div>
+        {data.every((x) => !x['Từ mới'] && !x.XP && !x['Phút']) && <p className="note small mt-2">Chưa có dữ liệu trong 14 ngày qua. Học từ mới, làm bài và luyện nói để biểu đồ “mọc” lên mỗi ngày 📈</p>}
+        <div className="h-56 mt-2"><ResponsiveContainer><BarChart data={data}><CartesianGrid strokeDasharray="3 3" stroke="var(--line)" /><XAxis dataKey="d" {...AX} /><YAxis {...AX} width={30} allowDecimals={false} /><Tooltip {...TT} cursor={{ fill: 'rgba(34, 211, 238, .08)', radius: 8 }} /><Legend wrapperStyle={{ fontSize: 13 }} /><RBar dataKey="Từ mới" fill="#22d3ee" radius={[6, 6, 0, 0]} /><RBar dataKey="Phút" fill="#a78bfa" radius={[6, 6, 0, 0]} /></BarChart></ResponsiveContainer></div>
+        <div className="h-40 mt-2"><ResponsiveContainer><AreaChart data={data}><defs><linearGradient id="gx" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#fbbf24" stopOpacity={0.6} /><stop offset="100%" stopColor="#fbbf24" stopOpacity={0} /></linearGradient></defs><XAxis dataKey="d" {...AX} /><YAxis {...AX} width={30} allowDecimals={false} /><Tooltip {...TT} cursor={{ stroke: 'rgba(251, 191, 36, .5)', strokeWidth: 2 }} /><Area dataKey="XP" stroke="#fbbf24" fill="url(#gx)" strokeWidth={2} /></AreaChart></ResponsiveContainer></div>
       </Section>
       <Section>
         <h3 className="m-0">🎯 Điểm IELTS ước tính (Speaking, Writing)</h3>
-        {bands.length ? <div className="h-56 mt-2"><ResponsiveContainer><LineChart data={bands}><CartesianGrid strokeDasharray="3 3" stroke="var(--line)" /><XAxis dataKey="d" fontSize={11} /><YAxis domain={[3, 9]} ticks={[3, 4, 5, 6, 7, 8, 9]} fontSize={11} width={30} /><Tooltip /><Legend /><Line dataKey="Speaking" stroke="#34d399" strokeWidth={3} connectNulls dot={{ r: 4 }} /><Line dataKey="Writing" stroke="#f472b6" strokeWidth={3} connectNulls dot={{ r: 4 }} /></LineChart></ResponsiveContainer></div>
+        {bands.length ? <div className="h-56 mt-2"><ResponsiveContainer><LineChart data={bands}><CartesianGrid strokeDasharray="3 3" stroke="var(--line)" /><XAxis dataKey="d" {...AX} /><YAxis domain={[3, 9]} ticks={[3, 4, 5, 6, 7, 8, 9]} {...AX} width={30} /><Tooltip {...TT} cursor={{ stroke: 'rgba(34, 211, 238, .4)', strokeWidth: 2 }} /><Legend wrapperStyle={{ fontSize: 13 }} /><Line dataKey="Speaking" stroke="#34d399" strokeWidth={3} connectNulls dot={{ r: 4 }} /><Line dataKey="Writing" stroke="#f472b6" strokeWidth={3} connectNulls dot={{ r: 4 }} /></LineChart></ResponsiveContainer></div>
           : <p className="muted">Chấm bài ở tab ✍️ Viết hoặc 🗣️ Giao tiếp để thấy điểm tiến bộ theo thời gian.</p>}
       </Section>
     </>

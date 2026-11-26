@@ -4,6 +4,8 @@ import { JOURNAL_PROMPTS, LEVELS, UNITS } from '../data';
 import { AudioButton } from '../components/AudioButton';
 import { Card } from '../components/Card';
 import { CoachReport, Section } from '../components/ui';
+import { GenBar } from '../components/GenBar';
+import type { GenItem } from '../lib/gen';
 import { coachWriting, type CoachResult } from '../lib/coach';
 import { nextTask, tallySkill } from '../lib/progress';
 import { applyFixes } from '../lib/sentence';
@@ -19,8 +21,9 @@ export function Journal() {
   const [busy, setBusy] = useState(false);
   const [rep, setRep] = useState<{ r: CoachResult; text: string } | null>(null);
   const nt = nextTask(P), u = nt ? nt.u : UNITS[UNITS.length - 1];
-  const L = pi >= 0 ? LEVELS[pi] : null;
-  const prompt = L ? L.writing.prompt : JOURNAL_PROMPTS[u.id], minWords = L ? L.writing.minWords : 30;
+  const [ai, setAi] = useState<GenItem | null>(null);
+  const L = pi >= 0 ? LEVELS[pi].writing : ai ? ai.data as { prompt: string; vi: string; minWords: number; ideas: string[]; useful: string[]; outline?: string[] } : null;
+  const prompt = L ? L.prompt : JOURNAL_PROMPTS[u.id], minWords = L ? L.minWords : 30;
   const wc = (text.trim().match(/\S+/g) || []).length;
   async function grade() {
     if (!text.trim() || busy) return;
@@ -34,13 +37,15 @@ export function Journal() {
   return (
     <>
       <h2>✍️ Viết & chấm bài</h2>
+      <GenBar kind="writing" onItem={(it) => { setAi(it); setPi(-2); setRep(null); }} />
       <Section>
-        <Dropdown className="w-full" label="Đề bài" value={pi} onChange={(v) => { setPi(v); setRep(null); }}
-          options={[{ value: -1, icon: '📝', label: 'Nhật ký hôm nay', sub: `Bài ${u.emoji} ${u.title} · ít nhất 30 từ` },
+        <Dropdown className="w-full" label="Đề bài" value={pi} onChange={(v) => { setPi(v); if (v === -1) setAi(null); setRep(null); }}
+          options={[...(ai ? [{ value: -2, icon: '✨', label: 'Đề AI vừa tạo', sub: ai.title.slice(0, 60) }] : []), { value: -1, icon: '📝', label: 'Nhật ký hôm nay', sub: `Bài ${u.emoji} ${u.title} · ít nhất 30 từ` },
             ...LEVELS.map((l, i) => ({ value: i, icon: '📄', label: `${l.cefr} · IELTS ${l.band}`, sub: `Đề viết ${l.writing.minWords} từ` }))]} />
         <p><b>Đề:</b> {prompt}</p>
-        {L && <details><summary className="muted small">Dịch đề và gợi ý ý tưởng</summary><p className="muted">{L.writing.vi}</p><ul>{L.writing.ideas.map((x) => <li key={x}>{x}</li>)}</ul>
-          <p className="small"><b>Cụm từ hữu ích:</b> {L.writing.useful.join(' · ')}</p></details>}
+        {L && <details><summary className="muted small">Dịch đề, gợi ý ý tưởng và dàn ý</summary><p className="muted">{L.vi}</p><ul>{L.ideas.map((x) => <li key={x}>{x}</li>)}</ul>
+          {(L as { outline?: string[] }).outline && <><b className="small">Dàn ý:</b><ol className="small">{((L as { outline?: string[] }).outline || []).map((x) => <li key={x}>{x}</li>)}</ol></>}
+          <p className="small"><b>Cụm từ hữu ích:</b> {L.useful.join(' · ')}</p></details>}
         <textarea id="jtext" rows={L ? 10 : 5} placeholder="Viết bằng tiếng Anh… Sai cũng không sao, máy sẽ chỉ lỗi!" value={text} onChange={(e) => setText(e.target.value)} />
         <div className="row between">
           <span className={wc >= minWords ? 'okc small' : 'muted small'} id="wc">{wc}/{minWords} từ</span>

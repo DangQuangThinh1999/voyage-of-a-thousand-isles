@@ -5,6 +5,8 @@ import { Ipa } from '../components/Ipa';
 import { LiveText, MicMeter, Playback } from '../components/MicRecorder';
 import { TapText } from '../components/TapText';
 import { CoachReport, Pills, Section } from '../components/ui';
+import { GenBar } from '../components/GenBar';
+import type { GenItem } from '../lib/gen';
 import { WordsHit } from '../components/WordsHit';
 import { LEVELS, type Pair } from '../data';
 import { BASIC_PART1, SITUATIONS } from '../data/speak';
@@ -84,7 +86,9 @@ function IeltsSpeaking() {
   const [say, setSay] = useState<{ text: string; audio: string | null; sec: number } | null>(null);
   const [rep, setRep] = useState<CoachResult | null>(null);
   const [err, setErr] = useState('');
-  const qs = questionsFor(part, lv), q = qs[qi % qs.length];
+  const [ai, setAi] = useState<GenItem | null>(null);
+  const aiQs = ai ? (part === '1' ? ai.data.part1.map((x: { en: string; vi: string }) => ({ q: x.en, vi: x.vi })) : part === '2' ? [{ q: ai.data.part2.cue, vi: ai.data.part2.vi, points: ai.data.part2.points }] : ai.data.part3.map((x: { en: string; vi: string }) => ({ q: x.en, vi: x.vi }))) : null;
+  const qs = aiQs && aiQs.length ? aiQs : questionsFor(part, lv), q = qs[qi % qs.length];
   function reset() { setSay(null); setRep(null); setErr(''); }
   async function record() {
     if (busy) { stopListening(); return; }
@@ -104,6 +108,11 @@ function IeltsSpeaking() {
   }
   return (
     <>
+      <GenBar kind="speaking" onItem={(it) => { setAi(it); setQi(0); reset(); }} />
+      {ai && <Section><div className="flex justify-between"><b>✨ Bộ câu hỏi AI: {ai.title}</b><button className="btn ghost sm" onClick={() => setAi(null)}>← Câu có sẵn</button></div>
+        {ai.data.sample && <p className="fixed small mt-2">🗣️ <b>Trả lời mẫu (Part 1):</b> {ai.data.sample} <AudioButton text={ai.data.sample} className="icon xs" /></p>}
+        {ai.data.useful?.length > 0 && <div className="vgrid mt-2">{ai.data.useful.map((u: { en: string; vi: string }) => <div key={u.en} className="vchip"><b>{u.en}</b> <AudioButton text={u.en} className="icon xs" /><span className="small muted">{u.vi}</span></div>)}</div>}
+      </Section>}
       <Section>
         <div className="flex flex-wrap items-center gap-2">
           <Pills id="part" value={part} onChange={(p) => { setPart(p); setQi(0); reset(); }} items={[['1', 'Part 1'], ['2', 'Part 2'], ['3', 'Part 3']]} />
@@ -115,7 +124,7 @@ function IeltsSpeaking() {
           <div className="text-lg font-bold"><TapText text={q.q} /> <AudioButton text={q.q} /></div>
           <Ipa text={q.q} />
           <details><summary className="muted small">Xem nghĩa tiếng Việt</summary><p className="muted">{q.vi}</p></details>
-          {q.points && <ul className="m-0 pl-5">{q.points.map((p) => <li key={p}>{p}</li>)}</ul>}
+          {q.points && <ul className="m-0 pl-5">{q.points.map((p: string) => <li key={p}>{p}</li>)}</ul>}
           <p className="tip small">💡 {TIPS[part]}</p>
         </div>
         {SR ? <button className={busy ? 'btn big w-full' : 'btn big w-full'} onClick={record}>{busy ? '⏹ Nói xong (bấm để dừng)' : '🎤 Bắt đầu trả lời'}</button>

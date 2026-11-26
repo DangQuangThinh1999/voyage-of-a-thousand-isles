@@ -1,6 +1,6 @@
 // Vercel Function: POST /api/gen — tạo bài luyện MỚI mỗi lần (Gemini, gói miễn phí) theo kỹ năng, cấp độ, chủ đề IELTS.
 // kind: reading | listening | speaking | writing. Đáp án phải có căn cứ trong bài; giải thích bằng tiếng Việt.
-import { gemini, guard, json } from './_gemini';
+import { gemini, guard, json } from './_gemini.js';
 
 const BASE = `Bạn là người ra đề IELTS giàu kinh nghiệm, soạn bài cho người Việt luyện thi.
 - Viết đúng trình độ CEFR được yêu cầu (từ vựng, độ dài câu, ngữ pháp). A1–A2 dùng câu ngắn, từ thông dụng; B2–C2 dùng văn phong học thuật như đề thật.

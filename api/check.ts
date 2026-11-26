@@ -31,7 +31,7 @@ const SCHEMA = {
   required: ['status', 'correction', 'better', 'explanation', 'errors', 'meaning', 'tip', 'usesWordCorrectly'],
 };
 
-import { gemini, guard, json } from './_gemini';
+import { gemini, guard, json } from './_gemini.js';
 
 export async function POST(req: Request): Promise<Response> {
   const bad = guard(req); if (bad) return bad;

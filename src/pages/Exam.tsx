@@ -7,7 +7,7 @@ import { StepProgress } from '../components/Progress';
 import { Bar } from '../components/ui';
 import { loadLex, wordIpa } from '../lib/lex';
 import { hear, micErr, speak, SR, stopListening, stopSpeaking } from '../lib/speech';
-import { curExam, isRight, MAX_PLAYS, MAX_TRIES, qid, retakeExam, saveAns, SPEAK_QS, submitExam, type Exam as ExamT, type ExamQ, type ExamState, type SecKey } from '../state/exam';
+import { aiExam, bankDone, bankIds, curExam, isRight, openBankExam, MAX_PLAYS, MAX_TRIES, qid, retakeExam, saveAns, SPEAK_QS, submitExam, type Exam as ExamT, type ExamQ, type ExamState, type SecKey } from '../state/exam';
 import { startQuickTest } from '../state/session';
 import { askConfirm, emit, go, goWeek, useApp } from '../state/store';
 
@@ -41,11 +41,32 @@ function Generating({ E }: { E: ExamState }) {
   const done = Object.values(E.parts).filter((x) => x === 'ok').length;
   return (
     <section className="card">
-      <h2 className="m-0">🤖 AI đang soạn {E.title.toLowerCase()}</h2>
-      <p className="muted">Trình độ {E.cefr} · mục tiêu IELTS {E.band}. Đề mới hoàn toàn, theo đúng từ bạn đã học, có sẵn đáp án + căn cứ + giải thích. Bạn có thể sang trang khác học tiếp, xong sẽ có popup báo.</p>
+      <h2 className="m-0">🌍 Đang lấy đề từ khắp thế giới…</h2>
+      <WorldTicker />
+      <p className="muted">{E.title} · trình độ {E.cefr} · mục tiêu IELTS {E.band}. AI chọn ngữ cảnh từ nhiều quốc gia theo chuẩn đề IELTS, soạn đề mới hoàn toàn, theo đúng từ bạn đã học, có sẵn đáp án + căn cứ + giải thích. Bạn có thể sang trang khác học tiếp, xong sẽ có popup báo.</p>
       <StepProgress steps={Object.values(names)} step={done} note={`${done}/3 phần xong`} />
       <div className="exam-parts">{(Object.keys(names) as (keyof typeof names)[]).map((k) => <span key={k} className={'chip2 ' + E.parts[k]}>{E.parts[k] === 'ok' ? '✓' : E.parts[k] === 'err' ? '⚠️' : '…'} {names[k]}</span>)}</div>
     </section>
+  );
+}
+
+const WORLD = ['🇬🇧 Anh: bài nghe giọng British…', '🇦🇺 Úc: hội thoại đời sống…', '🇨🇦 Canada: bài đọc báo…', '🇺🇸 Mỹ: chủ đề công nghệ…', '🇳🇿 New Zealand: du lịch, môi trường…', '🇮🇪 Ireland: văn hoá, lịch sử…', '🇸🇬 Singapore: học tập, công việc…', '🇮🇳 Ấn Độ: khoa học phổ thông…', '🇿🇦 Nam Phi: thiên nhiên, xã hội…', '📚 Đối chiếu dạng câu hỏi IELTS (MCQ, True/False/Not Given, điền từ)…', '✅ Soạn đáp án, căn cứ và giải thích…'];
+function WorldTicker() {
+  const [k, setK] = useState(0);
+  useEffect(() => { const t = setInterval(() => setK((x) => (x + 1) % WORLD.length), 2200); return () => clearInterval(t); }, []);
+  return <motion.p key={k} className="world-tick" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>{WORLD[k]}</motion.p>;
+}
+
+/** 3 đề có sẵn của tuần: đã làm / chưa làm, bấm để làm (lại) */
+function BankList({ k }: { k: string }) {
+  const ids = bankIds(k);
+  if (!ids.length) return null;
+  return (
+    <div className="banklist">
+      <b className="small">📚 Đề có sẵn của tuần ({ids.filter(bankDone).length}/{ids.length} đã làm)</b>
+      <div className="row gap wrap mt-1">{ids.map((id, i) => <button key={id} className={'btn sm ' + (bankDone(id) ? 'ghost' : '')} onClick={() => openBankExam(k, id)}>{bankDone(id) ? '✓' : '○'} Đề {i + 1}{bankDone(id) ? ' · làm lại' : ''}</button>)}
+        <button className="btn sm ghost" onClick={() => aiExam(k)}>🤖 Đề AI mới</button></div>
+    </div>
   );
 }
 
@@ -56,8 +77,9 @@ function GenError({ E }: { E: ExamState }) {
       <p className="muted">{E.err || 'AI đang bận.'} Bạn có thể thử soạn lại sau ít phút, hoặc làm đề có sẵn (không cần AI, sai 1 câu là làm lại).</p>
       <div className="row gap wrap">
         <button className="btn" onClick={() => retakeExam(E.key)}>🔁 Thử soạn lại</button>
-        <button className="btn ghost" onClick={() => startQuickTest(E.key[0] === 'w' ? { w: +E.key.slice(1) } : { u: E.key.slice(1) })}>⚡ Làm đề có sẵn</button>
+        <button className="btn ghost" onClick={() => startQuickTest(E.key[0] === 'w' ? { w: +E.key.slice(1) } : { u: E.key.slice(1) })}>⚡ Bài kiểm tra cũ (không cần AI)</button>
       </div>
+      <BankList k={E.key} />
     </section>
   );
 }
@@ -83,8 +105,8 @@ function Runner({ E }: { E: ExamState }) {
   return (
     <div className="exam">
       <section className="card exam-head">
-        <div className="row between wrap gap"><div><h2 className="m-0">📝 {E.title}</h2><div className="muted small">CEFR {E.cefr} · mục tiêu IELTS {E.band} · đề do AI soạn hôm nay, giữ tới hết ngày</div></div>
-          <button className="btn ghost sm" onClick={() => askConfirm({ icon: '🔁', title: 'Bỏ đề này, soạn đề mới?', msg: 'Câu trả lời hiện tại sẽ bị xoá.', ok: 'Soạn đề mới', cancel: 'Làm tiếp', danger: true }).then((ok) => ok && retakeExam(E.key))}>🔁 Đề mới</button></div>
+        <div className="row between wrap gap"><div><h2 className="m-0">📝 {E.title}</h2><div className="muted small">CEFR {E.cefr} · mục tiêu IELTS {E.band} · {E.src === 'bank' ? `📚 đề có sẵn ${E.idx}/${bankIds(E.key).length}` : '🤖 đề AI soạn hôm nay, giữ tới hết ngày'}</div></div>
+          <button className="btn ghost sm" onClick={() => askConfirm({ icon: '🔁', title: 'Bỏ đề này, AI soạn đề mới?', msg: 'Câu trả lời hiện tại sẽ bị xoá.', ok: 'Soạn đề mới', cancel: 'Làm tiếp', danger: true }).then((ok) => ok && aiExam(E.key))}>🤖 Đề AI mới</button></div>
         <div className="exam-tabs">{TABS.map(([k, l]) => <button key={k} className={k === t ? 'on' : ''} onClick={() => { stopSpeaking(); setT(k); }}>{l}<small>{status[k]}</small></button>)}</div>
       </section>
       <motion.div key={t} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
@@ -260,7 +282,8 @@ function Results({ E }: { E: ExamState }) {
         <div className="muted small">Nghe {R.score.listening.join('/')} · Đọc {R.score.reading.join('/')} · Từ vựng & Ngữ pháp {R.score.vocab.join('/')}</div>
         {ai?.summary_vi && <p>{ai.summary_vi}</p>}
         {R.aiErr && <p className="bad small">⚠️ AI chưa chấm được Viết/Nói ({R.aiErr}); điểm hai phần này là ước lượng thô.</p>}
-        <div className="row gap wrap"><button className="btn" onClick={() => retakeExam(E.key)}>🔁 Làm đề mới</button><button className="btn ghost" onClick={back}>← Về {E.key[0] === 'w' ? 'tuần học' : 'chủ đề'}</button></div>
+        <div className="row gap wrap"><button className="btn" onClick={() => retakeExam(E.key)}>{bankIds(E.key).some((id) => !bankDone(id)) ? '📚 Làm đề có sẵn tiếp theo' : '🌍 Lấy đề mới (AI)'}</button><button className="btn ghost" onClick={back}>← Về {E.key[0] === 'w' ? 'tuần học' : 'chủ đề'}</button></div>
+        <BankList k={E.key} />
       </motion.section>
 
       <section className="card">

@@ -47,6 +47,8 @@ export interface Progress {
   gram?: Record<string, number>;
   /** luyện 20 câu mỗi bài ngữ pháp: số câu đúng tốt nhất */
   drill?: Record<string, number>;
+  /** đề kiểm tra có sẵn đã làm (id file trong data/exams) */
+  exd?: string[];
   /** sổ lỗi sai: câu sai → câu đúng, số lần tự sửa đúng (đủ 3 lần là đã thuộc) */
   mist?: { id: number; d: string; wrong: string; right: string; why: string; ok: number }[];
   /** các lần luyện nói / viết có chấm */
@@ -159,6 +161,7 @@ export function mergeProgress(P: Progress, r: Progress | null | undefined): Prog
   m.vStart = [P.vStart, r.vStart].filter(Boolean).sort()[0];
   m.vs = { ...(older.vs || {}), ...(newer.vs || {}) };
   m.gram = { ...(older.gram || {}), ...(newer.gram || {}) };
+  m.exd = [...new Set([...(older.exd || []), ...(newer.exd || [])])];
   m.drill = { ...(older.drill || {}) };
   for (const [k, v] of Object.entries(newer.drill || {})) m.drill[k] = Math.max(v, m.drill[k] || 0);
   // Tên: lấy bên đã đổi nhiều lần hơn; điểm đã tiêu không bao giờ giảm khi đồng bộ

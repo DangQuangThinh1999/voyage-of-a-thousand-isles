@@ -30,6 +30,8 @@ export type SecKey = 'listening' | 'reading' | 'vocab';
 export interface ExamResult { score: Record<SecKey, [ok: number, total: number]>; bands: Record<'listening' | 'reading' | 'writing' | 'speaking', number>; overall: number; passed: boolean; ai: Graded | null; aiErr?: string }
 export interface ExamState {
   key: string; title: string; day: string; cefr: string; band: string;
+  /** nguồn đề: có sẵn (bank, sid = id file, idx = thứ tự 1–3) hoặc AI soạn mới */
+  src?: 'bank' | 'ai'; sid?: string; idx?: number;
   status: 'gen' | 'ready' | 'grading' | 'done' | 'error';
   parts: Record<'lr' | 'vg' | 'ws', 'wait' | 'ok' | 'err'>; started: number; err?: string;
   exam?: Partial<Exam>;
@@ -88,21 +90,45 @@ async function post(body: unknown) {
   return d;
 }
 
-/** Bấm Kiểm tra tuần / chủ đề: có đề hôm nay chưa làm → mở luôn; không thì soạn đề mới trong nền */
+// ---------- đề có sẵn: 3 đề mỗi tuần (tuần 1–12 theo tuần, các tuần sau theo mức band) ----------
+const BANK = import.meta.glob<{ default: { id: string; cefr: string; band: string; exam: Exam } }>('../../data/exams/*.json');
+/** id 3 đề có sẵn của một bài kiểm tra tuần (chỉ những đề đã có file) */
+export function bankIds(key: string): string[] {
+  if (key[0] !== 'w') return [];
+  const n = +key.slice(1), g = roadmap(app.P)[n];
+  const base = n <= 12 ? `w${String(n).padStart(2, '0')}` : g ? `b${g.band}` : '';
+  return [1, 2, 3].map((k) => `${base}-${k}`).filter((id) => BANK[`../../data/exams/${id}.json`]);
+}
+export const bankDone = (id: string) => (app.P.exd || []).includes(id);
+/** Mở một đề có sẵn (đề chưa làm đầu tiên, hoặc đề sid chỉ định để làm lại) */
+export async function openBankExam(key: string, sid: string) {
+  const ids = bankIds(key), m = await BANK[`../../data/exams/${sid}.json`]();
+  const ctx = await contextOf(key), X = JSON.parse(JSON.stringify(m.default.exam)) as Exam;
+  validate(X);
+  EXAMS[key] = { key, title: ctx.title, day: dayKey(), cefr: m.default.cefr, band: m.default.band, status: 'ready', src: 'bank', sid, idx: ids.indexOf(sid) + 1,
+    parts: { lr: 'ok', vg: 'ok', ws: 'ok' }, started: Date.now(), exam: X, ans: { q: {}, writing: '', speak: {}, tries: {}, plays: 0 } };
+  persistExams(); openExam(key); emit();
+}
+
+/** Bấm Kiểm tra tuần / chủ đề: có đề hôm nay chưa làm → mở luôn; còn đề có sẵn chưa làm → mở đề đó; hết → AI soạn đề mới */
 export function requestExam(key: string, fresh = false) {
   const E = EXAMS[key];
   if (E && E.status === 'gen') { toast('Đề đang được soạn, chờ chút nhé…'); return; }
   if (E && E.status === 'ready' && !fresh) { openExam(key); return; }
+  const next = bankIds(key).find((id) => !bankDone(id));
+  if (next) { openBankExam(key, next); return; }
   generate(key);
 }
+/** Bỏ qua đề có sẵn, soạn ngay đề mới bằng AI */
+export function aiExam(key: string) { delete EXAMS[key]; generate(key); }
 export function openExam(key: string) { go('exam', key); }
 
 async function generate(key: string) {
   const ctx = await contextOf(key);
-  const E: ExamState = { key, title: ctx.title, day: dayKey(), cefr: ctx.cefr, band: ctx.band, status: 'gen', parts: { lr: 'wait', vg: 'wait', ws: 'wait' }, started: Date.now(), exam: {},
+  const E: ExamState = { key, title: ctx.title, day: dayKey(), cefr: ctx.cefr, band: ctx.band, status: 'gen', src: 'ai', parts: { lr: 'wait', vg: 'wait', ws: 'wait' }, started: Date.now(), exam: {},
     ans: { q: {}, writing: '', speak: {}, tries: {}, plays: 0 } };
   EXAMS[key] = E; emit();
-  toast('🤖 AI đang soạn đề mới… bạn có thể học tiếp, xong sẽ báo');
+  toast('🌍 Đang lấy đề từ khắp thế giới… bạn có thể học tiếp, xong sẽ báo');
   const base = { cefr: ctx.cefr, band: ctx.band, target: app.P.settings.target, now: levelNow(app.P), topics: ctx.topics, words: ctx.words };
   const job = (part: 'lr' | 'vg' | 'ws') => post({ ...base, part }).then((d) => {
     if (EXAMS[key] !== E) return;
@@ -191,6 +217,7 @@ export async function submitExam(E: ExamState) {
 /** Lưu kết quả vào tiến độ: điểm tốt nhất, qua bài thì đánh dấu xong các bài học + đẩy từ lên hộp nhớ, cộng XP và kỹ năng */
 function record(E: ExamState) {
   const P = app.P, R = E.result!, pct = Math.round(((R.overall / parseFloat(E.band || '4')) * 100));
+  if (E.sid && !(P.exd || []).includes(E.sid)) P.exd = [...(P.exd || []), E.sid];
   if (!P.tests) P.tests = {};
   const prev = P.tests[E.key] || { best: 0, passed: false };
   P.tests[E.key] = { best: Math.max(prev.best || 0, Math.min(100, pct)), passed: !!(prev.passed || R.passed), date: dayKey() };

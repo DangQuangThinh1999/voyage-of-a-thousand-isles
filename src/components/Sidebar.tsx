@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { UNITS } from '../data';
 import { roadmap, weekLocked } from '../lib/roadmap';
 import { doneCount, levelNow, vocabWeek, weekDone, weekNow, weekUnits } from '../lib/progress';
-import { go, goWeek, withLeave, tab, useApp } from '../state/store';
+import { go, withLeave, tab, useApp } from '../state/store';
 import { TargetPicker } from './TargetPicker';
+import { requestExam } from '../state/exam';
 import { MiniBar, MiniRing, toneCls } from './ui';
 
 /** Cột tổng quan bên trái (màn hình rộng ≥ 1100px): mỗi tuần là một thẻ mở/đóng, tuần hiện tại tự mở */
@@ -49,7 +50,7 @@ export function Sidebar() {
                         </button>
                       );
                     }) : <p className="soon">🧭 {g.goal}</p>}
-                    <button className="wk-go" onClick={() => withLeave(() => goWeek(w))}>Xem tuần {w} →</button>
+                    <button className="wk-go" onClick={() => withLeave(() => requestExam('w' + w))}>📝 Kiểm tra tuần {w}{P.tests?.['w' + w] ? ` · ${P.tests['w' + w].best}%` : ''}</button>
                   </motion.div>
                 )}
               </AnimatePresence>

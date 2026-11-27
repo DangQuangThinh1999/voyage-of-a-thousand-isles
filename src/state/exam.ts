@@ -41,6 +41,20 @@ export interface ExamState {
   result?: ExamResult;
 }
 
+/** Câu hỏi dựa vào giới tính người nói (the woman / the man…): giọng máy khó phân biệt → bỏ */
+const GENDER_Q = /\b(wom[ae]n|m[ae]n|male|female|girl|boy|lady|gentleman)('s)?\b/i;
+const genderQ = (q: ExamQ) => GENDER_Q.test(q.q);
+/** Bỏ câu hỏi giới tính khỏi đề ĐANG LÀM, giữ đúng câu trả lời đã chọn của các câu còn lại */
+function dropGender(E: ExamState) {
+  if (!E.exam || E.result) return;
+  for (const sec of ['listening', 'reading', 'vocab'] as const) {
+    const box = E.exam[sec]; if (!box?.questions?.some(genderQ)) continue;
+    const keep = box.questions.map((q, i) => [q, i] as const).filter(([q]) => !genderQ(q)), ans: Record<string, number | string> = {};
+    for (const [k, v] of Object.entries(E.ans.q)) if (!k.startsWith(sec + '.')) ans[k] = v;
+    keep.forEach(([, old], i) => { const v = E.ans.q[`${sec}.${old}`]; if (v !== undefined) ans[`${sec}.${i}`] = v; });
+    box.questions = keep.map(([q]) => q); E.ans.q = ans;
+  }
+}
 const LS = 'ht.exam.v1';
 export const MAX_PLAYS = 3, MAX_TRIES = 5;
 /** Các đề của hôm nay (đề cũ hơn tự xoá khi mở app) */
@@ -53,6 +67,7 @@ function loadAll(): Record<string, ExamState> {
       // tải lại trang giữa chừng: đang soạn → mất, đang chấm → cho nộp lại
       if (e.status === 'gen') e.status = hasAll(e) ? 'ready' : 'error';
       if (e.status === 'grading') e.status = 'ready';
+      dropGender(e);
     }
     return all;
   } catch { return {}; }
@@ -249,6 +264,7 @@ async function generate(key: string) {
 /** Sửa nhẹ dữ liệu AI trả về để không lỗi giao diện (thiếu lựa chọn, chỉ số đáp án sai…) */
 function validate(X: Exam) {
   const fix = (qs: ExamQ[]) => qs.filter((q) => {
+    if (genderQ(q)) return false;
     if (q.type === 'tfng') q.options = ['True', 'False', 'Not Given'];
     // câu gõ đáp án là tên người / tên riêng (viết hoa, không ở đầu câu) → bỏ, vì khó đánh vần và dễ chấm sai
     if (q.type === 'type') return !!q.answer_text && !q.answer_text.split('|').some((a) => /^[A-Z][a-z'-]+( [A-Z][a-z'-]+)*$/.test(a.trim()) && !/^_{3,}/.test(q.q.trim()));

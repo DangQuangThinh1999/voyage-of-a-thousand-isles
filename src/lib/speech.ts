@@ -58,8 +58,9 @@ export function scriptRoles(lines: string[], accent = ''): Role[] {
     let r = who.get(name);
     if (!r) {
       // người đầu: đoán theo tên; từ người thứ 2: LUÔN khác giới người trước (nghe dễ phân biệt, giống đề IELTS 1 nam 1 nữ)
-      const guess: 'f' | 'm' = F_NAMES.test(name) ? 'f' : M_NAMES.test(name) ? 'm' : 'f';
-      const g: 'f' | 'm' = who.size === 0 ? guess : lastG === 'f' ? 'm' : 'f';
+      // tên lạ: đuôi -a/-i/-y/-ie/-ee thường là tên nữ (Asha, Priya, Mai…), còn lại nam (Rahul, Tuan…)
+      const guess: 'f' | 'm' = F_NAMES.test(name) ? 'f' : M_NAMES.test(name) ? 'm' : /(a|i|y|ie|ee|ah)$/i.test(name.split(' ').pop() || '') ? 'f' : 'm';
+      const g: 'f' | 'm' = who.size === 0 || guess !== lastG ? guess : lastG === 'f' ? 'm' : 'f';
       // người nói thứ 3 trở đi (thảo luận nhiều người, kiểu Section 3) dùng giọng vùng khác
       r = { g, lang: who.size < 2 ? base : alt[(who.size - 2) % alt.length] };
       who.set(name, r);

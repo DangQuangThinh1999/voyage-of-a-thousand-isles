@@ -52,7 +52,21 @@ const grows = (it: Item) => GROWS.has(it[1]) && !['gift', 'santa', 'lixi', 'fire
 function garden(P: Progress) { return P.garden || (P.garden = { items: [], owned: ['sun'], weather: 'sun', at: 0 }); }
 const touch = () => { garden(app.P).at = Date.now(); save(); emit(); };
 
+/** Khu vườn đang bảo trì (làm lại giao diện): người học thấy thông báo, admin vẫn vào xem được. Dữ liệu vườn giữ nguyên. */
+export const GARDEN_MAINTENANCE = true;
 export default function Garden() {
+  useApp();
+  if (GARDEN_MAINTENANCE && !perm.admin) return (
+    <section className="card center">
+      <div className="huge">🚧</div>
+      <h2>Khu vườn đang bảo trì</h2>
+      <p className="muted">Khu vườn đang được làm lại cho đẹp hơn. Cây, nhà và đồ bạn đã mua vẫn được giữ nguyên.<br />Trong lúc chờ, hãy học và chơi trò chơi để tích ⭐ nhé!</p>
+      <button className="btn" onClick={() => go('fun')}>🎮 Sang Giải trí</button>
+    </section>
+  );
+  return <GardenMain />;
+}
+function GardenMain() {
   const { P } = useApp();
   const G = garden(P), admin = perm.admin, bal = admin ? 999999 : balance(P), today = dayKey(), now = new Date(), ev = EVENTS.filter((e) => e.on(now.getMonth() + 1, now.getDate()));
   const [cat, setCat] = useState<Cat>(ev.length ? 'event' : 'tree'), [sel, setSel] = useState<number | null>(null);
@@ -77,6 +91,7 @@ export default function Garden() {
   return (
     <>
       <div className="card pbar">
+        {GARDEN_MAINTENANCE && <p className="warn-box small m-0">🚧 Đang bảo trì — chỉ admin thấy trang này.</p>}
         <div className="row between wrap"><h2 className="m-0">🌳 Khu vườn của bạn</h2><span className="row gap"><b className="pts">⭐ {admin ? '∞ (admin)' : bal.toLocaleString('vi-VN') + ' điểm'}</b><button className="btn sm" onClick={(e) => waterAll(e)}>💧 Tưới cả vườn</button><button className="btn sm ghost" onClick={() => go('fun')}>🎮 Chơi kiếm điểm</button></span></div>
         <p className="muted small m-0">Học bài, ôn từ, chơi trò chơi → được ⭐. Cây bạn trồng <b>lớn lên khi bạn tiếp tục học</b> và khi bạn <b>💧 tưới nước</b> (mỗi cây 1 lần/ngày): mỗi {STAGE_XP[1]}–{STAGE_XP[4]} ⭐ học thêm là lên 1 giai đoạn, cuối cùng ra hoa / quả.</p>
         {ev.map((e) => <p key={e.id} className="ev-banner m-0">{e.icon} Sự kiện <b>{e.name}</b> đang diễn ra — có đồ đặc biệt trong mục 🎉 Sự kiện!</p>)}

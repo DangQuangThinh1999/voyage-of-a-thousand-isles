@@ -6,6 +6,7 @@ import { bankLearned, levelNow, minutesToday, streakNow } from '../lib/progress'
 import { setTheme } from '../state/actions';
 import { app, emit, tab, useApp, withLeave, type Screen } from '../state/store';
 import { openSearch } from './SearchModal';
+import { visible } from '../lib/perm';
 import { Bar } from './ui';
 
 export const openDrawer = () => { app.drawer = true; emit(); };
@@ -18,7 +19,7 @@ const ITEMS: [Screen, string, string, string][] = [
   ['ipa', '🔊', 'Phát âm', 'IPA, trọng âm, nối âm'],
   ['skills', '🎯', 'Luyện tập', 'Đọc · Nghe · Nói · Viết · Ôn từ'],
   ['fun', '🎮', 'Giải trí', 'Trò chơi từ vựng, điền từ theo ảnh'],
-  ['garden', '🌳', 'Khu vườn', 'Đổi điểm trồng cây, xây nhà'],
+  ['garden', '🚧', 'Khu vườn', 'Đang bảo trì'],
   ['stats', '🏆', 'Thành tựu', 'Cấp độ, xếp hạng'],
   ['plan', '🗺️', 'Lộ trình', 'Kế hoạch từng tuần'],
 ];
@@ -51,7 +52,7 @@ export function Drawer() {
             </div>
             <button className="drw-search" onClick={() => { close(); openSearch(); }}>🔍 Tìm từ, bài học…</button>
             <nav className="drw-nav">
-              {ITEMS.map(([s, ic, n, d]) => (
+              {ITEMS.filter(([s]) => visible(s)).map(([s, ic, n, d]) => (
                 <button key={s} className={s === scr ? 'on' : ''} onClick={() => goTo(s)}><span className="ic">{ic}</span><span><b>{n}</b><small>{d}</small></span></button>
               ))}
             </nav>

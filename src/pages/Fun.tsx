@@ -115,7 +115,7 @@ function Spell({ cefr, round, next, hear }: { cefr: string; round: number; next:
         <div className="fun-ans">
           <p className={'m-0 ' + (ok ? 'okc' : 'badc')}>{ok ? '✅ Chính xác!' : '❌ Đáp án:'} <b>{w.w}</b> <span className="ipa inline">{w.ipa}</span> <SayBoth text={w.w} size="xs" role={role} /></p>
           <p className="m-0 small"><span className="chip2">{posVi(w.pos)}</span> {vi(w)}</p>
-          {w.ex && <p className="m-0 small muted">{w.ex} <SayBoth text={w.ex} size="xs" role={role} /></p>}
+          {w.ex && <div className="small"><span className="muted">📝 Ví dụ:</span> <b>{w.ex}</b> <SayBoth text={w.ex} size="xs" role={role} />{w.exvi && <div className="muted">→ {w.exvi}</div>}</div>}
         </div>
       )}
     </section>

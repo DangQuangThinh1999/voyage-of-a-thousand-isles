@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { SayBoth } from '../components/AudioButton';
 import { Dropdown } from '../components/Dropdown';
-import { TapText } from '../components/TapText';
+import { posVi, TapText } from '../components/TapText';
 import { LevelPicker, TopicPicker, topicAngle } from '../components/TopicPicker';
 import { bankRange, firstSense, type BankWord } from '../data/bank';
 import { LANG_NAME, roleFor, speak } from '../lib/speech';
@@ -111,7 +111,13 @@ function Spell({ cefr, round, next, hear }: { cefr: string; round: number; next:
         <input className="ans flex-1" value={v} onChange={(e) => setV(e.target.value)} disabled={ok !== null} autoFocus placeholder="Gõ từ…" />
         <button className="btn">{ok === null ? 'Kiểm tra' : 'Tiếp →'}</button>
       </form>
-      {ok !== null && <p className={ok ? 'okc' : 'badc'}>{ok ? '✅ Chính xác!' : <>❌ Đáp án: <b>{w.w}</b></>} <span className="ipa inline">{w.ipa}</span></p>}
+      {ok !== null && (
+        <div className="fun-ans">
+          <p className={'m-0 ' + (ok ? 'okc' : 'badc')}>{ok ? '✅ Chính xác!' : '❌ Đáp án:'} <b>{w.w}</b> <span className="ipa inline">{w.ipa}</span> <SayBoth text={w.w} size="xs" role={role} /></p>
+          <p className="m-0 small"><span className="chip2">{posVi(w.pos)}</span> {vi(w)}</p>
+          {w.ex && <p className="m-0 small muted">{w.ex} <SayBoth text={w.ex} size="xs" role={role} /></p>}
+        </div>
+      )}
     </section>
   );
 }

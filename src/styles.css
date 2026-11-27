@@ -1073,3 +1073,4 @@ details.qvi { margin: 2px 0 6px; font-size: .85rem; color: var(--muted); } detai
 .swipe-top { position: relative; cursor: grab; touch-action: pan-y; }
 .swipe-top:active { cursor: grabbing; }
 .swipe-hint { opacity: .7; }
+.fun-ans { display: grid; gap: 6px; padding: 10px 12px; border-radius: 12px; background: var(--pri-soft); }

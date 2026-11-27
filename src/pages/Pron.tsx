@@ -9,7 +9,7 @@ import { WordsHit } from '../components/WordsHit';
 import { dictWords, loadLex, lookup, wordIpa } from '../lib/lex';
 import { tallySkill } from '../lib/progress';
 import { useRouteParam } from '../lib/route';
-import { hear, micErr, micLive, speak, SR, stopListening } from '../lib/speech';
+import { CAN_RECORD, hear, micErr, micLive, recordClip, speak, SR, stopClip, stopListening, stopSpeaking } from '../lib/speech';
 import { scoreSpeech, type SpeechScore } from '../lib/text';
 import { pick1, shuffle } from '../lib/util';
 import { addXP, app, save } from '../state/store';
@@ -29,33 +29,86 @@ function usePron() {
 }
 const GROUPS: [string, string][] = [['vowel-short', '🔹 Nguyên âm ngắn'], ['vowel-long', '🔷 Nguyên âm dài'], ['diphthong', '🔀 Nguyên âm đôi'], ['consonant-voiceless', '🤫 Phụ âm vô thanh (không rung cổ)'], ['consonant-voiced', '🗣️ Phụ âm hữu thanh (rung cổ)']];
 
-/** Đọc một từ / câu và chấm từng từ */
+/** Đọc thử 1 từ / câu: 🎤 máy chấm từng từ (nếu trình duyệt nhận được giọng) + ⏺ ghi âm để tự nghe lại và so với giọng mẫu */
 function SayIt({ text }: { text: string }) {
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState(false), [rec, setRec] = useState(false), [clip, setClip] = useState<string | null>(null);
   const [r, setR] = useState<SpeechScore | { err: string } | null>(null);
-  if (!SR) return null;
+  useEffect(() => () => { stopListening(); stopClip(); }, []);
+  if (!SR && !CAN_RECORD) return null;
   return (
     <span className="sayit">
-      <button className={busy ? 'btn sm' : 'btn ghost sm'} onClick={async () => {
+      {SR && <button className={busy ? 'btn sm' : 'btn ghost sm'} disabled={rec} onClick={async () => {
         if (busy) { stopListening(); return; }
         setBusy(true); setR(null); micLive.reset();
-        try { const h = await hear({ onText: micLive.setText, onLevel: micLive.setLevel, silenceMs: 1500, maxMs: 8000 }); const s = scoreSpeech(text, h.alts); setR(s); tallySkill(app.P, 'speak', s.score >= 0.8); if (s.score >= 0.8) addXP(1); else save(); }
+        try { const h = await hear({ onText: micLive.setText, onLevel: micLive.setLevel, silenceMs: 1500, maxMs: 8000 }); const s = scoreSpeech(text, h.alts); setR(s); if (h.audio) setClip(h.audio); tallySkill(app.P, 'speak', s.score >= 0.8); if (s.score >= 0.8) addXP(1); else save(); }
         catch (e) { setR({ err: micErr(e) }); }
         setBusy(false); micLive.reset();
-      }}>{busy ? '⏹' : '🎤 Đọc thử'}</button>
+      }}>{busy ? '⏹ Dừng' : '🎤 Đọc cho máy chấm'}</button>}
+      {CAN_RECORD && <button className={rec ? 'btn sm' : 'btn ghost sm'} disabled={busy} onClick={async () => {
+        if (rec) { stopClip(); return; }
+        setRec(true); setClip(null); setR(null); micLive.reset();
+        try { setClip(await recordClip({ onLevel: micLive.setLevel })); } catch (e) { setR({ err: micErr(e) }); }
+        setRec(false); micLive.reset();
+      }}>{rec ? '⏹ Dừng ghi' : '⏺ Ghi âm & nghe lại'}</button>}
       {busy && <span className="inline-flex items-center gap-2"><MicMeter /><LiveText placeholder="Đang nghe…" /></span>}
+      {rec && <span className="inline-flex items-center gap-2"><MicMeter /><span className="small muted">Đang ghi… đọc xong bấm ⏹</span></span>}
       {r && ('err' in r ? <span className="note small">{r.err}</span> : <span className="small"><WordsHit T={r.T} hit={r.hit} /> <b className={r.score >= 0.8 ? 'okc' : 'badc'}>{Math.round(r.score * 100)}%</b></span>)}
+      {clip && !rec && <span className="sayit-cmp"><button className="btn sm" onClick={() => { stopSpeaking(); new Audio(clip).play().catch(() => {}); }}>▶ Giọng bạn</button><button className="btn ghost sm" onClick={() => speak(text)}>🔊 Giọng mẫu</button><span className="muted small">nghe xen kẽ để so</span></span>}
     </span>
+  );
+}
+
+const hl = (ipa: string, s: string) => ipa.replace(new RegExp(s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), (m) => `【${m}】`);
+
+/** Bảng chi tiết 1 âm: trượt lên từ dưới màn hình (điện thoại) / hiện giữa màn hình (máy tính) */
+function IpaSheet({ s, list, onPick, onClose }: { s: Sound; list: Sound[]; onPick: (x: Sound) => void; onClose: () => void }) {
+  const k = list.indexOf(s), prev = list[k - 1], next = list[k + 1];
+  useEffect(() => {
+    const f = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    addEventListener('keydown', f); const o = document.body.style.overflow; document.body.style.overflow = 'hidden';
+    return () => { removeEventListener('keydown', f); document.body.style.overflow = o; };
+  }, [onClose]);
+  const go = (x?: Sound) => { if (x) { onPick(x); speak(x.examples[0][0]); } };
+  return (
+    <motion.div className="sheet-ov" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <motion.div role="dialog" aria-modal="true" className="sheet" initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} transition={{ type: 'spring', bounce: 0.15, duration: 0.4 }}>
+        <div className="sheet-grip" />
+        <header className="sheet-h">
+          <div className="ipa-big">/{s.ipa}/</div>
+          <div className="grow"><b className="text-lg">{s.name_vi}</b><div className="muted small">{s.vi_like}</div></div>
+          <button className="btn ghost sm" aria-label="Đóng" onClick={onClose}>✕</button>
+        </header>
+        <div className="sheet-b" key={s.ipa}>
+          <div className="vsec"><h4>👄 Cách phát âm</h4><p className="m-0">{s.how_vi}</p></div>
+          <div className="vsec"><h4>⚠️ Người Việt hay sai</h4><p className="m-0">{s.mistake_vi}</p></div>
+          <div className="vsec"><h4>🔊 Ví dụ: nghe → đọc theo → nghe lại giọng mình</h4>
+            {s.examples.map(([w, ipa]) => (
+              <div key={w} className="ex-card">
+                <div className="ex-top"><b>{w}</b><span className="ipa inline">{hl(ipa, s.ipa)}</span><span className="rv-say"><AudioButton text={w} className="icon xs" /><AudioButton text={w} slow label="🐢" className="icon xs" /></span></div>
+                <SayIt text={w} />
+              </div>
+            ))}
+            <p className="muted small m-0">【 】 là vị trí của âm /{s.ipa}/ trong từ.</p>
+          </div>
+        </div>
+        <footer className="sheet-f">
+          <button className="btn ghost" disabled={!prev} onClick={() => go(prev)}>← {prev ? `/${prev.ipa}/` : ''}</button>
+          <span className="muted small">{k + 1}/{list.length}</span>
+          <button className="btn ghost" disabled={!next} onClick={() => go(next)}>{next ? `/${next.ipa}/` : ''} →</button>
+        </footer>
+      </motion.div>
+    </motion.div>
   );
 }
 
 function Chart({ d }: { d: Pron }) {
   const [sel, setSel] = useState<Sound | null>(null);
+  const list = useMemo(() => GROUPS.flatMap(([t]) => d.sounds.filter((s) => s.type === t)), [d]);
   return (
     <>
       <Section>
         <h3 className="m-0">🔤 Bảng 44 âm IPA (giọng Anh chuẩn)</h3>
-        <p className="muted small">Bấm vào một âm để xem cách đặt lưỡi, môi, lỗi người Việt hay mắc và nghe ví dụ. Học bảng này giúp bạn đọc được phiên âm của mọi từ trong app.</p>
+        <p className="muted small">👆 Bấm vào một âm → mở bảng hướng dẫn: cách đặt lưỡi, môi, lỗi người Việt hay mắc, nghe ví dụ, <b>ghi âm giọng bạn để so</b>.</p>
         {GROUPS.map(([t, name]) => (
           <div key={t} className="mt-3"><b className="small">{name}</b>
             <div className="ipa-grid">{d.sounds.filter((s) => s.type === t).map((s) => (
@@ -65,19 +118,7 @@ function Chart({ d }: { d: Pron }) {
           </div>
         ))}
       </Section>
-      <AnimatePresence>
-        {sel && (
-          <motion.div key={sel.ipa} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="card ipa-detail">
-            <div className="flex items-center gap-4"><div className="ipa-big">/{sel.ipa}/</div><div><b className="text-lg">{sel.name_vi}</b><div className="muted small">{sel.vi_like}</div></div></div>
-            <div className="vsec"><h4>👄 Cách phát âm</h4><p className="m-0">{sel.how_vi}</p></div>
-            <div className="vsec"><h4>⚠️ Người Việt hay sai</h4><p className="m-0">{sel.mistake_vi}</p></div>
-            <div className="vsec"><h4>🔊 Ví dụ: nghe rồi đọc thử</h4>
-              {sel.examples.map(([w, ipa]) => <div key={w} className="ex-row"><b>{w}</b> <span className="ipa inline">{ipa.replace(new RegExp(sel.ipa.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), (m) => `【${m}】`)}</span> <AudioButton text={w} className="icon xs" /> <AudioButton text={w} slow label="🐢" className="icon xs" /> <SayIt text={w} /></div>)}
-              <p className="muted small m-0">【 】 là vị trí của âm /{sel.ipa}/ trong từ.</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AnimatePresence>{sel && <IpaSheet s={sel} list={list} onPick={setSel} onClose={() => setSel(null)} />}</AnimatePresence>
     </>
   );
 }

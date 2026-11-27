@@ -220,3 +220,39 @@ export const micLive = {
   setLevel: (v: number) => setLive({ level: v }),
   setText: (t: string) => setLive({ text: t || '…' }),
 };
+
+// ---------- ghi âm thuần (không nhận giọng) để tự nghe lại và so với giọng mẫu — chạy được cả trên điện thoại ----------
+export const CAN_RECORD = typeof navigator !== 'undefined' && !!navigator.mediaDevices?.getUserMedia && typeof window !== 'undefined' && !!window.MediaRecorder;
+let CLIP: { stop: () => void } | null = null;
+/** Dừng bản ghi đang chạy (nếu có) */
+export function stopClip() { if (CLIP) CLIP.stop(); }
+/** Ghi âm tới khi gọi stopClip() hoặc hết maxMs. Trả về URL của bản ghi. */
+export function recordClip({ maxMs = 8000, onLevel }: { maxMs?: number; onLevel?: (v: number) => void } = {}): Promise<string> {
+  return new Promise(async (res, rej) => { // eslint-disable-line no-async-promise-executor
+    stopSpeaking(); stopClip();
+    let stream: MediaStream;
+    try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
+    catch (e) { rej((e as DOMException)?.name === 'NotAllowedError' ? 'not-allowed' : 'audio-capture'); return; }
+    const chunks: Blob[] = [], media = new MediaRecorder(stream);
+    let actx: AudioContext | null = null, raf = 0;
+    const AC = window.AudioContext || W.webkitAudioContext;
+    if (onLevel && AC) {
+      actx = new AC();
+      const an = actx.createAnalyser(); an.fftSize = 512; actx.createMediaStreamSource(stream).connect(an);
+      const buf = new Uint8Array(an.fftSize);
+      const loop = () => { an.getByteTimeDomainData(buf); let s = 0; for (const v of buf) s += (v - 128) ** 2; onLevel(Math.min(1, Math.sqrt(s / buf.length) / 40)); raf = requestAnimationFrame(loop); };
+      loop();
+    }
+    media.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+    media.onstop = () => {
+      cancelAnimationFrame(raf); if (actx) actx.close().catch(() => {});
+      stream.getTracks().forEach((t) => t.stop()); CLIP = null;
+      if (!chunks.length) { rej('no-speech'); return; }
+      res(URL.createObjectURL(new Blob(chunks, { type: chunks[0].type || 'audio/webm' })));
+    };
+    const hard = setTimeout(() => stop(), maxMs);
+    const stop = () => { clearTimeout(hard); if (media.state !== 'inactive') media.stop(); };
+    CLIP = { stop };
+    media.start();
+  });
+}

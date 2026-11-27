@@ -2,17 +2,15 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import pronUrl from '../../data/pronunciation.json?url';
-import { AudioButton } from '../components/AudioButton';
-import { LiveText, MicMeter } from '../components/MicRecorder';
+import { AudioButton, SayBoth } from '../components/AudioButton';
+import { SpeakCheck } from '../components/MicRecorder';
 import { Pills, Section } from '../components/ui';
-import { WordsHit } from '../components/WordsHit';
 import { dictWords, loadLex, lookup, wordIpa } from '../lib/lex';
 import { tallySkill } from '../lib/progress';
 import { useRouteParam } from '../lib/route';
-import { CAN_RECORD, hear, micErr, micLive, recordClip, speak, SR, stopClip, stopListening, stopSpeaking } from '../lib/speech';
-import { scoreSpeech, type SpeechScore } from '../lib/text';
+import { speak } from '../lib/speech';
 import { pick1, shuffle } from '../lib/util';
-import { addXP, app, save } from '../state/store';
+import { app, save } from '../state/store';
 import { LINK_RULES, LINK_SENTENCES } from '../data/linking';
 
 interface Sound { ipa: string; type: string; name_vi: string; examples: [string, string][]; how_vi: string; mistake_vi: string; vi_like: string }
@@ -28,35 +26,6 @@ function usePron() {
   return d;
 }
 const GROUPS: [string, string][] = [['vowel-short', '🔹 Nguyên âm ngắn'], ['vowel-long', '🔷 Nguyên âm dài'], ['diphthong', '🔀 Nguyên âm đôi'], ['consonant-voiceless', '🤫 Phụ âm vô thanh (không rung cổ)'], ['consonant-voiced', '🗣️ Phụ âm hữu thanh (rung cổ)']];
-
-/** Đọc thử 1 từ / câu: 🎤 máy chấm từng từ (nếu trình duyệt nhận được giọng) + ⏺ ghi âm để tự nghe lại và so với giọng mẫu */
-function SayIt({ text }: { text: string }) {
-  const [busy, setBusy] = useState(false), [rec, setRec] = useState(false), [clip, setClip] = useState<string | null>(null);
-  const [r, setR] = useState<SpeechScore | { err: string } | null>(null);
-  useEffect(() => () => { stopListening(); stopClip(); }, []);
-  if (!SR && !CAN_RECORD) return null;
-  return (
-    <span className="sayit">
-      {SR && <button className={busy ? 'btn sm' : 'btn ghost sm'} disabled={rec} onClick={async () => {
-        if (busy) { stopListening(); return; }
-        setBusy(true); setR(null); micLive.reset();
-        try { const h = await hear({ onText: micLive.setText, onLevel: micLive.setLevel, silenceMs: 1500, maxMs: 8000 }); const s = scoreSpeech(text, h.alts); setR(s); if (h.audio) setClip(h.audio); tallySkill(app.P, 'speak', s.score >= 0.8); if (s.score >= 0.8) addXP(1); else save(); }
-        catch (e) { setR({ err: micErr(e) }); }
-        setBusy(false); micLive.reset();
-      }}>{busy ? '⏹ Dừng' : '🎤 Đọc cho máy chấm'}</button>}
-      {CAN_RECORD && <button className={rec ? 'btn sm' : 'btn ghost sm'} disabled={busy} onClick={async () => {
-        if (rec) { stopClip(); return; }
-        setRec(true); setClip(null); setR(null); micLive.reset();
-        try { setClip(await recordClip({ onLevel: micLive.setLevel })); } catch (e) { setR({ err: micErr(e) }); }
-        setRec(false); micLive.reset();
-      }}>{rec ? '⏹ Dừng ghi' : '⏺ Ghi âm & nghe lại'}</button>}
-      {busy && <span className="inline-flex items-center gap-2"><MicMeter /><LiveText placeholder="Đang nghe…" /></span>}
-      {rec && <span className="inline-flex items-center gap-2"><MicMeter /><span className="small muted">Đang ghi… đọc xong bấm ⏹</span></span>}
-      {r && ('err' in r ? <span className="note small">{r.err}</span> : <span className="small"><WordsHit T={r.T} hit={r.hit} /> <b className={r.score >= 0.8 ? 'okc' : 'badc'}>{Math.round(r.score * 100)}%</b></span>)}
-      {clip && !rec && <span className="sayit-cmp"><button className="btn sm" onClick={() => { stopSpeaking(); new Audio(clip).play().catch(() => {}); }}>▶ Giọng bạn</button><button className="btn ghost sm" onClick={() => speak(text)}>🔊 Giọng mẫu</button><span className="muted small">nghe xen kẽ để so</span></span>}
-    </span>
-  );
-}
 
 const hl = (ipa: string, s: string) => ipa.replace(new RegExp(s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), (m) => `【${m}】`);
 
@@ -84,8 +53,8 @@ function IpaSheet({ s, list, onPick, onClose }: { s: Sound; list: Sound[]; onPic
           <div className="vsec"><h4>🔊 Ví dụ: nghe → đọc theo → nghe lại giọng mình</h4>
             {s.examples.map(([w, ipa]) => (
               <div key={w} className="ex-card">
-                <div className="ex-top"><b>{w}</b><span className="ipa inline">{hl(ipa, s.ipa)}</span><span className="rv-say"><AudioButton text={w} className="icon xs" /><AudioButton text={w} slow label="🐢" className="icon xs" /></span></div>
-                <SayIt text={w} />
+                <div className="ex-top"><b>{w}</b><span className="ipa inline">{hl(ipa, s.ipa)}</span><SayBoth text={w} size="xs" /></div>
+                <SpeakCheck text={w} />
               </div>
             ))}
             <p className="muted small m-0">【 】 là vị trí của âm /{s.ipa}/ trong từ.</p>
@@ -147,7 +116,7 @@ function Pairs({ d }: { d: Pron }) {
         <div className={`qexp ${pick === which ? 'ok' : 'bad'}`}>
           <div className="qexp-h">{pick === which ? '✅ Nghe đúng rồi!' : `❌ Máy đọc “${target[0]}”`}</div>
           <div>💡 {P.tip_vi}</div>
-          <div className="flex flex-wrap gap-3">{(['a', 'b'] as const).map((k) => <span key={k}><b>{P[k][0]}</b> <span className="ipa inline">{P[k][1]}</span> <AudioButton text={P[k][0]} className="icon xs" /> <SayIt text={P[k][0]} /></span>)}</div>
+          <div className="flex flex-wrap gap-3">{(['a', 'b'] as const).map((k) => <span key={k}><b>{P[k][0]}</b> <span className="ipa inline">{P[k][1]}</span> <AudioButton text={P[k][0]} className="icon xs" /> <SpeakCheck text={P[k][0]} /></span>)}</div>
           <button className="btn big mt-2" onClick={next}>Cặp tiếp →</button>
         </div>
       )}
@@ -184,7 +153,7 @@ function ReadIpa() {
       })}</div>
       {pick !== null && (
         <div className={`qexp ${pick === q.ans ? 'ok' : 'bad'}`}>
-          <div className="qexp-full"><b>{q.w}</b> <span className="ipa inline">/{wordIpa(q.w)}/</span> <AudioButton text={q.w} className="icon xs" /> <span className="muted">{e?.vi}</span> <SayIt text={q.w} /></div>
+          <div className="qexp-full"><b>{q.w}</b> <span className="ipa inline">/{wordIpa(q.w)}/</span> <AudioButton text={q.w} className="icon xs" /> <span className="muted">{e?.vi}</span> <SpeakCheck text={q.w} /></div>
           {pick !== q.ans && <div className="small">Bạn chọn: <b>{q.opts[pick]}</b> <span className="ipa inline">/{wordIpa(q.opts[pick])}/</span> <AudioButton text={q.opts[pick]} className="icon xs" /> Hãy nghe cả hai để so sánh.</div>}
           <button className="btn big mt-2" onClick={() => { setN(n + 1); setPick(null); }}>Câu tiếp →</button>
         </div>
@@ -214,13 +183,13 @@ function Stress() {
     <Section>
       <div className="flex justify-between"><h3 className="m-0">🎯 Trọng âm rơi vào âm tiết nào?</h3><span className="muted small">Đúng {sc[0]}/{sc[1]}</span></div>
       <p className="muted small">Âm tiết được nhấn đọc to hơn, dài hơn, cao hơn. Nghe rồi chọn. Trong phiên âm, dấu ˈ đứng trước âm tiết nhấn.</p>
-      <div className="ipa-q"><span className="en">{q.w}</span> <AudioButton text={q.w} className="icon" /> <AudioButton text={q.w} slow label="🐢" className="icon" /></div>
+      <div className="ipa-q"><span className="en">{q.w}</span> <SayBoth text={q.w} /></div>
       <div className="syl-row">{q.syl.map((s, i) => {
         const cls = pick === null ? '' : i === q.ans ? 'right' : i === pick ? 'wrong' : 'dim';
         return <button key={i} className={`opt syl ${cls}`} disabled={pick !== null} onClick={() => { setPick(i); setSc([sc[0] + (i === q.ans ? 1 : 0), sc[1] + 1]); tallySkill(app.P, 'listen', i === q.ans); save(); }}><b>{s}</b><small>âm tiết {i + 1}</small></button>;
       })}</div>
       {pick !== null && <div className={`qexp ${pick === q.ans ? 'ok' : 'bad'}`}>
-        <div className="qexp-full"><b>{q.w}</b> <span className="ipa inline">/{q.ipa}/</span> → nhấn âm tiết <b>{q.ans + 1}</b>: <b className="okc">{q.syl[q.ans].toUpperCase()}</b> <SayIt text={q.w} /></div>
+        <div className="qexp-full"><b>{q.w}</b> <span className="ipa inline">/{q.ipa}/</span> → nhấn âm tiết <b>{q.ans + 1}</b>: <b className="okc">{q.syl[q.ans].toUpperCase()}</b> <SpeakCheck text={q.w} /></div>
         <div className="small muted">{lookup(q.w)?.vi}</div>
         <button className="btn big mt-2" onClick={() => { setN(n + 1); setPick(null); }}>Từ tiếp →</button></div>}
     </Section>
@@ -256,7 +225,7 @@ function Clusters({ d }: { d: Pron }) {
       <h3 className="m-0">🧩 Cụm phụ âm khó</h3>
       <p className="muted small">Người Việt hay chèn thêm nguyên âm (street → “sơ-tơ-rít”) hoặc bỏ phụ âm cuối. Đọc liền các phụ âm, giữ âm cuối.</p>
       <div className="grid gap-2 mt-2">{d.consonant_clusters.map((c) => (
-        <div key={c.word} className="ex-row"><b className="text-lg">{c.word}</b> <span className="ipa inline">{c.ipa}</span> <AudioButton text={c.word} className="icon xs" /> <AudioButton text={c.word} slow label="🐢" className="icon xs" /> <SayIt text={c.word} /><div className="small muted w-full">{c.tip_vi}</div></div>
+        <div key={c.word} className="ex-row"><b className="text-lg">{c.word}</b> <span className="ipa inline">{c.ipa}</span> <SayBoth text={c.word} size="xs" /> <SpeakCheck text={c.word} /><div className="small muted w-full">{c.tip_vi}</div></div>
       ))}</div>
     </Section>
   );
@@ -279,7 +248,7 @@ function Linking() {
               <p className="note">⚠️ {r.tip}</p>
               {r.ex.map((x) => (
                 <div key={x.p} className="ex-row"><b className="text-lg">{x.p}</b> <span className="ipa inline">{x.ipa}</span> <span className="chip2">≈ {x.say}</span>
-                  <AudioButton text={x.p} className="icon xs" /> <AudioButton text={x.p} slow label="🐢" className="icon xs" /> <SayIt text={x.p} /></div>
+                  <SayBoth text={x.p} size="xs" /> <SpeakCheck text={x.p} /></div>
               ))}
             </details>
           ))}
@@ -293,7 +262,7 @@ function Linking() {
             <div className="w-full"><b className="text-lg">{x.marked}</b></div>
             <span className="muted small">{x.vi}</span>
             {x.rules.map((id) => { const r = LINK_RULES.find((y) => y.id === id)!; return <span key={id} className="chip2" title={r.short}>{r.icon} {r.name}</span>; })}
-            <AudioButton text={x.s} className="icon xs" /> <AudioButton text={x.s} slow label="🐢" className="icon xs" /> <SayIt text={x.s} />
+            <SayBoth text={x.s} size="xs" /> <SpeakCheck text={x.s} />
           </div>
         ))}
       </Section>

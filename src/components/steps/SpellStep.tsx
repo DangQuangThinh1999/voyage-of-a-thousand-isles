@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { StepOf } from '../../lib/exercises';
 import { checkType } from '../../state/session';
 import { loadLex, sameAs, sentenceIpa, wordIpa } from '../../lib/lex';
-import { AudioButton } from '../AudioButton';
+import { AudioButton, SayBoth } from '../AudioButton';
 import { TypeAnswer } from '../TypeAnswer';
 import { StepFrame, strict, type StepProps } from './StepFrame';
 
@@ -30,7 +30,7 @@ export function SpellStep(p: StepProps<StepOf<'spell'>>) {
       </div>
       {!T && show && (
         <div className="spell-hint">
-          <div className="sh-ipa">{sentenceIpa(en)} <AudioButton text={en} className="icon xs" /> <AudioButton text={en} slow label="🐢" className="icon xs" /></div>
+          <div className="sh-ipa">{sentenceIpa(en)} <SayBoth text={en} size="xs" /></div>
           <div className="sh-words">
             {words.map((w, i) => (
               <div key={i} className="sh-w">

@@ -115,10 +115,12 @@ export function stopListening() { if (REC) REC.stop(); }
 // Đồng thời ghi âm để bạn nghe lại giọng mình, và đo âm lượng micro.
 /** Điện thoại: không mở micro thu âm song song (tranh micro với nhận giọng nói), nghe theo từng đoạn rồi nối lại */
 const MOBILE = /Android|iPhone|iPad|iPod|Mobile/i.test(UA);
+/** Máy chấm giọng KHÔNG tự thu âm được (điện thoại, hoặc trình duyệt không nhận giọng) → cần nút ⏺ Ghi âm riêng để nghe lại */
+export const NEED_CLIP = MOBILE || !SR;
 export function hear({ onText, onLevel, maxMs = 30000, silenceMs = 2000, startMs = 7000, lang = 'en-US' }: HearOptions = {}): Promise<HeardResult> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (res, rej) => {
-    stopSpeaking();
+    stopSpeaking(); stopClip();
     let stream: MediaStream | null = null, media: MediaRecorder | null = null, actx: AudioContext | null = null, raf = 0;
     const chunks: Blob[] = [];
     if (!MOBILE) {
@@ -229,7 +231,7 @@ export function stopClip() { if (CLIP) CLIP.stop(); }
 /** Ghi âm tới khi gọi stopClip() hoặc hết maxMs. Trả về URL của bản ghi. */
 export function recordClip({ maxMs = 8000, onLevel }: { maxMs?: number; onLevel?: (v: number) => void } = {}): Promise<string> {
   return new Promise(async (res, rej) => { // eslint-disable-line no-async-promise-executor
-    stopSpeaking(); stopClip();
+    stopSpeaking(); stopClip(); stopListening();
     let stream: MediaStream;
     try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
     catch (e) { rej((e as DOMException)?.name === 'NotAllowedError' ? 'not-allowed' : 'audio-capture'); return; }

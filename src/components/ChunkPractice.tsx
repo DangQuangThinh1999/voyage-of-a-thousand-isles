@@ -12,7 +12,7 @@ import { roadmap } from '../lib/roadmap';
 import { norm } from '../lib/text';
 import { addDays, dayKey, sample, shuffle } from '../lib/util';
 import { addXP, app, askConfirm, save } from '../state/store';
-import { AudioButton } from './AudioButton';
+import { AudioButton, SayBoth } from './AudioButton';
 import { StepProgress } from './Progress';
 import { Bar, Pills } from './ui';
 
@@ -179,7 +179,7 @@ export function ChunkPractice() {
       <div className="row between small wrap"><b>{d === 'en-vi' ? '🇬🇧 → 🇻🇳 Vòng 1 · dịch sang tiếng Việt' : '🇻🇳 → 🇬🇧 Vòng 2 · dịch sang tiếng Anh'}</b><span className="muted">{unit} {(i % N) + 1}/{N} · {offline ? '📚 câu trong kho (AI bận)' : '🤖 AI đặt câu'} · chấm 1 lần ở cuối</span></div>
       <Bar pct={(answers.filter((x) => x.trim()).length / answers.length) * 100} h={6} />
       {i < N && it.context && <div className="muted small">📍 {it.context}</div>}
-      <p className="chunk-src">{srcOf(i)} {d === 'en-vi' && <><AudioButton text={srcOf(i)} className="icon xs" /> <AudioButton text={srcOf(i)} slow label="🐢" className="icon xs" /></>}</p>
+      <p className="chunk-src">{srcOf(i)} {d === 'en-vi' && <><SayBoth text={srcOf(i)} size="xs" /></>}</p>
       {d === 'vi-en' && (
         <div className="small">
           <button className="btn ghost sm" onClick={() => setHint(!hint)}>💡 {hint ? 'Ẩn' : 'Xem'} từ cần dùng ({it.words.length})</button>
@@ -211,7 +211,6 @@ export function ChunkPractice() {
 function Review({ n, src, ref_, a, g, dir }: { n: number; src: string; ref_: string; a: string; g: Grade; dir: Dir }) {
   const V = ({ correct: ['✅', 'ok'], minor: ['🟡', 'warn'], wrong: ['❌', 'bad'] } as const)[g.verdict] || ['❌', 'bad'];
   const empty = !a.trim(), en = dir === 'vi-en';
-  const say = (t: string) => <span className="rv-say"><AudioButton text={t} className="icon xs" /><AudioButton text={t} slow label="🐢" className="icon xs" /></span>;
   const seen = new Set([norm(a)]), fixes: [string, string][] = [];
   const add = (l: string, t?: string) => { if (t && t.trim() && !seen.has(norm(t))) { seen.add(norm(t)); fixes.push([l, t]); } };
   if (!empty && g.verdict !== 'correct') add('Sửa lại câu của bạn', g.corrected);
@@ -220,9 +219,9 @@ function Review({ n, src, ref_, a, g, dir }: { n: number; src: string; ref_: str
   return (
     <article className={'card rv ' + V[1]}>
       <header className="rv-h"><span className="rv-n">Câu {n}</span><span className={'rv-score ' + V[1]}>{V[0]} {g.score}/100{g.rough ? ' · sơ bộ' : ''}</span></header>
-      <p className="rv-src">{src}{!en && say(src)}</p>
+      <p className="rv-src">{src}{!en && <SayBoth text={src} size="xs" />}</p>
       <div className="rv-row"><span className="rv-l">Bạn viết</span><div className={'rv-v' + (empty ? ' rv-empty' : '')}>{empty ? 'Bỏ trống' : a}</div></div>
-      {fixes.map(([l, t]) => <div key={l} className="rv-row"><span className="rv-l">{l}</span><div className="rv-v rv-ok">{t}{en && say(t)}</div></div>)}
+      {fixes.map(([l, t]) => <div key={l} className="rv-row"><span className="rv-l">{l}</span><div className="rv-v rv-ok">{t}{en && <SayBoth text={t} size="xs" />}</div></div>)}
       {!empty && g.errors.length > 0 && (
         <div className="rv-row"><span className="rv-l">Lỗi cần sửa ({g.errors.length})</span>
           <ol className="rv-errs">{g.errors.map((e, k) => <li key={k}><span><s className="bad">{e.original}</s> → <b className="okc">{e.corrected}</b></span><small>{e.type_vi} · {e.explain_vi}</small></li>)}</ol>

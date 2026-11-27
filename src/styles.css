@@ -937,7 +937,8 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .rv-v { font-size: 1rem; overflow-wrap: anywhere; }
 .rv-empty { color: var(--muted); font-style: italic; }
 .rv-ok { color: var(--good); font-weight: 600; }
-.rv-say { display: inline-flex; gap: 4px; margin-left: 6px; vertical-align: middle; white-space: nowrap; }
+/* cặp nút 🔊 + 🐢 luôn đứng cạnh nhau */
+.say-both { display: inline-flex; gap: 4px; margin: 0 2px 0 6px; vertical-align: middle; white-space: nowrap; }
 .rv-errs { margin: 2px 0 0; padding-left: 18px; display: grid; gap: 8px; }
 .rv-errs li { display: grid; gap: 2px; } .rv-errs small { color: var(--muted); }
 .rv-note { font-size: .88rem; color: var(--muted); }

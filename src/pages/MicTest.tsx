@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AudioButton } from '../components/AudioButton';
 import { Card } from '../components/Card';
-import { LiveText, MicMeter, Playback } from '../components/MicRecorder';
+import { ListenBack, LiveText, MicMeter, RecordBack } from '../components/MicRecorder';
 import { WordsHit } from '../components/WordsHit';
 import { SR } from '../lib/speech';
 import { MIC_SAMPLE, micTest } from '../state/actions';
@@ -40,6 +40,7 @@ export function MicTest() {
         <p className="en center">{MIC_SAMPLE} <AudioButton text={MIC_SAMPLE} /></p>
         <div className="center"><button className={MT.busy ? 'mic rec' : 'mic'} data-act="micTest" disabled={!SR} onClick={micTest}>{MT.busy ? '⏹' : '🎤'}</button>
           <p className="muted small">{MT.busy ? 'Đang nghe… nói xong im lặng 2 giây hoặc bấm ⏹' : 'Bấm để bắt đầu'}</p></div>
+        {!SR && <div className="center"><p className="note small">Trình duyệt này không nhận giọng nói (dùng Chrome/Edge để máy chấm). Vẫn ghi âm để kiểm tra micro được:</p><RecordBack text={MIC_SAMPLE} /></div>}
         <MicMeter active={MT.busy} />
         <LiveText placeholder="…" active={MT.busy} />
         {r && (r.err !== undefined ? <p className="note">{r.err}</p> : (
@@ -47,7 +48,7 @@ export function MicTest() {
             <WordsHit T={r.T} hit={r.hit} />
             <p>Máy nghe được <b>{r.n} từ</b>: “{r.heard}” · khớp {Math.round(r.score * 100)}%</p>
             <p className={r.score >= 0.8 ? 'okc' : 'badc'}>{r.score >= 0.8 ? '✅ Micro hoạt động tốt!' : r.n <= 2 ? '⚠️ Máy chỉ nghe được rất ít từ. Xem cách sửa ở dưới.' : '⚠️ Micro có thu tiếng nhưng chưa rõ. Nói chậm và rõ hơn, hoặc đổi micro.'}</p>
-            {r.audio && <Playback src={r.audio} label="▶️ Nghe lại giọng bạn:" />}
+            <ListenBack audio={r.audio} text={MIC_SAMPLE} />
           </div>
         ))}
       </Card>

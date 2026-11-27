@@ -4,50 +4,30 @@ import { useRouteNum, useRouteParam } from '../lib/route';
 import { Dropdown } from '../components/Dropdown';
 import { AudioButton, SayBoth } from '../components/AudioButton';
 import { Ipa } from '../components/Ipa';
-import { LiveText, MicMeter, Playback } from '../components/MicRecorder';
+import { ListenBack, LiveText, MicMeter, SpeakCheck } from '../components/MicRecorder';
 import { TapText } from '../components/TapText';
 import { CoachReport, Pills, Section } from '../components/ui';
 import { GenBar } from '../components/GenBar';
 import { TopicTalk } from '../components/TopicTalk';
 import type { GenItem } from '../lib/gen';
-import { WordsHit } from '../components/WordsHit';
 import { LEVELS, type Pair } from '../data';
 import { BASIC_PART1, SITUATIONS } from '../data/speak';
 import { coachSpeaking, type CoachResult } from '../lib/coach';
 import { tallySkill } from '../lib/progress';
 import { applyFixes } from '../lib/sentence';
 import { hear, micErr, micLive, speak, SR, stopListening } from '../lib/speech';
-import { scoreSpeech, type SpeechScore } from '../lib/text';
 import { dayKey, pick1 } from '../lib/util';
-import { addXP, app, save } from '../state/store';
+import { addXP, app } from '../state/store';
 
 /** Nói theo một câu mẫu, chấm phát âm từng từ */
 function Shadow({ s }: { s: Pair }) {
-  const [busy, setBusy] = useState(false);
-  const [res, setRes] = useState<(SpeechScore & { audio: string | null }) | { err: string } | null>(null);
-  async function go() {
-    if (busy) { stopListening(); return; }
-    setBusy(true); setRes(null); micLive.reset();
-    try {
-      const h = await hear({ onText: micLive.setText, onLevel: micLive.setLevel });
-      const sc = scoreSpeech(s[0], h.alts);
-      setRes({ ...sc, audio: h.audio });
-      tallySkill(app.P, 'speak', sc.score >= 0.8); if (sc.score >= 0.8) addXP(1); else save();
-    } catch (e) { setRes({ err: micErr(e) }); }
-    setBusy(false); micLive.reset();
-  }
   return (
     <div className="phrase">
       <div className="flex items-start gap-2">
         <div className="flex-1"><b><TapText text={s[0]} /></b><Ipa text={s[0]} /><div className="muted small">{s[1]}</div></div>
         <SayBoth text={s[0]} />
-        {SR && <button className={busy ? 'btn sm' : 'btn ghost sm'} onClick={go}>{busy ? '⏹ Dừng' : '🎤 Nói theo'}</button>}
       </div>
-      {busy && <div className="listening"><MicMeter /><LiveText placeholder="Đang nghe… đọc câu trên rồi im lặng 2 giây." /></div>}
-      {res && ('err' in res && res.err !== undefined
-        ? <p className="note">{res.err}</p>
-        : <div className="score"><WordsHit T={(res as SpeechScore).T} hit={(res as SpeechScore).hit} /><span className={(res as SpeechScore).score >= 0.8 ? 'okc' : 'badc'}> {Math.round((res as SpeechScore).score * 100)}% đúng</span>
-          {(res as { audio: string | null }).audio && <Playback src={(res as { audio: string }).audio} label="▶️ Giọng bạn:" />}</div>)}
+      <SpeakCheck text={s[0]} label="🎤 Nói theo" silenceMs={2000} maxMs={30000} />
     </div>
   );
 }
@@ -178,7 +158,7 @@ function IeltsSpeaking() {
           <h3 className="m-0">🗒️ Máy nghe được</h3>
           <p>{say.text || <span className="muted">(không nghe được gì)</span>}</p>
           {rep && rep.issues.length > 0 && <div className="fixbox"><b>Câu đã sửa:</b> {applyFixes(say.text[0]?.toUpperCase() + say.text.slice(1) + (/[.!?]$/.test(say.text) ? '' : '.'), rep.issues)}</div>}
-          {say.audio && <Playback src={say.audio} label="▶️ Nghe lại giọng bạn:" />}
+          <ListenBack audio={say.audio} maxMs={120000} />
           <p className="muted small">Máy chỉ nghe ra chữ, chưa chấm được ngữ điệu và trọng âm. Luyện phát âm từng câu ở phần “Mẫu câu giao tiếp”.</p>
         </Section>
       )}

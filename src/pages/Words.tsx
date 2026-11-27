@@ -143,7 +143,7 @@ function LearnCard() {
 
       <section className="card lc-sec">
         <div className="lc-head"><span className="lc-num">2</span><b>Câu ví dụ</b><span className="muted small">đọc to 3 lần</span></div>
-        <p className="lc-ex">{w.ex} <AudioButton text={w.ex} className="icon xs" /> <AudioButton text={w.ex} slow label="🐢" title="Đọc chậm" className="icon xs" /></p>
+        <p className="lc-ex">{w.ex} <SayBoth text={w.ex} size="xs" /></p>
         <div className="lc-ipa"><Ipa text={w.ex} /></div>
         <p className="lc-vi">{w.exvi}</p>
         <GrammarNotes en={w.ex} pos={w.pos} title="Vì sao câu này như vậy? (ngữ pháp — bấm để xem)" />
@@ -245,7 +245,7 @@ function TypeRecall() {
         <AudioButton text={q.w.w} className="btn ghost" label="🔊 Nghe" />
         {!answered && !hint && <button className="btn ghost" onClick={() => setHint(true)}>💡 Gợi ý (phiên âm)</button>}
       </div>
-      {hint && !answered && <div className="spell-hint"><div className="sh-ipa">{q.w.ipa} <AudioButton text={q.w.w} className="icon xs" /> <AudioButton text={q.w.w} slow label="🐢" className="icon xs" /></div><p className="muted small m-0 center">{q.w.w.length} chữ cái · bắt đầu bằng “<b>{q.w.w.slice(0, 2)}</b>…” · {q.w.pos}</p></div>}
+      {hint && !answered && <div className="spell-hint"><div className="sh-ipa">{q.w.ipa} <SayBoth text={q.w.w} size="xs" /></div><p className="muted small m-0 center">{q.w.w.length} chữ cái · bắt đầu bằng “<b>{q.w.w.slice(0, 2)}</b>…” · {q.w.pos}</p></div>}
       <form onSubmit={(e) => { e.preventDefault(); checkTyped(text); }}>
         <input className="ans" autoComplete="off" autoCapitalize="off" spellCheck={false} placeholder="Gõ từ tiếng Anh…" disabled={answered}
           data-autofocus={answered ? undefined : '1'} value={text} onChange={(e) => setText(e.target.value)} />

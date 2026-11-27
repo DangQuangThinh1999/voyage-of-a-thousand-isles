@@ -5,7 +5,7 @@ import { addMistake } from '../lib/progress';
 import { norm } from '../lib/text';
 import { shuffle } from '../lib/util';
 import { addXP, app, save } from '../state/store';
-import { AudioButton } from './AudioButton';
+import { SayBoth } from './AudioButton';
 import { Bar } from './ui';
 import idx from '../data/drills/index.json';
 
@@ -83,7 +83,7 @@ export function Drill({ name }: { name: string }) {
       {checked !== null && (
         <div className={`qexp ${checked ? 'ok' : 'bad'}`}>
           <div className="qexp-h">{checked ? '✅ Đúng rồi!' : <>❌ Chưa đúng{it.t !== 'fix' && <>. Đáp án: <b>{right}</b></>}{it.t !== 'mcq' && typed && <> (bạn viết “{typed}”)</>}</>}</div>
-          <div className="qexp-full"><b>{it.en}</b> <AudioButton text={it.en} className="icon xs" /> <AudioButton text={it.en} slow label="🐢" className="icon xs" /></div>
+          <div className="qexp-full"><b>{it.en}</b> <SayBoth text={it.en} size="xs" /></div>
           <div className="muted">🇻🇳 {it.vi}</div>
           {it.t === 'fix' && <div className="small">🛠️ Câu sai: <s>{it.q}</s> → <b className="okc">{it.en}</b></div>}
           <div className="qexp-steps"><b>🪜 Giải thích:</b><p className="m-0">{it.why}</p></div>

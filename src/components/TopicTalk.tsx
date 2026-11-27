@@ -15,7 +15,7 @@ import { addXP, app, save, useApp } from '../state/store';
 import { AudioButton } from './AudioButton';
 import { Dropdown } from './Dropdown';
 import { StepProgress } from './Progress';
-import { LiveText, MicMeter, Playback } from './MicRecorder';
+import { ListenBack, LiveText, MicMeter } from './MicRecorder';
 import { Bar, CoachReport, Ring, Section } from './ui';
 
 interface Assess {
@@ -117,7 +117,7 @@ export function TopicTalk() {
             <div className="flex justify-between small"><b>🗒️ Máy nghe được (sửa nếu máy nghe nhầm)</b><span className={words >= L.words ? 'okc' : 'muted'}>{words}/{L.words} từ{sec > 0 ? ` · ${Math.round(sec)} giây` : ''}</span></div>
             <textarea className="ans mt-1" rows={5} value={text} onChange={(e) => setText(e.target.value)} placeholder="Bài nói của bạn…" />
             <Bar pct={(words / L.words) * 100} color={words >= L.words ? 'var(--good)' : 'var(--pri)'} h={6} />
-            {audio && <Playback src={audio} label="▶️ Nghe lại giọng bạn:" />}
+            <ListenBack audio={audio} maxMs={180000} />
             <button className="btn big glow w-full mt-3" disabled={grading || words < 5} onClick={grade}>{grading ? '⏳ Đang chấm chi tiết… (20–40 giây)' : res || local ? '🔁 Chấm lại' : '🧑‍🏫 Chấm bài'}</button>
             {grading && <div className="mt-2"><StepProgress steps={['Gửi bài nói', 'AI chấm 3 tiêu chí + từng lỗi', 'Tổng hợp bài sửa, bài mẫu']} step={1} note="Bài dài nên có thể mất 20–60 giây" /></div>}
           </div>

@@ -11,7 +11,7 @@ import { LANG_NAME, roleFor, speak } from '../lib/speech';
 import { shuffle } from '../lib/util';
 import { useGenPref } from '../state/prefs';
 import { addXP, go, useApp } from '../state/store';
-import { at, celebrate } from '../components/Celebrate';
+import { at, celebrate, CountUp } from '../components/Celebrate';
 import { perm } from '../lib/perm';
 import { balance } from '../lib/nick';
 
@@ -189,7 +189,7 @@ export default function Fun() {
   return (
     <>
       <div className="card pbar">
-        <div className="row between wrap"><h2 className="m-0">🎮 Giải trí</h2><span className="row gap"><b className="pts">⭐ {balance(P).toLocaleString('vi-VN')} điểm</b>{perm.admin && <button className="btn sm ghost" onClick={() => go('garden')}>🚧 Khu vườn (admin)</button>}</span></div>
+        <div className="row between wrap"><h2 className="m-0">🎮 Giải trí</h2><span className="row gap"><b className="pts">⭐ <CountUp value={balance(P)} /> điểm</b>{perm.admin && <button className="btn sm ghost" onClick={() => go('garden')}>🚧 Khu vườn (admin)</button>}</span></div>
         <p className="muted small m-0">Đúng mỗi câu +1 ⭐. Dùng điểm để đổi tên.</p>
         <div className="pbar-row">
           <Dropdown label="Trò chơi" value={g} onChange={(v) => { setG(v); setRound(round + 1); }} options={GAMES.map(([k, ic, l, d]) => ({ value: k, icon: ic, label: l, sub: d }))} />

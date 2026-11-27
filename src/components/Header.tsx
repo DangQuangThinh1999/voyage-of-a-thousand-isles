@@ -7,6 +7,7 @@ import { Breadcrumbs } from './Breadcrumbs';
 import { setTheme } from '../state/actions';
 import { openSearch } from './SearchModal';
 import { GuestChip } from './LoginPrompt';
+import { CountUp } from './Celebrate';
 import { openDrawer } from './Drawer';
 
 /** Đầu trang: tên app, chuỗi ngày, phút hôm nay, XP, tài khoản + thanh đường dẫn */
@@ -38,7 +39,7 @@ export function Header() {
           <span className="d-only" title="Chuỗi ngày học liên tiếp">🔥 {streakNow(P)}</span>
           <span className="d-only" title="Phút học hôm nay / mục tiêu">⏱️ {minutesToday(P)}/{P.settings.goalMin}′</span>
           <button className="acct" title="Tìm kiếm (Ctrl+K)" onClick={openSearch}>🔍</button>
-          <span className="d-only" title="Điểm kinh nghiệm">⭐ {P.xp}</span>
+          <span className="d-only" title="Điểm kinh nghiệm">⭐ <CountUp value={P.xp || 0} /></span>
           <button className="acct d-only" title="Đổi giao diện sáng / tối" onClick={() => setTheme(P.settings.theme === 'light' ? 'dark' : 'light')}>{P.settings.theme === 'light' ? '🌙' : '☀️'}</button>
           <button className="acct" data-act="settings" title={u ? u.email || '' : 'Cài đặt & đăng nhập'} onClick={() => withLeave(() => go('settings'))}>
             {u && u.photoURL ? <img src={u.photoURL} alt="" /> : '⚙️'}

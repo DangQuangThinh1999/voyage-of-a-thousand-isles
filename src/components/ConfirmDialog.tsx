@@ -7,13 +7,13 @@ export function ConfirmDialog() {
   const { dlg } = useApp();
   useEffect(() => {
     if (!dlg) return;
-    const k = (e: KeyboardEvent) => { if (e.key === 'Escape') dlg.resolve(false); if (e.key === 'Enter') { e.preventDefault(); dlg.resolve(true); } };
+    const k = (e: KeyboardEvent) => { if (e.key === 'Escape' && !dlg.sticky) dlg.resolve(false); if (e.key === 'Enter') { e.preventDefault(); dlg.resolve(true); } };
     addEventListener('keydown', k); return () => removeEventListener('keydown', k);
   }, [dlg]);
   return (
     <AnimatePresence>
       {dlg && (
-        <motion.div className="dlg-ov" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={(e) => { if (e.target === e.currentTarget) dlg.resolve(false); }}>
+        <motion.div className="dlg-ov" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={(e) => { if (e.target === e.currentTarget && !dlg.sticky) dlg.resolve(false); }}>
           <motion.div role="dialog" aria-modal="true" className={`dlg ${dlg.danger ? 'danger' : ''}`} initial={{ y: 24, scale: 0.94, opacity: 0 }} animate={{ y: 0, scale: 1, opacity: 1 }} exit={{ y: 12, scale: 0.96, opacity: 0 }} transition={{ type: 'spring', bounce: 0.3, duration: 0.4 }}>
             <div className="dlg-ic">{dlg.icon}</div>
             <h3>{dlg.title}</h3>

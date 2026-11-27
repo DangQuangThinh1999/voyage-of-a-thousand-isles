@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useLayoutEffect } from 'react';
 import { startChunkQueue } from './lib/chunkQueue';
 import { startAutoStock } from './state/exam';
+import { checkResume } from './state/resume';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { LoginPrompt } from './components/LoginPrompt';
 import { Drawer } from './components/Drawer';
@@ -39,7 +40,7 @@ const PAGES: Record<Screen, () => JSX.Element | null> = {
 export default function App() {
   const { scr, nav } = useApp();
   useAfterRender();
-  useEffect(() => { startChunkQueue(); startAutoStock(); }, []);
+  useEffect(() => { startChunkQueue(); startAutoStock(); const t = setTimeout(() => checkResume(), 400); return () => clearTimeout(t); }, []);
   const Page = PAGES[scr];
   return (
     <>

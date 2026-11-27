@@ -50,7 +50,9 @@ export const app = {
 
 let version = 0;
 const subs = new Set<() => void>();
-export function emit() { syncHash(); version++; subs.forEach((f) => f()); }
+/** Hàm chạy sau mỗi lần trạng thái đổi (vd lưu bài đang làm dở) */
+export const afterEmit = new Set<() => void>();
+export function emit() { syncHash(); version++; subs.forEach((f) => f()); afterEmit.forEach((f) => f()); }
 
 // ---------- đường dẫn (URL) phân tầng giống breadcrumb: /tuan-1/hello, /giao-tiep/noi-theo-chu-de ----------
 // Tải lại vẫn ở đúng chỗ, nút Quay lại / Tiến tới hoạt động. Tab con là tầng thứ 2, tham số khác ở sau dấu ?
@@ -159,7 +161,7 @@ export function go(s: Screen, a: string | null = null) {
 }
 /** Đang làm bài dở thì hỏi trước khi rời đi */
 // ---------- hộp thoại xác nhận tự thiết kế (thay confirm() của trình duyệt) ----------
-export interface Dlg { icon: string; title: string; msg: string; ok: string; cancel: string; danger?: boolean; resolve: (v: boolean) => void }
+export interface Dlg { icon: string; title: string; msg: string; ok: string; cancel: string; danger?: boolean; /** bấm ra ngoài / Esc không đóng */ sticky?: boolean; resolve: (v: boolean) => void }
 export function askConfirm(o: Partial<Omit<Dlg, 'resolve'>> & { title: string }): Promise<boolean> {
   return new Promise((resolve) => {
     app.dlg = { icon: '❓', msg: '', ok: 'Đồng ý', cancel: 'Hủy', ...o, resolve: (v) => { app.dlg = null; emit(); resolve(v); } };

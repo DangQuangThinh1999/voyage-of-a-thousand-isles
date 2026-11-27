@@ -48,7 +48,7 @@ const M_NAMES = /^(mr|man|boy|father|dad|brother|husband|uncle|he|tom|john|james
 /** Tên người nói ở đầu câu "Tên: …" */
 export const speakerOf = (line: string) => line.match(/^([A-Z][\w .'-]{0,20}):\s*/)?.[1] || '';
 export const stripSpeaker = (line: string) => line.replace(/^[A-Z][\w .'-]{0,20}:\s*/, '');
-/** Gán vai cho từng câu của bài nghe: mỗi người nói 1 giọng riêng (nam/nữ đoán theo tên, chưa rõ thì xen kẽ), giọng vùng theo accent của bài */
+/** Gán vai cho từng câu của bài nghe: mỗi người nói 1 giọng riêng, người sau luôn khác giới người trước (1 nam – 1 nữ), giọng vùng theo accent của bài */
 export function scriptRoles(lines: string[], accent = ''): Role[] {
   const base = accentLang(accent), alt = ['en-GB', 'en-AU', 'en-US'].filter((x) => x !== base);
   const who = new Map<string, Role>();
@@ -57,7 +57,9 @@ export function scriptRoles(lines: string[], accent = ''): Role[] {
     const name = speakerOf(l) || '·narrator';
     let r = who.get(name);
     if (!r) {
-      const g: 'f' | 'm' = F_NAMES.test(name) ? 'f' : M_NAMES.test(name) ? 'm' : lastG === 'f' ? 'm' : 'f';
+      // người đầu: đoán theo tên; từ người thứ 2: LUÔN khác giới người trước (nghe dễ phân biệt, giống đề IELTS 1 nam 1 nữ)
+      const guess: 'f' | 'm' = F_NAMES.test(name) ? 'f' : M_NAMES.test(name) ? 'm' : 'f';
+      const g: 'f' | 'm' = who.size === 0 ? guess : lastG === 'f' ? 'm' : 'f';
       // người nói thứ 3 trở đi (thảo luận nhiều người, kiểu Section 3) dùng giọng vùng khác
       r = { g, lang: who.size < 2 ? base : alt[(who.size - 2) % alt.length] };
       who.set(name, r);

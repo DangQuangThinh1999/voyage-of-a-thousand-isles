@@ -995,3 +995,24 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .wk-slide.locked, .wk-card.locked, .plan-weeks li.locked { opacity: .45; filter: grayscale(.6); }
 .wk-card.locked .wk-h { cursor: not-allowed; }
 .ws-acts button:disabled { cursor: not-allowed; }
+
+/* Thanh chọn Luyện tập / Giải trí */
+.pbar { display: grid; gap: 10px; }
+.pbar-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.src-tabs { display: inline-flex; padding: 3px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); }
+.src-tabs button { border: 0; background: none; color: var(--muted); font-weight: 700; padding: 6px 12px; border-radius: 9px; font-size: .88rem; }
+.src-tabs button.on { background: var(--pri); color: var(--pri-ink); }
+
+/* Giải trí */
+.fun { display: grid; gap: 12px; }
+.fun.ok { box-shadow: 0 0 0 2px var(--good) inset; } .fun.bad { box-shadow: 0 0 0 2px var(--bad) inset; }
+.match { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.match > div { display: grid; gap: 8px; align-content: start; }
+.match .opt.on { border-color: var(--pri); background: var(--pri-soft); }
+.match .opt.ok { opacity: .35; border-color: var(--good); }
+.match .opt.bad { border-color: var(--bad); }
+.fun-word { font-size: 1.8rem; font-weight: 800; text-align: center; letter-spacing: .02em; }
+.fun-word.mono { font-family: ui-monospace, monospace; letter-spacing: .15em; }
+.fun-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.fun-img { width: 100%; max-height: 320px; object-fit: cover; border-radius: 14px; }
+.fun-text { font-size: 1.05rem; line-height: 1.7; }

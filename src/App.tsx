@@ -31,11 +31,13 @@ import { Exam } from './pages/Exam';
 import { Admin } from './pages/Admin';
 import { ExamDock } from './components/ExamDock';
 const Stats = lazy(() => import('./pages/Stats'));
+const Fun = lazy(() => import('./pages/Fun'));
+const FunPage = () => <Suspense fallback={<div className="card skel"><div className="skel-l w40" /><div className="skel-b" /></div>}><Fun /></Suspense>;
 const StatsPage = () => <Suspense fallback={<p className="muted">Đang tải…</p>}><Stats /></Suspense>;
 import { app, useApp, type Screen } from './state/store';
 
 const PAGES: Record<Screen, () => JSX.Element | null> = {
-  home: Home, unit: Unit, session: Session, words: Words, grammar: Grammar, speak: Speak, ipa: Pron, skills: Skills, stats: StatsPage, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest, exam: Exam, admin: Admin,
+  home: Home, unit: Unit, session: Session, words: Words, grammar: Grammar, speak: Speak, ipa: Pron, skills: Skills, stats: StatsPage, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest, exam: Exam, admin: Admin, fun: FunPage,
 };
 
 export default function App() {

@@ -1,5 +1,5 @@
 import { Dictate } from '../components/Dictate';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dropdown } from '../components/Dropdown';
 import { JOURNAL_PROMPTS, LEVELS, UNITS } from '../data';
 import { AudioButton } from '../components/AudioButton';
@@ -13,10 +13,13 @@ import { nextTask, tallySkill } from '../lib/progress';
 import { applyFixes } from '../lib/sentence';
 import { dayKey } from '../lib/util';
 import { copyJournal, deleteJournal, saveJournal } from '../state/actions';
+import { useGenPref } from '../state/prefs';
+import { PracticeBar } from '../components/PracticeBar';
 import { addXP, app, useApp } from '../state/store';
 
 /** Viết: nhật ký hằng ngày hoặc đề IELTS, máy chấm 4 tiêu chí + sửa lỗi, lưu bài, chép để nhờ sửa */
 export function Journal() {
+  const [{ src }] = useGenPref();
   const { P } = useApp();
   const [text, setText] = useState('');
   const [pi, setPi] = useState(-1);
@@ -24,6 +27,7 @@ export function Journal() {
   const [rep, setRep] = useState<{ r: CoachResult; text: string } | null>(null);
   const nt = nextTask(P), u = nt ? nt.u : UNITS[UNITS.length - 1];
   const [ai, setAi] = useState<GenItem | null>(null);
+  useEffect(() => { if (src === 'lib') { setAi(null); setPi((v) => (v === -2 ? -1 : v)); } }, [src]);
   const L = pi >= 0 ? LEVELS[pi].writing : ai ? ai.data as { prompt: string; vi: string; minWords: number; ideas: string[]; useful: string[]; outline?: string[] } : null;
   const prompt = L ? L.prompt : JOURNAL_PROMPTS[u.id], minWords = L ? L.minWords : 30;
   const wc = (text.trim().match(/\S+/g) || []).length;
@@ -38,8 +42,9 @@ export function Journal() {
   }
   return (
     <>
+      <PracticeBar />
       <h2>✍️ Viết & chấm bài</h2>
-      <GenBar kind="writing" onItem={(it) => { setAi(it); setPi(-2); setRep(null); }} />
+      {src === 'ai' && <GenBar kind="writing" onItem={(it) => { setAi(it); setPi(-2); setRep(null); }} />}
       <Section>
         <Dropdown className="w-full" label="Đề bài" value={pi} onChange={(v) => { setPi(v); if (v === -1) setAi(null); setRep(null); }}
           options={[...(ai ? [{ value: -2, icon: '✨', label: 'Đề AI vừa tạo', sub: ai.title.slice(0, 60) }] : []), { value: -1, icon: '📝', label: 'Nhật ký hôm nay', sub: `Bài ${u.emoji} ${u.title} · ít nhất 30 từ` },

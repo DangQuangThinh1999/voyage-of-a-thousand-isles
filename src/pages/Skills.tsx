@@ -3,13 +3,15 @@ import { useRouteNum, useRouteParam } from '../lib/route';
 import { Dropdown } from '../components/Dropdown';
 import { AudioButton } from '../components/AudioButton';
 import { TapText } from '../components/TapText';
-import { Bar, Pills, Section } from '../components/ui';
+import { Bar, Section } from '../components/ui';
 import { GenBar } from '../components/GenBar';
 import type { GenItem } from '../lib/gen';
 import { LEVELS, UNITS, type Pair, type Question } from '../data';
 import { tallySkill, type Progress } from '../lib/progress';
 import { speak, stopSpeaking, scriptRoles, stripSpeaker } from '../lib/speech';
 import { norm } from '../lib/text';
+import { useGenPref } from '../state/prefs';
+import { PracticeBar } from '../components/PracticeBar';
 import { addXP, app, go, save, tab as goTab, useApp } from '../state/store';
 
 export const SKILLS: [key: string, icon: string, name: string, color: string][] = [
@@ -164,7 +166,7 @@ export function Skills() {
   const { P } = useApp();
   const [tab, setTab] = useRouteParam<'weak' | 'read' | 'listen'>('t', 'weak');
   const sets = SETS();
-  const [ai, setAi] = useState<GenItem | null>(null);
+  const [ai, setAi] = useState<GenItem | null>(null), [{ src }] = useGenPref();
   const [si, setSi] = useRouteNum('s', 0);
   const st = skillStats(P), tried = st.filter((s) => s.n >= 5).sort((a, b) => a.acc - b.acc), weak = tried[0];
   const ACTION: Record<string, [string, () => void]> = {
@@ -173,10 +175,7 @@ export function Skills() {
   };
   return (
     <>
-      <div className="pagehead">
-        <h2>🎯 Kỹ năng</h2>
-        <Pills id="skills" value={tab} onChange={setTab} items={[['weak', '📊 Kỹ năng yếu'], ['read', '📖 Đọc hiểu'], ['listen', '🎧 Nghe hiểu']]} />
-      </div>
+      <PracticeBar />
       {tab === 'weak' && (
         <>
           <Section>
@@ -208,13 +207,13 @@ export function Skills() {
       )}
       {tab !== 'weak' && (
         <>
-          <GenBar kind={tab === 'read' ? 'reading' : 'listening'} onItem={setAi} />
-          {ai && <button className="btn ghost sm mb-2" onClick={() => setAi(null)}>← Về bài có sẵn</button>}
-          <Section>
+          {src === 'ai' && <GenBar kind={tab === 'read' ? 'reading' : 'listening'} onItem={setAi} />}
+          {src === 'lib' && <Section>
             <label className="small">Chọn bài theo trình độ:</label>
             <Dropdown className="w-full" label="Bài" value={si} onChange={setSi} options={sets.map((s, i) => ({ value: i, label: s.label.split(' · ').slice(1).join(' · ') || s.label, sub: s.label.split(' · ')[0] }))} />
-          </Section>
-          {ai && ai.kind === (tab === 'read' ? 'reading' : 'listening')
+          </Section>}
+          {src === 'ai' && !(ai && ai.kind === (tab === 'read' ? 'reading' : 'listening')) ? <Section><p className="muted m-0">Bấm <b>✨ Tạo bài mới</b> để AI soạn bài theo mức độ và chủ đề bạn chọn.</p></Section>
+          : src === 'ai' && ai && ai.kind === (tab === 'read' ? 'reading' : 'listening')
             ? (tab === 'read' ? <ReadingTutor key={ai.id} {...fromAI(ai)} /> : <ListeningTutor key={ai.id} {...fromAIListen(ai)} />)
             : (tab === 'read' ? <ReadingTutor key={'r' + si} {...sets[si].read} /> : <ListeningTutor key={'l' + si} {...sets[si].listen} />)}
         </>

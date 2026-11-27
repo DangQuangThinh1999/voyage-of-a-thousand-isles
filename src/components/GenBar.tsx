@@ -1,19 +1,14 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
-import { generate, genHistory, hourly, LEVELS_GEN, type GenItem, type GenKind } from '../lib/gen';
-import { levelNow } from '../lib/progress';
-import { useApp } from '../state/store';
+import { generate, genHistory, hourly, type GenItem, type GenKind } from '../lib/gen';
+import { useGenPref } from '../state/prefs';
 import { Dropdown } from './Dropdown';
-import { TopicPicker } from './TopicPicker';
 
-const defaultCefr = (band: string) => { const b = parseFloat(band) || 0; return b < 3.5 ? 'A1' : b < 4.5 ? 'A2' : b < 6 ? 'B1' : b < 7 ? 'B2' : b < 8.5 ? 'C1' : 'C2'; };
 const WAIT = ['AI đang chọn chủ đề…', 'Đang soạn bài theo chuẩn IELTS…', 'Đang kiểm tra đáp án có căn cứ trong bài…', 'Sắp xong rồi…'];
 
 /** Thanh tạo bài mới bằng AI: chọn cấp độ + chủ đề, bấm tạo; có danh sách bài đã tạo để làm lại */
 export function GenBar({ kind, onItem }: { kind: GenKind; onItem: (it: GenItem) => void }) {
-  const { P } = useApp();
-  const [cefr, setCefr] = useState(() => defaultCefr(levelNow(P)));
-  const [topic, setTopic] = useState(-1);
+  const [{ cefr, topic }] = useGenPref();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
   const [step, setStep] = useState(0);
@@ -36,8 +31,6 @@ export function GenBar({ kind, onItem }: { kind: GenKind; onItem: (it: GenItem) 
   return (
     <div className="card genbar">
       <div className="flex flex-wrap items-center gap-2">
-        <Dropdown label="Cấp độ" value={cefr} onChange={setCefr} grid={3} options={LEVELS_GEN.map(([c, b, l]) => ({ value: c, label: <b>{c}</b>, sub: `${l} · ${b}` }))} />
-        <TopicPicker value={topic} onChange={setTopic} />
         {hr ? <button className="btn ghost hourly-btn" onClick={() => onItem(hr)} title={hr.title}>🕐 Bài của giờ này <small>· bài mới lúc {nextHour}:00</small></button>
           : hrBusy ? <span className="muted small"><span className="spin" /> Đang lấy bài của giờ này…</span> : null}
         <motion.button className="btn glow" disabled={busy} onClick={go} whileTap={{ scale: 0.96 }}>{busy ? '⏳ Đang tạo…' : '✨ Tạo bài mới (AI)'}</motion.button>

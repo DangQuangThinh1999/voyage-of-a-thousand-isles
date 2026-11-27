@@ -17,6 +17,8 @@ import { tallySkill } from '../lib/progress';
 import { applyFixes } from '../lib/sentence';
 import { hear, micErr, micLive, speak, SR, stopListening } from '../lib/speech';
 import { dayKey, pick1 } from '../lib/util';
+import { useGenPref } from '../state/prefs';
+import { PracticeBar } from '../components/PracticeBar';
 import { addXP, app } from '../state/store';
 
 /** Nói theo một câu mẫu, chấm phát âm từng từ */
@@ -77,6 +79,7 @@ const TIPS: Record<Part, string> = {
 
 /** Luyện nói IELTS: trả lời tự do, máy chấm 3 tiêu chí + sửa lỗi */
 function IeltsSpeaking() {
+  const [{ src }] = useGenPref();
   const [part, setPart] = useRouteParam<Part>('p', '1');
   const [lv, setLv] = useRouteNum('lv', 0);
   const [qi, setQi] = useState(0);
@@ -85,6 +88,7 @@ function IeltsSpeaking() {
   const [rep, setRep] = useState<CoachResult | null>(null);
   const [err, setErr] = useState('');
   const [ai, setAi] = useState<GenItem | null>(null);
+  useEffect(() => { if (src === 'lib') setAi(null); }, [src]);
   const aiQs = ai ? (part === '1' ? ai.data.part1.map((x: { en: string; vi: string }) => ({ q: x.en, vi: x.vi })) : part === '2' ? [{ q: ai.data.part2.cue, vi: ai.data.part2.vi, points: ai.data.part2.points }] : ai.data.part3.map((x: { en: string; vi: string }) => ({ q: x.en, vi: x.vi }))) : null;
   const qs = aiQs && aiQs.length ? aiQs : questionsFor(part, lv), q = qs[qi % qs.length];
   const [talk, setTalk] = useState<Talk | null>(null);
@@ -116,7 +120,7 @@ function IeltsSpeaking() {
   }
   return (
     <>
-      <GenBar kind="speaking" onItem={(it) => { setAi(it); setQi(0); reset(); }} />
+      {src === 'ai' && <GenBar kind="speaking" onItem={(it) => { setAi(it); setQi(0); reset(); }} />}
       {ai && <Section><div className="flex justify-between"><b>✨ Bộ câu hỏi AI: {ai.title}</b><button className="btn ghost sm" onClick={() => setAi(null)}>← Câu có sẵn</button></div>
         {ai.data.sample && <p className="fixbox small mt-2">🗣️ <b>Trả lời mẫu (Part 1):</b> {ai.data.sample} <AudioButton text={ai.data.sample} className="icon xs" /></p>}
         {ai.data.useful?.length > 0 && <div className="vgrid mt-2">{ai.data.useful.map((u: { en: string; vi: string }) => <div key={u.en} className="vchip"><b>{u.en}</b> <AudioButton text={u.en} className="icon xs" /><span className="small muted">{u.vi}</span></div>)}</div>}
@@ -172,6 +176,7 @@ export function Speak() {
   const [tab, setTab] = useRouteParam<'talk' | 'phrases' | 'ielts'>('t', 'talk');
   return (
     <>
+      <PracticeBar />
       <div className="pagehead">
         <h2>🗣️ Giao tiếp & Speaking</h2>
         <Pills id="speak" value={tab} onChange={setTab} items={[['talk', '🎤 Nói theo chủ đề'], ['phrases', '💬 Mẫu câu giao tiếp'], ['ielts', '🧑‍🏫 Hỏi đáp với giám khảo']]} />

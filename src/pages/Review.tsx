@@ -5,6 +5,7 @@ import { Ipa, Senses } from '../components/Ipa';
 import { ProgressBar } from '../components/ProgressBar';
 import { dueWords } from '../lib/srs';
 import { flipCard, rate, reviewWord, startReview } from '../state/actions';
+import { PracticeBar } from '../components/PracticeBar';
 import { tab, useApp } from '../state/store';
 
 /** Ôn từ vựng bằng thẻ nhớ */
@@ -15,6 +16,7 @@ export function Review() {
     const due = dueWords(P).length, done = R && R.q.length;
     return (
       <>
+        <PracticeBar />
         <h2>🔁 Ôn từ vựng</h2>
         <Card className="center">
           {done ? <><div className="huge">✅</div><p>Đã ôn xong {R!.q.length} thẻ. +{R!.n} ⭐</p></> : null}

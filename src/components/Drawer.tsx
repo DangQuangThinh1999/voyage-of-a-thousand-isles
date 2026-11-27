@@ -14,12 +14,10 @@ const close = () => { app.drawer = false; emit(); };
 const ITEMS: [Screen, string, string, string][] = [
   ['home', '🏠', 'Trang chính', 'Tổng quan, học tiếp'],
   ['words', '📗', 'Từ vựng', 'Từ mới, theo cụm, mốc 100 từ'],
-  ['review', '🔁', 'Ôn từ', 'Lặp lại ngắt quãng'],
   ['grammar', '📐', 'Ngữ pháp', 'Thư viện, sửa lỗi'],
   ['ipa', '🔊', 'Phát âm', 'IPA, trọng âm, nối âm'],
-  ['speak', '🗣️', 'Giao tiếp', 'Nói theo chủ đề'],
-  ['skills', '🎧', 'Nghe & Đọc', 'Bài mới mỗi giờ'],
-  ['journal', '✍️', 'Viết', 'Chấm 4 tiêu chí'],
+  ['skills', '🎯', 'Luyện tập', 'Đọc · Nghe · Nói · Viết · Ôn từ'],
+  ['fun', '🎮', 'Giải trí', 'Trò chơi từ vựng, đọc có hình'],
   ['stats', '🏆', 'Thành tựu', 'Cấp độ, xếp hạng'],
   ['plan', '🗺️', 'Lộ trình', 'Kế hoạch từng tuần'],
 ];

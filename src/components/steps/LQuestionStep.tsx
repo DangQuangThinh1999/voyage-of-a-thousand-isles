@@ -15,7 +15,7 @@ export function LQuestionStep(p: StepProps<StepOf<'lquestion'>>) {
       <p className="ask">🎧 Nghe đoạn văn rồi trả lời</p>
       <div className="row gap center">{T
         ? <button className="btn ghost" onClick={() => sayPassage(st.u, { limited: true })}>🔊 Nghe đoạn văn (còn {Math.max(0, 2 - ss.plays)} lượt)</button>
-        : <><button className="btn ghost" onClick={() => sayPassage(st.u)}>🔊 Nghe đoạn văn · {dialog ? '👩👨 hội thoại' : `${role.g === 'f' ? '👩' : '👨'} ${LANG_NAME[role.lang] || ''}`}</button><button className="icon" title="Đọc chậm" onClick={() => sayPassage(st.u, { slow: true })}>🐢</button></>}</div>
+        : <><button className="btn ghost" onClick={() => sayPassage(st.u)}>🔊 Nghe đoạn văn · {dialog ? 'hội thoại' : LANG_NAME[role.lang] || ''}</button><button className="icon" title="Đọc chậm" onClick={() => sayPassage(st.u, { slow: true })}>🐢</button></>}</div>
       {ss.answered && <details className="card"><summary>📄 Xem lời đoạn văn</summary><Passage u={st.u} clickable={false} ss={ss} /></details>}
       <p className="ask">{q} <AudioButton text={q} /></p>{!T && <p className="muted">{qvi}</p>}
       <ChoiceList optClass="en" answered={ss.answered} correctIdx={ss.correctIdx} pickedIdx={ss.pickedIdx} onPick={pick} items={opts} />

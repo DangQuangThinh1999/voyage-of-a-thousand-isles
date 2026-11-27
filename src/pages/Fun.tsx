@@ -165,7 +165,7 @@ function Cloze({ cefr, topic, round, next, listen }: { cefr: string; topic: numb
       {w.img && !listen && <img className="fun-img" src={w.img} alt="" loading="lazy" />}
       <div className="row between wrap"><h3 className="m-0">{listen ? '🎧 Nghe rồi điền từ còn thiếu' : '📸 Nhìn ảnh, điền từ còn thiếu'}</h3>
         <span className="muted small">{w.title} · {blanks.length} chỗ trống</span></div>
-      {listen && <div className="row gap"><button className="btn glow" onClick={() => speak(text, false, role)}>▶ Nghe đoạn văn</button><button className="btn ghost" onClick={() => speak(text, true, role)}>🐢 Chậm</button><span className="muted small">{role.g === 'f' ? '👩 giọng nữ' : '👨 giọng nam'} · {LANG_NAME[role.lang]}</span></div>}
+      {listen && <div className="row gap"><button className="btn glow" onClick={() => speak(text, false, role)}>▶ Nghe đoạn văn</button><button className="btn ghost" onClick={() => speak(text, true, role)}>🐢 Chậm</button><span className="muted small">{LANG_NAME[role.lang]}</span></div>}
       <p className="fun-text cloze">{toks.map((t, i) => {
         if (!blanks.includes(i)) return <span key={i}>{t}</span>;
         const right = done && (ans[i] || '').trim().toLowerCase() === word(i).toLowerCase(), tail = t.slice(t.indexOf(word(i)) + word(i).length);

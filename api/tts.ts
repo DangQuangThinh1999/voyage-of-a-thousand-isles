@@ -1,7 +1,7 @@
 // Vercel Function: GET /api/tts?q=...&slow=1 — trả file âm thanh mp3 đọc tiếng Anh.
 // Dự phòng cho máy không có giọng đọc (trình duyệt trong Zalo/Messenger, Android thiếu giọng tiếng Anh).
 export async function GET(req: Request): Promise<Response> {
-  const u = new URL(req.url), q = (u.searchParams.get('q') || '').trim().slice(0, 200), slow = u.searchParams.get('slow') === '1', tl = /^en-(US|GB|AU|CA|NZ|IE|IN)$/.test(u.searchParams.get('tl') || '') ? u.searchParams.get('tl') : 'en-US';
+  const u = new URL(req.url), q = (u.searchParams.get('q') || '').trim().slice(0, 200), slow = u.searchParams.get('slow') === '1', tl = /^en-(US|GB|AU|IN)$/.test(u.searchParams.get('tl') || '') ? u.searchParams.get('tl') : 'en-GB';
   const ref = req.headers.get('referer') || '';
   if (ref && !/^https:\/\/[a-z0-9-]+\.vercel\.app\/|^http:\/\/localhost(:\d+)?\//.test(ref)) return new Response('forbidden', { status: 403 });
   if (!q) return new Response('missing q', { status: 400 });

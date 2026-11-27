@@ -14,8 +14,10 @@ let getOpts: () => SpeechOptions = () => ({ rate: 0.85, voice: '', fast: false }
 /** Đặt hàm lấy cài đặt giọng đọc (tốc độ, giọng, đang làm bài kiểm tra hay không) */
 export function configureSpeech(fn: () => SpeechOptions) { getOpts = fn; }
 
+/** Giọng mạng quá chậm trên máy này → chỉ dùng giọng có sẵn trên máy */
+let localOnly = false;
 export function englishVoices(): SpeechSynthesisVoice[] {
-  return TTS ? TTS.getVoices().filter((v) => /^en[-_]/i.test(v.lang)) : [];
+  return TTS ? TTS.getVoices().filter((v) => /^en[-_]/i.test(v.lang) && (!localOnly || v.localService)) : [];
 }
 export function pickVoice(name = getOpts().voice): SpeechSynthesisVoice | null {
   const vs = englishVoices();
@@ -134,7 +136,8 @@ export function speak(text: string, slow = false, role?: Role): Promise<void> {
     u.volume = 1;
     let done = false, started = false;
     const fin = () => { if (done) return; done = true; res(); };
-    u.onstart = () => { started = true; };
+    // giọng mạng (Google…) bắt đầu trễ SAU khi đã chuyển sang mp3 → tắt ngay, tránh đọc 1 câu 2 lần chồng nhau
+    u.onstart = () => { if (done) { TTS.cancel(); return; } started = true; };
     u.onend = fin;
     u.onerror = (e) => {
       // lỗi thật (không phải do mình hủy để đọc câu khác) → chuyển sang phát mp3
@@ -143,7 +146,14 @@ export function speak(text: string, slow = false, role?: Role): Promise<void> {
     const go = () => {
       TTS.speak(u);
       // không bắt đầu đọc sau 1,8 giây → máy không có giọng / bị chặn: dùng mp3 từ giờ
-      setTimeout(() => { if (!started && !done) { TTS.cancel(); useAudio = true; done = true; speakAudio(text, slow, role).then(res); } }, 2500);
+      // giọng mạng cần chờ lâu hơn; quá lâu thì lần sau chỉ dùng giọng có sẵn trên máy (không chuyển hẳn sang mp3 nếu máy vẫn có giọng)
+      const remote = !!v && !v.localService;
+      setTimeout(() => {
+        if (started || done) return;
+        TTS.cancel(); done = true;
+        if (remote && englishVoices().some((x) => x.localService)) { localOnly = true; speak(text, slow, role).then(res); return; }
+        useAudio = true; speakAudio(text, slow, role).then(res);
+      }, remote ? 6000 : 2500);
       // phòng trường hợp trình duyệt không gọi onend (iOS): tự kết thúc sau thời gian ước tính
       setTimeout(fin, 3000 + text.length * (slow ? 160 : 95));
     };

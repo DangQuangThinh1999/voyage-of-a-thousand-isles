@@ -44,7 +44,7 @@ export async function who(req: Request): Promise<Who | null> {
   } catch { return null; }
 }
 
-export interface QDoc { email: string; name: string; day: string; used: number; last: string; limit?: number; joined: string; total?: number }
+export interface QDoc { email: string; name: string; day: string; used: number; last: string; limit?: number; joined: string; total?: number; /** admin mở khoá các mốc đang khoá (7.5+) cho người này */ unlock?: boolean }
 
 /** Xoá người không dùng ≥ IDLE_DAYS ngày (trả về danh sách còn lại, không gồm admin) */
 export async function members(): Promise<(QDoc & { uid: string })[]> {
@@ -84,5 +84,5 @@ export async function take(u: Who): Promise<{ error: string; status: number; msg
 export async function usage(u: Who) {
   const s = await db().collection(COL).doc(u.uid).get(), q = s.exists ? (s.data() as QDoc) : null, day = ptDay();
   const used = q && q.day === day ? q.used : 0, limit = u.admin ? null : (q?.limit ?? LIMIT);
-  return { admin: u.admin, used, limit, remaining: limit === null ? null : Math.max(0, limit - used), member: !!q || u.admin };
+  return { admin: u.admin, unlock: u.admin || !!q?.unlock, used, limit, remaining: limit === null ? null : Math.max(0, limit - used), member: !!q || u.admin };
 }

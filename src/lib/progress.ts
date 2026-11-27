@@ -43,7 +43,7 @@ export interface Progress {
   /** tên hiển thị trên bảng xếp hạng, số lần đã đặt/đổi tên, điểm đã tiêu (đổi tên…) */
   nick?: string; nickN?: number; spent?: number;
   /** khu vườn: cây, nhà, đồ trang trí (đổi bằng điểm), thời tiết đang chọn; at = lần sửa cuối (để đồng bộ) */
-  garden?: { items: { id: number; k: string; x: number; y: number; xp0: number }[]; owned: string[]; weather: string; at: number };
+  garden?: { items: { id: number; k: string; x: number; y: number; xp0: number; w?: number; wd?: string }[]; owned: string[]; weather: string; at: number };
   /** thống kê từng kỹ năng: [đúng, tổng] */
   sk?: Record<string, [number, number]>;
   /** ngữ pháp đã học (làm đúng câu thử) */

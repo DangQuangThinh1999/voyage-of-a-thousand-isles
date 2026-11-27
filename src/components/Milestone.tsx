@@ -14,6 +14,7 @@ import { weekNow } from '../lib/progress';
 import { addXP, app, askConfirm, emit, go, save, useApp } from '../state/store';
 import { AudioButton } from './AudioButton';
 import { StepProgress } from './Progress';
+import { perm } from '../lib/perm';
 import { Bar } from './ui';
 
 interface Task { grammar: string; prompt_vi: string; words: string[]; example: string }
@@ -83,7 +84,7 @@ export function Milestones() {
       {busy !== null && <StepProgress steps={[`Lấy 100 từ của mốc ${busy}`, 'AI viết đoạn văn bằng các từ đó + đề ngữ pháp', 'Sẵn sàng']} step={1} note="thường 15–40 giây" />}
       <div className="ms-list">
         {Array.from({ length: avail + 1 }, (_, i) => i + 1).map((k) => {
-          const best = P.ms?.[k], locked = k > avail;
+          const best = P.ms?.[k], locked = k > avail && !perm.admin;
           return (
             <div key={k} className={'ms-item ' + (locked ? 'locked' : best !== undefined ? (best >= 70 ? 'pass' : 'tried') : '')}>
               <span className="ms-n">{locked ? '🔒' : best !== undefined && best >= 70 ? '🏅' : '🏁'} Mốc {k}</span>

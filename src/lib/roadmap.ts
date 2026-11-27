@@ -5,6 +5,7 @@
 //   mỗi mốc trên 5.5 chia số từ cần thêm cho các tuần của mốc đó. Từ trong kho học theo thứ tự nên tuần w = [start, start + words).
 import { WEEK_GOALS, type WeekGoal } from '../data';
 import type { Progress } from './progress';
+import { perm } from './perm';
 
 /** Vốn từ ước tính cho từng mức IELTS (nội suy giữa các mốc) */
 const WORDS_AT: [band: number, words: number][] = [[2, 0], [4, 2000], [5.5, 3000], [6.5, 5000], [7.5, 7000], [9, 10000]];
@@ -143,4 +144,4 @@ export function weekRange(P: Progress, w: number): [number, number] {
 }
 /** Các tuần từ mốc IELTS 7.5 trở lên đang KHOÁ (chưa mở cho học) */
 export const LOCK_BAND = 7.5;
-export const weekLocked = (g?: { band: string } | null) => !!g && (parseFloat(g.band) || 0) >= LOCK_BAND;
+export const weekLocked = (g?: { band: string } | null) => !!g && !perm.unlock && (parseFloat(g.band) || 0) >= LOCK_BAND;

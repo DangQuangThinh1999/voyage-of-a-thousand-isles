@@ -1,5 +1,6 @@
 // Gọi API AI của app: tự gửi kèm vé đăng nhập (để máy chủ đếm lượt theo người) và báo rõ khi chưa đăng nhập / hết lượt / đủ người.
 import { Cloud } from './cloud';
+import { perm } from './perm';
 import { emit, toast } from '../state/store';
 
 let lastWarn = 0;
@@ -31,6 +32,7 @@ export function refreshQuota(delay = 0) {
   qT = setTimeout(async () => {
     try {
       const r = await aiFetch('/api/admin?me=1'), d = await r.json();
+      perm.admin = !!d.admin; perm.unlock = !!(d.admin || d.unlock);
       Object.assign(quota, { on: !!d.enabled, login: !!d.login, admin: !!d.admin, used: d.used || 0, limit: d.limit ?? null, remaining: d.remaining ?? null });
       emit();
     } catch { /* bỏ qua */ }

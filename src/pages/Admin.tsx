@@ -8,7 +8,7 @@ import { baseOf, generateToPool, staticIds } from '../state/exam';
 import { roadmap } from '../lib/roadmap';
 
 interface Me { enabled: boolean; login?: boolean; admin?: boolean; used?: number; limit?: number | null; remaining?: number | null; member?: boolean }
-interface U { uid: string; email: string; name: string; used: number; limit: number; last: string; joined: string; total: number }
+interface U { uid: string; email: string; name: string; used: number; limit: number; last: string; joined: string; total: number; unlock?: boolean }
 interface AdminData extends Me { day: string; users: U[]; max: number; idleDays: number; totalFree: number; usedAll: number; reserved: number; adminShare: number }
 
 async function load(): Promise<Me | AdminData | null> {
@@ -81,6 +81,7 @@ export function Admin() {
             <div className="row gap">
               <input className="ans adm-num" type="number" min={0} max={500} value={edit[u.uid] ?? String(u.limit)} onChange={(e) => setEdit({ ...edit, [u.uid]: e.target.value })} />
               <button className="btn sm" onClick={() => post({ action: 'limit', uid: u.uid, limit: +(edit[u.uid] ?? u.limit) })}>Lưu</button>
+              <button className={'btn sm ' + (u.unlock ? '' : 'ghost')} title="Mở / khoá các tuần mốc IELTS 7.5+ cho người này" onClick={() => post({ action: 'unlock', uid: u.uid, unlock: !u.unlock })}>{u.unlock ? '🔓 Đã mở 7.5+' : '🔒 Mở 7.5+'}</button>
               <button className="btn ghost sm" onClick={() => askConfirm({ icon: '🗑️', title: `Xoá ${u.name} khỏi danh sách?`, msg: 'Người này mất chỗ; nếu dùng lại sẽ cần còn chỗ trống.', ok: 'Xoá', cancel: 'Hủy', danger: true }).then((ok) => { if (ok) post({ action: 'remove', uid: u.uid }); })}>Xoá</button>
             </div>
           </div>

@@ -1,7 +1,7 @@
 // Soạn sẵn ĐỀ CÓ SẴN (3 đề mỗi tuần 1–12 và mỗi mức band 6.0–9.0) bằng API soạn đề đã deploy (/api/exam, Gemini).
 // Chạy: npx esbuild tools/gen-exams.ts --bundle --platform=node --outfile=<tmp>/gen-exams.cjs && node <tmp>/gen-exams.cjs [base-url]
 // Ghi vào data/exams/<id>.json (id: w01-1 … w12-3, b6.0-1 … b9.0-3). File đã có thì bỏ qua (chạy lại được nhiều lần).
-// Giới hạn ~40 lượt gọi/giờ để chừa lượt cho người dùng app (API giới hạn 60 lượt/giờ mỗi IP).
+// Giới hạn ~50 lượt gọi/giờ để chừa lượt cho người dùng app (API giới hạn 60 lượt/giờ mỗi IP).
 import fs from 'node:fs';
 import path from 'node:path';
 import { UNITS, WEEK_GOALS } from '../src/data/a1';
@@ -10,7 +10,7 @@ import meta from '../src/data/bank-meta.json';
 const ROOT = path.resolve(__dirname.includes('tools') ? path.join(__dirname, '..') : process.cwd());
 const OUT = path.join(ROOT, 'data/exams');
 const BASE = process.argv[2] || 'https://voyage-of-a-thousand-isles.vercel.app';
-const PER_HOUR = 40, GAP = Math.ceil(3600_000 / PER_HOUR);
+const PER_HOUR = 50, GAP = Math.ceil(3600_000 / PER_HOUR);
 fs.mkdirSync(OUT, { recursive: true });
 
 const bank: string[] = (meta as { f: string }[]).flatMap(({ f }) => (JSON.parse(fs.readFileSync(path.join(ROOT, 'data/vocab', f + '.json'), 'utf8')) as { w: string }[]).map((e) => e.w));
@@ -61,6 +61,9 @@ const okQ = (q: { type: string; options: string[]; answer: number; answer_text: 
   for (const j of todo) {
     try {
       const lr = await call('lr', j), vg = await call('vg', j), ws = await call('ws', j);
+      // bỏ câu gõ đáp án là tên người / tên riêng
+      const noName = (qs: { type: string; q: string; answer_text: string }[]) => qs.filter((q) => q.type !== 'type' || !q.answer_text.split('|').some((a) => /^[A-Z][a-z'-]+( [A-Z][a-z'-]+)*$/.test(a.trim()) && !/^_{3,}/.test(q.q.trim())));
+      lr.listening.questions = noName(lr.listening.questions); lr.reading.questions = noName(lr.reading.questions); vg.questions = noName(vg.questions);
       const exam = { listening: lr.listening, reading: lr.reading, vocab: { questions: vg.questions }, writing: ws.writing, speaking: ws.speaking };
       const qs = [...exam.listening.questions, ...exam.reading.questions, ...exam.vocab.questions];
       if (!qs.length || !qs.every(okQ) || !exam.writing?.task || !exam.speaking?.part2) { console.log(`✗ ${j.id}: dữ liệu thiếu, bỏ qua`); continue; }

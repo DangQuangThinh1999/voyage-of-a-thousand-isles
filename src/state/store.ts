@@ -1,7 +1,8 @@
 // Kho trạng thái nhỏ của app: tiến độ (P), màn hình đang xem, phiên làm bài (S), ôn từ (R), test micro (MT).
 // Các hành động thay đổi trạng thái rồi gọi emit() để React vẽ lại.
 import { useSyncExternalStore } from 'react';
-import { UNITS, type Unit } from '../data';
+import { loadMoreUnits, UNITS, type Unit } from '../data';
+import { LOCK_BAND, roadmap, weekLocked } from '../lib/roadmap';
 import { Cloud } from '../lib/cloud';
 import type { Step, Skill } from '../lib/exercises';
 import { addXPTo, fresh, freshKeep, load, mergeProgress, persist, setGuest, today, type Kind, type Progress } from '../lib/progress';
@@ -48,6 +49,8 @@ export const app = {
   scrollReq: null as null | 'top' | string,
   /** tuần đang mở trong bảng chi tiết tuần (null = đóng) */
   weekSheet: null as number | null,
+  /** đã tải xong các bài học tuần 5+ (tải sau) */
+  unitsReady: false,
 };
 
 let version = 0;
@@ -188,6 +191,7 @@ export function tab(t: Screen, reset = false) {
 }
 /** Xem 1 tuần: tuần có bài học → cuộn tới tuần đó ở trang Học; tuần chưa có bài → mở bảng chi tiết tuần */
 export function goWeek(w: number | string) {
+  if (weekLocked(roadmap(app.P)[+w])) { toast(`🔒 Các tuần từ mốc IELTS ${LOCK_BAND} trở lên đang khoá`); return; }
   if (!UNITS.some((u) => u.week === +w)) { app.weekSheet = +w; emit(); return; }
   go('home', String(w)); app.scrollReq = 'wk-' + w;
 }
@@ -218,6 +222,8 @@ export function initApp() {
     emit();
   }, 15000);
   let wasUser = false;
+  // bài học tuần 5+ tải sau khi app đã hiện; xong thì đọc lại đường dẫn (vd đang mở /tuan-5/yesterday)
+  loadMoreUnits().catch(() => {}).finally(() => { app.unitsReady = true; readHash(); emit(); });
   Cloud.init({ get: () => app.P, merge: mergeCloud, changed: () => {
     const u = !!Cloud.user;
     if (Cloud.resolved && !u) {

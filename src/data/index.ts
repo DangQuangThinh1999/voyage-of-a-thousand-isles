@@ -21,3 +21,18 @@ export const unitById = (id: string): Unit | undefined => UNITS.find((u) => u.id
 export interface WordInfo { en: string; vi: string; em: string; unit: string }
 export const WORDS: Record<string, WordInfo> = {};
 UNITS.forEach((u) => u.words.forEach(([en, vi, em]) => { WORDS[en] = { en, vi, em, unit: u.id }; }));
+
+// ---------- bài học tuần 5 trở đi: tách file riêng (src/data/units/*.ts), TẢI SAU (lazy) để lần mở app đầu nhẹ ----------
+const MORE = import.meta.glob<{ default: Unit[] }>('./units/*.ts');
+let moreP: Promise<void> | null = null;
+/** Tải các gói bài học thêm và gộp vào UNITS (gọi nhiều lần chỉ tải 1 lần) */
+export function loadMoreUnits(): Promise<void> {
+  return moreP || (moreP = Promise.all(Object.values(MORE).map((f) => f())).then((mods) => {
+    for (const m of mods) for (const u of m.default) {
+      if (UNITS.some((x) => x.id === u.id)) continue;
+      UNITS.push(u);
+      u.words.forEach(([en, vi, em]) => { if (!WORDS[en]) WORDS[en] = { en, vi, em, unit: u.id }; });
+    }
+    UNITS.sort((a, b) => a.week - b.week);
+  }));
+}

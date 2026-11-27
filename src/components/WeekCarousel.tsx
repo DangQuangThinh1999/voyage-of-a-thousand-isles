@@ -2,7 +2,7 @@
 import { motion } from 'motion/react';
 import { useRef } from 'react';
 import { vocabWeek, type Progress } from '../lib/progress';
-import type { RoadWeek } from '../lib/roadmap';
+import { weekLocked, type RoadWeek } from '../lib/roadmap';
 import { goWeek, tab } from '../state/store';
 
 const tone = (b: number) => (b >= 7 ? ['#f472b6', '#a78bfa'] : b >= 6 ? ['#a78bfa', '#60a5fa'] : b >= 5 ? ['#22d3ee', '#3b82f6'] : ['#34d399', '#22d3ee']);
@@ -17,7 +17,7 @@ export function WeekCarousel({ P, weeks }: { P: Progress; weeks: [number, RoadWe
         {weeks.map(([w, g], i) => {
           const vw = vocabWeek(P, w), b = parseFloat(g.band) || 0, [c1, c2] = tone(b);
           return (
-            <motion.div key={w} className="wk-slide" style={{ ['--c1' as string]: c1, ['--c2' as string]: c2 }}
+            <motion.div key={w} className={'wk-slide' + (weekLocked(g) ? ' locked' : '')} style={{ ['--c1' as string]: c1, ['--c2' as string]: c2 }}
               initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ delay: Math.min(0.3, i * 0.04) }} whileHover={{ y: -4 }}>
               <div className="ws-top"><span className="ws-n">Tuần {w}</span><span className="ws-cefr">{g.cefr}</span></div>
               <div className="ws-band"><small>{g.milestone ? '🏁 Đạt mốc' : 'Hướng tới'}</small><b>IELTS {g.band}</b></div>
@@ -25,7 +25,8 @@ export function WeekCarousel({ P, weeks }: { P: Progress; weeks: [number, RoadWe
               {g.special && <p className="ws-special">⭐ {g.special}</p>}
               <div className="ws-vocab"><span>📗 Từ vựng</span><span>{vw.done}/{vw.size}</span></div>
               <div className="ws-bar"><i style={{ width: `${(vw.done / Math.max(1, vw.size)) * 100}%` }} /></div>
-              <div className="ws-acts"><button onClick={() => tab('words')}>Học từ</button><button onClick={() => goWeek(w)}>Chi tiết</button></div>
+              {weekLocked(g) ? <div className="ws-acts"><button disabled>🔒 Đang khoá</button></div>
+                : <div className="ws-acts"><button onClick={() => tab('words')}>Học từ</button><button onClick={() => goWeek(w)}>Chi tiết</button></div>}
             </motion.div>
           );
         })}

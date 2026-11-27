@@ -141,3 +141,6 @@ export function weekRange(P: Progress, w: number): [number, number] {
   const s = last ? last.start + last.words : 0;
   return [s, Math.min(BANK_MAX, s + P.settings.wpd * 7)];
 }
+/** Các tuần từ mốc IELTS 7.5 trở lên đang KHOÁ (chưa mở cho học) */
+export const LOCK_BAND = 7.5;
+export const weekLocked = (g?: { band: string } | null) => !!g && (parseFloat(g.band) || 0) >= LOCK_BAND;

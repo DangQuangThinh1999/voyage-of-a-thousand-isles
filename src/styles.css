@@ -983,3 +983,15 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .wk-out ul { margin: 2px 0 0; padding-left: 18px; display: grid; gap: 2px; }
 .wk-out.compact { font-size: .85rem; gap: 6px; margin: 6px 0; }
 .plan-weeks small.pw-gr { color: var(--pri); }
+
+/* Khung chờ khi đang tải dữ liệu (lazy load) */
+.skel { display: grid; gap: 10px; }
+.skel-l, .skel-b { border-radius: 8px; background: linear-gradient(90deg, var(--line) 25%, color-mix(in srgb, var(--line) 40%, transparent) 50%, var(--line) 75%); background-size: 200% 100%; animation: skel 1.2s infinite linear; }
+.skel-l { height: 14px; } .skel-l.w40 { width: 40%; } .skel-l.w70 { width: 70%; }
+.skel-b { height: 64px; flex: 1; }
+@keyframes skel { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* Tuần đang khoá (mốc 7.5+) */
+.wk-slide.locked, .wk-card.locked, .plan-weeks li.locked { opacity: .45; filter: grayscale(.6); }
+.wk-card.locked .wk-h { cursor: not-allowed; }
+.ws-acts button:disabled { cursor: not-allowed; }

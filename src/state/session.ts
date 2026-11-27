@@ -7,7 +7,7 @@ import { bankRange } from '../data/bank';
 import { KINDS, SKILL_OF, tallySkill, unitProg, weekUnits, type Kind } from '../lib/progress';
 import { weekRange } from '../lib/roadmap';
 import { addNewWords, promoteWords } from '../lib/srs';
-import { hear, micErr, micLive, roleFor, speak, SR, stopListening, type Role } from '../lib/speech';
+import { hear, micErr, micLive, roleFor, scriptRoles, speak, speakerOf, SR, stopListening, stripSpeaker, type Role } from '../lib/speech';
 import { checkTyped, norm, scoreSpeech, tokens } from '../lib/text';
 import { sameAs } from '../lib/lex';
 import { altCorrect } from '../lib/sentence';
@@ -70,7 +70,7 @@ export function beginStep() {
   if (S.kind === 'test') app.curSkill = SKILL_OF_STEP[st.t] || null;
   if (st.t === 'learn' || st.t === 'pickWord') speak(st.w[0]);
   if (st.t === 'pickSentence' || st.t === 'dictation') speak(st.s[0]);
-  if (st.t === 'lquestion' && (S.i === 0 || S.steps[S.i - 1].t !== 'lquestion')) speak(passageText(st.u), false, roleFor(st.u.id));
+  if (st.t === 'lquestion' && (S.i === 0 || S.steps[S.i - 1].t !== 'lquestion')) playPassage(st.u);
 }
 
 function startTimer() {
@@ -204,6 +204,24 @@ export function skipSpeak() { answer(false, 'Bỏ qua, lần sau luyện thêm n
 export function selfSpeak(ok: boolean) { answer(ok); }
 export function toggleVi() { const ss = cur().state; ss.showVi = !ss.showVi; emit(); }
 export function showLine(i: number) { const S = cur(); S.state.line = i; emit(); speak(S.u.reading[i][0]); }
+
+let passSeq = 0;
+/** Đọc đoạn văn của bài: hội thoại ("Waiter: …") thì mỗi người 1 giọng như đề IELTS, đoạn kể thì 1 giọng riêng của bài */
+export async function playPassage(u: Unit, slow = false) {
+  const lines = u.reading.map((r) => r[0]), my = ++passSeq;
+  if (!lines.some((l) => speakerOf(l))) { await speak(passageText(u), slow, roleFor(u.id)); return; }
+  const roles = scriptRoles(lines);
+  for (let i = 0; i < lines.length && my === passSeq; i++) await speak(stripSpeaker(lines[i]), slow, roles[i]);
+}
+/** Nút nghe đoạn văn (bài kiểm tra: tính lượt nghe như nút loa) */
+export function sayPassage(u: Unit, { slow = false, limited = false } = {}) {
+  if (limited && inTest() && !cur().state.answered) {
+    const ss = cur().state;
+    if (ss.plays >= 2) { toast('Hết lượt nghe (tối đa 2 lần)'); return; }
+    ss.plays++; emit();
+  }
+  playPassage(u, slow);
+}
 
 /** Nút loa. limited = nút có giới hạn 2 lượt nghe trong bài kiểm tra. */
 export function say(text: string, { slow = false, limited = false, role }: { slow?: boolean; limited?: boolean; role?: Role } = {}) {

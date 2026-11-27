@@ -32,7 +32,7 @@ function VocabRow({ w, P }: { w: number; P: Progress }) {
 }
 
 export function Home() {
-  const { P } = useApp();
+  const { P, unitsReady } = useApp();
   const WG = roadmap(P);
   const weeks = [...new Set(UNITS.map((u) => u.week))];
   return (
@@ -67,6 +67,7 @@ export function Home() {
           <div className="units">{UNITS.map((u, i) => [u, i] as const).filter(([u]) => u.week === w).map(([u]) => <UnitCard key={u.id} u={u} P={P} />)}</div>
         </Fragment>
       ))}
+      {!unitsReady && <div className="card skel" aria-busy="true"><div className="skel-l w40" /><div className="skel-l w70" /><div className="row gap"><div className="skel-b" /><div className="skel-b" /><div className="skel-b" /></div><p className="muted small m-0">⏳ Đang tải bài học các tuần tiếp theo…</p></div>}
       <div className="sec-h"><h3>🧭 Các tuần tiếp theo</h3><span className="muted small">Tổng {totalWeeks(P)} tuần tới IELTS {P.settings.target} · vuốt ngang để xem</span></div>
       <WeekCarousel P={P} weeks={Object.entries(WG).filter(([w]) => !weeks.includes(+w)).map(([w, g]) => [+w, g])} />
       <p className="muted center small">Học bài nào trước cũng được · <b className="muted">mờ</b> = chưa học, <b style={{ color: '#fb923c' }}>cam</b> → <b style={{ color: '#fbbf24' }}>vàng</b> → <b style={{ color: '#22d3ee' }}>xanh dương</b> = đang học, <b className="okc">xanh lá</b> = xong.<br />Đã biết rồi? Bấm <b>⚡ Kiểm tra nhanh</b>: đúng hết 100% là qua luôn cả tuần.</p>

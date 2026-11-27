@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 import { UNITS } from '../data';
-import { roadmap } from '../lib/roadmap';
+import { roadmap, weekLocked } from '../lib/roadmap';
 import { doneCount, levelNow, vocabWeek, weekDone, weekNow, weekUnits } from '../lib/progress';
 import { go, goWeek, withLeave, tab, useApp } from '../state/store';
 import { TargetPicker } from './TargetPicker';
@@ -28,11 +28,11 @@ export function Sidebar() {
           const parts = us.length * 5 + vw.size, got = us.reduce((a, u) => a + doneCount(P, u.id), 0) * 1 + (vw.done / Math.max(1, vw.size)) * vw.size;
           const pct = parts ? got / parts : 0, o = isOpen(w);
           return (
-            <div key={w} className={['wk-card', done && 'done', w === now && 'now'].filter(Boolean).join(' ')}>
-              <button className="wk-h" onClick={() => setOpen({ ...open, [w]: !o })} aria-expanded={o}>
+            <div key={w} className={['wk-card', done && 'done', w === now && 'now', weekLocked(g) && 'locked'].filter(Boolean).join(' ')}>
+              <button className="wk-h" disabled={weekLocked(g)} onClick={() => setOpen({ ...open, [w]: !o })} aria-expanded={o}>
                 <MiniRing pct={done ? 1 : pct} />
                 <span className="flex-1 text-left"><b>Tuần {w}</b>{w === now && <span className="now-tag">đang học</span>}<small className="block">{g.cefr} · {us.length ? `${us.length} chủ đề` : 'từ vựng'}</small></span>
-                <span className="band-chip">🎯 {g.band}</span>
+                <span className="band-chip">{weekLocked(g) ? '🔒' : '🎯'} {g.band}</span>
                 <motion.span className="car" animate={{ rotate: o ? 90 : 0 }}>›</motion.span>
               </button>
               <AnimatePresence initial={false}>

@@ -42,6 +42,8 @@ export interface Progress {
   resetAt?: number;
   /** tên hiển thị trên bảng xếp hạng, số lần đã đặt/đổi tên, điểm đã tiêu (đổi tên…) */
   nick?: string; nickN?: number; spent?: number;
+  /** khu vườn: cây, nhà, đồ trang trí (đổi bằng điểm), thời tiết đang chọn; at = lần sửa cuối (để đồng bộ) */
+  garden?: { items: { id: number; k: string; x: number; y: number; xp0: number }[]; owned: string[]; weather: string; at: number };
   /** thống kê từng kỹ năng: [đúng, tổng] */
   sk?: Record<string, [number, number]>;
   /** ngữ pháp đã học (làm đúng câu thử) */
@@ -185,6 +187,7 @@ export function mergeProgress(P: Progress, r: Progress | null | undefined): Prog
   // Tên: lấy bên đã đổi nhiều lần hơn; điểm đã tiêu không bao giờ giảm khi đồng bộ
   m.nickN = Math.max(P.nickN || 0, r.nickN || 0); m.nick = ((P.nickN || 0) >= (r.nickN || 0) ? P.nick : r.nick) || P.nick || r.nick;
   m.spent = Math.max(P.spent || 0, r.spent || 0);
+  m.garden = (P.garden?.at || 0) >= (r.garden?.at || 0) ? P.garden : r.garden;
   { const byId = new Map<number, NonNullable<Progress['mist']>[number]>(); for (const x of [...(older.mist || []), ...(newer.mist || [])]) { const o = byId.get(x.id); if (!o || x.ok >= o.ok) byId.set(x.id, x); } m.mist = [...byId.values()].sort((a, b) => b.id - a.id).slice(0, 300); }
   m.sk = { ...(older.sk || {}) };
   for (const [k, v] of Object.entries(newer.sk || {})) { const o = m.sk[k] || [0, 0]; m.sk[k] = v[1] >= o[1] ? v : o; }

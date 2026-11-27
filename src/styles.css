@@ -1019,3 +1019,40 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 .cast { margin: 6px 0; padding: 8px 12px; border-radius: 10px; background: var(--pri-soft); font-size: .95rem; }
 details.qvi { margin: 2px 0 6px; font-size: .85rem; color: var(--muted); } details.qvi summary { cursor: pointer; color: var(--pri); }
+
+/* Hiệu ứng thưởng */
+.fx-layer { position: fixed; inset: 0; pointer-events: none; z-index: 200; }
+.fx-text { position: absolute; transform: translate(-50%, -50%); font-weight: 900; font-size: 1.3rem; color: #fbbf24; text-shadow: 0 2px 10px rgba(0,0,0,.6); white-space: nowrap; }
+.fx-text.big { font-size: 2rem; }
+.fx-bit { position: absolute; font-size: 1.2rem; transform: translate(-50%, -50%); }
+
+/* Khu vườn */
+.pts { color: #fbbf24; }
+.ev-banner { padding: 6px 10px; border-radius: 10px; background: color-mix(in srgb, #f472b6 18%, transparent); font-size: .9rem; }
+.garden { position: relative; height: 380px; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); margin-bottom: 14px; background: linear-gradient(#7dd3fc, #bae6fd 45%, #4ade80 45%, #16a34a); }
+.garden.w-night { background: linear-gradient(#0f172a, #1e3a8a 45%, #166534 45%, #14532d); }
+.garden.w-rain, .garden.w-cloud { background: linear-gradient(#64748b, #94a3b8 45%, #22c55e 45%, #15803d); }
+.garden.w-snow { background: linear-gradient(#cbd5e1, #e2e8f0 45%, #f8fafc 45%, #e2e8f0); }
+.garden.w-sunset { background: linear-gradient(#f97316, #fbbf24 45%, #4ade80 45%, #166534); }
+.garden.w-rainbow { background: linear-gradient(#a5f3fc, #e0f2fe 45%, #4ade80 45%, #16a34a); }
+.sky { position: absolute; inset: 0 0 55% 0; }
+.sky-em { position: absolute; right: 18px; top: 12px; font-size: 2.2rem; }
+.sky i { position: absolute; top: -10px; font-style: normal; color: #fff; animation: fall 1.6s linear infinite; }
+.sky i.rain { width: 2px; height: 14px; background: rgba(255,255,255,.7); animation-duration: .8s; }
+.garden.w-rain .sky, .garden.w-snow .sky { inset: 0; }
+@keyframes fall { to { transform: translateY(400px); } }
+.ground { position: absolute; inset: 45% 0 0 0; }
+.g-item { position: absolute; transform: translate(-50%, -50%); font-size: 2.2rem; background: none; border: 0; padding: 0; line-height: 1; filter: drop-shadow(0 4px 4px rgba(0,0,0,.25)); }
+.g-item.big { font-size: 3.2rem; } .g-item.on { outline: 2px dashed #fff; border-radius: 10px; }
+.g-item .fruit { position: absolute; right: -6px; top: -6px; font-size: 1.1rem; }
+.g-empty { position: absolute; inset: 30% 10px auto; text-align: center; color: #fff; font-weight: 700; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+.g-info { display: grid; gap: 6px; }
+.shop { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; margin-top: 10px; }
+.shop-it { display: grid; justify-items: center; gap: 2px; padding: 10px 6px; border-radius: 14px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.shop-it .em { font-size: 2rem; } .shop-it small { color: #fbbf24; font-weight: 700; }
+.shop-it.on { border-color: var(--pri); background: var(--pri-soft); } .shop-it.poor { opacity: .55; }
+@media (max-width: 640px) { .garden { height: 300px; } }
+
+.cloze { line-height: 2.2; }
+.cloze .blank { font: inherit; padding: 0 6px; margin: 0 2px; border: 0; border-bottom: 2px solid var(--pri); background: var(--pri-soft); color: var(--ink); border-radius: 6px 6px 0 0; text-align: center; }
+.cloze .blank.ok { border-color: var(--good); background: var(--good-soft); } .cloze .blank.bad { border-color: var(--bad); background: var(--bad-soft); text-decoration: line-through; }

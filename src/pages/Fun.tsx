@@ -7,10 +7,12 @@ import { Dropdown } from '../components/Dropdown';
 import { TapText } from '../components/TapText';
 import { LevelPicker, TopicPicker, topicAngle } from '../components/TopicPicker';
 import { bankRange, firstSense, type BankWord } from '../data/bank';
-import { speak } from '../lib/speech';
+import { LANG_NAME, roleFor, speak } from '../lib/speech';
 import { shuffle } from '../lib/util';
 import { useGenPref } from '../state/prefs';
-import { addXP } from '../state/store';
+import { addXP, go, useApp } from '../state/store';
+import { at, celebrate } from '../components/Celebrate';
+import { balance } from '../lib/nick';
 
 /** Đoạn từ trong kho theo mức độ */
 const RANGE: Record<string, [number, number]> = { A1: [0, 1000], A2: [1000, 2500], B1: [2500, 4000], B2: [4000, 6000], C1: [6000, 8000], C2: [8000, 10012] };
@@ -19,7 +21,8 @@ const GAMES = [
   ['speed', '⚡', 'Đua tốc độ', '60 giây, chọn nghĩa đúng nhiều nhất'],
   ['scramble', '🔤', 'Xếp chữ', 'Sắp lại chữ cái thành từ đúng'],
   ['listen', '👂', 'Nghe đoán từ', 'Nghe rồi gõ lại từ'],
-  ['read', '📚', 'Đọc có hình', 'Bài đọc ngắn kèm ảnh, chạm từ để xem nghĩa'],
+  ['cloze', '📸', 'Nhìn ảnh điền từ', 'Đọc đoạn văn có ảnh, điền từ còn thiếu theo ngữ cảnh'],
+  ['lcloze', '🎧', 'Nghe điền từ', 'Nghe đoạn văn (giọng đổi mỗi ván), điền từ còn thiếu'],
 ] as const;
 type Game = (typeof GAMES)[number][0];
 const vi = (w: BankWord) => firstSense(w.vi).replace(/^\(.*?\)\s*/, '');
@@ -45,9 +48,12 @@ function Match({ cefr, round, next }: { cefr: string; round: number; next: () =>
   const [sel, setSel] = useState<string | null>(null), [done, setDone] = useState<string[]>([]), [bad, setBad] = useState<string | null>(null), [miss, setMiss] = useState(0);
   useEffect(() => { setDone([]); setSel(null); setMiss(0); }, [ws]);
   if (!ws) return <Loading />;
-  const pick = (w: string) => {
+  const pick = (w: string, e: React.MouseEvent) => {
     if (!sel) return;
-    if (w === sel) { setDone([...done, w]); speak(w); setSel(null); if (done.length + 1 === ws.length) addXP(3); }
+    if (w === sel) {
+      setDone([...done, w]); speak(w); setSel(null); addXP(1); celebrate('+1 ⭐', at(e));
+      if (done.length + 1 === ws.length) { addXP(3); setTimeout(() => celebrate('🏆 Thắng! +3 ⭐', { big: true }), 300); }
+    }
     else { setBad(w); setMiss(miss + 1); setTimeout(() => setBad(null), 400); }
   };
   return (
@@ -55,9 +61,9 @@ function Match({ cefr, round, next }: { cefr: string; round: number; next: () =>
       <div className="row between"><b>🧩 Chọn 1 từ bên trái rồi chọn nghĩa đúng bên phải</b><span className="muted small">sai {miss} lần</span></div>
       <div className="match">
         <div>{ws.map((w) => <button key={w.w} disabled={done.includes(w.w)} className={'opt ' + (sel === w.w ? 'on' : '') + (done.includes(w.w) ? ' ok' : '')} onClick={() => { setSel(w.w); speak(w.w); }}>{w.w}</button>)}</div>
-        <div>{right.map((w) => <button key={w.w} disabled={done.includes(w.w)} className={'opt ' + (done.includes(w.w) ? 'ok' : bad === w.w ? 'bad' : '')} onClick={() => pick(w.w)}>{vi(w)}</button>)}</div>
+        <div>{right.map((w) => <button key={w.w} disabled={done.includes(w.w)} className={'opt ' + (done.includes(w.w) ? 'ok' : bad === w.w ? 'bad' : '')} onClick={(e) => pick(w.w, e)}>{vi(w)}</button>)}</div>
       </div>
-      {done.length === ws.length && <div className="center"><p className="okc">🎉 Xong! Sai {miss} lần · +3 XP</p><button className="btn" onClick={next}>🎲 Ván mới</button></div>}
+      {done.length === ws.length && <div className="center"><p className="okc">🎉 Xong! Sai {miss} lần · +{ws.length + 3} ⭐</p><button className="btn" onClick={next}>🎲 Ván mới</button></div>}
     </section>
   );
 }
@@ -69,7 +75,7 @@ function Speed({ cefr, round, next }: { cefr: string; round: number; next: () =>
   useEffect(() => { setI(0); setScore(0); setEnd(0); }, [ws]);
   useEffect(() => { if (!end) return; const t = setInterval(() => setNow(Date.now()), 250); return () => clearInterval(t); }, [end]);
   const left = end ? Math.max(0, Math.ceil((end - now) / 1000)) : 60, over = !!end && left === 0;
-  useEffect(() => { if (over) { setBest('speed-' + cefr, score); if (score) addXP(Math.min(10, score)); } }, [over]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (over) { setBest('speed-' + cefr, score); if (score) celebrate(`⏱️ ${score} từ!`, { big: true }); } }, [over]); // eslint-disable-line react-hooks/exhaustive-deps
   const w = ws?.[i % (ws?.length || 1)];
   const opts = useMemo(() => (ws && w ? shuffle([w, ...shuffle(ws.filter((x) => x !== w)).slice(0, 3)]) : []), [ws, w]);
   if (!ws || !w) return <Loading />;
@@ -79,7 +85,7 @@ function Speed({ cefr, round, next }: { cefr: string; round: number; next: () =>
     <section className={'card fun ' + fb}>
       <div className="row between"><b>⏱️ {left}s</b><b>⭐ {score}</b></div>
       <div className="fun-word">{w.w} <span className="ipa inline">{w.ipa}</span></div>
-      <div className="fun-opts">{opts.map((o) => <button key={o.w} className="opt" onClick={() => { const ok = o === w; setScore(score + (ok ? 1 : 0)); setFb(ok ? 'ok' : 'bad'); setTimeout(() => setFb(''), 250); setI(i + 1); }}>{vi(o)}</button>)}</div>
+      <div className="fun-opts">{opts.map((o) => <button key={o.w} className="opt" onClick={(e) => { const ok = o === w; setScore(score + (ok ? 1 : 0)); if (ok) { addXP(1); celebrate('+1 ⭐', at(e)); } setFb(ok ? 'ok' : 'bad'); setTimeout(() => setFb(''), 250); setI(i + 1); }}>{vi(o)}</button>)}</div>
     </section>
   );
 }
@@ -90,14 +96,15 @@ function Spell({ cefr, round, next, hear }: { cefr: string; round: number; next:
   useEffect(() => { setI(0); setV(''); setOk(null); setScore(0); }, [ws]);
   const w = ws?.[i];
   const mix = useMemo(() => { if (!w) return ''; let m = w.w; for (let k = 0; k < 5 && m === w.w; k++) m = shuffle(w.w.split('')).join(''); return m; }, [w]);
-  useEffect(() => { if (hear && w) setTimeout(() => speak(w.w), 300); }, [hear, w]);
+  const role = useMemo(() => roleFor(String(Date.now()) + round), [round]);
+  useEffect(() => { if (hear && w) setTimeout(() => speak(w.w, false, role), 300); }, [hear, w, role]);
   if (!ws) return <Loading />;
   if (!w) return <section className="card fun center"><div className="huge">🏁</div><h3>Đúng {score}/{ws.length} từ</h3><button className="btn" onClick={next}>🎲 Ván mới</button></section>;
-  const check = () => { const good = v.trim().toLowerCase() === w.w; setOk(good); if (good) { setScore(score + 1); addXP(1); } speak(w.w); };
+  const check = () => { const good = v.trim().toLowerCase() === w.w; setOk(good); if (good) { setScore(score + 1); addXP(1); celebrate('+1 ⭐'); if (i + 1 === ws.length) setTimeout(() => celebrate('🏆 Hoàn thành!', { big: true }), 400); } speak(w.w); };
   return (
     <section className="card fun">
       <div className="row between"><b>{hear ? '👂 Nghe rồi gõ lại từ' : '🔤 Sắp lại thành từ đúng'}</b><span className="muted small">{i + 1}/{ws.length} · đúng {score}</span></div>
-      {hear ? <div className="center"><SayBoth text={w.w} /><p className="muted small m-0">Gợi ý: {vi(w)} · {w.w.length} chữ cái</p></div>
+      {hear ? <div className="center"><SayBoth text={w.w} role={role} /><p className="muted small m-0">Gợi ý: {vi(w)} · {w.w.length} chữ cái</p></div>
         : <><div className="fun-word mono">{mix.toUpperCase().split('').join(' ')}</div><p className="muted center m-0">Nghĩa: {vi(w)}</p></>}
       <form className="row gap" onSubmit={(e) => { e.preventDefault(); if (ok === null) check(); else { setI(i + 1); setV(''); setOk(null); } }}>
         <input className="ans flex-1" value={v} onChange={(e) => setV(e.target.value)} disabled={ok !== null} autoFocus placeholder="Gõ từ…" />
@@ -119,39 +126,74 @@ async function wikiRead(q: string): Promise<Wiki | null> {
   const p = shuffle(good.filter((x) => x.thumbnail).length ? good.filter((x) => x.thumbnail) : good)[0];
   return p ? { title: p.title, text: p.extract || '', img: p.thumbnail?.source, url: `https://simple.wikipedia.org/wiki/${encodeURIComponent(p.title)}` } : null;
 }
-function Read({ cefr, topic, round, next }: { cefr: string; topic: number; round: number; next: () => void }) {
+const STOP = new Set('that this with from have were they their which there been also about when where what into than then them some such other more most many only over after before because while these those would could should very each being called known used make made like just your will said says does done much well even both under between during against'.split(' '));
+const BLANKS: Record<string, number> = { A1: 3, A2: 4, B1: 5, B2: 6, C1: 7, C2: 8 };
+/** Điền từ còn thiếu theo ngữ cảnh: nhìn ảnh + đọc (cloze) hoặc nghe đoạn văn (lcloze). Giọng đọc đổi mỗi ván. */
+function Cloze({ cefr, topic, round, next, listen }: { cefr: string; topic: number; round: number; next: () => void; listen?: boolean }) {
   const [w, setW] = useState<Wiki | null | undefined>(undefined);
+  const [ans, setAns] = useState<Record<number, string>>({}), [done, setDone] = useState(false);
+  const role = useMemo(() => roleFor(String(Date.now()) + round), [round]);
   useEffect(() => {
-    let live = true; setW(undefined);
+    let live = true; setW(undefined); setAns({}); setDone(false);
     const q = topicAngle(topic).split(' ').filter((x) => x.length > 3).slice(0, 3).join(' ');
     wikiRead(q).then((r) => r || wikiRead(topicAngle(-1))).then((r) => live && setW(r)).catch(() => live && setW(null));
     return () => { live = false; };
   }, [topic, round]);
-  if (w === undefined) return <Loading />;
-  if (!w) return <section className="card fun"><p className="muted">Không tải được bài đọc (cần Internet). <button className="btn sm" onClick={next}>Thử lại</button></p></section>;
-  const text = (w.text.match(/[^.!?]+[.!?]+/g) || [w.text]).slice(0, SENTS[cefr] || 4).join(' ').trim();
+  const { text, toks, blanks } = useMemo(() => {
+    if (!w) return { text: '', toks: [] as string[], blanks: [] as number[] };
+    const text = (w.text.replace(/\s*\([^)]*\)/g, '').match(/[^.!?]+[.!?]+/g) || [w.text]).slice(0, Math.max(2, SENTS[cefr] || 4)).join(' ').trim();
+    const toks = text.split(/(\s+)/), seen = new Set<string>(), cand: number[] = [];
+    toks.forEach((t, i) => { const c = t.replace(/[^A-Za-z]/g, ''); if (i > 2 && /^[a-z]{4,11}$/.test(c) && !STOP.has(c) && !seen.has(c) && !w.title.toLowerCase().includes(c)) { seen.add(c); cand.push(i); } });
+    const n = Math.min(BLANKS[cefr] || 4, cand.length), step = cand.length / Math.max(1, n);
+    return { text, toks, blanks: Array.from({ length: n }, (_, k) => cand[Math.floor(k * step)]) };
+  }, [w, cefr]);
+  const word = (i: number) => toks[i].replace(/[^A-Za-z]/g, '');
+  const bank = useMemo(() => shuffle(blanks.map(word)), [blanks]); // eslint-disable-line react-hooks/exhaustive-deps
+  const easy = ['A1', 'A2', 'B1'].includes(cefr);
+  if (w === undefined) return <section className="card fun"><Loading /><p className="muted small m-0 center">⏳ Đang lấy bài đọc và hình ảnh{listen ? ', chuẩn bị giọng đọc' : ''}…</p></section>;
+  if (!w || !blanks.length) return <section className="card fun"><p className="muted">Không tải được bài (cần Internet). <button className="btn sm" onClick={next}>Thử lại</button></p></section>;
+  const fillNext = (v: string) => { const i = blanks.find((b) => !ans[b]); if (i !== undefined) setAns({ ...ans, [i]: v }); };
+  const check = () => {
+    setDone(true);
+    const ok = blanks.filter((b) => (ans[b] || '').trim().toLowerCase() === word(b).toLowerCase()).length;
+    if (ok) { addXP(ok); celebrate(ok === blanks.length ? `🏆 Đúng hết! +${ok} ⭐` : `+${ok} ⭐`, { big: ok === blanks.length }); }
+  };
+  const used = new Set(Object.values(ans));
   return (
     <section className="card fun">
-      {w.img && <img className="fun-img" src={w.img} alt={w.title} loading="lazy" />}
-      <h3 className="m-0">{w.title} <SayBoth text={text} size="xs" /></h3>
-      <TapText text={text} className="fun-text" />
-      <p className="muted small m-0">👆 Chạm vào từ để xem nghĩa · Độ dài theo mức {cefr} · Nguồn: <a href={w.url} target="_blank" rel="noopener">Simple English Wikipedia</a> (CC BY-SA)</p>
-      <button className="btn" onClick={next}>🎲 Bài khác</button>
+      {w.img && !listen && <img className="fun-img" src={w.img} alt="" loading="lazy" />}
+      <div className="row between wrap"><h3 className="m-0">{listen ? '🎧 Nghe rồi điền từ còn thiếu' : '📸 Nhìn ảnh, điền từ còn thiếu'}</h3>
+        <span className="muted small">{w.title} · {blanks.length} chỗ trống</span></div>
+      {listen && <div className="row gap"><button className="btn glow" onClick={() => speak(text, false, role)}>▶ Nghe đoạn văn</button><button className="btn ghost" onClick={() => speak(text, true, role)}>🐢 Chậm</button><span className="muted small">{role.g === 'f' ? '👩 giọng nữ' : '👨 giọng nam'} · {LANG_NAME[role.lang]}</span></div>}
+      <p className="fun-text cloze">{toks.map((t, i) => {
+        if (!blanks.includes(i)) return <span key={i}>{t}</span>;
+        const right = done && (ans[i] || '').trim().toLowerCase() === word(i).toLowerCase(), tail = t.slice(t.indexOf(word(i)) + word(i).length);
+        return <span key={i}><input className={'blank' + (done ? (right ? ' ok' : ' bad') : '')} size={Math.max(4, word(i).length)} value={ans[i] || ''} disabled={done}
+          onChange={(e) => setAns({ ...ans, [i]: e.target.value })} placeholder={easy ? '…' : word(i)[0] + '…'} />{done && !right && <b className="okc"> {word(i)}</b>}{tail}</span>;
+      })}</p>
+      {easy && !done && <div className="chunk-words">{bank.map((b) => <button key={b} className="chip2" disabled={used.has(b)} onClick={() => fillNext(b)}>{b}</button>)}<button className="chip2" onClick={() => setAns({})}>↺ Xoá</button></div>}
+      {!done ? <button className="btn big" onClick={check}>✅ Kiểm tra</button> : <>
+        <p className="muted small m-0">👇 Đọc lại cả đoạn, chạm vào từ để xem nghĩa:</p>
+        <TapText text={text} className="fun-text" />
+        <p className="muted small m-0">Nguồn: <a href={w.url} target="_blank" rel="noopener">Simple English Wikipedia</a> (CC BY-SA)</p>
+        <button className="btn" onClick={next}>🎲 Bài khác</button>
+      </>}
     </section>
   );
 }
 
 export default function Fun() {
-  const [p, set] = useGenPref();
+  const [p, set] = useGenPref(), { P } = useApp();
   const [g, setG] = useState<Game>('match'), [round, setRound] = useState(0), next = () => setRound(round + 1);
   return (
     <>
       <div className="card pbar">
-        <h2 className="m-0">🎮 Giải trí</h2>
+        <div className="row between wrap"><h2 className="m-0">🎮 Giải trí</h2><span className="row gap"><b className="pts">⭐ {balance(P).toLocaleString('vi-VN')} điểm</b><button className="btn sm" onClick={() => go('garden')}>🌳 Khu vườn</button></span></div>
+        <p className="muted small m-0">Đúng mỗi câu +1 ⭐. Dùng điểm để đổi tên, mua cây, xây nhà trong 🌳 Khu vườn.</p>
         <div className="pbar-row">
           <Dropdown label="Trò chơi" value={g} onChange={(v) => { setG(v); setRound(round + 1); }} options={GAMES.map(([k, ic, l, d]) => ({ value: k, icon: ic, label: l, sub: d }))} />
           <LevelPicker value={p.cefr} onChange={(cefr) => set({ cefr })} />
-          {g === 'read' && <TopicPicker value={p.topic} onChange={(topic) => set({ topic })} />}
+          {(g === 'cloze' || g === 'lcloze') && <TopicPicker value={p.topic} onChange={(topic) => set({ topic })} />}
           <motion.button className="btn glow" whileTap={{ scale: 0.95 }} onClick={next}>🎲 Ván mới</motion.button>
         </div>
       </div>
@@ -159,7 +201,7 @@ export default function Fun() {
         : g === 'speed' ? <Speed key={round} cefr={p.cefr} round={round} next={next} />
         : g === 'scramble' ? <Spell key={round} cefr={p.cefr} round={round} next={next} />
         : g === 'listen' ? <Spell key={round} cefr={p.cefr} round={round} next={next} hear />
-        : <Read key={round} cefr={p.cefr} topic={p.topic} round={round} next={next} />}
+        : <Cloze key={round + g} cefr={p.cefr} topic={p.topic} round={round} next={next} listen={g === 'lcloze'} />}
     </>
   );
 }

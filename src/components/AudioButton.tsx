@@ -13,10 +13,10 @@ export function AudioButton({ text, label = '🔊', slow, limited, className = '
 }
 
 /** Loa + đọc chậm. Trong bài kiểm tra (chưa trả lời): 1 nút loa có giới hạn 2 lượt. */
-export function SayBoth({ text, size }: { text: string; size?: 'xs' }) {
+export function SayBoth({ text, size, role }: { text: string; size?: 'xs'; role?: Role }) {
   const ss = app.S && app.S.state, cls = size ? 'icon ' + size : 'icon';
   if (inTest() && ss && !ss.answered) {
     return <AudioButton text={text} limited className={cls} title="Số lượt nghe còn lại" label={`🔊 còn ${Math.max(0, 2 - ss.plays)}`} />;
   }
-  return <span className="say-both"><AudioButton text={text} className={cls} /><AudioButton text={text} slow className={cls} title="Đọc chậm" label="🐢" /></span>;
+  return <span className="say-both"><AudioButton text={text} role={role} className={cls} /><AudioButton text={text} role={role} slow className={cls} title="Đọc chậm" label="🐢" /></span>;
 }

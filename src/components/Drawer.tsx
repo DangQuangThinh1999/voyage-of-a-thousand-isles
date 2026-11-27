@@ -17,7 +17,8 @@ const ITEMS: [Screen, string, string, string][] = [
   ['grammar', '📐', 'Ngữ pháp', 'Thư viện, sửa lỗi'],
   ['ipa', '🔊', 'Phát âm', 'IPA, trọng âm, nối âm'],
   ['skills', '🎯', 'Luyện tập', 'Đọc · Nghe · Nói · Viết · Ôn từ'],
-  ['fun', '🎮', 'Giải trí', 'Trò chơi từ vựng, đọc có hình'],
+  ['fun', '🎮', 'Giải trí', 'Trò chơi từ vựng, điền từ theo ảnh'],
+  ['garden', '🌳', 'Khu vườn', 'Đổi điểm trồng cây, xây nhà'],
   ['stats', '🏆', 'Thành tựu', 'Cấp độ, xếp hạng'],
   ['plan', '🗺️', 'Lộ trình', 'Kế hoạch từng tuần'],
 ];

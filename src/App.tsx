@@ -12,6 +12,7 @@ import { Tabs } from './components/Tabs';
 import { Toast } from './components/Toast';
 import { SearchModal } from './components/SearchModal';
 import { ConfirmDialog } from './components/ConfirmDialog';
+import { Celebrate } from './components/Celebrate';
 import { WeekSheet } from './components/WeekDetail';
 import { NickModal } from './components/NickModal';
 import { Home } from './pages/Home';
@@ -33,11 +34,13 @@ import { ExamDock } from './components/ExamDock';
 const Stats = lazy(() => import('./pages/Stats'));
 const Fun = lazy(() => import('./pages/Fun'));
 const FunPage = () => <Suspense fallback={<div className="card skel"><div className="skel-l w40" /><div className="skel-b" /></div>}><Fun /></Suspense>;
+const Garden = lazy(() => import('./pages/Garden'));
+const GardenPage = () => <Suspense fallback={<div className="card skel"><div className="skel-l w40" /><div className="skel-b" /></div>}><Garden /></Suspense>;
 const StatsPage = () => <Suspense fallback={<p className="muted">Đang tải…</p>}><Stats /></Suspense>;
 import { app, useApp, type Screen } from './state/store';
 
 const PAGES: Record<Screen, () => JSX.Element | null> = {
-  home: Home, unit: Unit, session: Session, words: Words, grammar: Grammar, speak: Speak, ipa: Pron, skills: Skills, stats: StatsPage, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest, exam: Exam, admin: Admin, fun: FunPage,
+  home: Home, unit: Unit, session: Session, words: Words, grammar: Grammar, speak: Speak, ipa: Pron, skills: Skills, stats: StatsPage, review: Review, journal: Journal, plan: Plan, settings: Settings, mic: MicTest, exam: Exam, admin: Admin, fun: FunPage, garden: GardenPage,
 };
 
 export default function App() {
@@ -56,6 +59,7 @@ export default function App() {
       <Toast />
       <SearchModal />
       <ConfirmDialog />
+      <Celebrate />
       <WeekSheet />
       <NickModal />
       <LoginPrompt />

@@ -4,7 +4,7 @@ import { PRACTICE_SCREENS } from './PracticeBar';
 
 // 4 mục đầu hiện trên thanh dưới của điện thoại (cùng nút ☰ Thêm)
 // Ôn từ, Giao tiếp, Kỹ năng, Viết gộp thành 1 tab 🎯 Luyện tập (chọn hoạt động bằng thanh chọn trong trang)
-export const TABS: [Screen, string, string][] = [['home', '🏠', 'Học'], ['words', '📗', 'Từ mới'], ['skills', '🎯', 'Luyện tập'], ['fun', '🎮', 'Giải trí'], ['grammar', '📐', 'Ngữ pháp'], ['ipa', '🔊', 'Phát âm'], ['stats', '🏆', 'Thành tựu'], ['plan', '🗺️', 'Lộ trình']];
+export const TABS: [Screen, string, string][] = [['home', '🏠', 'Học'], ['words', '📗', 'Từ mới'], ['skills', '🎯', 'Luyện tập'], ['fun', '🎮', 'Giải trí'], ['garden', '🌳', 'Khu vườn'], ['grammar', '📐', 'Ngữ pháp'], ['ipa', '🔊', 'Phát âm'], ['stats', '🏆', 'Thành tựu'], ['plan', '🗺️', 'Lộ trình']];
 /** Thanh tab dưới cùng (ẩn khi đang làm bài) */
 export function Tabs() {
   const { scr } = useApp();

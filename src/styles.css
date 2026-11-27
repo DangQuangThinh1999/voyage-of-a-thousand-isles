@@ -176,6 +176,8 @@ details summary { cursor: pointer; font-weight: 600; }
 .foot:empty { display: none; }
 .fb { width: 100%; border-radius: var(--r); padding: 14px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
 .fb > div { flex: 1 1 220px; }
+.fb > .btn { white-space: nowrap; flex: 0 0 auto; min-width: 0; }
+@media (max-width: 640px) { .fb { padding: 12px; gap: 8px; } .fb > div { flex-basis: 100%; } .fb > .btn.big { flex: 1 1 100%; } }
 .fb.good { background: var(--good-soft); }
 .fb.good b:first-child { color: var(--good); }
 .fb.bad { background: var(--bad-soft); }

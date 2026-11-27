@@ -71,10 +71,15 @@ export const passageText = (u: Unit) => u.reading.map((r) => r[0]).join(' ');
 const others = <T>(a: T[], x: T) => a.filter((y) => y !== x);
 export const BUILD: Record<Kind, (u: Unit) => Step[]> = {
   vocab(u) {
-    const learn: Step[] = u.words.map((w) => ({ t: 'learn', w }));
-    const quiz: Step[] = shuffle(u.words).map((w, i) => (i % 2 ? { t: 'pickEn', w, opts: shuffle([w, ...sample(others(u.words, w), 3)]) }
-      : { t: 'pickWord', w, opts: shuffle([w, ...sample(others(u.words, w), 3)]) }));
-    return [...learn, ...quiz];
+    // chia nhóm ~6 từ: học nhóm → kiểm tra ngay nhóm đó → nhóm tiếp (nhớ tốt hơn học dồn 16 từ rồi mới kiểm tra)
+    const out: Step[] = [], n = Math.ceil(u.words.length / 6), size = Math.ceil(u.words.length / n);
+    for (let g = 0; g < u.words.length; g += size) {
+      const grp = u.words.slice(g, g + size);
+      out.push(...grp.map((w): Step => ({ t: 'learn', w })));
+      out.push(...shuffle(grp).map((w, i): Step => (i % 2 ? { t: 'pickEn', w, opts: shuffle([w, ...sample(others(u.words, w), 3)]) }
+        : { t: 'pickWord', w, opts: shuffle([w, ...sample(others(u.words, w), 3)]) })));
+    }
+    return out;
   },
   listen(u) {
     const words: Step[] = sample(u.words, 4).map((w) => ({ t: 'pickWord', w, opts: shuffle([w, ...sample(others(u.words, w), 3)]) }));

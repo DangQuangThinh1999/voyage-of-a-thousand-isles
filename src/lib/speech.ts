@@ -22,6 +22,55 @@ export function pickVoice(name = getOpts().voice): SpeechSynthesisVoice | null {
   return vs.find((v) => v.name === name) || vs.find((v) => /en-US/i.test(v.lang) && /Google|Natural|Samantha|Aria|Jenny/i.test(v.name))
     || vs.find((v) => /en-US/i.test(v.lang)) || vs[0] || null;
 }
+// ---------- giọng theo vai (kiểu đề IELTS: nam / nữ, giọng Anh – Úc – Mỹ…) ----------
+/** Vai đọc: giới tính + giọng vùng */
+export interface Role { g: 'f' | 'm'; lang: string }
+const FEMALE_V = /female|woman|zira|samantha|susan|hazel|libby|sonia|maisie|aria|jenny|michelle|karen|moira|tessa|fiona|serena|victoria|kate|emma|amy|olivia|natasha|ava|allison|catherine|clara|leah|heera|neerja/i;
+const MALE_V = /\bmale|\bman\b|david|mark|george|daniel|ryan|guy|thomas|fred|alex\b|oliver|arthur|james|william|brian|christopher|eric|liam|william|connor|prabhat|ravi|gordon|lee\b/i;
+const genderOfVoice = (v: SpeechSynthesisVoice): 'f' | 'm' | null => (FEMALE_V.test(v.name) ? 'f' : MALE_V.test(v.name) ? 'm' : null);
+/** Chọn giọng gần với vai nhất: đúng giọng vùng + đúng giới tính. known = giới tính của giọng đã biết (khỏi chỉnh cao độ) */
+function pickRoleVoice(r: Role): { v: SpeechSynthesisVoice | null; known: boolean } {
+  let best: SpeechSynthesisVoice | null = null, bs = -1e9;
+  for (const v of englishVoices()) {
+    const g = genderOfVoice(v), lang = v.lang.replace('_', '-');
+    const s = (lang === r.lang ? 4 : lang.slice(0, 2) === 'en' ? 0 : -9) + (g === r.g ? 3 : g ? -6 : 0) + (/Google|Natural|Online/i.test(v.name) ? 1 : 0);
+    if (s > bs) { bs = s; best = v; }
+  }
+  return { v: best, known: !!best && genderOfVoice(best) === r.g };
+}
+const ACCENT: [RegExp, string][] = [[/austral/i, 'en-AU'], [/americ|\bus\b|usa/i, 'en-US'], [/canad/i, 'en-CA'], [/zealand|\bnz\b/i, 'en-NZ'], [/ireland|irish/i, 'en-IE'], [/india/i, 'en-IN'], [/brit|engl|uk\b|scot/i, 'en-GB']];
+export const LANG_NAME: Record<string, string> = { 'en-GB': 'giọng Anh', 'en-AU': 'giọng Úc', 'en-US': 'giọng Mỹ', 'en-CA': 'giọng Canada', 'en-NZ': 'giọng New Zealand', 'en-IE': 'giọng Ireland', 'en-IN': 'giọng Ấn' };
+export const accentLang = (accent = '') => ACCENT.find(([re]) => re.test(accent))?.[1] || 'en-GB';
+const F_NAMES = /^(mrs|ms|miss|woman|girl|lady|mother|mum|mom|sister|wife|aunt|she|anna|anne|mary|sarah|sara|emma|emily|lucy|kate|katie|jane|julia|laura|lisa|linda|susan|sophie|sophia|olivia|amy|rachel|helen|jessica|jenny|alice|lily|lan|mai|hoa|linh|chloe|grace|hannah|maria|nina|rose|zoe|claire|karen|ellen|diana|fiona|tina|amanda|beth|ruth|vicky|joanna|natalie|nicole|megan|lauren|anna|eva|ella|mia|ava)\b/i;
+const M_NAMES = /^(mr|man|boy|father|dad|brother|husband|uncle|he|tom|john|james|david|peter|paul|mark|mike|michael|jack|sam|ben|dan|daniel|nam|minh|tuan|alex|chris|steve|george|harry|henry|adam|andrew|robert|richard|william|oliver|ryan|kevin|tony|jim|joe|bob|nick|matt|simon|frank|ed|edward|luke|max|leo|noah|ethan|liam|lucas)\b/i;
+/** Tên người nói ở đầu câu "Tên: …" */
+export const speakerOf = (line: string) => line.match(/^([A-Z][\w .'-]{0,20}):\s*/)?.[1] || '';
+export const stripSpeaker = (line: string) => line.replace(/^[A-Z][\w .'-]{0,20}:\s*/, '');
+/** Gán vai cho từng câu của bài nghe: mỗi người nói 1 giọng riêng (nam/nữ đoán theo tên, chưa rõ thì xen kẽ), giọng vùng theo accent của bài */
+export function scriptRoles(lines: string[], accent = ''): Role[] {
+  const base = accentLang(accent), alt = ['en-GB', 'en-AU', 'en-US'].filter((x) => x !== base);
+  const who = new Map<string, Role>();
+  let lastG: 'f' | 'm' = 'm';
+  return lines.map((l) => {
+    const name = speakerOf(l) || '·narrator';
+    let r = who.get(name);
+    if (!r) {
+      const g: 'f' | 'm' = F_NAMES.test(name) ? 'f' : M_NAMES.test(name) ? 'm' : lastG === 'f' ? 'm' : 'f';
+      // người nói thứ 3 trở đi (thảo luận nhiều người, kiểu Section 3) dùng giọng vùng khác
+      r = { g, lang: who.size < 2 ? base : alt[(who.size - 2) % alt.length] };
+      who.set(name, r);
+    }
+    lastG = r.g;
+    return r;
+  });
+}
+/** Giọng cố định cho 1 bài (đọc đoạn văn): đổi luân phiên nam/nữ, Anh/Úc/Mỹ theo id bài để tai quen nhiều giọng */
+export function roleFor(id: string): Role {
+  let h = 0; for (const c of id) h = (h * 31 + c.charCodeAt(0)) | 0;
+  const R: Role[] = [{ g: 'f', lang: 'en-GB' }, { g: 'm', lang: 'en-AU' }, { g: 'f', lang: 'en-US' }, { g: 'm', lang: 'en-GB' }, { g: 'f', lang: 'en-AU' }, { g: 'm', lang: 'en-US' }];
+  return R[Math.abs(h) % R.length];
+}
+
 // Điện thoại (iOS Safari, Chrome Android) chỉ cho phát âm thanh sau khi người dùng chạm vào trang lần đầu,
 // và hay "nuốt" câu nếu gọi speak() ngay sau cancel(). Mở khóa ở lần chạm đầu tiên.
 // Máy không có giọng đọc (trình duyệt trong Zalo/Messenger, Android thiếu giọng tiếng Anh): phát file mp3 từ /api/tts.
@@ -54,7 +103,7 @@ function chunks(t: string): string[] {
 }
 let audioSeq = 0;
 /** Phát bằng file mp3 (dự phòng) */
-async function speakAudio(text: string, slow: boolean): Promise<void> {
+async function speakAudio(text: string, slow: boolean, role?: Role): Promise<void> {
   const my = ++audioSeq;
   if (!player) player = new Audio();
   for (const c of chunks(text)) {
@@ -62,22 +111,25 @@ async function speakAudio(text: string, slow: boolean): Promise<void> {
     await new Promise<void>((res) => {
       const a = player!;
       a.onended = a.onerror = () => res();
-      a.src = `/api/tts?q=${encodeURIComponent(c)}${slow ? '&slow=1' : ''}`;
+      a.src = `/api/tts?q=${encodeURIComponent(c)}${slow ? '&slow=1' : ''}${role ? '&tl=' + role.lang : ''}`;
       a.playbackRate = 1;
       a.play().catch(() => res());
     });
   }
 }
-export function speak(text: string, slow = false): Promise<void> {
+/** Đọc tiếng Anh. role = đọc theo vai (nam/nữ, giọng vùng) cho bài nghe kiểu IELTS */
+export function speak(text: string, slow = false, role?: Role): Promise<void> {
   unlock();
-  if (useAudio || !TTS) return speakAudio(text, slow);
+  if (useAudio || !TTS) return speakAudio(text, slow, role);
   const busy = TTS.speaking || TTS.pending;
   if (busy) TTS.cancel();
   return new Promise((res) => {
     const o = getOpts();
     const u = new SpeechSynthesisUtterance(text);
-    const v = pickVoice(o.voice); if (v) u.voice = v;
-    u.lang = v ? v.lang : 'en-US';
+    const rv = role ? pickRoleVoice(role) : null, v = rv ? rv.v : pickVoice(o.voice); if (v) u.voice = v;
+    u.lang = v ? v.lang : role?.lang || 'en-US';
+    // máy không có giọng đúng giới tính → chỉnh cao độ để nghe ra nam / nữ
+    if (role && !rv?.known) u.pitch = role.g === 'm' ? 0.75 : 1.2;
     u.rate = slow ? 0.55 : o.fast ? Math.max(1, o.rate) : o.rate; // bài kiểm tra đọc nhanh hơn
     u.volume = 1;
     let done = false, started = false;
@@ -86,12 +138,12 @@ export function speak(text: string, slow = false): Promise<void> {
     u.onend = fin;
     u.onerror = (e) => {
       // lỗi thật (không phải do mình hủy để đọc câu khác) → chuyển sang phát mp3
-      if (!started && e.error !== 'interrupted' && e.error !== 'canceled') { useAudio = true; done = true; speakAudio(text, slow).then(res); } else fin();
+      if (!started && e.error !== 'interrupted' && e.error !== 'canceled') { useAudio = true; done = true; speakAudio(text, slow, role).then(res); } else fin();
     };
     const go = () => {
       TTS.speak(u);
       // không bắt đầu đọc sau 1,8 giây → máy không có giọng / bị chặn: dùng mp3 từ giờ
-      setTimeout(() => { if (!started && !done) { TTS.cancel(); useAudio = true; done = true; speakAudio(text, slow).then(res); } }, 2500);
+      setTimeout(() => { if (!started && !done) { TTS.cancel(); useAudio = true; done = true; speakAudio(text, slow, role).then(res); } }, 2500);
       // phòng trường hợp trình duyệt không gọi onend (iOS): tự kết thúc sau thời gian ước tính
       setTimeout(fin, 3000 + text.length * (slow ? 160 : 95));
     };

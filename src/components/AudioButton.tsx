@@ -1,13 +1,14 @@
 import type { ReactNode } from 'react';
 import { say } from '../state/session';
 import { app, inTest } from '../state/store';
+import type { Role } from '../lib/speech';
 
-interface Props { text: string; label?: ReactNode; slow?: boolean; limited?: boolean; className?: string; title?: string }
+interface Props { text: string; label?: ReactNode; slow?: boolean; limited?: boolean; className?: string; title?: string; role?: Role }
 /** Nút loa đọc tiếng Anh. slow = đọc chậm, limited = tính lượt nghe trong bài kiểm tra. */
-export function AudioButton({ text, label = '🔊', slow, limited, className = 'icon', title }: Props) {
+export function AudioButton({ text, label = '🔊', slow, limited, className = 'icon', title, role }: Props) {
   return (
     <button className={className} data-act="say" data-slow={slow ? '1' : undefined} data-lim={limited ? '1' : undefined} title={title}
-      onClick={() => say(text, { slow, limited })}>{label}</button>
+      onClick={() => say(text, { slow, limited, role })}>{label}</button>
   );
 }
 

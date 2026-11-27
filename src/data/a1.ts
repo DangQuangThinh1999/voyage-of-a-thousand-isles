@@ -9,6 +9,14 @@ export const UNITS: Unit[] = [
       ['hello', 'xin chào', '👋'], ['goodbye', 'tạm biệt', '🚶'], ['thank you', 'cảm ơn', '🙏'],
       ['sorry', 'xin lỗi', '😔'], ['yes', 'vâng, có', '✅'], ['no', 'không', '❌'],
       ['please', 'làm ơn', '🤲'], ['good morning', 'chào buổi sáng', '🌅'],
+      ['hi', 'chào (thân mật)', '👋'],
+      ['excuse me', 'xin lỗi (cho hỏi)', '🙋'],
+      ['good afternoon', 'chào buổi chiều', '🌤️'],
+      ['good night', 'chúc ngủ ngon', '🌙'],
+      ['welcome', 'chào mừng', '🤗'],
+      ['nice to meet you', 'rất vui được gặp bạn', '🤝'],
+      ['see you later', 'hẹn gặp lại', '👀'],
+      ['friend', 'bạn bè', '🧑‍🤝‍🧑']
     ],
     sentences: [
       ['Hello, how are you?', 'Xin chào, bạn khỏe không?'],
@@ -35,6 +43,14 @@ export const UNITS: Unit[] = [
       ['name', 'tên', '🏷️'], ['I', 'tôi', '🙋'], ['you', 'bạn', '👉'], ['man', 'đàn ông', '👨'],
       ['woman', 'phụ nữ', '👩'], ['student', 'học sinh', '🎒'], ['teacher', 'giáo viên', '🧑‍🏫'],
       ['doctor', 'bác sĩ', '🧑‍⚕️'],
+      ['age', 'tuổi', '🎂'],
+      ['job', 'nghề nghiệp', '💼'],
+      ['country', 'đất nước', '🗺️'],
+      ['city', 'thành phố', '🏙️'],
+      ['live', 'sống', '🏡'],
+      ['from', 'đến từ', '📍'],
+      ['boy', 'con trai', '👦'],
+      ['girl', 'con gái', '👧']
     ],
     sentences: [
       ['What is your name?', 'Bạn tên là gì?'],
@@ -62,6 +78,14 @@ export const UNITS: Unit[] = [
       ['one', 'một', '1️⃣'], ['two', 'hai', '2️⃣'], ['three', 'ba', '3️⃣'], ['four', 'bốn', '4️⃣'],
       ['five', 'năm', '5️⃣'], ['six', 'sáu', '6️⃣'], ['seven', 'bảy', '7️⃣'], ['eight', 'tám', '8️⃣'],
       ['nine', 'chín', '9️⃣'], ['ten', 'mười', '🔟'],
+      ['eleven', 'mười một', '1️⃣'],
+      ['twelve', 'mười hai', '🕛'],
+      ['twenty', 'hai mươi', '🔢'],
+      ['thirty', 'ba mươi', '🔢'],
+      ['fifty', 'năm mươi', '5️⃣'],
+      ['hundred', 'một trăm', '💯'],
+      ['first', 'thứ nhất', '🥇'],
+      ['number', 'con số', '#️⃣']
     ],
     sentences: [
       ['How old are you?', 'Bạn bao nhiêu tuổi?'],
@@ -88,6 +112,14 @@ export const UNITS: Unit[] = [
       ['mother', 'mẹ', '👩'], ['father', 'bố', '👨'], ['brother', 'anh/em trai', '👦'],
       ['sister', 'chị/em gái', '👧'], ['baby', 'em bé', '👶'], ['grandmother', 'bà', '👵'],
       ['grandfather', 'ông', '👴'], ['family', 'gia đình', '👨‍👩‍👧'],
+      ['son', 'con trai (của bố mẹ)', '👦'],
+      ['daughter', 'con gái (của bố mẹ)', '👧'],
+      ['parents', 'bố mẹ', '👨‍👩‍👦'],
+      ['husband', 'chồng', '🤵'],
+      ['wife', 'vợ', '👰'],
+      ['uncle', 'chú, bác, cậu', '🧔'],
+      ['aunt', 'cô, dì, bác gái', '👩‍🦰'],
+      ['cousin', 'anh chị em họ', '🧒']
     ],
     sentences: [
       ['This is my mother.', 'Đây là mẹ tôi.'],
@@ -115,6 +147,14 @@ export const UNITS: Unit[] = [
       ['red', 'màu đỏ', '🟥'], ['blue', 'màu xanh dương', '🟦'], ['green', 'màu xanh lá', '🟩'],
       ['yellow', 'màu vàng', '🟨'], ['black', 'màu đen', '⬛'], ['white', 'màu trắng', '⬜'],
       ['book', 'quyển sách', '📕'], ['pen', 'cây bút', '🖊️'],
+      ['orange', 'màu cam', '🟠'],
+      ['pink', 'màu hồng', '🩷'],
+      ['purple', 'màu tím', '🟣'],
+      ['brown', 'màu nâu', '🟤'],
+      ['bag', 'cái túi', '👜'],
+      ['box', 'cái hộp', '📦'],
+      ['table', 'cái bàn', '🪑'],
+      ['key', 'chìa khoá', '🔑']
     ],
     sentences: [
       ['What color is it?', 'Nó màu gì?'],
@@ -141,6 +181,14 @@ export const UNITS: Unit[] = [
       ['rice', 'cơm, gạo', '🍚'], ['bread', 'bánh mì', '🍞'], ['egg', 'quả trứng', '🥚'],
       ['chicken', 'thịt gà', '🍗'], ['apple', 'quả táo', '🍎'], ['water', 'nước', '💧'],
       ['milk', 'sữa', '🥛'], ['coffee', 'cà phê', '☕'],
+      ['noodles', 'mì, phở', '🍜'],
+      ['fish', 'cá', '🐟'],
+      ['beef', 'thịt bò', '🥩'],
+      ['vegetable', 'rau củ', '🥦'],
+      ['fruit', 'trái cây', '🍇'],
+      ['tea', 'trà', '🍵'],
+      ['juice', 'nước ép', '🧃'],
+      ['breakfast', 'bữa sáng', '🍳']
     ],
     sentences: [
       ['I am hungry.', 'Tôi đói.'],
@@ -166,6 +214,14 @@ export const UNITS: Unit[] = [
     words: [
       ['wake up', 'thức dậy', '⏰'], ['eat', 'ăn', '🍽️'], ['drink', 'uống', '🥤'], ['sleep', 'ngủ', '😴'],
       ['go', 'đi', '🚶'], ['work', 'làm việc', '💼'], ['study', 'học', '📚'], ['read', 'đọc', '📖'],
+      ['get up', 'ra khỏi giường', '🛏️'],
+      ['have breakfast', 'ăn sáng', '🥐'],
+      ['take a shower', 'tắm vòi sen', '🚿'],
+      ['cook', 'nấu ăn', '🍳'],
+      ['walk', 'đi bộ', '🚶'],
+      ['watch TV', 'xem TV', '📺'],
+      ['play', 'chơi', '⚽'],
+      ['go to bed', 'đi ngủ', '😴']
     ],
     sentences: [
       ['I wake up at six.', 'Tôi thức dậy lúc sáu giờ.'],
@@ -193,6 +249,14 @@ export const UNITS: Unit[] = [
       ['house', 'ngôi nhà', '🏠'], ['kitchen', 'nhà bếp', '🍳'], ['bed', 'cái giường', '🛏️'],
       ['chair', 'cái ghế', '🪑'], ['door', 'cửa ra vào', '🚪'], ['window', 'cửa sổ', '🪟'],
       ['TV', 'ti vi', '📺'], ['phone', 'điện thoại', '📱'],
+      ['bedroom', 'phòng ngủ', '🛌'],
+      ['bathroom', 'phòng tắm', '🛁'],
+      ['living room', 'phòng khách', '🛋️'],
+      ['sofa', 'ghế sofa', '🛋️'],
+      ['floor', 'sàn nhà, tầng', '🟫'],
+      ['garden', 'khu vườn', '🌳'],
+      ['lamp', 'đèn', '💡'],
+      ['wall', 'bức tường', '🧱']
     ],
     sentences: [
       ['My house is small.', 'Nhà tôi nhỏ.'],
@@ -220,6 +284,14 @@ export const UNITS: Unit[] = [
       ['today', 'hôm nay', '📍'], ['tomorrow', 'ngày mai', '⏭️'], ['yesterday', 'hôm qua', '⏮️'],
       ['morning', 'buổi sáng', '🌅'], ['night', 'ban đêm', '🌙'], ['week', 'tuần', '🗓️'],
       ['Monday', 'thứ Hai', '💼'], ['Sunday', 'Chủ nhật', '🛋️'],
+      ['hour', 'giờ (60 phút)', '⏰'],
+      ['minute', 'phút', '⏱️'],
+      ['month', 'tháng', '🗓️'],
+      ['year', 'năm', '📆'],
+      ['weekend', 'cuối tuần', '🎉'],
+      ['afternoon', 'buổi chiều', '🌇'],
+      ['evening', 'buổi tối', '🌆'],
+      ['Saturday', 'thứ Bảy', '6️⃣']
     ],
     sentences: [
       ['What time is it?', 'Mấy giờ rồi?'],
@@ -245,6 +317,14 @@ export const UNITS: Unit[] = [
     words: [
       ['sun', 'mặt trời', '☀️'], ['rain', 'mưa', '🌧️'], ['wind', 'gió', '💨'], ['cloud', 'mây', '☁️'],
       ['snow', 'tuyết', '❄️'], ['hot', 'nóng', '🥵'], ['cold', 'lạnh', '🥶'], ['umbrella', 'cái ô', '☂️'],
+      ['warm', 'ấm', '🌡️'],
+      ['cool', 'mát', '🍃'],
+      ['sunny', 'nắng', '☀️'],
+      ['rainy', 'có mưa', '🌧️'],
+      ['windy', 'có gió', '🌬️'],
+      ['storm', 'bão', '⛈️'],
+      ['season', 'mùa', '🍂'],
+      ['summer', 'mùa hè', '🏖️']
     ],
     sentences: [
       ['How is the weather?', 'Thời tiết thế nào?'],
@@ -270,6 +350,14 @@ export const UNITS: Unit[] = [
     words: [
       ['shop', 'cửa hàng', '🏪'], ['money', 'tiền', '💵'], ['buy', 'mua', '🛍️'], ['price', 'giá', '🏷️'],
       ['cheap', 'rẻ', '🪙'], ['expensive', 'đắt', '💎'], ['shirt', 'áo sơ mi', '👕'], ['shoes', 'giày', '👟'],
+      ['pay', 'trả tiền', '💳'],
+      ['sell', 'bán', '🏷️'],
+      ['market', 'chợ', '🧺'],
+      ['size', 'cỡ, kích thước', '📏'],
+      ['dress', 'váy liền', '👗'],
+      ['jacket', 'áo khoác', '🧥'],
+      ['cash', 'tiền mặt', '💵'],
+      ['sale', 'đợt giảm giá', '🔖']
     ],
     sentences: [
       ['How much is this?', 'Cái này bao nhiêu tiền?'],
@@ -296,6 +384,14 @@ export const UNITS: Unit[] = [
     words: [
       ['happy', 'vui', '😊'], ['sad', 'buồn', '😢'], ['tired', 'mệt', '😩'], ['angry', 'tức giận', '😠'],
       ['hungry', 'đói', '😋'], ['scared', 'sợ', '😨'], ['bored', 'chán', '🥱'], ['sick', 'ốm', '🤒'],
+      ['excited', 'hào hứng', '🤩'],
+      ['worried', 'lo lắng', '😟'],
+      ['nervous', 'hồi hộp, căng thẳng', '😬'],
+      ['surprised', 'ngạc nhiên', '😮'],
+      ['calm', 'bình tĩnh', '😌'],
+      ['lonely', 'cô đơn', '🥺'],
+      ['proud', 'tự hào', '😊'],
+      ['love', 'yêu, rất thích', '❤️']
     ],
     sentences: [
       ['I am very happy.', 'Tôi rất vui.'],

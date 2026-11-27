@@ -69,6 +69,22 @@ const SPECIAL_BASE: Record<number, string> = {
   7: '📅 Nói về kế hoạch cuối tuần', 8: '⏱️ Nói liền 1 phút không dừng', 9: '📝 Làm quen các dạng câu Listening & Reading',
   10: '✍️ Viết bài Task 1 & Task 2 đầu tiên', 11: '⏰ Làm đề có tính giờ', 12: '🏆 Thi thử đầy đủ 4 kỹ năng',
 };
+/** Tuần 1–12: ngữ pháp trọng tâm + "sau tuần này bạn làm được" — để thấy rõ mỗi tuần tiến bộ gì */
+const BASE_PLAN: Record<number, [grammar: string, cando: string[]]> = {
+  1: ['to be: I am · you are · he/she is', ['Chào hỏi, tự giới thiệu tên, tuổi, nghề, quê', 'Đếm và nói số 1–100', 'Nghe hiểu câu chào hỏi ngắn']],
+  2: ['my / your / his / her · this is… · a / an', ['Giới thiệu các thành viên gia đình', 'Nói màu sắc, đồ vật quanh mình', 'Gọi món ăn, đồ uống đơn giản']],
+  3: ['Hiện tại đơn: I work · she works · do / does', ['Kể lại 1 ngày của bạn', 'Tả nhà và các phòng', 'Hỏi và nói giờ, thứ, ngày']],
+  4: ['There is / there are · can / can\'t', ['Nói về thời tiết hôm nay', 'Hỏi giá, mua đồ, trả tiền', 'Nói cảm xúc và lý do']],
+  5: ['Quá khứ đơn: went · saw · played', ['Kể lại chuyện hôm qua, cuối tuần trước', 'Viết 5–6 câu về một kỷ niệm']],
+  6: ['Câu hỏi Wh- · giới từ chỉ nơi chốn', ['Hỏi đường và chỉ đường', 'Đặt phòng, gọi món ở nhà hàng']],
+  7: ['So sánh hơn / nhất · will / be going to', ['So sánh hai người, hai nơi', 'Nói kế hoạch tuần sau, năm sau']],
+  8: ['Từ nối: and · but · because · so', ['Viết đoạn văn 80 từ', 'Nói liền 1 phút về chủ đề quen thuộc']],
+  9: ['Hiện tại hoàn thành: have done', ['Hiểu 4 phần thi IELTS', 'Làm dạng điền từ và trắc nghiệm']],
+  10: ['Câu phức: because · although · which', ['Viết Task 1 (~120 từ), Task 2 (~200 từ)', 'Trả lời Speaking Part 1–2']],
+  11: ['Ôn tổng hợp các thì', ['Làm đề đủ 4 kỹ năng có tính giờ', 'Chia thời gian hợp lý khi thi']],
+  12: ['Sửa các lỗi hay gặp', ['Thi thử đầy đủ', 'Biết điểm yếu để luyện tiếp']],
+};
+
 /** Tỷ trọng số từ mỗi tuần nền tảng theo trình độ: mới học ít từ, càng lên cao càng nhiều */
 const WORD_FACTOR: Record<string, number> = { A1: 0.5, 'A1+': 0.6, A2: 0.8, 'A2+': 0.9, B1: 1.1, 'B1+': 1.2, B2: 1, C1: 1.2, C2: 1.4 };
 const BASE_WEIGHT = Object.values(WEEK_GOALS).reduce((a, g) => a + (WORD_FACTOR[g.cefr] ?? 1), 0);
@@ -79,6 +95,7 @@ const BANK_MAX = 10012;
 
 export interface RoadWeek extends WeekGoal {
   /** thử thách đặc biệt của tuần */ special: string;
+  /** ngữ pháp trọng tâm + sau tuần này làm được gì */ grammar?: string; cando?: string[];
   /** số từ mới của tuần và vị trí bắt đầu trong kho từ */ words: number; start: number;
   /** tuần thêm cho mục tiêu trên 5.5 */ extra?: boolean;
   /** tuần cuối của một mốc IELTS */ milestone?: boolean;
@@ -97,7 +114,7 @@ export function roadmap(P: Progress): Record<number, RoadWeek> {
   const base = wordsFor(5.5);
   for (const [w, g] of Object.entries(WEEK_GOALS)) {
     if (+w > 4 && firstNum(g.band) > target) break; // tuần 1–4 luôn có (đã có bài học)
-    push({ ...g, special: SPECIAL_BASE[+w] || '' }, (base * (WORD_FACTOR[g.cefr] ?? 1)) / BASE_WEIGHT);
+    push({ ...g, special: SPECIAL_BASE[+w] || '', grammar: BASE_PLAN[+w]?.[0], cando: BASE_PLAN[+w]?.[1] }, (base * (WORD_FACTOR[g.cefr] ?? 1)) / BASE_WEIGHT);
   }
   // Trên 5.5: lập danh sách tuần trước, rồi chia số từ cần thêm (tới mục tiêu) theo trọng số cấp độ: B2 < C1 < C2
   const ext: Omit<RoadWeek, 'words' | 'start'>[] = [];

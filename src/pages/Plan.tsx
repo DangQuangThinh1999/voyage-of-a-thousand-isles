@@ -15,14 +15,14 @@ const LINKS: [string, string][] = [
 ];
 
 const CEFR_NAME: Record<string, string> = { A1: 'nền tảng', A2: 'sơ cấp', B1: 'trung cấp, làm quen và luyện đề IELTS', B2: 'trung cao cấp', C1: 'cao cấp', C2: 'thành thạo như người bản xứ' };
-interface PhaseRow { from: number; to: number; cefr: string; bands: string[]; goals: [w: number, goal: string, special: string][] }
+interface PhaseRow { from: number; to: number; cefr: string; bands: string[]; goals: [w: number, goal: string, special: string, grammar?: string][] }
 /** Gom các tuần liền nhau cùng trình độ CEFR thành một giai đoạn */
 function phasesOf(rm: ReturnType<typeof roadmap>): PhaseRow[] {
   const out: PhaseRow[] = [];
   for (const [ws, g] of Object.entries(rm)) {
     const w = +ws, c = g.cefr.replace('+', ''), last = out[out.length - 1];
-    if (last && last.cefr === c) { last.to = w; if (!last.bands.includes(g.band)) last.bands.push(g.band); last.goals.push([w, g.goal, g.special]); }
-    else out.push({ from: w, to: w, cefr: c, bands: [g.band], goals: [[w, g.goal, g.special]] });
+    if (last && last.cefr === c) { last.to = w; if (!last.bands.includes(g.band)) last.bands.push(g.band); last.goals.push([w, g.goal, g.special, g.grammar]); }
+    else out.push({ from: w, to: w, cefr: c, bands: [g.band], goals: [[w, g.goal, g.special, g.grammar]] });
   }
   return out;
 }
@@ -46,7 +46,7 @@ export function Plan() {
           <Card key={r.from} className={now ? 'phase now' : 'phase'}>
             <div className="row between"><b>{done ? '✅ ' : ''}Tuần {r.from}{r.to > r.from ? `–${r.to}` : ''} · {r.cefr} · {CEFR_NAME[r.cefr] || ''}</b>{now && <span className="pill">Bạn đang ở đây</span>}</div>
             <div className="wb-chips mt-1"><span className="chip3 band">🎯 IELTS {r.bands[0]}{r.bands.length > 1 ? ` → ${r.bands[r.bands.length - 1]}` : ''}</span><span className="chip3">📗 ~{weekRange(P, r.to)[1].toLocaleString('vi-VN')} từ tích lũy</span><span className="chip3">{r.to - r.from + 1} tuần</span></div>
-            <ol className="plan-weeks">{r.goals.map(([w, g, sp]) => <li key={w} className={w === week ? 'now' : ''}><span className="pw-n">T{w}</span><span><b>{g}</b>{sp && <small>⭐ {sp}</small>}</span><span className="pw-w">{vocabWeek(P, w).size} từ</span></li>)}</ol>
+            <ol className="plan-weeks">{r.goals.map(([w, g, sp, gr]) => <li key={w} className={w === week ? 'now' : ''}><span className="pw-n">T{w}</span><span><b>{g}</b>{gr && <small className="pw-gr">📐 {gr}</small>}{sp && <small>⭐ {sp}</small>}</span><span className="pw-w">{vocabWeek(P, w).size} từ</span></li>)}</ol>
             <p className="muted small m-0">{r.from <= 4 ? '✅ Có bài học chủ đề + kiểm tra + từ vựng + bài AI 4 kỹ năng' : '✅ Từ vựng theo tuần + kiểm tra tuần + bài Đọc / Nghe / Nói / Viết do AI tạo đúng cấp độ'}</p>
           </Card>
         );

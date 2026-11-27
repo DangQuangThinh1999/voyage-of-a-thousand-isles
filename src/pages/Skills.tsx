@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useRouteNum, useRouteParam } from '../lib/route';
 import { Dropdown } from '../components/Dropdown';
 import { AudioButton } from '../components/AudioButton';
@@ -8,7 +8,7 @@ import { GenBar } from '../components/GenBar';
 import type { GenItem } from '../lib/gen';
 import { LEVELS, UNITS, type Pair, type Question } from '../data';
 import { tallySkill, type Progress } from '../lib/progress';
-import { speak, stopSpeaking } from '../lib/speech';
+import { speak, stopSpeaking, scriptRoles, stripSpeaker } from '../lib/speech';
 import { norm } from '../lib/text';
 import { addXP, app, go, save, tab as goTab, useApp } from '../state/store';
 
@@ -75,11 +75,11 @@ function ListeningTutor({ script, questions, gaps, why, ev, vocab, title }: { sc
   const [gapIn, setGapIn] = useState<Record<number, string>>({});
   const [gapOk, setGapOk] = useState<Record<number, boolean>>({});
   const [picks, setPicks] = useState<Record<number, number>>({});
-  const stop = useRef(false);
+  const stop = useRef(false), roles = useMemo(() => scriptRoles(script.map((s) => s[0])), [script]);
   useEffect(() => () => { stop.current = true; stopSpeaking(); }, []);
   async function playAll(from = 0) {
     stop.current = false; setPlaying(true);
-    for (let i = from; i < script.length && !stop.current; i++) { setCur(i); await speak(script[i][0], slow); }
+    for (let i = from; i < script.length && !stop.current; i++) { setCur(i); await speak(stripSpeaker(script[i][0]), slow, roles[i]); }
     setPlaying(false); if (!stop.current) setCur(-1);
   }
   const pause = () => { stop.current = true; stopSpeaking(); setPlaying(false); };
@@ -96,7 +96,7 @@ function ListeningTutor({ script, questions, gaps, why, ev, vocab, title }: { sc
         <div className="wave">{Array.from({ length: 72 }, (_, k) => { const li = Math.floor((k * script.length) / 72); return <i key={k} className={li < cur ? 'done' : li === cur ? 'on' : ''} style={{ height: 6 + ((k * 53) % 31) }} />; })}</div>
         <div className="lines">
           {script.map(([en, v], i) => (
-            <button key={i} className={`line ${i === cur ? 'on' : ''}`} onClick={() => { pause(); setCur(i); speak(en, slow); }}>
+            <button key={i} className={`line ${i === cur ? 'on' : ''}`} onClick={() => { pause(); setCur(i); speak(stripSpeaker(en), slow, roles[i]); }}>
               <span className="dot" />
               <span className="flex-1 text-left">{hide && i !== cur ? <span className="blur">{en}</span> : <>{en}{!hide && <span className="muted small block">{v}</span>}</>}</span>
             </button>

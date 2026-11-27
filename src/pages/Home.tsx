@@ -3,6 +3,7 @@ import { UNITS } from '../data';
 import { roadmap, totalWeeks } from '../lib/roadmap';
 import { Card } from '../components/Card';
 import { Dashboard } from '../components/Dashboard';
+import { WeekOutcome } from '../components/WeekDetail';
 import { WeekCarousel } from '../components/WeekCarousel';
 import { motion } from 'motion/react';
 import { UnitCard } from '../components/UnitCard';
@@ -58,6 +59,7 @@ export function Home() {
             <div className="wb-main">
               <div className="wb-chips"><span className="chip3">{WG[w].cefr}</span><span className="chip3 band">🎯 IELTS {WG[w].band}</span>{w === weekNow(P) && <span className="chip3 now">⛵ Tuần này</span>}</div>
               <div className="wb-goal">{WG[w].goal}</div>
+              <WeekOutcome g={WG[w]} compact />
               <VocabRow w={w} P={P} />
             </div>
             <div className="wb-act"><WeekBadge w={w} P={P} /></div>

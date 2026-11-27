@@ -7,7 +7,7 @@ import { AudioButton } from '../components/AudioButton';
 import { StepProgress } from '../components/Progress';
 import { Bar } from '../components/ui';
 import { loadLex, wordIpa } from '../lib/lex';
-import { hear, micErr, speak, SR, stopListening, stopSpeaking } from '../lib/speech';
+import { hear, micErr, speak, SR, stopListening, stopSpeaking, scriptRoles, stripSpeaker } from '../lib/speech';
 import { aiExam, bankDone, bankIdsAll, curExam, staticIds, isRight, openBankExam, MAX_PLAYS, MAX_TRIES, qid, retakeExam, saveAns, SPEAK_QS, submitExam, type Exam as ExamT, type ExamQ, type ExamState, type SecKey } from '../state/exam';
 import { startQuickTest } from '../state/session';
 import { askConfirm, emit, go, goWeek, useApp } from '../state/store';
@@ -130,7 +130,7 @@ function Runner({ E }: { E: ExamState }) {
   );
 }
 
-const strip = (s: string) => s.replace(/^[A-Z][\w .'-]{0,20}:\s*/, '');
+const strip = stripSpeaker;
 function Listening({ E, X }: { E: ExamState; X: ExamT }) {
   const [playing, setPlaying] = useState(false);
   const left = MAX_PLAYS - E.ans.plays;
@@ -140,7 +140,8 @@ function Listening({ E, X }: { E: ExamState; X: ExamT }) {
     E.ans.plays++; saveAns(); setPlaying(true); emit();
     let stopped = false;
     const id = setInterval(() => { if (!document.querySelector('[data-listen-on]')) { stopped = true; } }, 500);
-    for (const l of X.listening.script) { if (stopped) break; await speak(strip(l.en)); await new Promise((r) => setTimeout(r, 350)); if (!document.querySelector('[data-listen-on]')) break; }
+    const roles = scriptRoles(X.listening.script.map((l) => l.en), X.listening.accent);
+    for (const [i, l] of X.listening.script.entries()) { if (stopped) break; await speak(strip(l.en), false, roles[i]); await new Promise((r) => setTimeout(r, 350)); if (!document.querySelector('[data-listen-on]')) break; }
     clearInterval(id); setPlaying(false);
   };
   return (

@@ -1,10 +1,21 @@
 // Chi tiết 1 tuần trong lộ trình (hiện trong Sheet): trọng tâm, ⭐ thử thách đặc biệt, từ vựng của tuần, nút học / kiểm tra.
 import { vocabWeek, type Progress } from '../lib/progress';
-import { roadmap } from '../lib/roadmap';
+import { roadmap, type RoadWeek } from '../lib/roadmap';
 import { requestExam } from '../state/exam';
 import { app, emit, goWeek, tab, useApp } from '../state/store';
 import { ProgressBar } from './ProgressBar';
 import { Sheet } from './Sheet';
+
+/** Ngữ pháp trọng tâm + "sau tuần này bạn làm được" của 1 tuần (dùng ở trang Học và bảng chi tiết tuần) */
+export function WeekOutcome({ g, compact }: { g: RoadWeek; compact?: boolean }) {
+  if (!g.grammar && !g.cando?.length) return null;
+  return (
+    <div className={'wk-out' + (compact ? ' compact' : '')}>
+      {g.grammar && <div><span className="wk-out-l">📐 Ngữ pháp</span><span>{g.grammar}</span></div>}
+      {!!g.cando?.length && <div><span className="wk-out-l">✅ Sau tuần này bạn có thể</span><ul>{g.cando.map((c) => <li key={c}>{c}</li>)}</ul></div>}
+    </div>
+  );
+}
 
 const close = () => { app.weekSheet = null; emit(); };
 /** Bảng chi tiết tuần dùng chung toàn app: mở bằng goWeek(w) */
@@ -21,6 +32,7 @@ function WeekSheetView({ P, w, onPick, onClose }: { P: Progress; w: number | nul
       foot={w && <><button className="btn ghost" disabled={w <= 1} onClick={() => onPick(w - 1)}>← Tuần {w - 1}</button><span className="muted small">{w}/{N}</span><button className="btn ghost" disabled={w >= N} onClick={() => onPick(w + 1)}>Tuần {w + 1} →</button></>}>
       {g && vw && w && <>
         <div className="vsec"><h4>🧭 Trọng tâm tuần này</h4><p className="m-0">{g.goal}</p></div>
+        <WeekOutcome g={g} />
         {g.special && <div className="vsec"><h4>⭐ Thử thách đặc biệt</h4><p className="m-0 wk-special">{g.special}</p></div>}
         <div className="vsec"><h4>📗 Từ vựng tuần · {g.cefr}</h4>
           <div className="row between small"><span>{vw.done}/{vw.size} từ</span><span className="muted">~{Math.ceil(vw.size / 7)} từ/ngày</span></div>

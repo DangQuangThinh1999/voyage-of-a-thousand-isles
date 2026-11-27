@@ -10,6 +10,7 @@ import { loadLex, wordIpa } from '../lib/lex';
 import { hear, micErr, speak, SR, stopListening, stopSpeaking, scriptRoles, stripSpeaker } from '../lib/speech';
 import { aiExam, bankDone, bankIdsAll, curExam, staticIds, isRight, openBankExam, MAX_PLAYS, MAX_TRIES, qid, retakeExam, saveAns, SPEAK_QS, submitExam, type Exam as ExamT, type ExamQ, type ExamState, type SecKey } from '../state/exam';
 import { startQuickTest } from '../state/session';
+import { Cast } from '../components/Cast';
 import { askConfirm, emit, go, goWeek, useApp } from '../state/store';
 
 type Tab = 'listening' | 'reading' | 'vocab' | 'writing' | 'speaking';
@@ -147,6 +148,7 @@ function Listening({ E, X }: { E: ExamState; X: ExamT }) {
   return (
     <section className="card">
       <h3 className="m-0">🎧 {X.listening.title}</h3>
+      <Cast lines={X.listening.script.map((l) => l.en)} accent={X.listening.accent} />
       <p className="muted small">Giọng: {X.listening.accent}. Đọc câu hỏi trước, rồi bấm nghe. Bạn được nghe <b>tối đa {MAX_PLAYS} lần</b>; lời thoại chỉ hiện sau khi nộp bài.</p>
       <div className="row gap wrap">
         <button className={'btn ' + (playing ? 'ghost' : '')} disabled={!playing && left <= 0} onClick={play} {...(playing ? { 'data-listen-on': 1 } : {})}>{playing ? '⏹ Dừng' : left > 0 ? `▶ Nghe (còn ${left}/${MAX_PLAYS} lượt)` : '🔒 Hết lượt nghe'}</button>
@@ -184,7 +186,7 @@ function Qs({ E, sec, qs, review }: { E: ExamState; sec: SecKey; qs: ExamQ[]; re
         return (
           <li key={k} className={review ? (ok ? 'ok' : 'no') : ''}>
             <div className="q">{q.q}</div>
-            <div className="muted small">{q.q_vi}</div>
+            {review && q.q_vi && <details className="qvi"><summary>🇻🇳 Xem dịch câu hỏi</summary>{q.q_vi}</details>}
             {q.type === 'type' ? (
               <>
                 {!review && <TypeHint q={q} />}

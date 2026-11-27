@@ -68,6 +68,12 @@ export function scriptRoles(lines: string[], accent = ''): Role[] {
     return r;
   });
 }
+/** Danh sách người nói của bài nghe (tên + giới tính + giọng), theo thứ tự xuất hiện */
+export function scriptCast(lines: string[], accent = ''): { name: string; g: 'f' | 'm'; lang: string }[] {
+  const roles = scriptRoles(lines, accent), seen = new Map<string, { name: string; g: 'f' | 'm'; lang: string }>();
+  lines.forEach((l, i) => { const n = speakerOf(l) || ''; if (!seen.has(n)) seen.set(n, { name: n, ...roles[i] }); });
+  return [...seen.values()];
+}
 /** Giọng cố định cho 1 bài (đọc đoạn văn): đổi luân phiên nam/nữ, Anh/Úc/Mỹ theo id bài để tai quen nhiều giọng */
 export function roleFor(id: string): Role {
   let h = 0; for (const c of id) h = (h * 31 + c.charCodeAt(0)) | 0;

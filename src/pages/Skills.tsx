@@ -12,6 +12,7 @@ import { speak, stopSpeaking, scriptRoles, stripSpeaker } from '../lib/speech';
 import { norm } from '../lib/text';
 import { useGenPref } from '../state/prefs';
 import { PracticeBar } from '../components/PracticeBar';
+import { Cast } from '../components/Cast';
 import { addXP, app, go, save, tab as goTab, useApp } from '../state/store';
 
 export const SKILLS: [key: string, icon: string, name: string, color: string][] = [
@@ -89,6 +90,7 @@ function ListeningTutor({ script, questions, gaps, why, ev, vocab, title }: { sc
     <>
       <Section className="player">
         {title && <h3 className="m-0 mb-2">🎧 {title}</h3>}
+        <Cast lines={script.map((l) => l[0])} accent="" />
         <div className="flex flex-wrap items-center gap-2">
           <button className="btn" onClick={() => (playing ? pause() : playAll(Math.max(0, cur)))}>{playing ? '⏸ Dừng' : '▶️ Nghe cả bài'}</button>
           <button className={slow ? 'btn sm' : 'btn ghost sm'} onClick={() => setSlow(!slow)}>{slow ? '🐢 Chậm' : '⚡ Bình thường'}</button>

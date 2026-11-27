@@ -919,11 +919,27 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .chunk-round { display: grid; gap: 6px; padding: 8px 10px; border-radius: 12px; border: 1px solid var(--line); }
 .chunk-round.on { border-color: var(--pri); background: var(--pri-soft); }
 .chunk-round .chunk-dots { justify-content: flex-start; }
-details.chunk-learn summary { cursor: pointer; font-weight: 600; color: var(--pri); }
-.rv { display: grid; gap: 8px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); border-left: 4px solid var(--bad); }
+/* Kết quả Học theo cụm: mỗi vòng 1 tiêu đề, mỗi câu 1 card phẳng */
+.rv-pass { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 4px 0; }
+.rv-pass span { padding: 3px 10px; border-radius: 999px; font-size: .85rem; font-weight: 700; border: 1px solid var(--line); }
+.rv-pass .ok { border-color: var(--good); color: var(--good); } .rv-pass .bad { border-color: var(--bad); color: var(--bad); }
+.rv-sec { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; margin: 22px 2px 8px; font-size: 1.05rem; font-weight: 500; }
+.rv-sec small { color: var(--muted); font-size: .85rem; }
+.rv { display: grid; gap: 12px; border-left: 4px solid var(--bad); line-height: 1.5; }
 .rv.ok { border-left-color: var(--good); } .rv.warn { border-left-color: #fbbf24; }
-.rv-h { display: flex; justify-content: space-between; gap: 8px; font-weight: 800; flex-wrap: wrap; }
-.rv-grid { display: grid; grid-template-columns: 5.6rem minmax(0, 1fr); gap: 6px 10px; margin: 0; }
-.rv-grid dt { color: var(--muted); font-size: .85rem; padding-top: 2px; white-space: nowrap; }
-.rv-grid dd { margin: 0; overflow-wrap: anywhere; }
-.rv-errs ol { margin: 4px 0 0; padding-left: 20px; display: grid; gap: 6px; }
+.rv-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.rv-n { font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.rv-score { font-size: .85rem; font-weight: 800; padding: 2px 10px; border-radius: 999px; background: var(--bad-soft); color: var(--bad); white-space: nowrap; }
+.rv-score.ok { background: var(--good-soft); color: var(--good); } .rv-score.warn { background: var(--warn-soft); color: #fbbf24; }
+.rv-src { margin: 0; font-size: 1.08rem; font-weight: 600; overflow-wrap: anywhere; }
+.rv-row { display: grid; gap: 2px; }
+.rv-l { font-size: .74rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.rv-v { font-size: 1rem; overflow-wrap: anywhere; }
+.rv-empty { color: var(--muted); font-style: italic; }
+.rv-ok { color: var(--good); font-weight: 600; }
+.rv-say { display: inline-flex; gap: 4px; margin-left: 6px; vertical-align: middle; white-space: nowrap; }
+.rv-errs { margin: 2px 0 0; padding-left: 18px; display: grid; gap: 8px; }
+.rv-errs li { display: grid; gap: 2px; } .rv-errs small { color: var(--muted); }
+.rv-note { font-size: .88rem; color: var(--muted); }
+.rv-words summary { cursor: pointer; }
+.rv-words { border-left-color: var(--pri); gap: 8px; }

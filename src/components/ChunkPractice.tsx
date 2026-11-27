@@ -144,25 +144,29 @@ export function ChunkPractice() {
       <>
         <section className={'card center exam-res ' + (np === N ? 'pass' : 'fail')}>
           <div className="huge">{np === N ? '🏆' : np >= N / 2 ? '👍' : '💪'}</div>
-          <h3 className="m-0">Qua {np}/{N} {unit} · điểm trung bình {avg}/100</h3>
-          <p className="muted small">Mỗi {unit} cần cả Anh → Việt và Việt → Anh đạt ≥ {PASS}/100.</p>
-          {queued && <p className="warn-box small">⏳ <b>AI đang bận</b> nên điểm dưới đây chỉ là chấm sơ bộ. Bài của bạn <b>đã được lưu</b> — app sẽ <b>tự chấm lại khi rảnh</b> (lúc mở app hoặc khi bạn không thao tác) và tự cộng từ mới cho các {unit} qua, có thông báo khi xong.</p>}
-          {newWords.length > 0 ? <p className="okc"><b>🆕 +{newWords.length} từ mới</b> được tính vào số từ đã học ({bankLearned(app.P)} từ): {newWords.join(', ')}</p>
-            : <p className="muted small">Chưa có từ mới nào được cộng (từ đã học rồi, hoặc {unit} chưa qua).</p>}
-          <p className="muted small">Từ mới sẽ vào lịch 🔁 Ôn từ từ ngày mai. Các lỗi đã ghi vào 📒 Sổ lỗi sai.</p>
-          <button className="btn" onClick={start}>🔁 Làm lượt mới</button> <button className="btn ghost" onClick={() => { setItems(null); setGrades(null); }}>⚙️ Đổi độ dài</button>
+          <h3 className="m-0">Qua {np}/{N} {unit} · trung bình {avg}/100</h3>
+          <div className="rv-pass">{items.map((_, k) => <span key={k} className={passed(k) ? 'ok' : 'bad'}>{passed(k) ? '✅' : '❌'} Câu {k + 1}</span>)}</div>
+          <p className="muted small m-0">Câu <b>qua</b> khi cả 2 vòng đạt ≥ {PASS}/100.</p>
+          {queued && <p className="warn-box small">⏳ <b>AI đang bận</b> nên điểm dưới đây chỉ là chấm sơ bộ. Bài đã được lưu, app sẽ <b>tự chấm lại</b> và báo khi xong.</p>}
+          {newWords.length > 0 && <p className="okc m-0">🆕 +{newWords.length} từ mới: {newWords.join(', ')} <span className="muted small">(tổng {bankLearned(app.P)} từ)</span></p>}
+          <div className="row gap wrap" style={{ justifyContent: 'center' }}><button className="btn" onClick={start}>🔁 Làm lượt mới</button><button className="btn ghost" onClick={() => { setItems(null); setGrades(null); }}>⚙️ Đổi độ dài</button></div>
         </section>
+        {([[0, '🇬🇧 → 🇻🇳', 'Vòng 1', 'dịch sang tiếng Việt', 'en-vi'], [N, '🇻🇳 → 🇬🇧', 'Vòng 2', 'dịch sang tiếng Anh', 'vi-en']] as const).map(([o, flag, name, what, dir]) => {
+          const ok = items.filter((_, k) => grades[o + k].score >= PASS).length;
+          return (
+            <Fragment key={o}>
+              <h3 className="rv-sec"><span>{flag} <b>{name}</b> · {what}</span><small>đạt {ok}/{N}</small></h3>
+              {items.map((_, k) => <Review key={k} n={k + 1} src={srcOf(o + k)} ref_={refOf(o + k)} a={answers[o + k]} g={grades[o + k]} dir={dir} />)}
+            </Fragment>
+          );
+        })}
+        <h3 className="rv-sec"><span>📗 <b>Từ &amp; ngữ pháp</b> · bấm để xem</span></h3>
         {items.map((x, k) => (
-          <section key={k} className={'card chunk ' + (passed(k) ? 'cpass' : 'cfail')}>
-            <div className="row between"><b>Câu {k + 1} · {passed(k) ? '✅ Qua' : '❌ Chưa qua'}</b><span className="muted small">cần cả 2 vòng ≥ {PASS}</span></div>
-            <details className="chunk-learn">
-              <summary>📗 Xem từ &amp; ngữ pháp của câu này ({x.words.length} từ)</summary>
-              <div className="chunk-words">{x.words.map((w) => <span key={w.w} className="chip2"><b>{w.w}</b> <span className="ipa inline">{w.ipa}</span> · {w.vi} <AudioButton text={w.w} className="icon xs" /></span>)}</div>
-              {(x.grammar || x.collocation) && <div className="chunk-gram small mt-1">{x.grammar && <div>📐 <b>Ngữ pháp:</b> {x.grammar}{x.grammar_vi ? <span className="muted"> — {x.grammar_vi}</span> : null}</div>}{x.collocation && <div>🔗 <b>Cụm từ nên học:</b> {x.collocation}</div>}</div>}
-            </details>
-            <Review label="Vòng 1 · Anh → Việt" src={srcOf(k)} ref_={refOf(k)} a={answers[k]} g={grades[k]} dir="en-vi" />
-            <Review label="Vòng 2 · Việt → Anh" src={srcOf(k + N)} ref_={refOf(k + N)} a={answers[k + N]} g={grades[k + N]} dir="vi-en" />
-          </section>
+          <details key={k} className="card rv rv-words">
+            <summary><b>Câu {k + 1}</b> · {x.words.map((w) => w.w).join(', ')}</summary>
+            <div className="chunk-words">{x.words.map((w) => <span key={w.w} className="chip2"><b>{w.w}</b> <span className="ipa inline">{w.ipa}</span> · {w.vi} <AudioButton text={w.w} className="icon xs" /></span>)}</div>
+            {(x.grammar || x.collocation) && <div className="chunk-gram small">{x.grammar && <div>📐 <b>Ngữ pháp:</b> {x.grammar}{x.grammar_vi ? <span className="muted"> — {x.grammar_vi}</span> : null}</div>}{x.collocation && <div>🔗 <b>Cụm từ nên học:</b> {x.collocation}</div>}</div>}
+          </details>
         ))}
       </>
     );
@@ -203,33 +207,29 @@ export function ChunkPractice() {
   );
 }
 
-/** Kết quả 1 vòng của 1 câu: bảng nhãn – nội dung (Đề / Bạn viết / Sửa lại / Đáp án), rồi lỗi cụ thể. Không lặp câu trùng nhau. */
-function Review({ label, src, ref_, a, g, dir }: { label: string; src: string; ref_: string; a: string; g: Grade; dir: Dir }) {
+/** Kết quả 1 câu trong 1 vòng: MỘT card phẳng — đề, bài của bạn, đáp án (không lặp câu trùng), lỗi nếu có. */
+function Review({ n, src, ref_, a, g, dir }: { n: number; src: string; ref_: string; a: string; g: Grade; dir: Dir }) {
   const V = ({ correct: ['✅', 'ok'], minor: ['🟡', 'warn'], wrong: ['❌', 'bad'] } as const)[g.verdict] || ['❌', 'bad'];
   const empty = !a.trim(), en = dir === 'vi-en';
-  const say = (t: string) => <><AudioButton text={t} className="icon xs" /> <AudioButton text={t} slow label="🐢" className="icon xs" /></>;
-  // các câu đáp án, bỏ câu trùng (với bài của bạn hoặc với nhau)
+  const say = (t: string) => <span className="rv-say"><AudioButton text={t} className="icon xs" /><AudioButton text={t} slow label="🐢" className="icon xs" /></span>;
   const seen = new Set([norm(a)]), fixes: [string, string][] = [];
   const add = (l: string, t?: string) => { if (t && t.trim() && !seen.has(norm(t))) { seen.add(norm(t)); fixes.push([l, t]); } };
-  if (!empty && g.verdict !== 'correct') add('✏️ Sửa lại', g.corrected);
-  add(empty ? '✅ Đáp án' : g.verdict === 'correct' ? '🌟 Cách khác' : '🌟 Tự nhiên', g.natural);
-  add(empty ? '🔁 Cách khác' : '📖 Mẫu', ref_);
+  if (!empty && g.verdict !== 'correct') add('Sửa lại câu của bạn', g.corrected);
+  add(empty || g.verdict === 'wrong' ? 'Đáp án' : 'Cách nói tự nhiên', g.natural);
+  add(empty ? 'Cách nói khác' : 'Đáp án mẫu', ref_);
   return (
-    <div className={'rv ' + V[1]}>
-      <div className="rv-h"><span>{label}</span><span>{V[0]} {g.score}/100{g.rough && <span className="muted small"> · sơ bộ</span>}</span></div>
-      <dl className="rv-grid">
-        <dt>📝 Đề</dt><dd>{src} {!en && say(src)}</dd>
-        <dt>✍️ Bạn</dt><dd>{empty ? <i className="muted">bỏ trống</i> : a}</dd>
-        {fixes.map(([l, t]) => <Fragment key={l}><dt>{l}</dt><dd className="okc">{t} {en && say(t)}</dd></Fragment>)}
-      </dl>
+    <article className={'card rv ' + V[1]}>
+      <header className="rv-h"><span className="rv-n">Câu {n}</span><span className={'rv-score ' + V[1]}>{V[0]} {g.score}/100{g.rough ? ' · sơ bộ' : ''}</span></header>
+      <p className="rv-src">{src}{!en && say(src)}</p>
+      <div className="rv-row"><span className="rv-l">Bạn viết</span><div className={'rv-v' + (empty ? ' rv-empty' : '')}>{empty ? 'Bỏ trống' : a}</div></div>
+      {fixes.map(([l, t]) => <div key={l} className="rv-row"><span className="rv-l">{l}</span><div className="rv-v rv-ok">{t}{en && say(t)}</div></div>)}
       {!empty && g.errors.length > 0 && (
-        <div className="rv-errs">
-          <b className="small">🔍 Lỗi cần sửa ({g.errors.length})</b>
-          <ol>{g.errors.map((e, k) => <li key={k}><s className="bad">{e.original}</s> → <b className="okc">{e.corrected}</b> <span className="chip2">{e.type_vi}</span><div className="muted small">{e.explain_vi}</div></li>)}</ol>
+        <div className="rv-row"><span className="rv-l">Lỗi cần sửa ({g.errors.length})</span>
+          <ol className="rv-errs">{g.errors.map((e, k) => <li key={k}><span><s className="bad">{e.original}</s> → <b className="okc">{e.corrected}</b></span><small>{e.type_vi} · {e.explain_vi}</small></li>)}</ol>
         </div>
       )}
-      {!empty && g.comment_vi && <div className="small">💬 {g.comment_vi}</div>}
-      {!empty && g.missed.length > 0 && <div className="small">⚠️ Chưa dùng đúng: <b>{g.missed.join(', ')}</b></div>}
-    </div>
+      {!empty && g.missed.length > 0 && <div className="rv-note">⚠️ Chưa dùng đúng từ: <b>{g.missed.join(', ')}</b></div>}
+      {!empty && g.comment_vi && <div className="rv-note">💬 {g.comment_vi}</div>}
+    </article>
   );
 }

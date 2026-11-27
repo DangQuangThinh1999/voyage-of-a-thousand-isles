@@ -46,7 +46,7 @@ export async function POST(req: Request): Promise<Response> {
     const len = Math.min(20, Math.max(6, Number(b.len) || 10));
     const kind = len >= 16 ? 'một ĐOẠN rất ngắn gồm 2 câu liên kết' : 'một CÂU hoàn chỉnh';
     const user = `Trình độ: CEFR ${cefr}.
-Từ mục tiêu người học đang học: ${words.join(', ') || '(tự chọn từ thông dụng)'}.
+Từ mục tiêu người học đang học: ${words.join(', ') || '(tự chọn từ thông dụng)'}.${b.topic ? `\nLĩnh vực / bối cảnh của TẤT CẢ các câu: ${String(b.topic).slice(0, 80)} (đặt các từ mục tiêu vào bối cảnh này một cách tự nhiên).` : ''}
 Soạn SỐ BÀI TUỲ Ý (ít nhất 3, tối đa 10) sao cho MỖI từ mục tiêu (đặt được tự nhiên) đều xuất hiện ít nhất 1 lần; mỗi bài là ${kind}, dài ${Math.max(5, len - 6)}–${len} từ tiếng Anh (tuyệt đối không quá ${len} từ).
 Mỗi bài dùng 1–${len >= 16 ? '4' : '3'} từ mục tiêu sao cho câu vẫn tự nhiên; không cần đều số câu, chỉ cần đủ từ.
 words: liệt kê các từ mục tiêu đã dùng trong bài (w đúng dạng gốc), ipa giọng Anh dạng /.../, vi nghĩa trong ngữ cảnh.

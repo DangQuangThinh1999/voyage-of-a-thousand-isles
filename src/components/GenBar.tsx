@@ -1,9 +1,10 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
-import { generate, genHistory, hourly, LEVELS_GEN, TOPICS, type GenItem, type GenKind } from '../lib/gen';
+import { generate, genHistory, hourly, LEVELS_GEN, type GenItem, type GenKind } from '../lib/gen';
 import { levelNow } from '../lib/progress';
 import { useApp } from '../state/store';
 import { Dropdown } from './Dropdown';
+import { TopicPicker } from './TopicPicker';
 
 const defaultCefr = (band: string) => { const b = parseFloat(band) || 0; return b < 3.5 ? 'A1' : b < 4.5 ? 'A2' : b < 6 ? 'B1' : b < 7 ? 'B2' : b < 8.5 ? 'C1' : 'C2'; };
 const WAIT = ['AI đang chọn chủ đề…', 'Đang soạn bài theo chuẩn IELTS…', 'Đang kiểm tra đáp án có căn cứ trong bài…', 'Sắp xong rồi…'];
@@ -36,7 +37,7 @@ export function GenBar({ kind, onItem }: { kind: GenKind; onItem: (it: GenItem) 
     <div className="card genbar">
       <div className="flex flex-wrap items-center gap-2">
         <Dropdown label="Cấp độ" value={cefr} onChange={setCefr} grid={3} options={LEVELS_GEN.map(([c, b, l]) => ({ value: c, label: <b>{c}</b>, sub: `${l} · ${b}` }))} />
-        <Dropdown label="Chủ đề" value={topic} onChange={setTopic} options={[{ value: -1, icon: '🎲', label: 'Ngẫu nhiên', sub: 'Mỗi lần một chủ đề, một quốc gia khác' }, ...TOPICS.map(([ic, n, a], i) => ({ value: i, icon: ic, label: n, sub: `${a.length} góc nhìn` }))]} />
+        <TopicPicker value={topic} onChange={setTopic} />
         {hr ? <button className="btn ghost hourly-btn" onClick={() => onItem(hr)} title={hr.title}>🕐 Bài của giờ này <small>· bài mới lúc {nextHour}:00</small></button>
           : hrBusy ? <span className="muted small"><span className="spin" /> Đang lấy bài của giờ này…</span> : null}
         <motion.button className="btn glow" disabled={busy} onClick={go} whileTap={{ scale: 0.96 }}>{busy ? '⏳ Đang tạo…' : '✨ Tạo bài mới (AI)'}</motion.button>

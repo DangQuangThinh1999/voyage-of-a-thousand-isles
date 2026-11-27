@@ -5,6 +5,7 @@ import { aiFetch } from '../lib/ai';
 import { motion } from 'motion/react';
 import { Fragment, useEffect, useState } from 'react';
 import { loadChunk, saveChunk } from '../state/resume';
+import { TopicPicker, topicAngle } from './TopicPicker';
 import { bankRange, bankWord, nextBankWords, type BankWord } from '../data/bank';
 import { enqueueChunk } from '../lib/chunkQueue';
 import { addMistake, bankLearned, tallySkill, today, weekNow } from '../lib/progress';
@@ -43,7 +44,7 @@ async function pick(nTotal: number): Promise<BankWord[]> {
 export function ChunkPractice() {
   // Bài đang làm + kết quả được lưu vào máy (localStorage): thoát ra / tải lại trang vẫn còn
   const [saved] = useState(loadChunk);
-  const [len, setLen] = useState<Len>((saved?.len as Len) || '10');
+  const [len, setLen] = useState<Len>((saved?.len as Len) || '10'), [topic, setTopic] = useState(-1);
   const [items, setItems] = useState<Item[] | null>((saved?.items as Item[]) || null), [i, setI] = useState(saved?.i || 0), [busy, setBusy] = useState(false), [offline, setOffline] = useState(!!saved?.offline);
   const [answers, setAnswers] = useState<string[]>(saved?.answers || []), [hint, setHint] = useState(false);
   const [grades, setGrades] = useState<Grade[] | null>((saved?.grades as Grade[]) || null), [grading, setGrading] = useState(false), [newWords, setNewWords] = useState<string[]>(saved?.newWords || []), [queued, setQueued] = useState(!!saved?.queued);
@@ -56,7 +57,7 @@ export function ChunkPractice() {
     const n = +len, p = await pick(n >= 16 ? 20 : 12).catch(() => [] as BankWord[]), targets = p.map((w) => w.w);
     let its: Item[];
     try {
-      const d = await post({ part: 'gen', len: n, cefr: cefr(), words: targets });
+      const d = await post({ part: 'gen', len: n, cefr: cefr(), words: targets, topic: topicAngle(topic) });
       // bỏ câu AI tự chấm là chưa tự nhiên (< 4/5), lấy 5 câu tự nhiên nhất
       its = (d.items as Item[]).filter((x) => x.en && x.vi && x.en2 && x.vi2 && wc(x.en) <= 20 && norm(x.en2) !== norm(x.en) && (x.natural ?? 5) >= 4)
         .slice(0, 10);
@@ -130,7 +131,7 @@ export function ChunkPractice() {
         <li><span>🇻🇳→🇬🇧</span><div><b>Vòng 2: dịch Việt → Anh</b><small>Câu khác hẳn vòng 1 nhưng dùng lại đúng những từ đó — tự viết được, không chép được.</small></div></li>
         <li><span>✅</span><div><b>Nộp 1 lần, AI chấm</b><small>Câu <b>qua</b> khi cả 2 chiều ≥ {PASS}/100 → từ mới trong câu được cộng vào số từ đã học.</small></div></li>
       </ol>
-      <div className="row gap wrap"><Pills id="chunk-len" value={len} onChange={setLen} items={LENS} /></div>
+      <div className="row gap wrap"><Pills id="chunk-len" value={len} onChange={setLen} items={LENS} /><TopicPicker value={topic} onChange={setTopic} /></div>
       {busy ? <StepProgress steps={['Chọn từ mới + từ ôn', 'AI đặt câu theo ngữ cảnh', 'Sẵn sàng']} step={1} note="thường 5–15 giây" />
         : <button className="btn big" onClick={start}>▶ Bắt đầu</button>}
     </section>

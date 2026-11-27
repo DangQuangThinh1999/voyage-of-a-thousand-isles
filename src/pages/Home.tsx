@@ -6,17 +6,15 @@ import { Dashboard } from '../components/Dashboard';
 import { WeekCarousel } from '../components/WeekCarousel';
 import { motion } from 'motion/react';
 import { UnitCard } from '../components/UnitCard';
-import { vocabWeek, weekNow, unlocked, weekDone, weekUnits, type Progress } from '../lib/progress';
+import { vocabWeek, weekNow, weekDone, type Progress } from '../lib/progress';
 import { introOk } from '../state/actions';
 import { requestExam } from '../state/exam';
 import { tab, useApp } from '../state/store';
 
 function WeekBadge({ w, P }: { w: number; P: Progress }) {
   const WG = roadmap(P);
-  const us = weekUnits(w);
   const t0 = (P.tests || {})['w' + w];
   if (weekDone(P, w)) return <span className="row gap"><span className="okc small">✓ Đạt ~IELTS {WG[w].band}</span><button className="btn ghost sm" onClick={() => requestExam('w' + w)}>🔁 Làm lại kiểm tra tuần{t0 ? ` · ${t0.best}%` : ''}</button></span>;
-  if (!unlocked(P, UNITS.indexOf(us[0]))) return <span className="muted small">🔒</span>;
   const t = (P.tests || {})['w' + w];
   return <button className="btn ghost sm" data-act="test" data-w={w} onClick={() => requestExam('w' + w)}>⚡ Kiểm tra tuần {w}{t ? ` · ${t.best}% · làm lại` : ''}</button>;
 }
@@ -64,12 +62,12 @@ export function Home() {
             </div>
             <div className="wb-act"><WeekBadge w={w} P={P} /></div>
           </motion.section>
-          <div className="units">{UNITS.map((u, i) => [u, i] as const).filter(([u]) => u.week === w).map(([u, i]) => <UnitCard key={u.id} u={u} P={P} locked={!unlocked(P, i)} />)}</div>
+          <div className="units">{UNITS.map((u, i) => [u, i] as const).filter(([u]) => u.week === w).map(([u]) => <UnitCard key={u.id} u={u} P={P} />)}</div>
         </Fragment>
       ))}
       <div className="sec-h"><h3>🧭 Các tuần tiếp theo</h3><span className="muted small">Tổng {totalWeeks(P)} tuần tới IELTS {P.settings.target} · vuốt ngang để xem</span></div>
       <WeekCarousel P={P} weeks={Object.entries(WG).filter(([w]) => !weeks.includes(+w)).map(([w, g]) => [+w, g])} />
-      <p className="muted center small">Bài tiếp theo mở khi bạn làm xong 3/5 phần của bài trước.<br />Đã biết rồi? Bấm <b>⚡ Kiểm tra nhanh</b>: đúng hết 100% là qua luôn cả tuần.</p>
+      <p className="muted center small">Học bài nào trước cũng được · <b className="muted">mờ</b> = chưa học, <b style={{ color: '#fb923c' }}>cam</b> → <b style={{ color: '#fbbf24' }}>vàng</b> → <b style={{ color: '#22d3ee' }}>xanh dương</b> = đang học, <b className="okc">xanh lá</b> = xong.<br />Đã biết rồi? Bấm <b>⚡ Kiểm tra nhanh</b>: đúng hết 100% là qua luôn cả tuần.</p>
     </>
   );
 }

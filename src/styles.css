@@ -957,3 +957,21 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .ex-card { display: grid; gap: 8px; padding: 10px 12px; margin: 8px 0; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); }
 .ex-top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 1.05rem; }
 .sayit-cmp { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+
+/* Lộ trình: mỗi tuần 1 dòng (số tuần · trọng tâm + ⭐ đặc biệt · số từ) */
+.ws-special { margin: 0; font-size: .78rem; color: #fbbf24; }
+.wk-special { color: #fbbf24; font-weight: 600; }
+.plan-weeks { list-style: none; margin: 10px 0 6px; padding: 0; display: grid; gap: 6px; }
+.plan-weeks li { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr) auto; gap: 8px; align-items: start; padding: 6px 8px; border-radius: 10px; font-size: .9rem; }
+.plan-weeks li.now { background: var(--pri-soft); }
+.plan-weeks small { display: block; color: #fbbf24; font-size: .8rem; }
+.plan-weeks .pw-n { font-weight: 800; color: var(--pri); }
+.plan-weeks .pw-w { font-size: .78rem; color: var(--muted); white-space: nowrap; }
+
+/* Mức tiến độ → màu (dùng chung: thanh, vòng, thẻ bài). Không khoá bài nào: chưa học chỉ mờ đi. */
+.tone-0 { --tone: var(--line); } .tone-1 { --tone: #fb923c; } .tone-2 { --tone: #fbbf24; } .tone-3 { --tone: #22d3ee; } .tone-4 { --tone: #34d399; }
+.mini-bar[class*='tone-'] > i { background: var(--tone); }
+.side-u.tone-0:not(.on), .unit.tone-0 { opacity: .55; }
+.side-u.tone-0:not(.on):hover, .unit.tone-0:hover { opacity: 1; }
+.unit.tone-1, .unit.tone-2, .unit.tone-3 { border-color: color-mix(in srgb, var(--tone) 60%, transparent); }
+.unit.tone-4 { border-color: var(--good); }

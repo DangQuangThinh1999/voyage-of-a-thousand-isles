@@ -20,8 +20,9 @@ export function WeekCarousel({ P, weeks }: { P: Progress; weeks: [number, RoadWe
             <motion.div key={w} className="wk-slide" style={{ ['--c1' as string]: c1, ['--c2' as string]: c2 }}
               initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ delay: Math.min(0.3, i * 0.04) }} whileHover={{ y: -4 }}>
               <div className="ws-top"><span className="ws-n">Tuần {w}</span><span className="ws-cefr">{g.cefr}</span></div>
-              <div className="ws-band"><small>Mốc</small><b>IELTS {g.band}</b></div>
-              <p className="ws-goal">{g.goal.replace(/^🎯 Mốc [\d.]+: /, '')}</p>
+              <div className="ws-band"><small>{g.milestone ? '🏁 Đạt mốc' : 'Hướng tới'}</small><b>IELTS {g.band}</b></div>
+              <p className="ws-goal">{g.goal}</p>
+              {g.special && <p className="ws-special">⭐ {g.special}</p>}
               <div className="ws-vocab"><span>📗 Từ vựng</span><span>{vw.done}/{vw.size}</span></div>
               <div className="ws-bar"><i style={{ width: `${(vw.done / Math.max(1, vw.size)) * 100}%` }} /></div>
               <div className="ws-acts"><button onClick={() => tab('words')}>Học từ</button><button onClick={() => goWeek(w)}>Chi tiết</button></div>

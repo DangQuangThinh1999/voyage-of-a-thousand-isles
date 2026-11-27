@@ -4,7 +4,8 @@ import {
   AUTO_PLAY, BUILD, GRADED, LIMITS, PASS, SKILL_OF_STEP, buildTest, buildVocabSteps, paraChecks, passageText, type Step, type StepOf,
 } from '../lib/exercises';
 import { bankRange } from '../data/bank';
-import { KINDS, SKILL_OF, tallySkill, unitProg, vocabWeekSize, weekUnits, type Kind } from '../lib/progress';
+import { KINDS, SKILL_OF, tallySkill, unitProg, weekUnits, type Kind } from '../lib/progress';
+import { weekRange } from '../lib/roadmap';
 import { addNewWords, promoteWords } from '../lib/srs';
 import { hear, micErr, micLive, speak, SR, stopListening } from '../lib/speech';
 import { checkTyped, norm, scoreSpeech, tokens } from '../lib/text';
@@ -32,9 +33,9 @@ export function startTest(units: Unit[], key: string, title: string, vocab: Step
 export function startQuickTest({ w, u }: { w?: number | string; u?: string }) {
   if (!SR) { toast('Bài kiểm tra có phần Nói, cần mở bằng Chrome hoặc Edge và cho phép micro'); return; }
   if (w) {
-    // Từ vựng của tuần trong kho từ (7 × số từ/ngày) + từ các tuần trước
-    const size = vocabWeekSize(app.P), n = +w;
-    Promise.all([bankRange((n - 1) * size, n * size), bankRange(0, (n - 1) * size)])
+    // Từ vựng của tuần trong kho từ + từ các tuần trước
+    const n = +w, [s, e] = weekRange(app.P, n);
+    Promise.all([bankRange(s, e), bankRange(0, s)])
       .then(([week, earlier]) => startTest(weekUnits(n), 'w' + n, `tuần ${n}`, buildVocabSteps(week, earlier)))
       .catch(() => startTest(weekUnits(n), 'w' + n, `tuần ${n}`));
   }

@@ -46,6 +46,8 @@ export const app = {
   nav: 0,
   /** cuộn trang sau lần vẽ tiếp theo: 'top' hoặc id của phần tử */
   scrollReq: null as null | 'top' | string,
+  /** tuần đang mở trong bảng chi tiết tuần (null = đóng) */
+  weekSheet: null as number | null,
 };
 
 let version = 0;
@@ -184,7 +186,11 @@ export function tab(t: Screen, reset = false) {
   if (reset || t === 'review') app.R = null;
   go(t);
 }
-export function goWeek(w: number | string) { go('home', String(w)); app.scrollReq = 'wk-' + w; }
+/** Xem 1 tuần: tuần có bài học → cuộn tới tuần đó ở trang Học; tuần chưa có bài → mở bảng chi tiết tuần */
+export function goWeek(w: number | string) {
+  if (!UNITS.some((u) => u.week === +w)) { app.weekSheet = +w; emit(); return; }
+  go('home', String(w)); app.scrollReq = 'wk-' + w;
+}
 
 // ---------- thông báo ----------
 let toastT: ReturnType<typeof setTimeout> | undefined;

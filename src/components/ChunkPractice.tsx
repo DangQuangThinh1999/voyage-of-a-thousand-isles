@@ -7,8 +7,8 @@ import { Fragment, useEffect, useState } from 'react';
 import { loadChunk, saveChunk } from '../state/resume';
 import { bankRange, bankWord, nextBankWords, type BankWord } from '../data/bank';
 import { enqueueChunk } from '../lib/chunkQueue';
-import { addMistake, bankLearned, tallySkill, today, vocabWeekSize, weekNow } from '../lib/progress';
-import { roadmap } from '../lib/roadmap';
+import { addMistake, bankLearned, tallySkill, today, weekNow } from '../lib/progress';
+import { roadmap, weekRange } from '../lib/roadmap';
 import { norm } from '../lib/text';
 import { addDays, dayKey, sample, shuffle } from '../lib/util';
 import { addXP, app, askConfirm, save } from '../state/store';
@@ -31,10 +31,10 @@ const post = async (body: unknown) => {
 
 /** Từ cho lượt học: một nửa từ MỚI tiếp theo trong kho (chưa học) + một nửa từ đã học gần đây để ôn */
 async function pick(nTotal: number): Promise<BankWord[]> {
-  const P = app.P, size = vocabWeekSize(P), wk = weekNow(P);
+  const P = app.P, wk = weekNow(P);
   const half = Math.ceil(nTotal / 2);
   const fresh = await nextBankWords((w) => !!P.srs[w], half).catch(() => [] as BankWord[]);
-  const bank = await bankRange(0, wk * size).catch(() => [] as BankWord[]);
+  const bank = await bankRange(0, weekRange(P, wk)[1]).catch(() => [] as BankWord[]);
   const learned = bank.filter((w) => P.srs[w.w]).slice(-60);
   const all = [...new Map([...fresh, ...sample(learned, nTotal - fresh.length)].map((w) => [w.w, w])).values()];
   return all.length ? all : bank.slice(0, 40);

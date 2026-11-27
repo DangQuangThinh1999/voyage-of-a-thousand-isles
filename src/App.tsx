@@ -12,6 +12,7 @@ import { Tabs } from './components/Tabs';
 import { Toast } from './components/Toast';
 import { SearchModal } from './components/SearchModal';
 import { ConfirmDialog } from './components/ConfirmDialog';
+import { WeekSheet } from './components/WeekDetail';
 import { NickModal } from './components/NickModal';
 import { Home } from './pages/Home';
 import { Journal } from './pages/Journal';
@@ -53,6 +54,7 @@ export default function App() {
       <Toast />
       <SearchModal />
       <ConfirmDialog />
+      <WeekSheet />
       <NickModal />
       <LoginPrompt />
       <Drawer />

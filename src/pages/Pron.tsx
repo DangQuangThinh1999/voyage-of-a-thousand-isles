@@ -1,6 +1,7 @@
 // Tab Phát âm (IPA): bảng 44 âm, cặp âm dễ nhầm, đọc phiên âm, trọng âm, từ đồng âm, cụm phụ âm.
-import { AnimatePresence, motion } from 'motion/react';
-import { useEffect, useMemo, useState } from 'react';
+import { motion } from 'motion/react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Sheet } from '../components/Sheet';
 import pronUrl from '../../data/pronunciation.json?url';
 import { AudioButton, SayBoth } from '../components/AudioButton';
 import { SpeakCheck } from '../components/MicRecorder';
@@ -29,50 +30,31 @@ const GROUPS: [string, string][] = [['vowel-short', '🔹 Nguyên âm ngắn'], 
 
 const hl = (ipa: string, s: string) => ipa.replace(new RegExp(s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), (m) => `【${m}】`);
 
-/** Bảng chi tiết 1 âm: trượt lên từ dưới màn hình (điện thoại) / hiện giữa màn hình (máy tính) */
-function IpaSheet({ s, list, onPick, onClose }: { s: Sound; list: Sound[]; onPick: (x: Sound) => void; onClose: () => void }) {
-  const k = list.indexOf(s), prev = list[k - 1], next = list[k + 1];
-  useEffect(() => {
-    const f = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    addEventListener('keydown', f); const o = document.body.style.overflow; document.body.style.overflow = 'hidden';
-    return () => { removeEventListener('keydown', f); document.body.style.overflow = o; };
-  }, [onClose]);
-  const go = (x?: Sound) => { if (x) { onPick(x); speak(x.examples[0][0]); } };
+/** Nội dung chi tiết 1 âm (hiện trong Sheet) */
+function SoundDetail({ s }: { s: Sound }) {
   return (
-    <motion.div className="sheet-ov" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <motion.div role="dialog" aria-modal="true" className="sheet" initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} transition={{ type: 'spring', bounce: 0.15, duration: 0.4 }}>
-        <div className="sheet-grip" />
-        <header className="sheet-h">
-          <div className="ipa-big">/{s.ipa}/</div>
-          <div className="grow"><b className="text-lg">{s.name_vi}</b><div className="muted small">{s.vi_like}</div></div>
-          <button className="btn ghost sm" aria-label="Đóng" onClick={onClose}>✕</button>
-        </header>
-        <div className="sheet-b" key={s.ipa}>
-          <div className="vsec"><h4>👄 Cách phát âm</h4><p className="m-0">{s.how_vi}</p></div>
-          <div className="vsec"><h4>⚠️ Người Việt hay sai</h4><p className="m-0">{s.mistake_vi}</p></div>
-          <div className="vsec"><h4>🔊 Ví dụ: nghe → đọc theo → nghe lại giọng mình</h4>
-            {s.examples.map(([w, ipa]) => (
-              <div key={w} className="ex-card">
-                <div className="ex-top"><b>{w}</b><span className="ipa inline">{hl(ipa, s.ipa)}</span><SayBoth text={w} size="xs" /></div>
-                <SpeakCheck text={w} />
-              </div>
-            ))}
-            <p className="muted small m-0">【 】 là vị trí của âm /{s.ipa}/ trong từ.</p>
+    <>
+      <div className="vsec"><h4>👄 Cách phát âm</h4><p className="m-0">{s.how_vi}</p></div>
+      <div className="vsec"><h4>⚠️ Người Việt hay sai</h4><p className="m-0">{s.mistake_vi}</p></div>
+      <div className="vsec"><h4>🔊 Ví dụ: nghe → đọc theo → nghe lại giọng mình</h4>
+        {s.examples.map(([w, ipa]) => (
+          <div key={w} className="ex-card">
+            <div className="ex-top"><b>{w}</b><span className="ipa inline">{hl(ipa, s.ipa)}</span><SayBoth text={w} size="xs" /></div>
+            <SpeakCheck text={w} />
           </div>
-        </div>
-        <footer className="sheet-f">
-          <button className="btn ghost" disabled={!prev} onClick={() => go(prev)}>← {prev ? `/${prev.ipa}/` : ''}</button>
-          <span className="muted small">{k + 1}/{list.length}</span>
-          <button className="btn ghost" disabled={!next} onClick={() => go(next)}>{next ? `/${next.ipa}/` : ''} →</button>
-        </footer>
-      </motion.div>
-    </motion.div>
+        ))}
+        <p className="muted small m-0">【 】 là vị trí của âm /{s.ipa}/ trong từ.</p>
+      </div>
+    </>
   );
 }
 
 function Chart({ d }: { d: Pron }) {
   const [sel, setSel] = useState<Sound | null>(null);
   const list = useMemo(() => GROUPS.flatMap(([t]) => d.sounds.filter((s) => s.type === t)), [d]);
+  const k = sel ? list.indexOf(sel) : -1, prev = list[k - 1], next = list[k + 1];
+  const open = (x?: Sound) => { if (x) { setSel(x); speak(x.examples[0][0]); } };
+  const close = useCallback(() => setSel(null), []);
   return (
     <>
       <Section>
@@ -81,13 +63,17 @@ function Chart({ d }: { d: Pron }) {
         {GROUPS.map(([t, name]) => (
           <div key={t} className="mt-3"><b className="small">{name}</b>
             <div className="ipa-grid">{d.sounds.filter((s) => s.type === t).map((s) => (
-              <motion.button key={s.ipa} whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }} className={`ipa-tile ${sel === s ? 'on' : ''} t-${t}`} onClick={() => { setSel(s); speak(s.examples[0][0]); }}>
+              <motion.button key={s.ipa} whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }} className={`ipa-tile ${sel === s ? 'on' : ''} t-${t}`} onClick={() => open(s)}>
                 <b>/{s.ipa}/</b><small>{s.examples[0][0]}</small>
               </motion.button>))}</div>
           </div>
         ))}
       </Section>
-      <AnimatePresence>{sel && <IpaSheet s={sel} list={list} onPick={setSel} onClose={() => setSel(null)} />}</AnimatePresence>
+      <Sheet open={!!sel} onClose={close} bodyKey={sel?.ipa}
+        head={sel && <div className="flex items-center gap-3"><div className="ipa-big">/{sel.ipa}/</div><div><b className="text-lg">{sel.name_vi}</b><div className="muted small">{sel.vi_like}</div></div></div>}
+        foot={sel && <><button className="btn ghost" disabled={!prev} onClick={() => open(prev)}>← {prev ? `/${prev.ipa}/` : ''}</button><span className="muted small">{k + 1}/{list.length}</span><button className="btn ghost" disabled={!next} onClick={() => open(next)}>{next ? `/${next.ipa}/` : ''} →</button></>}>
+        {sel && <SoundDetail s={sel} />}
+      </Sheet>
     </>
   );
 }

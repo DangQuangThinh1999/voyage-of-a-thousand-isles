@@ -3,8 +3,8 @@
 import { aiFetch } from '../lib/ai';
 import { unitById, type Unit } from '../data';
 import { bankRange } from '../data/bank';
-import { KINDS, levelNow, tallySkill, unitProg, vocabWeekSize, weekNow, weekUnits } from '../lib/progress';
-import { roadmap } from '../lib/roadmap';
+import { KINDS, levelNow, tallySkill, unitProg, weekNow, weekUnits } from '../lib/progress';
+import { roadmap, weekRange } from '../lib/roadmap';
 import { promoteWords } from '../lib/srs';
 import { norm } from '../lib/text';
 import { dayKey, sample } from '../lib/util';
@@ -74,9 +74,9 @@ async function contextOf(key: string): Promise<Ctx> {
   const P = app.P, RM = roadmap(P);
   const learned = Object.keys(P.srs);
   if (key[0] === 'w') {
-    const n = +key.slice(1), size = vocabWeekSize(P), units = weekUnits(n), g = RM[n] || RM[Object.keys(RM).length];
+    const n = +key.slice(1), [ws, we] = weekRange(P, n), units = weekUnits(n), g = RM[n] || RM[Object.keys(RM).length];
     let week: string[] = [];
-    try { week = (await bankRange((n - 1) * size, n * size)).map((x) => x.w); } catch { /* không tải được kho từ: dùng từ đã học */ }
+    try { week = (await bankRange(ws, we)).map((x) => x.w); } catch { /* không tải được kho từ: dùng từ đã học */ }
     const unitWords = units.flatMap((u) => u.words.map(([en]) => en));
     return { key, title: `Kiểm tra tuần ${n}`, cefr: g?.cefr || 'A2', band: g?.band || '4.0', topics: [g?.goal, ...units.map((u) => u.title)].filter(Boolean).join('; '),
       words: [...new Set([...sample(unitWords, 40), ...sample(week, 50), ...sample(learned, 50)])], units };

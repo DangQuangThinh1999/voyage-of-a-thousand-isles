@@ -1,6 +1,7 @@
 // Tiến độ học: lưu trong localStorage (khóa 'ht55.progress.v1'), gộp với bản trên mây.
 import { UNITS, WEEK_GOALS, type Unit } from '../data';
 import { addDays, dayKey, daysBetween } from './util';
+import { weekRange } from './roadmap';
 
 export const STORE = 'ht55.progress.v1';
 export const TOTAL_DAYS = 90;
@@ -113,11 +114,10 @@ export function bankLearned(P: Progress) {
   if (blCache.p !== P || blCache.u !== P.updated) blCache = { p: P, u: P.updated, n: Object.values(P.srs).filter((c) => c.f).length };
   return blCache.n;
 }
-/** Từ vựng rải đều theo tuần: mỗi tuần 7 × số từ/ngày, học theo thứ tự nên tuần w gồm phần (w-1)·size … w·size */
-export const vocabWeekSize = (P: Progress) => P.settings.wpd * 7;
+/** Từ vựng của tuần w: số từ tăng theo trình độ (xem roadmap), học theo thứ tự trong kho nên tuần w = đoạn [start, end) */
 export function vocabWeek(P: Progress, w: number) {
-  const size = vocabWeekSize(P);
-  return { size, done: Math.max(0, Math.min(size, bankLearned(P) - (w - 1) * size)) };
+  const [start, end] = weekRange(P, w), size = end - start;
+  return { size, start, done: Math.max(0, Math.min(size, bankLearned(P) - start)) };
 }
 /** Số từ đáng lẽ đã học tới hôm nay trừ số đã học (dương = đang chậm) */
 export const vocabBehind = (P: Progress) => (P.vStart ? (daysBetween(P.vStart, dayKey()) + 1) * P.settings.wpd - bankLearned(P) : 0);
@@ -140,7 +140,6 @@ export function addMistake(P: Progress, wrong: string, right: string, why: strin
 }
 export const unitProg = (P: Progress, id: string) => P.units[id] || (P.units[id] = {});
 export const doneCount = (P: Progress, id: string) => KINDS.filter(([k]) => (P.units[id] || {})[k]).length;
-export const unlocked = (P: Progress, i: number) => i === 0 || doneCount(P, UNITS[i - 1].id) >= 3;
 export const minutesToday = (P: Progress) => Math.floor(Object.values(today(P).sec || {}).reduce((a, b) => a + b, 0) / 60);
 export const dayNumber = (P: Progress) => Math.min(TOTAL_DAYS, daysBetween(P.startDate, dayKey()) + 1);
 export const weekUnits = (w: number) => UNITS.filter((u) => u.week === w);
@@ -157,7 +156,6 @@ export function levelNow(P: Progress): string {
 
 export function nextTask(P: Progress): { u: Unit; k: KindInfo } | null {
   for (let i = 0; i < UNITS.length; i++) {
-    if (!unlocked(P, i)) break;
     const k = KINDS.find(([k]) => !(P.units[UNITS[i].id] || {})[k]);
     if (k) return { u: UNITS[i], k };
   }

@@ -1,6 +1,8 @@
 // Lộ trình theo mục tiêu IELTS người học chọn:
 // - Tuần 1–12: nền tảng tới 5.5 (WEEK_GOALS). Mục tiêu thấp hơn thì dừng sớm hơn.
-// - Mục tiêu cao hơn 5.5: thêm tuần cho từng nấc 0.5, số tuần tính theo số từ cần học thêm và số từ/ngày.
+// - Mục tiêu cao hơn 5.5: thêm tuần cho từng nấc 0.5. MỖI TUẦN MỘT TRỌNG TÂM RIÊNG (không lặp), có ⭐ thử thách đặc biệt.
+// - Số từ mỗi tuần theo VỐN TỪ CẦN CHO MỐC IELTS (wordsFor): tuần 1–12 chia ~3.000 từ tới 5.5 (A1 ít, B1 nhiều),
+//   mỗi mốc trên 5.5 chia số từ cần thêm cho các tuần của mốc đó. Từ trong kho học theo thứ tự nên tuần w = [start, start + words).
 import { WEEK_GOALS, type WeekGoal } from '../data';
 import type { Progress } from './progress';
 
@@ -13,32 +15,112 @@ export function wordsFor(band: number): number {
   }
   return 10000;
 }
-const GOAL_AT: Record<string, string> = {
-  '6.0': 'Viết Task 2 khoảng 250 từ, đọc bài báo dài, nghe bài giảng ngắn',
-  '6.5': 'Từ vựng học thuật, paraphrase, Speaking Part 3 có lập luận',
-  '7.0': 'Câu phức, collocation, đọc nhanh tìm ý chính',
-  '7.5': 'Viết mạch lạc, từ nối đa dạng, nghe nhiều giọng Anh, Úc, Mỹ',
-  '8.0': 'Từ vựng ít gặp, thành ngữ, sửa lỗi nhỏ',
-  '8.5': 'Diễn đạt tự nhiên, tranh luận chủ đề khó',
-  '9.0': 'Luyện đề tốc độ cao, hoàn thiện mọi kỹ năng',
+
+type Focus = [goal: string, special: string];
+/** Trọng tâm từng tuần cho các mốc trên 5.5 — mỗi mốc 4 tuần khác nhau */
+const FOCUS_AT: Record<string, Focus[]> = {
+  '6.0': [
+    ['Writing Task 2: bài nghị luận 250 từ (agree / disagree)', '✍️ Viết 1 bài 250 từ hoàn chỉnh, AI chấm theo 4 tiêu chí'],
+    ['Reading: bài báo dài, kỹ năng skimming & scanning', '📰 Mỗi ngày 1 bài báo thật, tìm ý chính trong 2 phút'],
+    ['Listening Section 4: bài giảng ngắn, ghi chú nhanh', '🎧 Nghe 1 lần, ghi lại từ khoá (note-taking)'],
+    ['Speaking Part 2: nói liền 2 phút theo cue card', '🎤 Ghi âm 2 phút mỗi ngày, nghe lại tự sửa'],
+  ],
+  '6.5': [
+    ['Từ vựng học thuật (AWL): giáo dục, môi trường, xã hội', '📚 10 từ học thuật/ngày kèm collocation'],
+    ['Paraphrase: đổi từ đồng nghĩa và đổi cấu trúc câu', '🔁 Mỗi ngày viết lại 5 câu đề IELTS'],
+    ['Speaking Part 3: quan điểm + lý do + ví dụ', '💬 Trả lời theo khung PEEL (Point–Explain–Example–Link)'],
+    ['Writing Task 1: mô tả biểu đồ, so sánh số liệu', '📊 Viết 150 từ tả 1 biểu đồ'],
+  ],
+  '7.0': [
+    ['Câu phức: mệnh đề quan hệ, câu điều kiện, đảo ngữ', '🧩 5 câu phức/ngày, AI kiểm tra'],
+    ['Collocation: kết hợp từ tự nhiên (make a decision…)', '🔗 Lập sổ 50 collocation hay dùng'],
+    ['Reading tốc độ: True/False/Not Given, Matching Headings', '⏱️ Làm 1 passage trong 20 phút'],
+    ['Listening Section 3: thảo luận học thuật nhiều người', '👥 Nghe và phân biệt ý kiến từng người'],
+  ],
+  '7.5': [
+    ['Mạch lạc: từ nối đa dạng, chia đoạn, câu chủ đề rõ', '🧵 Viết lại 1 bài cũ cho mạch lạc hơn'],
+    ['Nghe nhiều giọng: Anh – Úc – Mỹ', '🌏 Mỗi ngày 1 podcast một giọng khác nhau'],
+    ['Task 2 dạng discuss both views / problem–solution', '⚖️ Lập dàn ý 2 phía trong 5 phút'],
+    ['Speaking trôi chảy, tự sửa khi nói', '🔄 Shadowing 10 phút mỗi ngày'],
+  ],
+  '8.0': [
+    ['Từ vựng ít gặp, dùng từ chính xác', '💎 Thay 5 từ thường bằng từ chính xác hơn'],
+    ['Thành ngữ, cụm động từ đúng ngữ cảnh', '🗣️ Dùng 3 idiom/ngày trong câu nói'],
+    ['Sửa lỗi nhỏ: mạo từ, số ít/nhiều, giới từ', '🔍 Soát hết lỗi 1 bài viết trong 3 phút'],
+    ['Reading bài khó: suy luận quan điểm tác giả', '🧠 Tìm ý ẩn của tác giả trong mỗi đoạn'],
+  ],
+  '8.5': [
+    ['Diễn đạt tự nhiên như người bản xứ', '✨ So bài mình với bài band 9, ghi 5 điểm khác'],
+    ['Tranh luận chủ đề khó: công nghệ, đạo đức, toàn cầu hoá', '🎙️ Nói 3 phút phản biện 1 ý kiến'],
+    ['Viết học thuật: lập luận sâu, ví dụ thuyết phục', '📝 2 bài Task 2 band 8+ trong tuần'],
+    ['Nghe tốc độ thật: tin tức, phỏng vấn, hội thảo', '📻 Nghe BBC / TED không phụ đề'],
+  ],
+  '9.0': [
+    ['Đề thi đầy đủ 4 kỹ năng, có tính giờ', '⏰ 1 đề full mỗi 2 ngày'],
+    ['Reading 60 phút 40 câu, không bỏ sót', '⚡ Đọc nhanh, không đọc lại'],
+    ['Writing hoàn hảo: không lỗi, cấu trúc đa dạng', '🏁 Bài viết 0 lỗi ngữ pháp'],
+    ['Speaking thi thử với giám khảo AI', '🧑‍🏫 Thi thử Speaking 15 phút'],
+  ],
 };
+/** Thử thách đặc biệt cho tuần 1–12 */
+const SPECIAL_BASE: Record<number, string> = {
+  1: '👋 Tự giới thiệu 30 giây bằng tiếng Anh', 2: '👪 Kể về gia đình bằng 5 câu', 3: '⏰ Kể lại 1 ngày của bạn',
+  4: '🛒 Đóng vai đi mua sắm', 5: '📖 Kể chuyện hôm qua trong 1 phút', 6: '🗺️ Chỉ đường và gọi món',
+  7: '📅 Nói về kế hoạch cuối tuần', 8: '⏱️ Nói liền 1 phút không dừng', 9: '📝 Làm quen các dạng câu Listening & Reading',
+  10: '✍️ Viết bài Task 1 & Task 2 đầu tiên', 11: '⏰ Làm đề có tính giờ', 12: '🏆 Thi thử đầy đủ 4 kỹ năng',
+};
+/** Tỷ trọng số từ mỗi tuần nền tảng theo trình độ: mới học ít từ, càng lên cao càng nhiều */
+const WORD_FACTOR: Record<string, number> = { A1: 0.5, 'A1+': 0.6, A2: 0.8, 'A2+': 0.9, B1: 1.1, 'B1+': 1.2, B2: 1, C1: 1.2, C2: 1.4 };
+const BASE_WEIGHT = Object.values(WEEK_GOALS).reduce((a, g) => a + (WORD_FACTOR[g.cefr] ?? 1), 0);
+const r10 = (x: number) => Math.max(10, Math.round(x / 10) * 10);
 const cefrOf = (b: number) => (b <= 6.5 ? 'B2' : b <= 8 ? 'C1' : 'C2');
 const firstNum = (band: string) => parseFloat(band) || 0;
+const BANK_MAX = 10012;
 
-export interface RoadWeek extends WeekGoal { extra?: boolean }
+export interface RoadWeek extends WeekGoal {
+  /** thử thách đặc biệt của tuần */ special: string;
+  /** số từ mới của tuần và vị trí bắt đầu trong kho từ */ words: number; start: number;
+  /** tuần thêm cho mục tiêu trên 5.5 */ extra?: boolean;
+  /** tuần cuối của một mốc IELTS */ milestone?: boolean;
+}
+let memo: { key: string; rm: Record<number, RoadWeek> } | null = null;
 /** Danh sách tuần theo mục tiêu hiện tại: { số tuần: mục tiêu tuần } */
 export function roadmap(P: Progress): Record<number, RoadWeek> {
-  const target = parseFloat(P.settings.target) || 5.5, size = Math.max(1, P.settings.wpd * 7);
+  const target = parseFloat(P.settings.target) || 5.5, wpd = Math.max(1, P.settings.wpd), key = target + '|' + wpd;
+  if (memo && memo.key === key) return memo.rm;
   const out: Record<number, RoadWeek> = {};
-  let n = 0;
+  let n = 0, start = 0;
+  const push = (g: Omit<RoadWeek, 'words' | 'start'>, want: number) => {
+    const words = Math.max(0, Math.min(r10(want), BANK_MAX - start));
+    out[++n] = { ...g, words, start }; start += words;
+  };
+  const base = wordsFor(5.5);
   for (const [w, g] of Object.entries(WEEK_GOALS)) {
     if (+w > 4 && firstNum(g.band) > target) break; // tuần 1–4 luôn có (đã có bài học)
-    out[++n] = g;
+    push({ ...g, special: SPECIAL_BASE[+w] || '' }, (base * (WORD_FACTOR[g.cefr] ?? 1)) / BASE_WEIGHT);
   }
+  // Trên 5.5: lập danh sách tuần trước, rồi chia số từ cần thêm (tới mục tiêu) theo trọng số cấp độ: B2 < C1 < C2
+  const ext: Omit<RoadWeek, 'words' | 'start'>[] = [];
   for (let b = 6; b <= target + 0.001; b += 0.5) {
-    const band = b.toFixed(1), weeks = Math.max(2, Math.ceil((wordsFor(b) - wordsFor(b - 0.5)) / size));
-    for (let i = 0; i < weeks; i++) out[++n] = { cefr: cefrOf(b), band, goal: (i === weeks - 1 ? '🎯 Mốc ' + band + ': ' : '') + (GOAL_AT[band] || ''), extra: true };
+    const band = b.toFixed(1), cefr = cefrOf(b), F = FOCUS_AT[band] || [], gap = wordsFor(b) - wordsFor(b - 0.5);
+    // số tuần: theo số từ cần thêm và tốc độ học, ít nhất 2, nhiều nhất bằng số trọng tâm đã soạn (không tuần nào trùng tuần nào)
+    const weeks = Math.max(2, Math.min(F.length || 2, Math.ceil(gap / (wpd * 7))));
+    for (let i = 0; i < weeks; i++) {
+      const [goal, special] = F[i] || ['', ''];
+      ext.push({ cefr, band, goal, special, extra: true, milestone: i === weeks - 1 });
+    }
   }
+  const extWords = Math.min(BANK_MAX, wordsFor(target)) - start, extWeight = ext.reduce((a, g) => a + (WORD_FACTOR[g.cefr] ?? 1), 0);
+  for (const g of ext) push(g, (extWords * (WORD_FACTOR[g.cefr] ?? 1)) / extWeight);
+  memo = { key, rm: out };
   return out;
 }
 export const totalWeeks = (P: Progress) => Object.keys(roadmap(P)).length;
+/** Đoạn từ trong kho của tuần w: [start, end) */
+export function weekRange(P: Progress, w: number): [number, number] {
+  const rm = roadmap(P), g = rm[w];
+  if (g) return [g.start, g.start + g.words];
+  const last = rm[Object.keys(rm).length];
+  const s = last ? last.start + last.words : 0;
+  return [s, Math.min(BANK_MAX, s + P.settings.wpd * 7)];
+}

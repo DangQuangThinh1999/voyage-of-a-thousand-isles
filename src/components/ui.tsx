@@ -3,6 +3,25 @@ import { motion } from 'motion/react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { CoachResult } from '../lib/coach';
 
+/** Mức tiến độ → màu: 0 chưa học (mờ) · 1 mới bắt đầu (cam) · 2 nửa chặng (vàng) · 3 gần xong (xanh dương) · 4 xong (xanh lá) */
+export const toneOf = (pct: number) => (pct <= 0 ? 0 : pct >= 1 ? 4 : pct < 0.34 ? 1 : pct < 0.67 ? 2 : 3);
+export const toneCls = (pct: number) => 'tone-' + toneOf(pct);
+/** Thanh tiến độ mảnh, màu theo mức tiến độ (pct 0–1) */
+export function MiniBar({ pct }: { pct: number }) {
+  return <i className={'mini-bar ' + toneCls(pct)}><i style={{ width: `${Math.min(1, Math.max(0, pct)) * 100}%` }} /></i>;
+}
+/** Vòng tiến độ nhỏ, màu theo mức tiến độ (pct 0–1) */
+export function MiniRing({ pct, size = 28 }: { pct: number; size?: number }) {
+  const r = size / 2 - 3, c = 2 * Math.PI * r, p = Math.min(1, Math.max(0, pct));
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className={'shrink-0 -rotate-90 mini-ring ' + toneCls(p)}>
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--line)" strokeWidth="3" />
+      <motion.circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--tone)" strokeWidth="3" strokeLinecap="round" strokeDasharray={c}
+        initial={false} animate={{ strokeDashoffset: c * (1 - p) }} transition={{ duration: 0.6 }} />
+    </svg>
+  );
+}
+
 /** Vòng tiến độ (SVG) có hiệu ứng chạy */
 export function Ring({ pct, size = 88, stroke = 9, color = 'var(--pri)', children }: { pct: number; size?: number; stroke?: number; color?: string; children?: ReactNode }) {
   const r = (size - stroke) / 2, c = 2 * Math.PI * r, p = Math.max(0, Math.min(1, pct));

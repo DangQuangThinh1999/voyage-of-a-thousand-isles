@@ -54,7 +54,7 @@ function ReadingTutor({ text, questions, why, ev, vocab, title }: { text: Pair[]
           const p = picks[qi], ans = p !== undefined;
           return (
             <div key={qi} className="mt-3">
-              <div className="font-bold">{qi + 1}. {q[0]}</div><div className="muted small">{q[1]}</div>
+              <div className="font-bold">{qi + 1}. {q[0]}</div>{ans && <div className="muted small">🇻🇳 {q[1]}</div>}
               <div className="opts">{q[2].map((o, i) => (
                 <button key={o} disabled={ans} className={`opt ${ans ? (i === q[3] ? 'right' : i === p ? 'wrong' : 'dim') : ''}`}
                   onClick={() => { setPicks({ ...picks, [qi]: i }); tallySkill(app.P, 'read', i === q[3]); if (i === q[3]) addXP(1); else save(); }}>{o}</button>
@@ -113,12 +113,12 @@ function ListeningTutor({ script, questions, gaps, why, ev, vocab, title }: { sc
           {gaps.map(([s, a, v], i) => (
             <div key={i} className="mt-2">
               <div>{s.replace('____', '_____')} <AudioButton text={s.replace('____', a.split('|')[0])} className="icon xs" /></div>
-              <div className="muted small">{v}</div>
               <div className="flex gap-2 mt-1">
                 <input className="ans" placeholder="Từ còn thiếu…" value={gapIn[i] || ''} disabled={gapOk[i] !== undefined} onChange={(e) => setGapIn({ ...gapIn, [i]: e.target.value })} />
                 {gapOk[i] === undefined && <button className="btn sm" onClick={() => { const ok = a.split('|').some((x) => norm(x) === norm(gapIn[i] || '')); setGapOk({ ...gapOk, [i]: ok }); tallySkill(app.P, 'listen', ok); if (ok) addXP(1); else save(); }}>Kiểm tra</button>}
               </div>
               {gapOk[i] !== undefined && <p className={gapOk[i] ? 'okc' : 'badc'}>{gapOk[i] ? '✅ Đúng' : `❌ Đáp án: ${a.split('|').join(' / ')}`}</p>}
+              {gapOk[i] !== undefined && <div className="muted small">🇻🇳 {v}</div>}
             </div>
           ))}
         </Section>
